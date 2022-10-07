@@ -1,6 +1,6 @@
 h1{
     font-family: 'Raleway', sans-serif;
-    color: rgb(18, 37, 106);
+    color: rgb(20, 109, 168);
     font-weight: 600;
     letter-spacing: 1px;
     font-size: 2rem;
@@ -12,6 +12,6 @@ h1{
     margin-left: auto;
     margin-bottom: 20px;
     height: 40vh;
-    background: rgb(138, 138, 236);
+    background: rgb(244, 246, 248);
     border-radius: 30px;
 }
