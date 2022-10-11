@@ -7,6 +7,10 @@
     position: sticky;
     top: 0;
 }
+body{
+    overflow-x: hidden;
+}
+
 
 /* style="color: rgb(239, 233, 233); font-size: 1.8rem; font-weight: bold; letter-spacing: 0.5px;" */
 .navbar-brand {
@@ -48,11 +52,14 @@
 
 
 @media (max-width:450px) {
-    
-
     .navbar-toggler-icon {
         height: 20px;
         width: 20px;
+    }
+}
+@media (max-width:375px) {
+    .navbar-brand{
+        letter-spacing: 0;
     }
 }
 
