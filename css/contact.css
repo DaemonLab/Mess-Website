@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 a {
     color: #083AA9;
 }
@@ -46,55 +45,3 @@ p {
     height: auto;
     border-radius: 30px;
 }
-=======
-a {
-    color: #083AA9;
-}
-a:hover {
-    color: black;
-}
-.col-sm {
-    margin-bottom: 50px;
-}
-.contact {
-    margin-top: 25px;
-}
-.contact-heading {
-    font-size: 1.5rem;
-    text-align: left;
-}
-.desc {
-    margin-top: 10px;
-    font-size: 15px;
-}
-h1{
-    font-family: 'Raleway', sans-serif;
-    color: rgb(18, 37, 106);
-    font-weight: 600;
-    letter-spacing: 1px;
-    font-size: 2rem;
-    padding: 20px 10px;
-}
-i {
-    padding-right: 5px;
-}
-.line {
-    font-size: 1.2rem;
-    margin: auto auto 20px 65px;
-    text-align: left;
-}
-.name {
-    font-size: 1.1rem;
-}
-p {
-    margin-bottom: 0px;
-}
-.section{
-    width: 90vw;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 20px;
-    height: auto;
-    border-radius: 30px;
-}
->>>>>>> 63a7503005317da4847cabf230543af1bba5aa16
