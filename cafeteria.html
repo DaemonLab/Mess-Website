@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Students Dining Committee - IIT Indore</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-  integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/navFooter.css" />
   <link rel="stylesheet" href="./css/home.css" />
   <link
@@ -15,6 +15,7 @@
     rel="stylesheet">
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+  <link rel="stylesheet" href="./css/cafe.css">
 </head>
 
 <body>
@@ -30,92 +31,179 @@
           <li><a href="#" class="menu"> Contact Us</a></li>
         </ul>
       </nav> -->
-      <div class="navigation">
-        <nav class="navbar navbar-expand-lg navbar-dark text-white">
-          <div class="container-fluid">
-            <div class="logo" style="border-radius: 30px;"><img src="./images/IITI3.png" alt="" height="50px" width="50px">
-            </div>
-            <a class="navbar-brand" href="#">Students Dining Committee<div class="iiti">- IIT Indore</div></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-size: 0.9rem ; font-weight: 600; margin-right: 10px;">
-                <li class="nav-item">
-                  <a class="nav-link " aria-current="page" href="./home.html">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="./rules.html">Rules</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Caterer's-Information
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="./ajaycaterer.html">Ajay Caterers</a></li>
-                    <li><a class="dropdown-item" href="./kanakaCaterer.html">Kanaka Caterers</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="./links.html">Links</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" href="./cafeteria.html">Cafeterias</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="./contact.html">Contact</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+  <div class="navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark text-white">
+      <div class="logo" style="border-radius: 30px;"><img src="./images/IITI3.png" alt="" height="50px" width="50px">
       </div>
-    <Main>
-      <h1>Cafeterias</h1>
-      <div class="section"></div>
-  
-    </Main>
-    <!-- footer -->
-    <footer class="bg-color-footer text-white pt-5 pb-4">
-      <div class="container pe-md-5 mx-md-2">
-          <div class="row text-start align-self-end padding">
-              <div class="col-md-2 mt-0 px-md-0 align-self-center text-md-end text-center">
-                  <img src="images/IITI3.png" width="100px" height="100px">
-              </div>
-              <div class="col-md-3 mt-4 align-self-center text-md-start text-center">
-                <h5 class="text-uppercase mb-md-0 mb-2 fw-bold text-white">Student Dining Committee</h5>
-              </div>
-              <div class="col-md-4 mt-md-0 mt-4 border-footer">
-                  <h5 class="text-uppercase mb-2 fw-bold text-white">Location :</h5>
-                  <p class="text-white text-decoration-none ">Central Dining Facility<br>Indian Institute of Technology Indore,<br>Khandwa Road, Simrol,<br>Indore 453552,<br>India</p>
-              </div>
-              <div class="col-md-3 mt-md-0 mt-4 border-footer">
-                  <h5 class="text-uppercase mb-mt-4 mb-2 fw-bold text-white">Contact Us</h5>
-                  <p>
-                      <a href="mailto:dining.committee.sg@iiti.ac.in" class="text-white text-decoration-none"><i class="fas fa-envelope mr-3"></i> Mail us at:</a> dining.committee.sg@iiti.ac.in
-                  </p>
-                  <p>
-                      <i class="fas fa-phone mr-3"></i> +91 9860104474
-                  </p>
-              </div>
-          </div>
-          <hr class="mb-4">
-          <div class="row row-cols-md-auto text-center justify-content-center">
-              <div class="col-md p-1">Copyright ©2022 All rights reserved by:</div>
-              <div class="col-md p-1"> 
-                  <a href="#" class="text-decoration-none">
-                  <strong class="text-white">Student Dining Committee - IIT Indore</strong></a>
-              </div>
-          </div>
+      <a class="navbar-brand" href="#">Students Dining Committee<div class="iiti">- IIT Indore</div></a> <button
+        style="color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto" style="font-size: 1rem ;font-weight: 600;">
+          <li class="nav-item">
+            <a class="nav-link" href="./home.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="./rules.html">Rules</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Caterer's-Information
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="./ajaycaterer.html">Ajay Caterers</a>
+              <a class="dropdown-item" href="./kanakaCaterer.html">Kanaka Caterers</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./links.html">Links</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./cafeteria.html">Cafeterias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./contact.html">Contact</a>
+          </li>
+        </ul>
+
       </div>
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+    </nav>
+  </div>
+  <div class="container parent">
+    <div class="container">
+      <div class="row">
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Amul Parlor</b><br>Mr. Ankit<br>Contact no. 9009982238</p>
+  </div>
+</div>
+        </div>
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Bakeology</b><br>Mr. Himanshu<br>Contact no. 9630468448</p>
+  </div>
+</div>
+        </div>
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Ajay Caterers</b><br>Mr. chauhan<br>Contact no. 9179204594</p>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Vegetable Shop</b><br>Mr. Sunny<br>Contact no. 9098936776</p>
+  </div>
+</div>
+        </div>
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Tea Post</b><br>Mr. Gujjar<br>Contact no. 9753055845</p>
+  </div>
+</div>
+        </div>
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Noor's</b><br>Mr. Suraj<br>Contact no. 7898831885</p>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Jucilicious</b><br>Mr. Pikesh<br>Contact no. 9968929739</p>
+  </div>
+</div>
+        </div>
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>My Village Cafe</b><br>Mr. Sadashiv<br>Contact no. 8989668010</p>
+  </div>
+</div>
+        </div>
+        <div class="col box">
+          <div class="card" style="width: 18rem;">
+  <img src="https://images.unsplash.com/photo-1594897030264-ab7d87efc473?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNwbGFzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"><b>Tapri IITians Ki</b><br>Mr. prakash<br>Contact no. 6267114204</p>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- footer -->
+  <!-- footer -->
+  <footer class="bg-color-footer text-white pt-5 pb-4">
+    <div class="container pe-md-5 mx-md-2">
+        <div class="row text-start align-self-end padding">
+            <div class="col-md-2 mt-0 px-md-0 align-self-center text-md-end text-center">
+                <img src="images/IITI3.png" width="100px" height="100px">
+            </div>
+            <div class="col-md-3 mt-4 align-self-center text-md-start text-center">
+              <h5 class="text-uppercase mb-md-0 mb-2 fw-bold text-white">Student Dining Committee</h5>
+            </div>
+            <div class="col-md-4 mt-md-0 mt-4 border-footer">
+                <h5 class="text-uppercase mb-2 fw-bold text-white">Location :</h5>
+                <p class="text-white text-decoration-none ">Central Dining Facility<br>Indian Institute of Technology Indore,<br>Khandwa Road, Simrol,<br>Indore 453552,<br>India</p>
+            </div>
+            <div class="col-md-3 mt-md-0 mt-4 border-footer">
+                <h5 class="text-uppercase mb-mt-4 mb-2 fw-bold text-white">Contact Us</h5>
+                <p>
+                    <a href="mailto:dining.committee.sg@iiti.ac.in" class="text-white text-decoration-none"><i class="fas fa-envelope mr-3"></i> Mail us at:</a> dining.committee.sg@iiti.ac.in
+                </p>
+                <p>
+                    <i class="fas fa-phone mr-3"></i> +91 9860104474
+                </p>
+            </div>
+        </div>
+        <hr class="mb-4">
+        <div class="row row-cols-md-auto text-center justify-content-center">
+            <div class="col-md p-1">Copyright ©2022 All rights reserved by:</div>
+            <div class="col-md p-1"> 
+                <a href="#" class="text-decoration-none">
+                <strong class="text-white">Student Dining Committee - IIT Indore</strong></a>
+            </div>
+        </div>
+    </div>
+</footer>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 </body>
 
