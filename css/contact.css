@@ -4,6 +4,9 @@ a {
 a:hover {
     color: black;
 }
+.col-sm {
+    margin-bottom: 50px;
+}
 .contact {
     margin-top: 25px;
 }
