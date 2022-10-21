@@ -23,6 +23,9 @@ body{
 .iiti {
     display: inline;
 }
+.dropdown-menu a{
+    color: rgb(18, 37, 106);
+}
 @media (max-width:995px) {
     .navbar-brand{
         font-size: 3.6vw;
