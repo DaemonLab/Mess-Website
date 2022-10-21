@@ -7,6 +7,7 @@ a:hover {
 }
 .col-sm {
     margin-bottom: 50px;
+    margin-top: 10px;
 }
 .contact {
     margin-top: 25px;
@@ -33,7 +34,7 @@ i {
 }
 .line {
     font-size: 1.2rem;
-    margin: auto auto 20px 65px;
+    margin: auto auto 20px 4.4vw;
     text-align: left;
 }
 #mail{
