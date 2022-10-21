@@ -35,6 +35,9 @@ i {
     margin: auto auto 20px 65px;
     text-align: left;
 }
+#mail{
+    margin-top: 10px;
+}
 .name {
     font-size: 1.1rem;
 }
