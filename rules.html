@@ -6,10 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Students Dining Committee - IIT Indore</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/navFooter.css" />
   <link rel="stylesheet" href="./css/home.css" />
+  <link rel="stylesheet" href="./css/rules.css" />
   <link
     href="https://fonts.googleapis.com/css2?family=Baloo+2&family=Josefin+Sans:wght@300&family=Raleway:wght@100&family=Varela+Round&display=swap"
     rel="stylesheet">
@@ -30,95 +31,186 @@
           <li><a href="#" class="menu"> Contact Us</a></li>
         </ul>
       </nav> -->
-  <div class="navigation">
-    <nav class="navbar navbar-expand-lg navbar-dark text-white">
-      <div class="logo" style="border-radius: 30px;"><img src="./images/IITI3.png" alt="" height="50px" width="50px">
-      </div>
-      <a class="navbar-brand" href="#">Students Dining Committee<div class="iiti">- IIT Indore</div></a>
-      <button style="color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
-        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto" style="font-size: 1rem ;font-weight: 600;">
-          <li class="nav-item">
-            <a class="nav-link" href="./home.html">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="./rules.html">Rules</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Caterer's-Information
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="./ajaycaterer.html">Ajay Caterers</a>
-              <a class="dropdown-item" href="./kanakaCaterer.html">Kanaka Caterers</a>
+      <div class="navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark text-white">
+          <div class="container-fluid">
+            <div class="logo" style="border-radius: 30px;"><img src="./images/IITI3.png" alt="" height="50px" width="50px">
             </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./links.html">Links</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./cafeteria.html">Cafeterias</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./contact.html">Contact</a>
-          </li>
-        </ul>
-
+            <a class="navbar-brand" href="#">Students Dining Committee<div class="iiti">- IIT Indore</div></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-size: 0.9rem ; font-weight: 600; margin-right: 10px;">
+                <li class="nav-item">
+                  <a class="nav-link " aria-current="page" href="./home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="./rules.html">Rules</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Caterer's-Information
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="./ajaycaterer.html" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Ajay Caterers</a></li>
+                    <li><a class="dropdown-item" href="./kanakaCaterer.html" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Kanaka Caterers</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./links.html">Links</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./cafeteria.html">Cafeterias</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./contact.html">Contact</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       </div>
-    </nav>
-  </div>
-  <Main>
-    <h1>Rules</h1>
-    <div class="section"></div>
-
-  </Main>
-  <footer>
-    <div class="footerouter">
-      <div class="col1">
-        <h5> Quick Links</h5>
-        <div><a href="./home.html">Home</a></div>
-        <div><a href="./rules.html">Rules</a></div>
-        <div><a href="./cafeteria.html">Cafeterias</a></div>
-        <div><a href="mailto:dining.committee.sg@iiti.ac.in">Mail - dining.committee.sg@iiti.ac.in</a></div>
-      </div>
-      <div class="col2">
-        <h5>Connect </h5>
-        <div class="connect">
-          <a href="">
-            <div class="follow"><i class="fa-brands fa-facebook-f"></i></div>
-          </a>
-          <a href="">
-            <div class="follow"><i class="fa-brands fa-twitter"></i></div>
-          </a>
-          <a href="">
-            <div class="follow"><i class="fa-brands fa-instagram"></i></div>
-          </a>
-          <a href="mailto:dining.committee.sg@iiti.ac.in">
-            <div class="follow"><i class="fa-solid fa-envelope"></i></div>
-          </a>
+      <Main>
+        <h1>Rules And Policies</h1>
+        <div class="section">
+          <ol>
+            <li>Any act of manhandling, group fighting, intimidation or violence, wilful damage to property or
+              drunken behaviour will be considered as a serious offence. Strict punitive action will be taken
+              against person/s involved in such activities.</li>
+            <li>
+              The students shall not indulge in any immoral act and misbehaviour with any staff/service
+              provider, dining hall staff, dining committee members, hospitality manager, hall of residence
+              manager, caretaker, etc.,. It will lead to strict disciplinary action. Your conduct and language
+              should reflect the reputation of the Institute.
+            </li>
+            <li>
+              Meals will be served strictly during indicated timings of operation only.
+            </li>
+            <li>
+              In case of illness, sick diet will be provided to the students upon receipt of a written advice
+              from the Institute Medical Officer. Hall residents are advised to inform the caterer in advance
+              about the requirements of any special meal.
+            </li>
+            <li>Hall residents should not take the utensils/food outside the dining hall. (Exempted only under
+              circumstances mentioned in rule no. 3).</li>
+            <li>
+              No hall resident is allowed to enter the kitchen area.
+            </li>
+    
+            <li>
+              No dinner is allowed to share his/her food catered in dining facility with others under any
+              circumstances.
+            </li>
+            <li>
+              Only those <b> Suggestions/Complaints which are submitted through the Hall of Residence
+                Portal</b> will be considered. The language used for such purpose should be strictly official and
+              the complaint should be objective, rather than emotive.
+            </li>
+            <li>
+              Students are advised to approach appropriate authority and are strictly prohibited to use social
+              media/press as platform to address their grievance.
+            </li>
+            <li>
+              The institute strictly prohibits the unlawful possession, use, or distribution of illicit drugs and
+              alcohol by students in the campus and it reserves the right to take the strict action, expulsion
+              from Hall of Residence to expulsion from the institute.
+            </li>
+          </ol>
+          <p>(a)Noncompliance of rules 1-10 may lead to disciplinary action decided by Wardens/Hall of
+            Residence staff. <br>
+            (b) The decision regarding fines and penalties imposed is non-negotiable; hence no discussion/
+            argument will be entertained.
+          </p>
+          <p>
+          <h4>POLICY FOR AVAILING REBATE IN DINING FACILITY</h4>
+          <h6>1. Short Duration Rebate (Between 2-7 days)</h6>
+          The short duration rebate form can be availed in case of short term absence of a student with a minimum number of
+          2 days and maximum duration of upto 7 days. Students can avail this short duration rebate by filling the following
+          google form circulated by the Students Dining Committee. <br>
+          <b> Link for Google Form:</b> <a
+            href="https://forms.gle/Y8RM86LKorQt4RNx8">https://forms.gle/Y8RM86LKorQt4RNx8</a> <br> <br>
+          <h6>Policy of Rebate for Students: </h6>
+          <ol>
+            <li>A student can avail rebate for a minimum of 2 days with maximum period of up-to 7 days.</li>
+            <li>A maximum of 8 days rebate per month in total will be provided through the short term rebate forms. </li>
+            <li>Students need to fill the <a href="./images/Dining Rebate Form IIT Indore.docx"> form</a> 2 days prior up-to 5 pm before the leave date after that no application will
+              be accepted. </li>
+            <li>There is no requirement of faculty supervisor/HOD signatures for availing short duration rebate.</li>
+          </ol>
+          <b> Circulation: </b>The google form will be circulated on institute mail by the Students Dining Committee
+          explaining the
+          policy and how to avail it. Also, QR codes <b> (Containing link of same google form)</b> will be pasted on the
+          notice
+          boards in the Central Dining Facility. Students can write an email or contact Students Dining Committee members in
+          case any assistance is required. The students after filling out the rebate form will get a system generated copy
+          of their form for reference. <br> <br>
+          <b> Information to the Caterer: </b> The Students Dining Committee will cross check the data of the particular day
+          and check for any discrepancies in the filled form. Valid and approved rebate form data will be provided to the
+          caterer by 10 pm each day via email keeping the Dining Warden and Dining Warden office in Cc. <br> <br>
+          Note: This will be done by the Content writing team of the Students Dining Committee <br> <br>
+          <b>Members: </b> Ishaan Mittal (Ishaan Mittal), Arunaditya Dash(Arunaditya Dash),Jugal Shah(Jugal Shah), Aditya
+          Jadhav (Aditya Jadhav). <br> <br>
+          <h6>Billing</h6>
+          The calculation of the rebate of a student will be done by the Dining warden office. Rebate details will be
+          displayed to students in the form of email or website or on notice boards, thereafter payments will be disbursed
+          to the caterers. <br> <br>
+          <h6>2. Long Duration Rebate (Greater than 7 days)</h6>
+          <ol>
+            <li>Long duration mess rebate claims will be considered for academic reasons (attending a seminar, workshop,
+              conference, internship, etc.,), Department-sanctioned leave (casual leave, ODL, etc.,), and medical reasons
+            </li>
+            <li>Students can avail long duration rebate by filling a hardcopy form present on the website and submitting it
+              along with supporting documents (i.e. Approved leave letter from your department signed by supervisor/faculty
+              advisor/ HoD or an official order from academic section or Medical certificate (in the case of under medical
+              grounds) to the respective hostel office 2 days before the leave date.</li>
+            <li>Dining rebate will be approved only when the above rules are followed. </li>
+          </ol>
+          </p>
         </div>
+    
+      </Main>
+    <!-- footer -->
+    <footer class="bg-color-footer text-white pt-5 pb-4">
+      <div class="container pe-md-5 mx-md-2">
+          <div class="row text-start align-self-end padding">
+              <div class="col-md-2 mt-0 px-md-0 align-self-center text-md-end text-center">
+                  <img src="images/IITI3.png" width="100px" height="100px">
+              </div>
+              <div class="col-md-3 mt-4 align-self-center text-md-start text-center">
+                <h5 class="text-uppercase mb-md-0 mb-2 fw-bold text-white">Student Dining Committee</h5>
+              </div>
+              <div class="col-md-4 mt-md-0 mt-4 border-footer">
+                  <h5 class="text-uppercase mb-2 fw-bold text-white">Location :</h5>
+                  <p class="text-white text-decoration-none ">Central Dining Facility<br>Indian Institute of Technology Indore,<br>Khandwa Road, Simrol,<br>Indore 453552,<br>India</p>
+              </div>
+              <div class="col-md-3 mt-md-0 mt-4 border-footer">
+                  <h5 class="text-uppercase mb-mt-4 mb-2 fw-bold text-white">Contact Us</h5>
+                  <p>
+                      <a href="mailto:dining.committee.sg@iiti.ac.in" class="text-white text-decoration-none"><i class="fas fa-envelope mr-3"></i> Mail us at:</a> dining.committee.sg@iiti.ac.in
+                  </p>
+                  <p>
+                      <i class="fas fa-phone mr-3"></i> +91 9860104474
+                  </p>
+              </div>
+          </div>
+          <hr class="mb-4">
+          <div class="row row-cols-md-auto text-center justify-content-center">
+              <div class="col-md p-1">Copyright ©2022 All rights reserved by:</div>
+              <div class="col-md p-1"> 
+                  <a href="#" class="text-decoration-none">
+                  <strong class="text-white">Student Dining Committee - IIT Indore</strong></a>
+              </div>
+          </div>
       </div>
-      <div class="col3">
-        <div class="copyright">
-          <p>© 2022 Students Dining Committee - IIT Indore</p>
-        </div>
-      </div>
-    </div>
   </footer>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
     crossorigin="anonymous"></script>
 </body>
 
