@@ -55,7 +55,6 @@ h1{
 }
 .updates{
   line-height: 1.5;
-  width: 90vw;
 margin-right: auto;
 margin-left: auto;
 margin-bottom: 20px;
@@ -70,4 +69,7 @@ h2{
   text-align: center;
   padding: 20px;
   font-family: 'Raleway', sans-serif;
+}
+.navigation{
+  z-index: 2;
 }
