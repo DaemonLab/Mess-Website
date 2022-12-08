@@ -2,6 +2,12 @@
     margin-bottom: 10px;
 }
 
+body {
+    font-size: 1.1rem;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+}
+
 .section {
     width: 90vw;
     margin-right: auto;
@@ -10,9 +16,7 @@
     background: rgb(244, 246, 248);
     border-radius: 30px;
     padding: 20px 20px 0px 20px;
-    font-family: 'Raleway', sans-serif;
     color: black;
-    font-weight: 600;
 }
 
 .section p {
@@ -20,7 +24,6 @@
 }
 
 h1 {
-    font-family: 'Raleway', sans-serif;
     color: rgb(18, 37, 106);
     font-weight: bolder;
     letter-spacing: 1px;

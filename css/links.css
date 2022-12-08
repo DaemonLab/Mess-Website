@@ -1,19 +1,19 @@
-/* ------links---------- */
-/* .section-link{
-    width: 90vw;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 20px;
-    background: rgb(138, 138, 236);
-    border-radius: 30px;
-    height: none;
-} */
+body {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+}
 
+h1 {
+    color: rgb(18, 37, 106);
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 3rem;
+    padding: 20px 10px;
+}
 
 .panel {
     padding: 10px 0;
     margin-left: 10px;
-
 }
 
 .bg-panel {
@@ -23,13 +23,9 @@
 }
 
 .heading-form {
-    font-weight: 500;
+    font-weight: 800;
     color: rgb(18, 37, 106);
     margin: 10px 0 20px;
-}
-
-.desc-form {
-    font-weight: 100;
 }
 
 .btn-outline-primary {
