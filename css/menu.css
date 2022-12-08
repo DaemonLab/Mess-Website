@@ -1,4 +1,4 @@
-h1{
+h1 {
     font-family: 'Raleway', sans-serif;
     color: rgb(18, 37, 106);
     font-weight: bold;
@@ -7,7 +7,8 @@ h1{
     font-size: 3rem;
     padding: 20px 10px;
 }
-.section{
+
+.section {
     max-width: 1258px;
     padding-left: 5px;
     padding-right: 5px;
@@ -15,7 +16,7 @@ h1{
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 20px;
-    height: 70vh; 
+    height: 70vh;
     /*  border-style: solid;
     border-width: 10px;
     border-radius: 10px;
@@ -24,24 +25,25 @@ h1{
     border-radius: 30px;*/
 }
 
-.information{
+.information {
     width: auto;
-   padding-left: 10px;
-   padding-bottom: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
     margin-right: 20px;
     margin-left: 20px;
     margin-bottom: 20px;
     background: rgb(138, 138, 236);
     border-radius: 10px;
-    
+
 }
-.poc{
+
+.poc {
     width: auto;
     padding-left: 10px;
     padding-bottom: 10px;
-     margin-right: 20px;
-     margin-left: 20px;
-     margin-bottom: 20px;
-     background: rgb(138, 138, 236);
-     border-radius: 10px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    background: rgb(138, 138, 236);
+    border-radius: 10px;
 }
