@@ -1,8 +1,11 @@
-h1 {
+body {
     font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+}
+
+h1 {
     color: rgb(18, 37, 106);
     font-weight: bold;
-
     letter-spacing: 1px;
     font-size: 3rem;
     padding: 20px 10px;
@@ -17,12 +20,6 @@ h1 {
     margin-left: auto;
     margin-bottom: 20px;
     height: 70vh;
-    /*  border-style: solid;
-    border-width: 10px;
-    border-radius: 10px;
-    border-color: rgb(138, 138, 236);;
-  background: rgb(138, 138, 236);
-    border-radius: 30px;*/
 }
 
 .information {
@@ -32,7 +29,8 @@ h1 {
     margin-right: 20px;
     margin-left: 20px;
     margin-bottom: 20px;
-    background: rgb(138, 138, 236);
+    background: rgb(244, 246, 248);
+    ;
     border-radius: 10px;
 
 }
@@ -44,6 +42,7 @@ h1 {
     margin-right: 20px;
     margin-left: 20px;
     margin-bottom: 20px;
-    background: rgb(138, 138, 236);
+    background: rgb(244, 246, 248);
+    ;
     border-radius: 10px;
 }
