@@ -1,14 +1,16 @@
-.parent{
-    padding: 50px;
-    text-align: center;
-  }
-  .box{
-    padding: 20px;
-  }
-  .line{
-    margin: 50px;
-  }
-  .box{
-    margin: 50px;
-  }
-  
+.parent {
+  padding: 50px;
+  text-align: center;
+}
+
+.box {
+  padding: 20px;
+}
+
+.line {
+  margin: 50px;
+}
+
+.box {
+  margin: 50px;
+}
