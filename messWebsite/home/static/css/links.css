@@ -1,0 +1,50 @@
+/* ------links---------- */
+/* .section-link{
+    width: 90vw;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+    background: rgb(138, 138, 236);
+    border-radius: 30px;
+    height: none;
+} */
+
+
+.panel{
+    padding: 10px 0;
+    margin-left: 10px; 
+
+}
+.bg-panel{
+    background-color: #F5F5F5;
+	border-radius: 3px;
+    margin-bottom: 20px;
+}
+
+.heading-form{
+    font-weight: 500;
+    color: rgb(18 ,37,106);
+    margin: 10px 0 20px;
+}
+.desc-form{
+    font-weight: 100;
+}
+.btn-outline-primary{
+    background-color: rgb(46, 37, 37);
+    color: #e0eefa;
+    border: none;
+    padding: 10px 20px;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus{
+    background-color: rgb(18 ,37,106);
+}
+
+@media (max-width: 768px) {
+    .heading-form{
+        margin-bottom: 10px;
+    }
+    .desc-form{
+        margin-bottom: 20px;
+    }
+}
