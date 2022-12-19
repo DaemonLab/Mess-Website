@@ -9,12 +9,10 @@ def home(request):
     context={'about': aboutInfo, 'updates': update} """
     return HttpResponse("This is my webpage")
 
+
+
 def rules(request):
-    """ allRules=rule.objects.all()
-    shortRebate=ShortRebate.objects.all()
-    longRebate=LongRebate.objects.all()
-    context={'rules': allRules, 'shortRebate': shortRebate, 'longRebate':longRebate} """
-    return HttpResponse("This is my webpage")
+    return render(request,'rules.html')
 
 def kanaka(request):
     """ info=kanaka.objects.all()
