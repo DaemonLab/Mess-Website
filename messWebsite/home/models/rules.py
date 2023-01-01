@@ -6,7 +6,7 @@ class Rule(models.Model):
     # All Rules on Rules Page
     sno = models.AutoField(primary_key=True)
     rule = models.TextField(_("Rule"),help_text="The text in the text field contains the rule that will show as one of the rules of the rule page.")
-
+    # desc = models.TextField(_("Description"),help_text="The text in the text field contains the description of the mentioned rules.")
     class Meta:
         verbose_name = "Rule"
         verbose_name_plural = "Rules"

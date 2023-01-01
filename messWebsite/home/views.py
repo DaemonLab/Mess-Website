@@ -4,37 +4,52 @@ from home.models import About, Update, Rule, Penalty, ShortRebate, LongRebate, C
 
 # Create your views here.
 def home(request):
-    """ aboutInfo=about.objects.first()
-    update=update.objects.all()
-    context={'about': aboutInfo, 'updates': update} """
-    return HttpResponse("This is my webpage")
+    aboutInfo=About.objects.all()
+    update=Update.objects.all()
+    caterer=Caterer.objects.all()
+    context={'about': aboutInfo, 'updates': update,'caterer':caterer}
+    return render(request,'home.html',context)
 
 
 
 def rules(request):
-    return render(request,'rules.html')
+    rules=Rule.objects.all()
+    shortRebates=ShortRebate.objects.all()
+    LongRebates=LongRebate.objects.all()
+    form=Form.objects.all()
+    caterer=Caterer.objects.all()
+    params={'rule':rules,'shortRebate':shortRebates,'longRebate': LongRebates,'form':form,'caterer':caterer}
+   
+    return render(request,'rules.html',params)
 
 def kanaka(request):
-    """ info=kanaka.objects.all()
-    context={'info': info} """
-    return HttpResponse("This is my webpage")
+    caterer=Caterer.objects.all()
+    context={'caterer':caterer}
+    return render(request,'caterer2.html',context)
 
 def ajay(request):
-    """ info=ajay.objects.all()
-    context={'info': info} """
-    return HttpResponse("This is my webpage")
+    caterer=Caterer.objects.all()
+    context={'caterer':caterer}
+    return render(request,'caterer1.html',context)
 
 def links(request):
     """ allLinks=link.objects.all()
     context={'allLinks': allLinks} """
-    return HttpResponse("This is my webpage")
+    caterer=Caterer.objects.all()
+    form=Form.objects.all()
+    context={'caterer':caterer,'form':form}
+    return render(request,'links.html',context)
 
 def cafeteria(request):
-    """ allCafe=cafeteria.objects.all()
-    context={'allCafe': allCafe} """
-    return HttpResponse("This is my webpage")
+    caterer=Caterer.objects.all()
+    cafeteria=Cafeteria.objects.all()
+    context={'caterer':caterer,'cafeteria':cafeteria}
+    return render(request,'cafeteria.html',context)
 
 def contact(request):
     """ allContacts=contact.objects.all()
     context={'allContacts': allContacts} """
-    return HttpResponse("This is my webpage")
+    caterer=Caterer.objects.all()
+    contact=Contact.objects.all()
+    context={'caterer':caterer,'contact':contact}
+    return render(request,'contact.html',context)

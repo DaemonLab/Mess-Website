@@ -1,6 +1,10 @@
 .parent{
-    padding: 50px;
     text-align: center;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bolder;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .box{
     padding: 20px;
@@ -8,7 +12,5 @@
   .line{
     margin: 50px;
   }
-  .box{
-    margin: 50px;
-  }
+  
   
