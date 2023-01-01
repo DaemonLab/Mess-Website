@@ -1,11 +1,13 @@
 h1{
     font-family: 'Raleway', sans-serif;
     color: rgb(18, 37, 106);
-    font-weight: 600;
+    font-weight: bolder;
+    text-align: center;
     letter-spacing: 1px;
     font-size: 2rem;
     padding: 20px 10px;
 }
+
 .section{
     width: 90vw;
     margin-right: auto;
@@ -55,21 +57,17 @@ h1{
 }
 .updates{
   line-height: 1.5;
-margin-right: auto;
-margin-left: auto;
-margin-bottom: 20px;
-background: rgb(244, 246, 248);
-border-radius: 30px;
-padding: 10px 10px 0px 10px;
-font-family: 'Raleway', sans-serif;
-color: black;
-font-weight: 600;
-}
-h2{
-  text-align: center;
-  padding: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 20px;
+  background: rgb(244, 246, 248);
+  border-radius: 30px;
+  padding: 10px 10px 0px 10px;
   font-family: 'Raleway', sans-serif;
+  color: black;
+  font-weight: 600;
 }
+
 .navigation{
   z-index: 2;
 }
