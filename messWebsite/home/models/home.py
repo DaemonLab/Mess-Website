@@ -13,6 +13,17 @@ class About(models.Model):
         verbose_name = "About Us"
         verbose_name_plural = "About Us"
 
+class Carousel(models.Model):
+    # All carousel images on Home page
+    image= models.ImageField(_("Carousel Images"),upload_to="static/images")
+
+    def __str__(self):
+        return "Carousel Images"
+    
+    class Meta:
+        verbose_name = "Carousel"
+        verbose_name_plural = "Carousel"
+
 
 class Update(models.Model):
     # All Updates on Home Page
@@ -25,3 +36,17 @@ class Update(models.Model):
     class Meta:
         verbose_name = "Update"
         verbose_name_plural = "Updates"
+
+
+class Photos(models.Model):
+    # All phtographs on the bottom of the Home page
+    image= models.ImageField(_("Photographs on Home page"),upload_to="static/images")
+    poc = models.CharField(_("Point of Contact"), max_length=30, default='', help_text="This contains the name of the person in the photograph")
+    occupation = models.CharField(_("Occupation"), max_length=50, default='', help_text="This contains the occupation of the person in the photograph")
+
+    def __str__(self):
+        return "Home Page Photographs"
+    
+    class Meta:
+        verbose_name = " General Photographs"
+        verbose_name_plural = " General Photographs"

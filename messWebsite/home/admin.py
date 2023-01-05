@@ -4,6 +4,8 @@ from home.models import (
     About,
     Update,
     Rule,
+    Carousel,
+    Photos,
     Penalty,
     ShortRebate,
     LongRebate,
@@ -22,7 +24,9 @@ admin.site.index_title = 'Website Admin panel'
 
 #Text of description content of each model
 ABOUT_DESC_TEXT="This contains the content that will show up in the about section of the home page. Add all of the About us Content in one field itself."
+CAROUSEL_DESC_TEXT="This contains the images that will show up in the carousel of the home page. Add new field for each new image."
 UPDATE_DESC_TEXT="This contains the content that will show up in the update section of the home page. Add new field for each new update."
+PHOTOS_DESC_TEXT="This contains the photographs that will show up in the bottom section of the home page. Add new field for each new image."
 RULE_DESC_TEXT="This contains the content that will show up in the rule section of the Rules page. Add new field for each new rule."
 PENALTY_DESC_TEXT="This contains the content that will show up in the penalty section of the Rules page. Add new field for each new penalty."
 SHORT_REBATE_DESC_TEXT="This contains the content that will show up in the short rebate section of the rules page. Add all of the short term rebate Content in one field itself."
@@ -52,6 +56,26 @@ class about_Admin(admin.ModelAdmin):
         ),
     )
 
+# Register your models here
+@admin.register(Carousel)
+class about_Admin(admin.ModelAdmin):
+    model = Carousel
+#    ordering=("image",)
+#    search_fields = ("image")
+#    list_display = ("image")
+#    list_filter = ("image",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "image",
+                ),
+                "description": "%s" %CAROUSEL_DESC_TEXT,
+            },
+        ),
+    )
+
 @admin.register(Update)
 class about_Admin(admin.ModelAdmin):
     model = Update
@@ -67,6 +91,29 @@ class about_Admin(admin.ModelAdmin):
                     "update",
                 ),
                 "description": "%s" %UPDATE_DESC_TEXT,
+            },
+        ),
+    )
+
+
+# Register your models here
+@admin.register(Photos)
+class about_Admin(admin.ModelAdmin):
+    model = Photos
+#    ordering=("image",)
+    search_fields = ("poc","occupation",)
+    list_display = ("poc",)
+    list_filter = ("poc","occupation",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "image",
+                    "poc",
+                    "occupation"
+                ),
+                "description": "%s" %PHOTOS_DESC_TEXT,
             },
         ),
     )
