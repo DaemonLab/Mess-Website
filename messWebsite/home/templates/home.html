@@ -53,39 +53,32 @@
 <Main>
   <div class="container-fluid" style="width:95%;">
     <h1 class="text-center">People</h1>
-
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-          aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="{% static 'images/lalit.png' %}" style="height:600px;" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="{% static 'images/IITI3.jpg' %}" style="height:600px;" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="{% static 'images/lalit.png' %}" style="height:600px;" class="d-block w-100" alt="...">
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
   </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/media/{{carousel.2.image}}" style="height:600px;" class="d-block w-100" alt="...">
+    </div>
+    {% for i in carousel %}
+    <div class="carousel-item">
+      <img src="/media/{{i.image}}" style="height:600px;" class="d-block w-100" alt="...">
+    </div>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
 
   <div class="container-fluid aboutupdates" style="width:95%;">
     <div class="row">
@@ -114,79 +107,22 @@
     </div>
     <h1 class="text-center">Photograghs</h1>
     <div class="photographs">
-      <img src="{% static 'images/IITI3.png' %}" class="pics" alt="">
+{% comment %}       <img src="{% static 'images/IITI3.png' %}" class="pics" alt=""> {% endcomment %}
+      {% for i in photos %}
       <div class="cards">
         <div class="row">
           <div class="cardcol col-lg-3 col-md-6 col-sm-12">
             <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
+              <img class="card-img-top" src="/media/{{i.image}}" alt="Card image cap">
               <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
-              </div>
-            </div>
-          </div>
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
-            <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
-              </div>
-            </div>
-          </div>
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
-            <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
-              </div>
-            </div>
-          </div>
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
-            <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
+                <p class="card-text cardText"><b>{{i.poc}}</b><br>{{i.occupation}}</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
-            <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
-              </div>
-            </div>
-          </div>
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
-            <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
-              </div>
-            </div>
-          </div>
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
-            <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
-              </div>
-            </div>
-          </div>
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
-            <div class="card" style="width: 12rem;">
-              <img class="card-img-top" src="{% static 'images/lalit.png' %}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>Dr. Lalit Borana</b><br>Chief Warden</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
       </div>
+      {% endfor %}
+
     </div>
 
 </Main>

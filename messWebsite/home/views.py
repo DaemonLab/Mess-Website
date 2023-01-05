@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from home.models import About, Update, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact
+from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact
 
 # Create your views here.
 def home(request):
     aboutInfo=About.objects.all()
     update=Update.objects.all()
     caterer=Caterer.objects.all()
-    context={'about': aboutInfo, 'updates': update,'caterer':caterer}
+    carousel=Carousel.objects.all()
+    photos=Photos.objects.all()
+    context={'about': aboutInfo, 'updates': update,'caterer':caterer,'carousel':carousel,'photos':photos}
     return render(request,'home.html',context)
 
 
