@@ -13,6 +13,10 @@ from home.models import (
     Form,
     Cafeteria,
     Contact,
+    Student,
+    Allocation,
+    Scan,
+    Rebate
 )
 
 #Customising the heading and title of the admin page
@@ -287,3 +291,5 @@ class about_Admin(admin.ModelAdmin):
             },
         ),
     )
+
+admin.site.register((Student, Allocation, Scan, Rebate))
