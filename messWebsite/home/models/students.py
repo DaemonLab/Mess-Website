@@ -1,6 +1,20 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
+class Allocation(models.Model):
+    #Allocation details
+    student_id =models.CharField(_("Allocation Id"), max_length=30,help_text="This contains the Allocation Id")
+    month = models.CharField(_("Month"),max_length=10,help_text="This contains for which month the allocation id is alloted")
+    caterer_name = models.CharField(_("Caterer Name"), max_length=50, help_text="The text in this text field contains the caterer name.")
+    high_tea = models.BooleanField(_("High Tea"),help_text="This contains the info if high tea is taken or not")
+
+    def __str__(self):
+        return "Allocation id : " + self.student_id
+    
+    class Meta:
+        verbose_name = "Allocation Details"
+        verbose_name_plural = "Allocation Details"
+
 class Student(models.Model):
     #Student details table
     student_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
@@ -19,20 +33,6 @@ class Student(models.Model):
         verbose_name = "Student Details"
         verbose_name_plural = "Student Details"
 
-class Allocation(models.Model):
-    #Allocation details
-    student_id =models.CharField(_("Allocation Id"), max_length=30,help_text="This contains the Allocation Id")
-    month = models.CharField(_("Month"),max_length=10,help_text="This contains for which month the allocation id is alloted")
-    caterer_name = models.CharField(_("Caterer Name"), max_length=50, help_text="The text in this text field contains the caterer name.")
-    high_tea = models.BooleanField(_("High Tea"),help_text="This contains the info if high tea is taken or not")
-
-    def __str__(self):
-        return "Allocation id : " + self.allocation_id
-    
-    class Meta:
-        verbose_name = "Allocation Details"
-        verbose_name_plural = "Allocation Details"
-
 class Scan(models.Model):
     #Scan details of each allocation id
     student_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
@@ -43,7 +43,7 @@ class Scan(models.Model):
     dinner = models.BooleanField(_("dinner"),help_text="This contains if the dinner was eaten by the student")
 
     def __str__(self):
-        return "Scan Details of " + self.allocation_id.allocation_id
+        return "Scan Details of " + self.student_id.student_id
     
     class Meta:
         verbose_name = "Scan Details"
@@ -55,7 +55,7 @@ class Rebate(models.Model):
     end_date = models.DateField(help_text="end date of the rebate")
 
     def __str__(self):
-        return "Rebate of " + self.allocation_id.allocation_id
+        return "Rebate of " + self.allocation_id.student_id
     
     class Meta:
         verbose_name = "Rebate Details"

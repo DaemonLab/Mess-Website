@@ -292,4 +292,94 @@ class about_Admin(admin.ModelAdmin):
         ),
     )
 
-admin.site.register((Student, Allocation, Scan, Rebate))
+@admin.register(Allocation)
+class about_Admin(admin.ModelAdmin):
+    model = Allocation
+#    ordering = ("rule",)
+    search_fields = ("student_id","month","caterer_name","high_tea")
+#    list_display = ("rule",)
+    list_filter = ("month","caterer_name","high_tea")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "student_id",
+                    "month",
+                    "caterer_name",
+                    "high_tea"
+                ),
+                "description": "%s" %CONTACT_DESC_TEXT,
+            },
+        ),
+    )
+
+@admin.register(Student)
+class about_Admin(admin.ModelAdmin):
+    model = Student
+#    ordering = ("rule",)
+    search_fields = ("student_id","name","roll_no","hostel","degree","department")
+#    list_display = ("rule",)
+    list_filter = ("hostel","degree","department")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "student_id",
+#                    "name",
+                    "roll_no",
+                    "hostel",
+                    "degree",
+                    "department"
+                ),
+                "description": "%s" %CONTACT_DESC_TEXT,
+            },
+        ),
+    )
+
+@admin.register(Scan)
+class about_Admin(admin.ModelAdmin):
+    model = Scan
+#    ordering = ("rule",)
+    search_fields = ("student_id","date")
+#    list_display = ("rule",)
+    list_filter = ("date",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "student_id",
+                    "date",
+                    "breakfast",
+                    "lunch",
+                    "high_tea",
+                    "dinner"
+                ),
+                "description": "%s" %CONTACT_DESC_TEXT,
+            },
+        ),
+    )
+
+@admin.register(Rebate)
+class about_Admin(admin.ModelAdmin):
+    model = Rebate
+#    ordering = ("rule",)
+    search_fields = ("allocation_id","start_date","end_date")
+#    list_display = ("rule",)
+    list_filter = ("allocation_id","start_date","end_date")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "allocation_id",
+                    "start_date",
+                    "end_date"
+                ),
+                "description": "%s" %CONTACT_DESC_TEXT,
+            },
+        ),
+    )
+7
