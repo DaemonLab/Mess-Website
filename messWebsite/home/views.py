@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact
+from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate
 
 # Create your views here.
 def home(request):
@@ -55,3 +55,6 @@ def contact(request):
     contact=Contact.objects.all()
     context={'caterer':caterer,'contact':contact}
     return render(request,'contact.html',context)
+
+def approveRebate():
+    rebate

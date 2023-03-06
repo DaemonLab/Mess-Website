@@ -304,6 +304,7 @@ class about_Admin(admin.ModelAdmin):
             None,
             {
                 "fields": (
+                    "roll_no",
                     "student_id",
                     "month",
                     "caterer_name",
@@ -326,10 +327,11 @@ class about_Admin(admin.ModelAdmin):
             None,
             {
                 "fields": (
-                    "student_id",
-#                    "name",
+#                    "student_id",
+                    "name",
                     "roll_no",
                     "hostel",
+                    "room_no",
                     "degree",
                     "department"
                 ),
@@ -376,10 +378,10 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "allocation_id",
                     "start_date",
-                    "end_date"
+                    "end_date",
+                    "approved"
                 ),
                 "description": "%s" %CONTACT_DESC_TEXT,
             },
         ),
     )
-7
