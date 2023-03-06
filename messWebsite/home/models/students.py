@@ -1,23 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext as _
-
-class Allocation(models.Model):
-    #Allocation details
-    student_id =models.CharField(_("Allocation Id"), max_length=30,help_text="This contains the Allocation Id")
-    month = models.CharField(_("Month"),max_length=10,help_text="This contains for which month the allocation id is alloted")
-    caterer_name = models.CharField(_("Caterer Name"), max_length=50, help_text="The text in this text field contains the caterer name.")
-    high_tea = models.BooleanField(_("High Tea"),help_text="This contains the info if high tea is taken or not")
-
-    def __str__(self):
-        return "Allocation id : " + self.student_id
-    
-    class Meta:
-        verbose_name = "Allocation Details"
-        verbose_name_plural = "Allocation Details"
+import datetime
 
 class Student(models.Model):
     #Student details table
-    student_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
+#    student_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
     name = models.CharField(_("Name of Student"), max_length=30,help_text="This contains the name of the Student")
     roll_no = models.CharField(_("Roll number of Student"), max_length=10,help_text="This contains the roll number of the Student")
     department = models.CharField(_("Department of Student"), max_length=30,help_text="This contains the department of the Student")
@@ -32,6 +19,21 @@ class Student(models.Model):
     class Meta:
         verbose_name = "Student Details"
         verbose_name_plural = "Student Details"
+
+class Allocation(models.Model):
+    #Allocation details
+    roll_no = models.ForeignKey(Student,default=0,on_delete=models.SET_NULL,null=True)
+    student_id =models.CharField(_("Allocation Id"), max_length=30,help_text="This contains the Allocation Id")
+    month = models.CharField(_("Month"),max_length=10,help_text="This contains for which month the allocation id is alloted")
+    caterer_name = models.CharField(_("Caterer Name"), max_length=50, help_text="The text in this text field contains the caterer name.")
+    high_tea = models.BooleanField(_("High Tea"),help_text="This contains the info if high tea is taken or not")
+
+    def __str__(self):
+        return "Allocation id : " + self.student_id
+    
+    class Meta:
+        verbose_name = "Allocation Details"
+        verbose_name_plural = "Allocation Details"
 
 class Scan(models.Model):
     #Scan details of each allocation id
@@ -53,8 +55,23 @@ class Rebate(models.Model):
     allocation_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
     start_date = models.DateField(help_text="start date of the rebate")
     end_date = models.DateField(help_text="end date of the rebate")
+#    print(str(start_date))
+    approved = models.BooleanField(default=False,help_text="tells if the rebate is approved")
 
+    def save(self,*args,**kwargs):
+        diff = abs((self.end_date-self.start_date).days)
+        diff2 = (self.start_date-datetime.date.today()).days
+        print(self.approved)
+        print(diff2)
+        if((diff)<=7 and diff2>=2):
+            self.approved = True
+        else:
+            self.approved = False
+        super().save(*args,**kwargs)
+    
+    
     def __str__(self):
+#        return self.start_date
         return "Rebate of " + self.allocation_id.student_id
     
     class Meta:
