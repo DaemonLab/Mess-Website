@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from django.utils.translation import gettext_lazy as _
 from home.models import (
     About,
@@ -18,6 +19,7 @@ from home.models import (
     Scan,
     Rebate
 )
+from import_export.admin import ImportExportModelAdmin
 
 #Customising the heading and title of the admin page
 admin.site.site_header = 'Dining Website Admin Page'
@@ -293,7 +295,7 @@ class about_Admin(admin.ModelAdmin):
     )
 
 @admin.register(Allocation)
-class about_Admin(admin.ModelAdmin):
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     model = Allocation
 #    ordering = ("rule",)
     search_fields = ("student_id","month","caterer_name","high_tea")
@@ -314,6 +316,10 @@ class about_Admin(admin.ModelAdmin):
             },
         ),
     )
+
+
+
+
 
 @admin.register(Student)
 class about_Admin(admin.ModelAdmin):

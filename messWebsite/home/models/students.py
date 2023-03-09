@@ -20,6 +20,9 @@ class Student(models.Model):
         verbose_name = "Student Details"
         verbose_name_plural = "Student Details"
 
+
+        
+
 class Allocation(models.Model):
     #Allocation details
     roll_no = models.ForeignKey(Student,default=0,on_delete=models.SET_NULL,null=True)
