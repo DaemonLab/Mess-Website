@@ -307,12 +307,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             {
                 "fields": (
                     "roll_no",
-                    "student_id",
                     "month",
-                    "caterer_name",
-                    "high_tea"
+                    "high_tea",
+                    "first_pref",
+                    "second_pref",
+                    "third_pref"
                 ),
-                "description": "%s" %CONTACT_DESC_TEXT,
+#                "description": "%s" %CONTACT_DESC_TEXT,
             },
         ),
     )
@@ -341,7 +342,7 @@ class about_Admin(admin.ModelAdmin):
                     "degree",
                     "department"
                 ),
-                "description": "%s" %CONTACT_DESC_TEXT,
+#                "description": "%s" %CONTACT_DESC_TEXT,
             },
         ),
     )
@@ -365,7 +366,7 @@ class about_Admin(admin.ModelAdmin):
                     "high_tea",
                     "dinner"
                 ),
-                "description": "%s" %CONTACT_DESC_TEXT,
+#                "description": "%s" %CONTACT_DESC_TEXT,
             },
         ),
     )
@@ -387,7 +388,7 @@ class about_Admin(admin.ModelAdmin):
                     "end_date",
                     "approved"
                 ),
-                "description": "%s" %CONTACT_DESC_TEXT,
+#                "description": "%s" %CONTACT_DESC_TEXT,
             },
         ),
     )

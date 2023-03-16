@@ -2,6 +2,10 @@ from django.db import models
 from django.utils.translation import gettext as _
 import datetime
 
+kanaka=900
+ajay=900
+gauri=500
+
 class Student(models.Model):
     #Student details table
 #    student_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
@@ -26,10 +30,44 @@ class Student(models.Model):
 class Allocation(models.Model):
     #Allocation details
     roll_no = models.ForeignKey(Student,default=0,on_delete=models.SET_NULL,null=True)
-    student_id =models.CharField(_("Allocation Id"), max_length=30,help_text="This contains the Allocation Id")
+#    roll_no = models.BigAutoField(primary_key=True,default=None)
+    student_id =models.CharField(_("Allocation Id"), default=None,max_length=30,help_text="This contains the Allocation Id",null=True, blank=True)
     month = models.CharField(_("Month"),max_length=10,help_text="This contains for which month the allocation id is alloted")
     caterer_name = models.CharField(_("Caterer Name"), max_length=50, help_text="The text in this text field contains the caterer name.")
     high_tea = models.BooleanField(_("High Tea"),help_text="This contains the info if high tea is taken or not")
+    first_pref = models.CharField(_("First Preference"),default=None, max_length=10, help_text="This contians the first preference caterer of the student")
+    second_pref = models.CharField(_("Second Preference"),default=None, max_length=10, help_text="This contians the first preference caterer of the student")
+    third_pref = models.CharField(_("Third Preference"),default=None, max_length=10, help_text="This contians the first preference caterer of the student")
+    
+    def save(self,*args,**kwargs):
+#        self.roll_no=self.student_data.roll_no
+        global kanaka, gauri, ajay
+        # print(kanaka)
+        for pref in {self.first_pref,self.second_pref,self.third_pref}:
+#            print(pref)
+            if(pref == "kanaka" and kanaka>0):
+                self.student_id="K"+str(kanaka)
+                self.caterer_name = "Kanaka"
+                # print("hi")
+                kanaka-=1
+                break 
+                super().save(*args,**kwargs)
+            elif(pref == "ajay" and ajay>0):
+                self.student_id="A"+str(ajay)
+                self.caterer_name = "Ajay"
+                # print("hi2")
+                ajay-=1
+                break
+                super().save(*args,**kwargs)
+            elif(pref == "gauri" and gauri>0):
+                self.student_id="G"+str(gauri)
+                self.caterer_name = "Gauri"
+                # print("hi0")
+                gauri-=1
+                break
+                super().save(*args,**kwargs)
+        super().save(*args,**kwargs)
+
 
     def __str__(self):
         return "Allocation id : " + self.student_id
