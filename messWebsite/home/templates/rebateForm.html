@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block externalCss%}
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+
+
+{% endblock %}
+
+{% block body %}
+<div class="navigation">
+  <nav class="navbar navbar-expand-lg navbar-dark text-white">
+    <div class="container-fluid">
+      <div class="logo" style="border-radius: 30px;"><img src="{% static 'images/IITI3.png' %}" alt="" height="50px" width="50px">
+      </div>
+      <a class="navbar-brand" href="#">Students Dining Committee<div class="iiti">- IIT Indore</div></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-size: 0.9rem ; font-weight: 600; margin-right: 10px;">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/rules">Rules</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Caterer's-Information
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="/ajay" style="color:rgb(18, 37, 106) ; font-weight: bold; ">{{caterer.0.name}}</a></li>
+              <li><a class="dropdown-item" href="/kanaka" style="color:rgb(18, 37, 106) ; font-weight: bold; ">{{caterer.1.name}}</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/links">Forms</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cafeteria">Cafeterias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+<Main>
+  <h1>Rebate Form</h1>
+  <form action="/links" method="post" class="px-5 mx-md-5">
+    <div class="form-group p-2">
+      <label for="exampleFormControlInput1">Email address</label>
+      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Your Institure E-mail address">
+    </div>
+    <div class="form-group p-2">
+        <label for="exampleFormControlInput2">Name</label>
+        <input type="name" class="form-control" id="exampleFormControlInput2" placeholder="Your Name">
+      </div>
+      <div class="form-group p-2">
+        <label for="exampleFormControlInput3">Roll Number</label>
+        <input type="number" class="form-control" id="exampleFormControlInput3" placeholder="Your Roll Number">
+      </div>
+      <div class="form-group p-2">
+        <label for="exampleFormControlInput4">Start Date</label>
+        <input type="date" class="form-control" id="exampleFormControlInput4" >
+      </div>
+      <div class="form-group p-2">
+        <label for="exampleFormControlInput5">End Date</label>
+        <input type="date" class="form-control" id="exampleFormControlInput5" >
+      </div>
+      <button type="submit" class="btn btn-primary p-2 mb-3" style="background-color: rgb(30, 55, 146);">Submit</button>
+   
+   
+  </form>
+  
+</Main>
+
+{% endblock %}
