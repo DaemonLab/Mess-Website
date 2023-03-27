@@ -56,5 +56,5 @@ def contact(request):
     context={'caterer':caterer,'contact':contact}
     return render(request,'contact.html',context)
 
-def approveRebate():
-    rebate
+def rebateForm(request):
+        return render(request,'rebateForm.html')

@@ -12,4 +12,5 @@ urlpatterns = [
     path("links/", views.links, name="links"),
     path("cafeteria/", views.cafeteria, name="cafeteria"),
     path("contact/", views.contact, name="contact"),
+    path("rebateForm/", views.rebateForm, name="rebateForm"),
 ]
