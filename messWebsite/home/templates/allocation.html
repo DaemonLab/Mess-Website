@@ -51,29 +51,12 @@
   </nav>
 </div>
 <Main>
-  <h1>Rebate Form</h1>
-  <form action="" method="post" class="px-5 mx-md-5">
+  <h1>Allocation CSV uploader</h1>
+  <form action="" method="post" class="px-5 mx-md-5" enctype="multipart/form-data">
     {% csrf_token %}
-     {% comment %} <div class="form-group p-2">
-      <label for="email">Email address</label>
-      <input type="email" class="form-control" id="email" placeholder="Your Institure E-mail address">
-    </div>
-    <div class="form-group p-2">
-        <label for="name">Name</label>
-        <input type="name" class="form-control" id="exampleFormControlInput2" placeholder="Your Name">
-      </div>
-      <div class="form-group p-2"> {% endcomment %}
-        <label for="allocation_id">Allocation ID</label>
-        <input type="number" class="form-control" id="allocation_id" name="allocation_id" placeholder="Your Allocation id">
-      </div>
-      <div class="form-group p-2">
-        <label for="exampleFormControlInput4">Start Date</label>
-        <input type="date" class="form-control" id="exampleFormControlInput4" name="start_date">
-      </div>
-      <div class="form-group p-2">
-        <label for="exampleFormControlInput5">End Date</label>
-        <input type="date" class="form-control" id="exampleFormControlInput5" name="end_date">
-      </div>
+    
+        <input type="file" class="form-control" name="file" >
+     
       <button type="submit" class="btn btn-primary p-2 mb-3" style="background-color: rgb(30, 55, 146);">Submit</button> 
    
    

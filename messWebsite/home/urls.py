@@ -13,4 +13,5 @@ urlpatterns = [
     path("cafeteria/", views.cafeteria, name="cafeteria"),
     path("contact/", views.contact, name="contact"),
     path("rebateForm/", views.rebateForm, name="rebateForm"),
+    path("allocation/", views.allocation, name="allocation"),
 ]
