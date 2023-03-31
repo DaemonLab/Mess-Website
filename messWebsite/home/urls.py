@@ -12,6 +12,7 @@ urlpatterns = [
     path("links/", views.links, name="links"),
     path("cafeteria/", views.cafeteria, name="cafeteria"),
     path("contact/", views.contact, name="contact"),
-    path("rebateForm/", views.rebateForm, name="rebateForm"),
+    path("rebateForm/", views.rebate, name="rebate"),
+    path("rebateForm/<str:pk>/", views.rebateForm, name="rebateForm"),
     path("allocation/", views.allocation, name="allocation"),
 ]

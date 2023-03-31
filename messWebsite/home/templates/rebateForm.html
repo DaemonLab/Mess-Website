@@ -52,6 +52,7 @@
 </div>
 <Main>
   <h1>Rebate Form</h1>
+  <div class="text-center">{{text}}</div>
   <form action="" method="post" class="px-5 mx-md-5">
     {% csrf_token %}
      {% comment %} <div class="form-group p-2">
@@ -61,22 +62,28 @@
     <div class="form-group p-2">
         <label for="name">Name</label>
         <input type="name" class="form-control" id="exampleFormControlInput2" placeholder="Your Name">
-      </div>
-      <div class="form-group p-2"> {% endcomment %}
-        <label for="allocation_id">Allocation ID</label>
-        <input type="number" class="form-control" id="allocation_id" name="allocation_id" placeholder="Your Allocation id">
+      </div>{% endcomment %}
+      {% comment %} <div class="form-group p-2"> 
+        <label for="allocation_id"></label>
+        <input type="number"  id="allocation_id" name="allocation_id" placeholder="Your Allocation id">
       </div>
       <div class="form-group p-2">
-        <label for="exampleFormControlInput4">Start Date</label>
+        <label for="exampleFormControlInput4"></label>
         <input type="date" class="form-control" id="exampleFormControlInput4" name="start_date">
       </div>
       <div class="form-group p-2">
-        <label for="exampleFormControlInput5">End Date</label>
-        <input type="date" class="form-control" id="exampleFormControlInput5" name="end_date">
-      </div>
-      <button type="submit" class="btn btn-primary p-2 mb-3" style="background-color: rgb(30, 55, 146);">Submit</button> 
-   
-   
+        <label for="exampleFormControlInput5"></label>
+         <input type="date" class="form-control" id="exampleFormControlInput5" name="end_date">
+      </div> {% endcomment %}
+      {{form.allocation_id}}
+      {{form.start_date}}
+      {{form.end_date}}
+      {% if text == "" %}
+        <button type="submit" class="btn btn-primary p-2 mb-3" style="background-color: rgb(30, 55, 146);">Submit</button>
+      {% else %}
+        <div class="my-5 py-5"></div>
+      {% endif %}
+       
   </form>
   
 </Main>

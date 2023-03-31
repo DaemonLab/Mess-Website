@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, File
+from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, File, Allocation
 from .forms import RebateForm
 import pandas as pd
+import datetime
+
 
 kanaka=900
 ajay=900
@@ -62,21 +64,40 @@ def contact(request):
     context={'caterer':caterer,'contact':contact}
     return render(request,'contact.html',context)
 
-def rebateForm(request):
-    if request.method == 'POST':
-        allocation_id = request.POST.get('allocation_id')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        diff = abs((end_date-start_date).days)
-        diff2 = (start_date-datetime.date.today()).days
-        if((diff)<=7 and diff2>=2):
-            approved = True
-        else:
-            approved = False
-        approved=False
-        form=Rebate(allocation_id = allocation_id,start_date=start_date,end_date=end_date,approved=approved)
-        form.save()
-    return render(request, "rebateForm.html")
+def rebate(request):
+    form = RebateForm()
+    if request.method =='POST':
+        form = RebateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            rebate = Rebate.objects.latest("id")
+            print("hi")
+            return redirect('%s/' % rebate.id)        
+    context = {'text': "",'form': form}
+    return render(request,"rebateForm.html",context)
+
+def rebateForm(request,pk):
+    rebate = Rebate.objects.get(id=pk)
+    allocation_id = rebate.allocation_id
+    start_date = rebate.start_date
+    end_date = rebate.end_date
+    diff = abs((end_date-start_date).days)
+    diff2 = (start_date-datetime.date.today()).days
+
+    if((diff)<=7 and diff2>=2):
+        # print("hi")
+        rebate.approved = True
+        text="You have successfully submitted the form. Thank you"
+    else:
+        # print("no")
+        rebate.approved = False
+        text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
+    rebate.save(update_fields=["approved"])
+    # print(rebate.approved)
+    # print(diff)
+    # print(diff2)
+    context={'text':text}
+    return render(request, "rebateForm.html",context)
 
 
 def create_db(file_path):
