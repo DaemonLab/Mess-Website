@@ -75,10 +75,10 @@
         <label for="exampleFormControlInput5"></label>
          <input type="date" class="form-control" id="exampleFormControlInput5" name="end_date">
       </div> {% endcomment %}
-      {{form.allocation_id}}
-      {{form.start_date}}
-      {{form.end_date}}
       {% if text == "" %}
+        {{form.allocation_id}}
+        {{form.start_date}}
+        {{form.end_date}}
         <button type="submit" class="btn btn-primary p-2 mb-3" style="background-color: rgb(30, 55, 146);">Submit</button>
       {% else %}
         <div class="my-5 py-5"></div>

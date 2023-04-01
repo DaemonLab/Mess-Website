@@ -4,7 +4,8 @@ from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortReb
 from .forms import RebateForm
 import pandas as pd
 import datetime
-
+from django.views.generic import TemplateView
+import io
 
 kanaka=900
 ajay=900
@@ -66,38 +67,27 @@ def contact(request):
 
 def rebate(request):
     form = RebateForm()
+    text=""
     if request.method =='POST':
         form = RebateForm(request.POST)
         if form.is_valid():
             form.save()
             rebate = Rebate.objects.latest("id")
-            print("hi")
-            return redirect('%s/' % rebate.id)        
-    context = {'text': "",'form': form}
+            allocation_id = rebate.allocation_id
+            start_date = rebate.start_date
+            end_date = rebate.end_date
+            diff = abs((end_date-start_date).days)
+            diff2 = (start_date-datetime.date.today()).days
+
+            if((diff)<=7 and diff2>=2):
+                rebate.approved = True
+                text="You have successfully submitted the form. Thank you"
+            else:
+                rebate.approved = False
+                text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
+            rebate.save(update_fields=["approved"])      
+    context = {'text': text,'form': form}
     return render(request,"rebateForm.html",context)
-
-def rebateForm(request,pk):
-    rebate = Rebate.objects.get(id=pk)
-    allocation_id = rebate.allocation_id
-    start_date = rebate.start_date
-    end_date = rebate.end_date
-    diff = abs((end_date-start_date).days)
-    diff2 = (start_date-datetime.date.today()).days
-
-    if((diff)<=7 and diff2>=2):
-        # print("hi")
-        rebate.approved = True
-        text="You have successfully submitted the form. Thank you"
-    else:
-        # print("no")
-        rebate.approved = False
-        text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-    rebate.save(update_fields=["approved"])
-    # print(rebate.approved)
-    # print(diff)
-    # print(diff2)
-    context={'text':text}
-    return render(request, "rebateForm.html",context)
 
 
 def create_db(file_path):
@@ -139,9 +129,63 @@ def create_db(file_path):
         )
 
 
-def allocation(request):
-    if request.method == 'POST':
-        file = request.FILES['file']
-        obj = File.objects.create(file = file)
-        create_db(obj.file)
-    return render(request,"allocation.html")
+class allocation(TemplateView):
+    # if request.method == 'POST':
+    #     file = request.FILES['file']
+    #     obj = File.objects.create(file = file)
+    #     create_db(obj.file)
+    # return render(request,"allocation.html")
+
+    template_name = 'allocation.html'
+
+    def post(self, request):
+        context = {
+            'messages':[]
+        }
+
+        csv = request.FILES['csv']
+        csv_data = pd.read_csv(
+            io.StringIO(
+                csv.read().decode("utf-8")
+            )
+        )
+
+        for record in csv_data.to_dict(orient="records"):
+            try:
+                global kanaka, gauri, ajay
+                student_id = record["student_id"]
+                caterer_name = record["caterer_name"]
+                first_pref = record["first_pref"]
+                second_pref = record["second_pref"]
+                third_pref = record["third_pref"]
+                print("hi1")
+                for pref in {first_pref,second_pref,third_pref}:
+                    if(pref == "kanaka" and kanaka>0):
+                        student_id="K"+str(kanaka)
+                        caterer_name = "Kanaka"
+                        kanaka-=1
+                        break 
+                    elif(pref == "ajay" and ajay>0):
+                        student_id="A"+str(ajay)
+                        caterer_name = "Ajay"
+                        ajay-=1
+                        break
+                    elif(pref == "gauri" and gauri>0):
+                        student_id="G"+str(gauri)
+                        caterer_name = "Gauri"
+                        gauri-=1
+                        break
+                Allocation.objects.create(
+                    roll_no = record["roll_no"],
+                    student_id = student_id,
+                    month = record["month"],
+                    caterer_name = caterer_name,
+                    high_tea = record["high_tea"],
+                    first_pref = first_pref,
+                    second_pref = second_pref,
+                    third_pref = third_pref
+                )
+            except Exception as e:
+                context['exceptions_raised'] = e
+                
+        return render(request, self.template_name, context)
