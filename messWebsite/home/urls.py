@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from . import views
+from .views import *
+from django.urls import re_path as url
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -13,6 +15,5 @@ urlpatterns = [
     path("cafeteria/", views.cafeteria, name="cafeteria"),
     path("contact/", views.contact, name="contact"),
     path("rebateForm/", views.rebate, name="rebate"),
-    path("rebateForm/<str:pk>/", views.rebateForm, name="rebateForm"),
-    path("allocation/", views.allocation, name="allocation"),
+    url('^allocation/$', allocation.as_view(), name='allocation'),
 ]
