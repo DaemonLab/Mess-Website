@@ -1,15 +1,15 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, File, Allocation
+from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, File, Allocation, Student
 from .forms import RebateForm
 import pandas as pd
 import datetime
 from django.views.generic import TemplateView
 import io
 
-kanaka=900
-ajay=900
-gauri=500
+kanaka_limit=900
+ajay_limit=900
+gauri_limit=500
 
 # Create your views here.
 def home(request):
@@ -70,16 +70,20 @@ def rebate(request):
     text=""
     if request.method =='POST':
         form = RebateForm(request.POST)
+        #print(form)
         if form.is_valid():
+            #print(form)
             form.save()
             rebate = Rebate.objects.latest("id")
-            allocation_id = rebate.allocation_id
             start_date = rebate.start_date
             end_date = rebate.end_date
-            diff = abs((end_date-start_date).days)
+            diff = ((end_date-start_date).days)
+            # print(diff)
             diff2 = (start_date-datetime.date.today()).days
+            # print(diff2)
 
-            if((diff)<=7 and diff2>=2):
+            if((diff)<=7 and diff>=2 and diff2>=2):
+
                 rebate.approved = True
                 text="You have successfully submitted the form. Thank you"
             else:
@@ -149,34 +153,38 @@ class allocation(TemplateView):
                 csv.read().decode("utf-8")
             )
         )
+        print(csv_data.head())
 
         for record in csv_data.to_dict(orient="records"):
             try:
-                global kanaka, gauri, ajay
-                student_id = record["student_id"]
-                caterer_name = record["caterer_name"]
+                global kanaka_limit, gauri_limit, ajay_limit
+                # student_id = record["student_id"]
+                # caterer_name = record["caterer_name"]
                 first_pref = record["first_pref"]
                 second_pref = record["second_pref"]
                 third_pref = record["third_pref"]
+                r = Student.objects.get(roll_no = record["roll_no"])    
+                print(r)
                 print("hi1")
                 for pref in {first_pref,second_pref,third_pref}:
-                    if(pref == "kanaka" and kanaka>0):
-                        student_id="K"+str(kanaka)
+                    if(pref == "kanaka" and kanaka_limit>0):
+                        student_id="K"+str(kanaka_limit)
                         caterer_name = "Kanaka"
-                        kanaka-=1
+                        kanaka_limit-=1
                         break 
-                    elif(pref == "ajay" and ajay>0):
-                        student_id="A"+str(ajay)
+                    elif(pref == "ajay" and ajay_limit>0):
+                        student_id="A"+str(ajay_limit)
                         caterer_name = "Ajay"
-                        ajay-=1
+                        ajay_limit-=1
                         break
-                    elif(pref == "gauri" and gauri>0):
-                        student_id="G"+str(gauri)
+                    elif(pref == "gauri" and gauri_limit>0):
+                        student_id="G"+str(gauri_limit)
                         caterer_name = "Gauri"
-                        gauri-=1
+                        gauri_limit-=1
                         break
-                Allocation.objects.create(
-                    roll_no = record["roll_no"],
+
+                a = Allocation(
+                    roll_no = r,
                     student_id = student_id,
                     month = record["month"],
                     caterer_name = caterer_name,
@@ -185,7 +193,9 @@ class allocation(TemplateView):
                     second_pref = second_pref,
                     third_pref = third_pref
                 )
+                a.save()
             except Exception as e:
                 context['exceptions_raised'] = e
+                print(e)
                 
         return render(request, self.template_name, context)
