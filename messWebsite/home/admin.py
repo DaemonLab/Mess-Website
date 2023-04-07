@@ -308,6 +308,8 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 "fields": (
                     "roll_no",
                     "month",
+                    "student_id",
+                    "caterer_name",
                     "high_tea",
                     "first_pref",
                     "second_pref",

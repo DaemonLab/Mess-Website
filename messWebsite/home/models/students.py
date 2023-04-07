@@ -64,7 +64,7 @@ class Rebate(models.Model):
     approved = models.BooleanField(default=False,help_text="tells if the rebate is approved")
     
     def __str__(self):
-        return "Rebate of " + self.allocation_id.student_id
+        return "Rebate of " + str(self.allocation_id) + " " + str(self.start_date) + " " + str(self.end_date)
     
     class Meta:
         verbose_name = "Rebate Details"
