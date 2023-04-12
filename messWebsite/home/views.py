@@ -6,6 +6,8 @@ import pandas as pd
 import datetime
 from django.views.generic import TemplateView
 import io
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.dateparse import parse_date
 
 kanaka_limit=900
 ajay_limit=900
@@ -66,31 +68,38 @@ def contact(request):
     return render(request,'contact.html',context)
 
 def rebate(request):
-    form = RebateForm()
+    # form = RebateForm()
     text=""
     if request.method =='POST':
-        form = RebateForm(request.POST)
-        #print(form)
-        if form.is_valid():
-            #print(form)
-            form.save()
-            rebate = Rebate.objects.latest("id")
-            start_date = rebate.start_date
-            end_date = rebate.end_date
-            diff = ((end_date-start_date).days)
-            # print(diff)
+        # form = RebateForm(request.POST)
+        # if form.is_valid():
+            # form.save()
+            # rebate = Rebate.objects.latest("id")
+            start_date = parse_date(request.POST['start_date'])
+            end_date = parse_date(request.POST['end_date'])
+            diff = ((end_date-start_date).days)+1
             diff2 = (start_date-datetime.date.today()).days
+            # print(diff)
             # print(diff2)
-
             if((diff)<=7 and diff>=2 and diff2>=2):
-
-                rebate.approved = True
+                approved = True
                 text="You have successfully submitted the form. Thank you"
             else:
-                rebate.approved = False
+                approved = False
                 text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-            rebate.save(update_fields=["approved"])      
-    context = {'text': text,'form': form}
+            try:
+                r = Allocation.objects.get(student_id = request.POST['allocation_id'])    
+                a = Rebate(
+                    allocation_id = r,
+                    start_date = request.POST['start_date'],
+                    end_date = request.POST['end_date'],
+                    approved=approved
+                )
+                a.save()
+            except Allocation.DoesNotExist:
+                text=" The asked allocation ID does not exist. Please enter the correct ID."
+            # rebate.save(update_fields=["approved"])      
+    context = {'text': text}
     return render(request,"rebateForm.html",context)
 
 
