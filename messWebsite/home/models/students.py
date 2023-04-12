@@ -25,7 +25,7 @@ class Student(models.Model):
 
 class Allocation(models.Model):
     #Allocation details
-    roll_no = models.OneToOneField(Student,default=0,on_delete=models.SET_NULL,null=True)
+    roll_no = models.ForeignKey(Student,default=0,on_delete=models.SET_NULL,null=True)
     student_id =models.CharField(_("Allocation Id"), default=None,max_length=30,help_text="This contains the Allocation Id",null=True, blank=True)
     month = models.CharField(_("Month"),max_length=10,help_text="This contains for which month the allocation id is alloted")
     caterer_name = models.CharField(_("Caterer Name"), max_length=50, help_text="The text in this text field contains the caterer name.")
@@ -62,9 +62,10 @@ class Rebate(models.Model):
     start_date = models.DateField(help_text="start date of the rebate")
     end_date = models.DateField(help_text="end date of the rebate")
     approved = models.BooleanField(default=False,help_text="tells if the rebate is approved")
-    
+    date_applied = models.DateField(default=datetime.date.today(),help_text="Date on which the rebate was applied")
+
     def __str__(self):
-        return "Rebate of " + str(self.allocation_id) + " " + str(self.start_date) + " " + str(self.end_date)
+        return "Rebate of " + str(self.allocation_id) + " " + str(self.date_applied)
     
     class Meta:
         verbose_name = "Rebate Details"

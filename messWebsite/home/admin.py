@@ -325,7 +325,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(Student)
-class about_Admin(admin.ModelAdmin):
+class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
     model = Student
 #    ordering = ("rule",)
     search_fields = ("student_id","name","roll_no","hostel","degree","department")
@@ -374,21 +374,22 @@ class about_Admin(admin.ModelAdmin):
     )
 
 @admin.register(Rebate)
-class about_Admin(admin.ModelAdmin):
+class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
     model = Rebate
 #    ordering = ("rule",)
-    search_fields = ("allocation_id","start_date","end_date")
+    search_fields = ("allocation_id__student_id","approved","date_applied","start_date","end_date")
 #    list_display = ("rule",)
-    list_filter = ("allocation_id","start_date","end_date")
+    list_filter = ("approved","date_applied","allocation_id","start_date","end_date")
     fieldsets = (
         (
             None,
             {
                 "fields": (
                     "allocation_id",
+                    "date_applied",
                     "start_date",
                     "end_date",
-                    "approved"
+                    "approved",
                 ),
 #                "description": "%s" %CONTACT_DESC_TEXT,
             },
