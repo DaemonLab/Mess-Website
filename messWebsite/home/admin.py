@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from home.models import (
     About,
@@ -19,7 +19,9 @@ from home.models import (
     Scan,
     Rebate
 )
-from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ImportExportModelAdmin, ImportExportMixin
+
+from .resources import StudentResource, AllocationResource,RebateResource
 
 #Customising the heading and title of the admin page
 admin.site.site_header = 'Dining Website Admin Page'
@@ -295,7 +297,8 @@ class about_Admin(admin.ModelAdmin):
     )
 
 @admin.register(Allocation)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+class about_Admin(ImportExportMixin, admin.ModelAdmin):
+    resource_class  = AllocationResource
     model = Allocation
 #    ordering = ("rule",)
     search_fields = ("student_id","month","caterer_name","high_tea")
@@ -319,13 +322,46 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
+    actions = ['export_as_csv']
+    def export_as_csv(self, request, queryset):
+        resource = AllocationResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="allocation.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Allocation details to CSV"
+
+#  # Define the import action
+#     def import_csv(self, request, queryset):
+#         # Get the selected file from the request
+#         file = request.FILES['file']
+
+#         # Read the CSV file
+#         reader = csv.DictReader(file)
+
+#         # Loop over each row in the CSV file
+#         for row in reader:
+#             # Create a new Book object and save it
+#             a = Allocatio(
+#               )
+#             book.save()
+
+#         # Return a success message
+#         self.message_user(request, 'CSV file imported successfully.')
+
+#     import_csv.short_description = 'Import CSV'
+
+#     # Override the default actions to include the import action
+#     actions = [import_csv] + ModelAdmin.actions
 
 
 
 
 
 @admin.register(Student)
-class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
+class about_Admin(ImportExportMixin,admin.ModelAdmin):
+    resource_class  = StudentResource
     model = Student
 #    ordering = ("rule",)
     search_fields = ("student_id","name","roll_no","hostel","degree","department")
@@ -336,7 +372,6 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             None,
             {
                 "fields": (
-#                    "student_id",
                     "name",
                     "roll_no",
                     "hostel",
@@ -348,6 +383,15 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             },
         ),
     )
+    actions = ['export_as_csv']
+    def export_as_csv(self, request, queryset):
+        resource = StudentResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="Student.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Student details to CSV"
 
 @admin.register(Scan)
 class about_Admin(admin.ModelAdmin):
@@ -375,6 +419,7 @@ class about_Admin(admin.ModelAdmin):
 
 @admin.register(Rebate)
 class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
+    resource_class  = RebateResource
     model = Rebate
 #    ordering = ("rule",)
     search_fields = ("allocation_id__student_id","approved","date_applied","start_date","end_date")
@@ -395,3 +440,12 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             },
         ),
     )
+    actions = ['export_as_csv']
+    def export_as_csv(self, request, queryset):
+        resource = RebateResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="Rebate.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
