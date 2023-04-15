@@ -11,16 +11,12 @@ class Student(models.Model):
     hostel = models.CharField(_("Hostel of Student"), max_length=3,help_text="This contains the hostel of the Student")
     room_no = models.CharField(_("Room Number of Student"), max_length=5,help_text="This contains the room number of the Student")
     
-
     def __str__(self):
         return "Student :" + str(self.roll_no)
     
     class Meta:
         verbose_name = "Student Details"
         verbose_name_plural = "Student Details"
-
-
-        
 
 class Allocation(models.Model):
     #Allocation details

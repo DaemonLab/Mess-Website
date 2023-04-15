@@ -1,0 +1,25 @@
+{% extends "messWebsite/home/templates/users/login.html" %}
+{% load i18n account %}
+
+{% block content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <b>Mess Website</b>
+        </div>
+
+        <div class="login-box-body" >
+            <p class="login-box-msg">Continue using Institute Id </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-s-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat btn-lg" name="login">
+                            <i class="fa fa-sign-in"></i> {% trans "Sign In" %}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id='markdown'></div>
+    </div>
