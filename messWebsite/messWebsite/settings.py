@@ -136,7 +136,7 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 3
 LOGIN_URL = "/accounts/google/login/"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/rebateForm/"
 LOGIN_EXEMPT_URLS = ["/admin/*"]
 
 # Static files (CSS, JavaScript, Images)
