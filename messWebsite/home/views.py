@@ -9,6 +9,7 @@ import io
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.dateparse import parse_date
 
+
 kanaka_limit=900
 ajay_limit=900
 gauri_limit=500
@@ -68,9 +69,8 @@ def contact(request):
     return render(request,'contact.html',context)
 
 def rebate(request):
-    # form = RebateForm()
     text=""
-    if request.method =='POST':
+    if request.method =='POST' and request.user.is_authenticated:
         # form = RebateForm(request.POST)
         # if form.is_valid():
             # form.save()
@@ -88,14 +88,21 @@ def rebate(request):
                 approved = False
                 text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
             try:
-                r = Allocation.objects.get(student_id = request.POST['allocation_id'])    
-                a = Rebate(
-                    allocation_id = r,
-                    start_date = request.POST['start_date'],
-                    end_date = request.POST['end_date'],
-                    approved=approved
-                )
-                a.save()
+                a1 = Allocation.objects.get(student_id = request.POST['allocation_id'])
+                try:
+                    a2=Allocation.objects.get(roll_no__email = str(request.user.email))
+                    if(a1==a2):
+                        r = Rebate(
+                            email=request.user.email,
+                            allocation_id = a1,
+                            start_date = request.POST['start_date'],
+                            end_date = request.POST['end_date'],
+                            approved=approved
+                        )
+                        r.save()
+                    else: text="Email ID does not match with the allocation ID"
+                except Allocation.DoesNotExist:
+                    text ="The asked Email ID does not have an Allocation ID"
             except Allocation.DoesNotExist:
                 text=" The asked allocation ID does not exist. Please enter the correct ID."
             # rebate.save(update_fields=["approved"])      

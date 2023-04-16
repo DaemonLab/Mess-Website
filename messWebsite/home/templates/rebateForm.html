@@ -85,38 +85,18 @@
   </nav>
 </div>
 <main>
-<div class="text-center">
-{% if user.emailaddress_set.all %}
-<p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
-  {% for emailaddress in user.emailaddress_set.all %}
-
-{{ emailaddress.email }}
-  {% endfor %}
-</div>
-{% endif %}
-  <h1>Rebate Form</h1>
+<h1 class="m-0 pb-2">Rebate Form</h1>
+  <div class="text-center">
+    {% if user.is_authenticated %}
+      <p class="m-0">Hello {{ user.first_name }}!</p>
+      <div>{% trans 'The following e-mail address will be noted while submitting this form:' %}
+      {{ user.email}}</div>
+      <a class="btn btn-danger text-end mt-2" href="{% url 'account_logout' %}">Sign Out</a>
+    {% endif %}
+  </div>
   <div class="text-center">{{text}}</div>
   <form action="" method="post" class="px-5 mx-md-5">
-    {% csrf_token %} {% if text == "" %} {% comment %} {{form.allocation_id}}
-    {{form.start_date}} {{form.end_date}} {% endcomment %}
-    <div class="form-group p-2">
-      {% comment %} <label for="email">Email address</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        placeholder="Your Institure E-mail address"
-      />
-    </div>
-    <div class="form-group p-2">
-      <label for="name">Name</label>
-      <input
-        type="name"
-        class="form-control"
-        id="exampleFormControlInput2"
-        placeholder="Your Name"
-      />
-    </div> {% endcomment %}
+    {% csrf_token %} {% if text == "" %}
     <div class="form-group p-2">
       <label for="allocation_id">Allocation ID</label>
       <input
