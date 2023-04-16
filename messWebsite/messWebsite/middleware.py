@@ -26,3 +26,7 @@ class LoginRequiredMiddleware:
         if path == reverse("account_logout").lstrip("/"):
             logout(request)
             return
+        
+        if (not request.user.is_authenticated) and (not url_is_exempt) and (request.path =="/rebateForm/"):
+            print(request.path)
+            return redirect(settings.LOGIN_URL+ "?next=" + request.path)

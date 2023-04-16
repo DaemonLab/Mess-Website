@@ -5,6 +5,7 @@ import datetime
 class Student(models.Model):
     #Student details table
     name = models.CharField(_("Name of Student"), max_length=30,help_text="This contains the name of the Student")
+    email = models.CharField(max_length=30, default="")
     roll_no = models.CharField(_("Roll number of Student"), max_length=10,help_text="This contains the roll number of the Student")
     department = models.CharField(_("Department of Student"), max_length=30,help_text="This contains the department of the Student")
     degree = models.CharField(_("Degree of Student"), max_length=10,help_text="This contains the degree of the Student")
@@ -53,6 +54,7 @@ class Scan(models.Model):
         verbose_name_plural = "Scan Details"
 
 class Rebate(models.Model):
+    email = models.CharField(max_length=30, default=0)
     allocation_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
     start_date = models.DateField(help_text="start date of the rebate")
     end_date = models.DateField(help_text="end date of the rebate")

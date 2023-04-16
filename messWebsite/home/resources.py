@@ -9,7 +9,7 @@ from .models import(
 class StudentResource(resources.ModelResource):
     class Meta:
         model = Student
-        fields = ('name', 'roll_no', "hostel", "room_no", "degree", "department")
+        fields = ('name', 'email','roll_no', "hostel", "room_no", "degree", "department")
 
 class AllocationResource(resources.ModelResource):
     roll_no = ForeignKeyField(attribute='roll_no', column='roll_no')
@@ -27,16 +27,21 @@ class AllocationResource(resources.ModelResource):
 
 class RebateResource(resources.ModelResource):
     allocation_id = ForeignKeyField(attribute='allocation_id', column='student_id')
-    # student = ForeignKeyField(attribute='allocation_id', column='roll_no')
-    # roll_no = ForeignKeyField(attribute='student', column='roll_no')
-    # print(allocation_id)
-    # print(1111)
-    # print(student)
-    # print(roll_no)
+    # def get_approved_value(self, obj):
+    #     if obj.approved:
+    #         return "Yes"
+    #     else:
+    #         return "No"
+
+    # approved = fields.Field(
+    #     attribute='get_approved_value',
+    #     column_name='approved'
+    # )
 
     class Meta:
         model = Rebate
-        fields = (  "allocation_id",
+        fields = (  "email",
+                    "allocation_id",
                     "date_applied",
                     "start_date",
                     "end_date",

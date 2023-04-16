@@ -373,6 +373,7 @@ class about_Admin(ImportExportMixin,admin.ModelAdmin):
             {
                 "fields": (
                     "name",
+                    "email",
                     "roll_no",
                     "hostel",
                     "room_no",
@@ -430,6 +431,7 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             None,
             {
                 "fields": (
+                    "email",
                     "allocation_id",
                     "date_applied",
                     "start_date",
