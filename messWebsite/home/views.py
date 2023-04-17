@@ -110,44 +110,6 @@ def rebate(request):
     return render(request,"rebateForm.html",context)
 
 
-def create_db(file_path):
-    df = pd.read_csv(file_path,delimiter=',')
-    list_of_csv = [list(row) for row in df.values]
-
-    for i in list_of_csv:
-        global kanaka, gauri, ajay
-        student_id = i[2]
-        caterer_name = i[4]
-        first_pref = i[6]
-        second_pref = i[7]
-        third_pref = i[8]
-        for pref in {first_pref,second_pref,third_pref}:
-            if(pref == "kanaka" and kanaka>0):
-                student_id="K"+str(kanaka)
-                caterer_name = "Kanaka"
-                kanaka-=1
-                break 
-            elif(pref == "ajay" and ajay>0):
-                student_id="A"+str(ajay)
-                caterer_name = "Ajay"
-                ajay-=1
-                break
-            elif(pref == "gauri" and gauri>0):
-                student_id="G"+str(gauri)
-                caterer_name = "Gauri"
-                gauri-=1
-                break
-        Allocation.objects.create(
-            roll_no = i[1],
-            student_id = student_id,
-            month = i[3],
-            caterer_name = caterer_name,
-            high_tea = i[5],
-            first_pref = i[6],
-            second_pref = i[7],
-            third_pref = i[8]
-        )
-
 
 class allocation(TemplateView):
     # if request.method == 'POST':
@@ -157,61 +119,60 @@ class allocation(TemplateView):
     # return render(request,"allocation.html")
 
     template_name = 'allocation.html'
-
     def post(self, request):
         context = {
-            'messages':[]
+            'messages':[],
         }
-
-        csv = request.FILES['csv']
-        csv_data = pd.read_csv(
-            io.StringIO(
-                csv.read().decode("utf-8")
-            )
-        )
-        print(csv_data.head())
-
-        for record in csv_data.to_dict(orient="records"):
-            try:
-                global kanaka_limit, gauri_limit, ajay_limit
-                # student_id = record["student_id"]
-                # caterer_name = record["caterer_name"]
-                first_pref = record["first_pref"]
-                second_pref = record["second_pref"]
-                third_pref = record["third_pref"]
-                r = Student.objects.get(roll_no = record["roll_no"])    
-                print(r)
-                print("hi1")
-                for pref in {first_pref,second_pref,third_pref}:
-                    if(pref == "kanaka" and kanaka_limit>0):
-                        student_id="K"+str(kanaka_limit)
-                        caterer_name = "Kanaka"
-                        kanaka_limit-=1
-                        break 
-                    elif(pref == "ajay" and ajay_limit>0):
-                        student_id="A"+str(ajay_limit)
-                        caterer_name = "Ajay"
-                        ajay_limit-=1
-                        break
-                    elif(pref == "gauri" and gauri_limit>0):
-                        student_id="G"+str(gauri_limit)
-                        caterer_name = "Gauri"
-                        gauri_limit-=1
-                        break
-
-                a = Allocation(
-                    roll_no = r,
-                    student_id = student_id,
-                    month = record["month"],
-                    caterer_name = caterer_name,
-                    high_tea = record["high_tea"],
-                    first_pref = first_pref,
-                    second_pref = second_pref,
-                    third_pref = third_pref
+        if request.user.is_authenticated and request.user.is_staff :
+            csv = request.FILES['csv']
+            csv_data = pd.read_csv(
+                io.StringIO(
+                    csv.read().decode("utf-8")
                 )
-                a.save()
-            except Exception as e:
-                context['exceptions_raised'] = e
-                print(e)
-                
+            )
+            print(csv_data.head())
+
+            for record in csv_data.to_dict(orient="records"):
+                try:
+                    global kanaka_limit, gauri_limit, ajay_limit
+                    # student_id = record["student_id"]
+                    # caterer_name = record["caterer_name"]
+                    first_pref = record["first_pref"]
+                    second_pref = record["second_pref"]
+                    third_pref = record["third_pref"]
+                    r = Student.objects.get(roll_no = record["roll_no"])    
+                    print(r)
+                    print("hi1")
+                    for pref in [first_pref,second_pref,third_pref]:
+                        if(pref == "kanaka" and kanaka_limit>0):
+                            student_id="K"+str(kanaka_limit)
+                            caterer_name = "Kanaka"
+                            kanaka_limit-=1
+                            break 
+                        elif(pref == "ajay" and ajay_limit>0):
+                            student_id="A"+str(ajay_limit)
+                            caterer_name = "Ajay"
+                            ajay_limit-=1
+                            break
+                        elif(pref == "gauri" and gauri_limit>0):
+                            student_id="G"+str(gauri_limit)
+                            caterer_name = "Gauri"
+                            gauri_limit-=1
+                            break
+                    print(student_id)
+                    a = Allocation(
+                        roll_no = r,
+                        student_id = student_id,
+                        month = record["month"],
+                        caterer_name = caterer_name,
+                        high_tea = record["high_tea"],
+                        first_pref = first_pref,
+                        second_pref = second_pref,
+                        third_pref = third_pref
+                    )
+                    a.save()
+                except Exception as e:
+                    context['exceptions_raised'] = e
+                    print(e)  
+            messages="Form submitted. Please check the admin page."              
         return render(request, self.template_name, context)

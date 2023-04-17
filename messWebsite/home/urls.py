@@ -15,5 +15,5 @@ urlpatterns = [
     path("cafeteria/", views.cafeteria, name="cafeteria"),
     path("contact/", views.contact, name="contact"),
     path("rebateForm/", views.rebate, name="rebate"),
-    url('^allocation/$', allocation.as_view(), name='allocation'),
+    url('allocation/', allocation.as_view(), name='allocation'),
 ]
