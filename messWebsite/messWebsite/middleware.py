@@ -27,6 +27,12 @@ class LoginRequiredMiddleware:
             logout(request)
             return
         
-        if (not request.user.is_authenticated) and (not url_is_exempt) and (request.path =="/rebateForm/"):
-            print(request.path)
-            return redirect(settings.LOGIN_URL+ "?next=" + request.path)
+        if (not request.user.is_authenticated) and (not url_is_exempt):
+            if (request.path =="/rebateForm/"):
+                print(request.path)
+                settings.LOGIN_REDIRECT_URL = request.path
+                return redirect(settings.LOGIN_URL+ "?next=" + request.path)
+            if (request.path =="/allocation/"):
+                print(request.path)
+                settings.LOGIN_REDIRECT_URL = request.path
+                return redirect(settings.LOGIN_URL+ "?next=" + request.path)

@@ -9,6 +9,8 @@ from .models import(
 class StudentResource(resources.ModelResource):
     class Meta:
         model = Student
+        exclude='id'
+        import_id_fields = ['name', 'email','roll_no', "hostel", "room_no", "degree", "department"]
         fields = ('name', 'email','roll_no', "hostel", "room_no", "degree", "department")
 
 class AllocationResource(resources.ModelResource):
