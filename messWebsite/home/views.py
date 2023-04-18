@@ -33,8 +33,7 @@ def rules(request):
 
 def caterer(request,name):
     caterer = Caterer.objects.get(name=name)
-    all = Caterer.objects.all()
-    context={'caterer':caterer, "all_caterer": all}
+    context={'caterer':caterer}
     return render(request,'caterer.html',context)
 
 # def kanaka(request):
@@ -62,8 +61,6 @@ def cafeteria(request):
     return render(request,'cafeteria.html',context)
 
 def contact(request):
-    """ allContacts=contact.objects.all()
-    context={'allContacts': allContacts} """
     caterer=Caterer.objects.all()
     contact=Contact.objects.all()
     context={'caterer':caterer,'contact':contact}

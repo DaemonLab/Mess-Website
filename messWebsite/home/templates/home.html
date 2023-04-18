@@ -8,8 +8,7 @@
 {% endblock %}
 {%block body%}
 <Main>
-  <div class="container-fluid" style="width:95%;">
-    <h1 class="text-center">People</h1>
+  <div class="container-fluid mt-2" style="width:95%;">
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -62,23 +61,20 @@
 
       </div>
     </div>
-    <h1 class="text-center">Photograghs</h1>
-    <div class="photographs">
-{% comment %}       <img src="{% static 'images/IITI3.png' %}" class="pics" alt=""> {% endcomment %}
-      {% for i in photos %}
-      <div class="cards">
+    <h1 class="text-center">Dining Committee</h1>
+    <div class="container">
         <div class="row">
-          <div class="cardcol col-lg-3 col-md-6 col-sm-12">
+          {% for i in photos %}
+          <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="card" style="width: 12rem;">
               <img class="card-img-top" src="/media/{{i.image}}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text cardText"><b>{{i.poc}}</b><br>{{i.occupation}}</p>
-              </div>
+              <span class="card-body">
+                <span class="card-text cardText"><b>{{i.poc}}</b><br>{{i.occupation}}</span>
+              </span>
             </div>
           </div>
-        </div>
+            {% endfor %}
       </div>
-      {% endfor %}
 
     </div>
 
