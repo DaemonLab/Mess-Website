@@ -69,40 +69,37 @@ def contact(request):
 def rebate(request):
     text=""
     if request.method =='POST' and request.user.is_authenticated:
-        # form = RebateForm(request.POST)
-        # if form.is_valid():
-            # form.save()
-            # rebate = Rebate.objects.latest("id")
-            start_date = parse_date(request.POST['start_date'])
-            end_date = parse_date(request.POST['end_date'])
-            diff = ((end_date-start_date).days)+1
-            diff2 = (start_date-datetime.date.today()).days
-            # print(diff)
-            # print(diff2)
-            if((diff)<=7 and diff>=2 and diff2>=2):
-                approved = True
-                text="You have successfully submitted the form. Thank you"
-            else:
-                approved = False
-                text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
             try:
-                Allocation.objects.get(student_id = request.POST['allocation_id'])
+                start_date = parse_date(request.POST['start_date'])
+                end_date = parse_date(request.POST['end_date'])
+                diff = ((end_date-start_date).days)+1
+                diff2 = (start_date-datetime.date.today()).days
+                if((diff)<=7 and diff>=2 and diff2>=2):
+                    approved = True
+                    text="You have successfully submitted the form. Thank you"
+                else:
+                    approved = False
+                    text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
                 try:
-                    a=Allocation.objects.get(roll_no__email = str(request.user.email), student_id = request.POST['allocation_id'])
-                    r = Rebate(
-                        email=request.user.email,
-                        allocation_id = a,
-                        start_date = request.POST['start_date'],
-                        end_date = request.POST['end_date'],
-                        approved=approved
-                    )
-                    r.save()
-                    # else: text="Email ID does not match with the allocation ID"
+                    Allocation.objects.get(student_id = request.POST['allocation_id'])
+                    try:
+                        a=Allocation.objects.get(roll_no__email = str(request.user.email), student_id = request.POST['allocation_id'])
+                        r = Rebate(
+                            email=request.user.email,
+                            allocation_id = a,
+                            start_date = request.POST['start_date'],
+                            end_date = request.POST['end_date'],
+                            approved=approved
+                        )
+                        r.save()
+                        # else: text="Email ID does not match with the allocation ID"
+                    except Allocation.DoesNotExist:
+                        text ="The asked Email ID does not have an Allocation ID or Email ID does not match with the allocation ID"
                 except Allocation.DoesNotExist:
-                    text ="The asked Email ID does not have an Allocation ID or Email ID does not match with the allocation ID"
-            except Allocation.DoesNotExist:
-                text=" The asked allocation ID does not exist. Please enter the correct ID."
-            # rebate.save(update_fields=["approved"])      
+                    text=" The asked allocation ID does not exist. Please enter the correct ID."
+                # rebate.save(update_fields=["approved"])    
+            except :
+                text="Invalid Dates filled"  
     context = {'text': text}
     return render(request,"rebateForm.html",context)
 

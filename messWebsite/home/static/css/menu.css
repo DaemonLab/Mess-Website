@@ -12,15 +12,14 @@ h1{
     padding-right: 5px;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 20px;
-    height: 70vh; 
+    height: 90vh; 
 }
 
 .information{
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 20px;
-    background: rgb(244, 246, 248);
+    background: #F5F5F5;
     border-radius: 30px;
     padding: 20px 20px 10px 20px;
     font-family: 'Raleway', sans-serif;
