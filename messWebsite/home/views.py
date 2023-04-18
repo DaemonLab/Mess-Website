@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, File, Allocation, Student
-from .forms import RebateForm
 import pandas as pd
 import datetime
 from django.views.generic import TemplateView
@@ -159,7 +158,6 @@ class allocation(TemplateView):
                             caterer_name = "Gauri"
                             gauri_limit-=1
                             break
-                    print(student_id)
                     a = Allocation(
                         roll_no = r,
                         student_id = student_id,
