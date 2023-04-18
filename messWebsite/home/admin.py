@@ -225,6 +225,7 @@ class about_Admin(admin.ModelAdmin):
                     "upper_description",
                     "sheet_url",
                     "lower_description",
+                    "student_limit"
                 ),
                 "description": "%s" %CATERER_DESC_TEXT,
             },

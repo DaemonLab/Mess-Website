@@ -14,8 +14,7 @@ class StudentResource(resources.ModelResource):
         fields = ('name', 'email','roll_no', "hostel", "room_no", "degree", "department")
 
 class AllocationResource(resources.ModelResource):
-    roll_no = ForeignKeyField(attribute='roll_no', column='roll_no')
-    roll_no = fields.Field(attribute="roll_no", column_name="Roll No.")
+    roll_no = ForeignKeyField(attribute='roll_no', column='roll_no', column_name="Roll No.")
     roll_no__name = fields.Field(attribute="roll_no__name", column_name="Name")
     roll_no__department = fields.Field(attribute="roll_no__department", column_name="Department")
     roll_no__degree = fields.Field(attribute="roll_no__degree", column_name="Degree")
@@ -62,15 +61,6 @@ class AllocationResource(resources.ModelResource):
 class RebateResource(resources.ModelResource):
     allocation_id = ForeignKeyField(attribute='allocation_id', column='student_id')
     # def get_approved_value(self, obj):
-    #     if obj.approved:
-    #         return "Yes"
-    #     else:
-    #         return "No"
-
-    # approved = fields.Field(
-    #     attribute='get_approved_value',
-    #     column_name='approved'
-    # )
 
     email = fields.Field(attribute="email", column_name="Email")
     allocation_id__roll_no__name = fields.Field(attribute="allocation_id__roll_no__name", column_name="Name")

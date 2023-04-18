@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 import datetime
+from django.utils.timezone import now
 
 class Student(models.Model):
     #Student details table
@@ -59,7 +60,7 @@ class Rebate(models.Model):
     start_date = models.DateField(help_text="start date of the rebate")
     end_date = models.DateField(help_text="end date of the rebate")
     approved = models.BooleanField(default=False,help_text="tells if the rebate is approved")
-    date_applied = models.DateField(default=datetime.date.today(),help_text="Date on which the rebate was applied")
+    date_applied = models.DateField(default=now,help_text="Date on which the rebate was applied")
 
     def __str__(self):
         return "Rebate of " + str(self.allocation_id) + " " + str(self.date_applied)
