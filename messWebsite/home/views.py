@@ -133,37 +133,48 @@ class allocation(TemplateView):
 
             for record in csv_data.to_dict(orient="records"):
                 try:
-                    global kanaka_limit, gauri_limit, ajay_limit
-                    # student_id = record["student_id"]
-                    # caterer_name = record["caterer_name"]
-                    first_pref = record["first_pref"]
-                    second_pref = record["second_pref"]
-                    third_pref = record["third_pref"]
+                    # global kanaka_limit, gauri_limit, ajay_limit
+                    first_pref = str(record["first_pref"]).capitalize()
+                    second_pref = str(record["second_pref"]).capitalize()
+                    third_pref = str(record["third_pref"]).capitalize()
+                    high_tea = record["high_tea"]
                     r = Student.objects.get(roll_no = record["roll_no"])    
                     print(r)
                     print("hi1")
                     for pref in [first_pref,second_pref,third_pref]:
-                        if(pref == "kanaka" and kanaka_limit>0):
-                            student_id="K"+str(kanaka_limit)
-                            caterer_name = "Kanaka"
-                            kanaka_limit-=1
+                        kanaka = Caterer.objects.get(name = "Kanaka")
+                        ajay = Caterer.objects.get(name = "Ajay")
+                        gauri = Caterer.objects.get(name = "Gauri")
+                        if(pref == kanaka.name and kanaka.student_limit>0):
+                            student_id=str(kanaka.name[0])
+                            if(high_tea==True): student_id+="H"
+                            student_id+=str(kanaka.student_limit) 
+                            caterer_name = kanaka.name
+                            kanaka.student_limit-=1
+                            kanaka.save(update_fields=["student_limit"])
                             break 
-                        elif(pref == "ajay" and ajay_limit>0):
-                            student_id="A"+str(ajay_limit)
-                            caterer_name = "Ajay"
-                            ajay_limit-=1
+                        elif(pref == ajay.name and ajay.student_limit>0):
+                            student_id=str(ajay.name[0])
+                            if(high_tea==True): student_id+="H"
+                            student_id+=str(ajay.student_limit) 
+                            caterer_name = ajay.name
+                            ajay.student_limit-=1
+                            ajay.save(update_fields=["student_limit"])
                             break
-                        elif(pref == "gauri" and gauri_limit>0):
-                            student_id="G"+str(gauri_limit)
-                            caterer_name = "Gauri"
-                            gauri_limit-=1
+                        elif(pref == gauri.name and gauri.student_limit>0):
+                            student_id=str(gauri.name[0])
+                            if(high_tea==True): student_id+="H"
+                            student_id+=str(gauri.student_limit) 
+                            caterer_name = gauri.name
+                            gauri.student_limit-=1
+                            gauri.save(update_fields=["student_limit"])
                             break
                     a = Allocation(
                         roll_no = r,
                         student_id = student_id,
                         month = record["month"],
                         caterer_name = caterer_name,
-                        high_tea = record["high_tea"],
+                        high_tea = high_tea,
                         first_pref = first_pref,
                         second_pref = second_pref,
                         third_pref = third_pref
