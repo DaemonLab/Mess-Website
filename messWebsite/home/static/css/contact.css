@@ -15,10 +15,7 @@ a:hover {
 .contact-heading {
     font-size: 1.5rem;
     text-align: left;
-}
-.desc {
-    margin-top: 10px;
-    font-size: 15px;
+    color: #083AA9;
 }
 h1{
     font-family: 'Raleway', sans-serif;

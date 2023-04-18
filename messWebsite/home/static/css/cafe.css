@@ -8,6 +8,7 @@
   }
   .box{
     padding: 20px;
+    z-index: -1;
   }
   .line{
     margin: 50px;
