@@ -8,11 +8,6 @@ import io
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.dateparse import parse_date
 
-
-kanaka_limit=900
-ajay_limit=900
-gauri_limit=500
-
 # Create your views here.
 def home(request):
     aboutInfo=About.objects.all()
@@ -35,15 +30,22 @@ def rules(request):
    
     return render(request,'rules.html',params)
 
-def kanaka(request):
-    caterer=Caterer.objects.all()
-    context={'caterer':caterer}
-    return render(request,'caterer2.html',context)
 
-def ajay(request):
-    caterer=Caterer.objects.all()
-    context={'caterer':caterer}
-    return render(request,'caterer1.html',context)
+def caterer(request,name):
+    caterer = Caterer.objects.get(name=name)
+    all = Caterer.objects.all()
+    context={'caterer':caterer, "all_caterer": all}
+    return render(request,'caterer.html',context)
+
+# def kanaka(request):
+#     caterer=Caterer.objects.all()
+#     context={'caterer':caterer}
+#     return render(request,'caterer2.html',context)
+
+# def ajay(request):
+#     caterer=Caterer.objects.all()
+#     context={'caterer':caterer}
+#     return render(request,'caterer1.html',context)
 
 def links(request):
     """ allLinks=link.objects.all()
@@ -87,21 +89,20 @@ def rebate(request):
                 approved = False
                 text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
             try:
-                a1 = Allocation.objects.get(student_id = request.POST['allocation_id'])
+                Allocation.objects.get(student_id = request.POST['allocation_id'])
                 try:
-                    a2=Allocation.objects.get(roll_no__email = str(request.user.email))
-                    if(a1==a2):
-                        r = Rebate(
-                            email=request.user.email,
-                            allocation_id = a1,
-                            start_date = request.POST['start_date'],
-                            end_date = request.POST['end_date'],
-                            approved=approved
-                        )
-                        r.save()
-                    else: text="Email ID does not match with the allocation ID"
+                    a=Allocation.objects.get(roll_no__email = str(request.user.email), student_id = request.POST['allocation_id'])
+                    r = Rebate(
+                        email=request.user.email,
+                        allocation_id = a,
+                        start_date = request.POST['start_date'],
+                        end_date = request.POST['end_date'],
+                        approved=approved
+                    )
+                    r.save()
+                    # else: text="Email ID does not match with the allocation ID"
                 except Allocation.DoesNotExist:
-                    text ="The asked Email ID does not have an Allocation ID"
+                    text ="The asked Email ID does not have an Allocation ID or Email ID does not match with the allocation ID"
             except Allocation.DoesNotExist:
                 text=" The asked allocation ID does not exist. Please enter the correct ID."
             # rebate.save(update_fields=["approved"])      
