@@ -1,0 +1,16 @@
+<html>
+  <!doctype html>
+  {% load static %}
+  {% load socialaccount %}
+  {% get_providers as socialaccount_providers %}
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+  <body class="mx-3 mt-3">
+    {% for provider in socialaccount_providers %}
+      <a title="{{provider.name}}" class="btn btn-primary"
+	 href="{% provider_login_url provider.id %}">Logn in with {{provider.name}}</a>
+    {% endfor %}
+  </body>
+</html>
