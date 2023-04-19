@@ -23,7 +23,7 @@
         id="allocation_id"
         name="allocation_id"
         class="form-control"
-        placeholder="Your Allocation id"
+        placeholder={{key}}
       />
     </div>
     <div class="form-group p-2">
@@ -52,7 +52,14 @@
       Submit
     </button>
     {% else %}
-    <div class="my-5 py-5"></div>
+    <div class="my-5 pb-5 text-center">
+    You have applied rebate from <br>
+      {% for dates in list%}
+      <span>{{dates.0}} to</span>
+      <span>{{dates.1}}</span>
+      <br>
+      {%endfor%}
+    </div>
     {% endif %}
   </form>
 </main>

@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 import io
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.dateparse import parse_date
-
+from django.core.exceptions import MultipleObjectsReturned
 # Create your views here.
 def home(request):
     aboutInfo=About.objects.all()
@@ -66,8 +66,32 @@ def contact(request):
     context={'caterer':caterer,'contact':contact}
     return render(request,'contact.html',context)
 
+def days(s,list):
+    total_days = 0
+    try:
+        count = Rebate.objects.filter(allocation_id = s).count()
+        for i in range(count):
+            rebate = Rebate.objects.filter(allocation_id = s)[i]
+            start_date = rebate.start_date
+            end_date = rebate.end_date
+            list.append([(start_date),(end_date)])
+            total_days += ((end_date-start_date).days)+1
+        return total_days
+    except Exception as e:
+        print(e)
+        return total_days
+
 def rebate(request):
     text=""
+    list=[]
+    try:
+        allocation_id = Allocation.objects.get(roll_no__email = str(request.user.email))
+        key = str(allocation_id.student_id)
+    except Allocation.DoesNotExist:
+        key = "Signed IN account does not does not have any allocation ID"
+    except Allocation.MultipleObjectsReturned:
+        allocation_id = Allocation.objects.filter(roll_no__email = str(request.user.email)).first()
+        key = str(allocation_id.student_id)
     if request.method =='POST' and request.user.is_authenticated:
             try:
                 start_date = parse_date(request.POST['start_date'])
@@ -75,43 +99,44 @@ def rebate(request):
                 diff = ((end_date-start_date).days)+1
                 diff2 = (start_date-datetime.date.today()).days
                 if((diff)<=7 and diff>=2 and diff2>=2):
-                    approved = True
+                    # approved = True
                     text="You have successfully submitted the form. Thank you"
-                else:
-                    approved = False
-                    text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-                try:
-                    Allocation.objects.get(student_id = request.POST['allocation_id'])
                     try:
-                        a=Allocation.objects.get(roll_no__email = str(request.user.email), student_id = request.POST['allocation_id'])
-                        r = Rebate(
-                            email=request.user.email,
-                            allocation_id = a,
-                            start_date = request.POST['start_date'],
-                            end_date = request.POST['end_date'],
-                            approved=approved
-                        )
-                        r.save()
-                        # else: text="Email ID does not match with the allocation ID"
+                        Allocation.objects.get(student_id = request.POST['allocation_id'])
+                        try:
+                            a=Allocation.objects.get(roll_no__email = str(request.user.email), student_id = request.POST['allocation_id'])
+                            total_days = days(a,list)+diff
+                            print(total_days)
+                            print(list)
+                            if(total_days>8): 
+                                text="You can only apply for max 8 days in a month"
+                            else:
+                                r = Rebate(
+                                    email=request.user.email,
+                                    allocation_id = a,
+                                    start_date = request.POST['start_date'],
+                                    end_date = request.POST['end_date'],
+                                    approved=False
+                                )
+                                r.save()
+                            # else: text="Email ID does not match with the allocation ID"
+                        except Allocation.DoesNotExist:
+                            text ="Email ID does not match with the allocation ID"
                     except Allocation.DoesNotExist:
-                        text ="The asked Email ID does not have an Allocation ID or Email ID does not match with the allocation ID"
-                except Allocation.DoesNotExist:
-                    text=" The asked allocation ID does not exist. Please enter the correct ID."
+                        text=" The asked allocation ID does not exist. Please enter the correct ID."
+                else:
+                    # approved = False
+                    text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
                 # rebate.save(update_fields=["approved"])    
-            except :
+            except Exception as e:
+                print(e)
                 text="Invalid Dates filled"  
-    context = {'text': text}
+    context = {'text': text, "key":key, "list": list}
     return render(request,"rebateForm.html",context)
 
 
 
 class allocation(TemplateView):
-    # if request.method == 'POST':
-    #     file = request.FILES['file']
-    #     obj = File.objects.create(file = file)
-    #     create_db(obj.file)
-    # return render(request,"allocation.html")
-
     template_name = 'allocation.html'
     def post(self, request):
         context = {
@@ -125,10 +150,9 @@ class allocation(TemplateView):
                 )
             )
             print(csv_data.head())
-
+      
             for record in csv_data.to_dict(orient="records"):
                 try:
-                    # global kanaka_limit, gauri_limit, ajay_limit
                     first_pref = str(record["first_pref"]).capitalize()
                     second_pref = str(record["second_pref"]).capitalize()
                     third_pref = str(record["third_pref"]).capitalize()

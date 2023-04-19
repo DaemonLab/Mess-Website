@@ -56,7 +56,7 @@ class Scan(models.Model):
 
 class Rebate(models.Model):
     email = models.CharField(max_length=30, default=0)
-    allocation_id = models.ForeignKey(Allocation, default=0,on_delete=models.SET_NULL,null=True)
+    allocation_id = models.ForeignKey(Allocation, related_name="allocation_id", default=0,on_delete=models.SET_NULL,null=True)
     start_date = models.DateField(help_text="start date of the rebate")
     end_date = models.DateField(help_text="end date of the rebate")
     approved = models.BooleanField(default=False,help_text="tells if the rebate is approved")
