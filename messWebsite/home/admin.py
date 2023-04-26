@@ -17,7 +17,9 @@ from home.models import (
     Student,
     Allocation,
     Scan,
-    Rebate
+    Rebate,
+    RebateSpringSem,
+    RebateAutumnSem
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 
@@ -423,9 +425,7 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
     resource_class  = RebateResource
     model = Rebate
-#    ordering = ("rule",)
     search_fields = ("allocation_id__student_id","approved","date_applied","start_date","end_date")
-#    list_display = ("rule",)
     list_filter = ("approved","date_applied","allocation_id","start_date","end_date")
     fieldsets = (
         (
@@ -452,3 +452,83 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
         return response
 
     export_as_csv.short_description = "Export Rebate details to CSV"
+
+@admin.register(RebateAutumnSem)
+class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
+    resource_class  = RebateAutumnSem
+    model = RebateAutumnSem
+    search_fields = ("email",)
+    list_filter = ("email",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "julyDays",
+                    "highTeaJuly",
+                    "augustDays",
+                    "highTeaAugust",
+                    "septemberDays",
+                    "highTeaSeptember",
+                    "octoberDays",
+                    "highTeaOctober",
+                    "NovemberDays",
+                    "highTeaNovember",
+                    "decemberDays",
+                    "highTeaDecember",
+                ),
+#                "description": "%s" %CONTACT_DESC_TEXT,
+            },
+        ),
+    )
+    actions = ['export_as_csv']
+    def export_as_csv(self, request, queryset):
+        resource = RebateResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="RebateAutumn.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
+
+
+@admin.register(RebateSpringSem)
+class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
+    resource_class  = RebateSpringSem
+    model = RebateSpringSem
+    search_fields = ("email",)
+    list_filter = ("email",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "januaryDays",
+                    "highTeaJanuary",
+                    "feburaryDays",
+                    "highTeaFeburary",
+                    "marchDays",
+                    "highTeaMarch",
+                    "aprilDays",
+                    "highTeaApril",
+                    "mayDays",
+                    "highTeaMay",
+                    "juneDays",
+                    "highTeaJune",
+                ),
+#                "description": "%s" %CONTACT_DESC_TEXT,
+            },
+        ),
+    )
+    actions = ['export_as_csv']
+    def export_as_csv(self, request, queryset):
+        resource = RebateResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="RebateSpring.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
+

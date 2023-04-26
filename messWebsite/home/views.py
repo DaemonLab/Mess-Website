@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, File, Allocation, Student
+from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, File, Allocation, Student, RebateAutumnSem, RebateSpringSem
 import pandas as pd
 import datetime
 from django.views.generic import TemplateView
@@ -88,7 +88,7 @@ def rebate(request):
         allocation_id = Allocation.objects.get(roll_no__email = str(request.user.email))
         key = str(allocation_id.student_id)
     except Allocation.DoesNotExist:
-        key = "Signed IN account does not does not have any allocation ID"
+        key = "Signed in account does not does not have any allocation ID"
     except Allocation.MultipleObjectsReturned:
         allocation_id = Allocation.objects.filter(roll_no__email = str(request.user.email)).first()
         key = str(allocation_id.student_id)
@@ -96,11 +96,9 @@ def rebate(request):
             try:
                 start_date = parse_date(request.POST['start_date'])
                 end_date = parse_date(request.POST['end_date'])
-                diff = ((end_date-start_date).days)+1
-                diff2 = (start_date-datetime.date.today()).days
-                if((diff)<=7 and diff>=2 and diff2>=2):
-                    # approved = True
-                    text="You have successfully submitted the form. Thank you"
+                if(start_date.month == end_date.month):
+                    diff = ((end_date-start_date).days)+1
+                    diff2 = (start_date-datetime.date.today()).days
                     try:
                         Allocation.objects.get(student_id = request.POST['allocation_id'])
                         try:
@@ -111,23 +109,24 @@ def rebate(request):
                             if(total_days>8): 
                                 text="You can only apply for max 8 days in a month"
                             else:
-                                r = Rebate(
-                                    email=request.user.email,
-                                    allocation_id = a,
-                                    start_date = request.POST['start_date'],
-                                    end_date = request.POST['end_date'],
-                                    approved=False
-                                )
-                                r.save()
-                            # else: text="Email ID does not match with the allocation ID"
+                                if((diff)<=7 and diff>=2 and diff2>=2):
+                                    r = Rebate(
+                                        email=request.user.email,
+                                        allocation_id = a,
+                                        start_date = request.POST['start_date'],
+                                        end_date = request.POST['end_date'],
+                                        approved=False
+                                    )
+                                    r.save()
+                                    text="You have successfully submitted the form. Thank you"
+                                else:
+                                    text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
                         except Allocation.DoesNotExist:
                             text ="Email ID does not match with the allocation ID"
                     except Allocation.DoesNotExist:
                         text=" The asked allocation ID does not exist. Please enter the correct ID."
                 else:
-                    # approved = False
-                    text="Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-                # rebate.save(update_fields=["approved"])    
+                    text="Please enter the rebate dates within this month only"       
             except Exception as e:
                 print(e)
                 text="Invalid Dates filled"  
