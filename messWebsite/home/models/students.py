@@ -63,7 +63,7 @@ class Rebate(models.Model):
     date_applied = models.DateField(default=now,help_text="Date on which the rebate was applied")
 
     def __str__(self):
-        return "Rebate of " + str(self.allocation_id) + " " + str(self.date_applied)
+        return str(self.allocation_id) + " " + str(self.date_applied)
     
     class Meta:
         verbose_name = "Rebate Details"
@@ -71,3 +71,47 @@ class Rebate(models.Model):
 
 class File(models.Model):
     file = models.FileField(upload_to="static/")
+
+class RebateAutumnSem(models.Model):
+    email = models.CharField(max_length=30, default=0)
+    julyDays = models.IntegerField(default=0)
+    highTeaJuly = models.BooleanField(default=True)
+    augustDays = models.IntegerField(default=0)
+    highTeaAugust = models.BooleanField(default=True)
+    septemberDays = models.IntegerField(default=0)
+    highTeaSeptember = models.BooleanField(default=True)
+    octoberDays = models.IntegerField(default=0)
+    highTeaOctober = models.BooleanField(default=True)
+    NovemberDays = models.IntegerField(default=0)
+    highTeaNovember = models.BooleanField(default=True)
+    decemberDays = models.IntegerField(default=0)
+    highTeaDecember = models.BooleanField(default=True)
+
+    def __str__(self):
+        return str(self.email)
+    
+    class Meta:
+        verbose_name = "Rebate Bill Autumn Semester"
+        verbose_name_plural = "Rebate Bills Autumn Semester"
+
+class RebateSpringSem(models.Model):
+    email = models.CharField(max_length=30, default=0)
+    januaryDays = models.IntegerField(default=0)
+    highTeaJanuary = models.BooleanField(default=True)
+    feburaryDays = models.IntegerField(default=0)
+    highTeaFeburary = models.BooleanField(default=True)
+    marchDays = models.IntegerField(default=0)
+    highTeaMarch = models.BooleanField(default=True)
+    aprilDays = models.IntegerField(default=0)
+    highTeaApril = models.BooleanField(default=True)
+    mayDays = models.IntegerField(default=0)
+    highTeaMay = models.BooleanField(default=True)
+    juneDays = models.IntegerField(default=0)
+    highTeaJune = models.BooleanField(default=True)
+
+    def __str__(self):
+        return str(self.email)
+    
+    class Meta:
+        verbose_name = "Rebate Bill Spring Semester"
+        verbose_name_plural = "Rebate Bills Spring Semester"
