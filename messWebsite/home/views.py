@@ -66,20 +66,183 @@ def contact(request):
     context={'caterer':caterer,'contact':contact}
     return render(request,'contact.html',context)
 
-def days(s,list):
-    total_days = 0
+# def days(s,list):
+#     total_days = 0
+#     try:
+#         count = Rebate.objects.filter(allocation_id = s).count()
+#         for i in range(count):
+#             rebate = Rebate.objects.filter(allocation_id = s)[i]
+#             start_date = rebate.start_date
+#             end_date = rebate.end_date
+#             list.append([(start_date),(end_date)])
+#             total_days += ((end_date-start_date).days)+1
+#         return total_days
+#     except Exception as e:
+#         print(e)
+#         return total_days
+    
+def count(start,end,sum):
+    sum += ((end-start).days)+1
+    return sum
+
+def is_present_autumn(s):
     try:
-        count = Rebate.objects.filter(allocation_id = s).count()
-        for i in range(count):
-            rebate = Rebate.objects.filter(allocation_id = s)[i]
-            start_date = rebate.start_date
-            end_date = rebate.end_date
-            list.append([(start_date),(end_date)])
-            total_days += ((end_date-start_date).days)+1
-        return total_days
-    except Exception as e:
-        print(e)
-        return total_days
+        student = RebateAutumnSem.objects.get(email = str(s.email))
+    except:
+        print(Exception)
+        student = RebateAutumnSem(
+            email=str(s.email)
+        )
+        student.save()
+    return student
+def is_present_spring(s):
+    try:
+        student = RebateSpringSem.objects.get(email = str(s.email))
+    except:
+        print(Exception)
+        print(2)
+        student = RebateSpringSem(
+            email=str(s.email)
+        )
+        student.save()
+    return student    
+
+def check(a,s,start,end,month):
+    match month:
+        case "january":
+            student = is_present_spring(s)
+            student.january = count(start,end,student.january)
+            student.highTeaJanuary = a.high_tea
+            if(student.january<=8):
+                student.save(update_fields=["january","highTeaJanuary"])
+                return 1
+            if(start.month==1 and end.month==1):
+                return 2
+            else:
+                return 0
+        case "feburary":
+            student = is_present_spring(s)
+            student.feburary = count(start,end,student.feburary)
+            student.highTeaFeburary = a.high_tea
+            if(student.feburary<=8):
+                student.save(update_fields=["feburary","highTeaFeburary"])
+                return 1
+            elif(start.month!=2 and end.month!=2):
+                return 2
+            else:
+                return 0
+        case "march":
+            student = is_present_spring(s)
+            student.march = count(start,end,student.march)
+            student.highTeaMarch = a.high_tea
+            if(student.march<=8):
+                student.save(update_fields=["march","highTeaMarch"])
+                return 1
+            elif(start.month!=3 and end.month!=3):
+                return 2
+            else:
+                return 0
+        case "april":
+            student = is_present_spring(s)
+            student.april = count(start,end,student.april)
+            student.highTeaApril = a.high_tea
+            if(student.april<=8):
+                student.save(update_fields=["april","highTeaApril"])
+                return True
+            elif(start.month!=4 and end.month!=4):
+                return 2
+            else:
+                return False
+        case "may":
+            student = is_present_spring(s)
+            student.may = count(start,end,student.may)
+            student.highTeaMay = a.high_tea
+            if(student.may<=8):
+                student.save(update_fields=["may","highTeaMay"])
+                return 1
+            elif(start.month!=5 and end.month!=5):
+                return 2
+            else:
+                return 0
+        case "june":
+            student = is_present_spring(s)
+            student.june = count(start,end,student.june)
+            student.highTeaJune = a.high_tea
+            if(student.june<=8):
+                student.save(update_fields=["june","highTeaJune"])
+                return 1
+            elif(start.month!=6 and end.month!=6):
+                return 2
+            else:
+                return 0
+        case "july":
+            student = is_present_autumn(s)
+            student.july = count(start,end,student.july)
+            student.highTeaJuly = a.high_tea
+            if(student.july<=8):
+                student.save(update_fields=["july","highTeaJuly"])
+                return 1
+            elif(start.month!=7 and end.month!=7):
+                return 2
+            else:
+                return 0
+        case "august":
+            student = is_present_autumn(s)
+            student.august = count(start,end,student.august)
+            student.highTeaAugust == a.high_tea
+            if(student.august<=8):
+                student.save(update_fields=["august","highTeaAugust"])
+                return 1
+            elif(start.month!=8 and end.month!=8):
+                return 2
+            else:
+                return 0
+        case "september":
+            student = is_present_autumn(s)
+            student.september = count(start,end,student.september)
+            student.highTeaSeptember = a.high_tea
+            if(student.september<=8):
+                student.save(update_fields=["september","highTeaSeptember"])
+                return 1
+            elif(start.month!=9 and end.month!=9):
+                return 2
+            else:
+                return 0
+        case "october":
+            student = is_present_autumn(s)
+            student.october = count(start,end,student.october)
+            student.highTeaOctober = a.high_tea
+            if(student.october<=8):
+                student.save(update_fields=["october","highTeaOctober"])
+                return 1
+            elif(start.month!=10 and end.month!=10):
+                return 2
+            else:
+                return 0
+        case "november":
+            student = is_present_autumn(s)
+            student.november = count(start,end,student.november)
+            student.highTeaNovember = a.high_tea
+            if(student.november<=8):
+                student.save(update_fields=["november","highTeaNovember"])
+                return 1
+            elif(start.month!=11 and end.month!=11):
+                return 2
+            else:
+                return 0
+        case "december":
+            student = is_present_autumn(s)
+            student.december = count(start,end,student.december)
+            student.highTeaDecember = a.high_tea
+            if(student.december<=8):
+                student.save(update_fields=["december","highTeaDecember"])
+                return 1
+            elif(start.month!=12 and end.month!=12):
+                return 2
+            else:
+                return 0
+        # case default:
+        #     return "something"
 
 def rebate(request):
     text=""
@@ -103,12 +266,19 @@ def rebate(request):
                         Allocation.objects.get(student_id = request.POST['allocation_id'])
                         try:
                             a=Allocation.objects.get(roll_no__email = str(request.user.email), student_id = request.POST['allocation_id'])
-                            total_days = days(a,list)+diff
-                            print(total_days)
-                            print(list)
-                            if(total_days>8): 
-                                text="You can only apply for max 8 days in a month"
+                            s=Student.objects.filter(email = str(request.user.email)).first()
+                            month = a.month
+                            print(month)
+                            # total_days = days(a,list)+diff
+                            # print(total_days)
+                            # print(list)
+                            ch = check(a,s,start_date,end_date,month)
+                            if(ch==2):
+                                text = "Please fill the rebate of this month only"
+                            elif(ch==0): 
+                                text="You can only apply for max 8 days in a month"                            
                             else:
+                                print(ch)
                                 if((diff)<=7 and diff>=2 and diff2>=2):
                                     r = Rebate(
                                         email=request.user.email,

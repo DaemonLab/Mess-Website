@@ -23,7 +23,7 @@ from home.models import (
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 
-from .resources import StudentResource, AllocationResource,RebateResource
+from .resources import StudentResource, AllocationResource,RebateResource, RebateSpringResource, RebateAutumnResource
 
 #Customising the heading and title of the admin page
 admin.site.site_header = 'Dining Website Admin Page'
@@ -455,7 +455,7 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
 
 @admin.register(RebateAutumnSem)
 class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
-    resource_class  = RebateAutumnSem
+    resource_class  = RebateAutumnResource
     model = RebateAutumnSem
     search_fields = ("email",)
     list_filter = ("email",)
@@ -465,17 +465,17 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    "julyDays",
+                    "july",
                     "highTeaJuly",
-                    "augustDays",
+                    "august",
                     "highTeaAugust",
-                    "septemberDays",
+                    "september",
                     "highTeaSeptember",
-                    "octoberDays",
+                    "october",
                     "highTeaOctober",
-                    "NovemberDays",
+                    "november",
                     "highTeaNovember",
-                    "decemberDays",
+                    "december",
                     "highTeaDecember",
                 ),
 #                "description": "%s" %CONTACT_DESC_TEXT,
@@ -484,7 +484,7 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
     )
     actions = ['export_as_csv']
     def export_as_csv(self, request, queryset):
-        resource = RebateResource()
+        resource = RebateAutumnResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="RebateAutumn.csv"'
@@ -495,7 +495,7 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
 
 @admin.register(RebateSpringSem)
 class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
-    resource_class  = RebateSpringSem
+    resource_class  = RebateSpringResource
     model = RebateSpringSem
     search_fields = ("email",)
     list_filter = ("email",)
@@ -505,17 +505,17 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    "januaryDays",
+                    "january",
                     "highTeaJanuary",
-                    "feburaryDays",
+                    "feburary",
                     "highTeaFeburary",
-                    "marchDays",
+                    "march",
                     "highTeaMarch",
-                    "aprilDays",
+                    "april",
                     "highTeaApril",
-                    "mayDays",
+                    "may",
                     "highTeaMay",
-                    "juneDays",
+                    "june",
                     "highTeaJune",
                 ),
 #                "description": "%s" %CONTACT_DESC_TEXT,
@@ -524,7 +524,7 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
     )
     actions = ['export_as_csv']
     def export_as_csv(self, request, queryset):
-        resource = RebateResource()
+        resource = RebateSpringResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="RebateSpring.csv"'

@@ -3,7 +3,9 @@ from .fields import ForeignKeyField
 from .models import(
     Student,
     Allocation,
-    Rebate
+    Rebate,
+    RebateAutumnSem,
+    RebateSpringSem   
 )
 
 class StudentResource(resources.ModelResource):
@@ -105,3 +107,42 @@ class RebateResource(resources.ModelResource):
                         "start_date",
                         "end_date",
                         "approved",]
+
+
+class RebateSpringResource(resources.ModelResource):
+    class Meta:
+        model = RebateSpringSem
+        exclude='id'
+        import_id_fields = ['email']
+        fields = ("email",
+                    "january",
+                    "highTeaJanuary",
+                    "feburary",
+                    "highTeaFeburary",
+                    "march",
+                    "highTeaMarch",
+                    "april",
+                    "highTeaApril",
+                    "may",
+                    "highTeaMay",
+                    "june",
+                    "highTeaJune",)
+        
+class RebateAutumnResource(resources.ModelResource):
+    class Meta:
+        model = RebateAutumnSem
+        exclude='id'
+        import_id_fields = ['email']
+        fields = ( "email",
+                    "july",
+                    "highTeaJuly",
+                    "august",
+                    "highTeaAugust",
+                    "september",
+                    "highTeaSeptember",
+                    "october",
+                    "highTeaOctober",
+                    "november",
+                    "highTeaNovember",
+                    "december",
+                    "highTeaDecember",)

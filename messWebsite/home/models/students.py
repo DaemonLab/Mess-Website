@@ -73,18 +73,18 @@ class File(models.Model):
     file = models.FileField(upload_to="static/")
 
 class RebateAutumnSem(models.Model):
-    email = models.CharField(max_length=30, default=0)
-    julyDays = models.IntegerField(default=0)
+    email = models.CharField(max_length=30, default="", null=True)
+    july = models.IntegerField(default=0,null=True)
     highTeaJuly = models.BooleanField(default=True)
-    augustDays = models.IntegerField(default=0)
+    august = models.IntegerField(default=0,null=True)
     highTeaAugust = models.BooleanField(default=True)
-    septemberDays = models.IntegerField(default=0)
+    september = models.IntegerField(default=0,null=True)
     highTeaSeptember = models.BooleanField(default=True)
-    octoberDays = models.IntegerField(default=0)
+    october = models.IntegerField(default=0,null=True)
     highTeaOctober = models.BooleanField(default=True)
-    NovemberDays = models.IntegerField(default=0)
+    november = models.IntegerField(default=0,null=True)
     highTeaNovember = models.BooleanField(default=True)
-    decemberDays = models.IntegerField(default=0)
+    december = models.IntegerField(default=0,null=True)
     highTeaDecember = models.BooleanField(default=True)
 
     def __str__(self):
@@ -95,18 +95,18 @@ class RebateAutumnSem(models.Model):
         verbose_name_plural = "Rebate Bills Autumn Semester"
 
 class RebateSpringSem(models.Model):
-    email = models.CharField(max_length=30, default=0)
-    januaryDays = models.IntegerField(default=0)
+    email = models.CharField(max_length=30, default="", null=True)
+    january = models.IntegerField(default=0,null=True)
     highTeaJanuary = models.BooleanField(default=True)
-    feburaryDays = models.IntegerField(default=0)
+    feburary = models.IntegerField(default=0,null=True)
     highTeaFeburary = models.BooleanField(default=True)
-    marchDays = models.IntegerField(default=0)
+    march = models.IntegerField(default=0,null=True)
     highTeaMarch = models.BooleanField(default=True)
-    aprilDays = models.IntegerField(default=0)
+    april = models.IntegerField(default=0,null=True)
     highTeaApril = models.BooleanField(default=True)
-    mayDays = models.IntegerField(default=0)
+    may = models.IntegerField(default=0,null=True)
     highTeaMay = models.BooleanField(default=True)
-    juneDays = models.IntegerField(default=0)
+    june = models.IntegerField(default=0,null=True)
     highTeaJune = models.BooleanField(default=True)
 
     def __str__(self):
