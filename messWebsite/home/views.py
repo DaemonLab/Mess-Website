@@ -110,7 +110,7 @@ def is_present_spring(s):
 
 def check(a,s,start,end,month):
     match month:
-        case "january":
+        case "January":
             student = is_present_spring(s)
             student.january = count(start,end,student.january)
             student.highTeaJanuary = a.high_tea
@@ -121,7 +121,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "feburary":
+        case "Feburary":
             student = is_present_spring(s)
             student.feburary = count(start,end,student.feburary)
             student.highTeaFeburary = a.high_tea
@@ -132,7 +132,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "march":
+        case "March":
             student = is_present_spring(s)
             student.march = count(start,end,student.march)
             student.highTeaMarch = a.high_tea
@@ -143,7 +143,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "april":
+        case "April":
             student = is_present_spring(s)
             student.april = count(start,end,student.april)
             student.highTeaApril = a.high_tea
@@ -154,7 +154,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return False
-        case "may":
+        case "May":
             student = is_present_spring(s)
             student.may = count(start,end,student.may)
             student.highTeaMay = a.high_tea
@@ -165,7 +165,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "june":
+        case "June":
             student = is_present_spring(s)
             student.june = count(start,end,student.june)
             student.highTeaJune = a.high_tea
@@ -176,7 +176,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "july":
+        case "July":
             student = is_present_autumn(s)
             student.july = count(start,end,student.july)
             student.highTeaJuly = a.high_tea
@@ -187,7 +187,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "august":
+        case "August":
             student = is_present_autumn(s)
             student.august = count(start,end,student.august)
             student.highTeaAugust == a.high_tea
@@ -198,7 +198,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "september":
+        case "September":
             student = is_present_autumn(s)
             student.september = count(start,end,student.september)
             student.highTeaSeptember = a.high_tea
@@ -209,7 +209,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "october":
+        case "October":
             student = is_present_autumn(s)
             student.october = count(start,end,student.october)
             student.highTeaOctober = a.high_tea
@@ -220,7 +220,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "november":
+        case "November":
             student = is_present_autumn(s)
             student.november = count(start,end,student.november)
             student.highTeaNovember = a.high_tea
@@ -231,7 +231,7 @@ def check(a,s,start,end,month):
                 return 2
             else:
                 return 0
-        case "december":
+        case "December":
             student = is_present_autumn(s)
             student.december = count(start,end,student.december)
             student.highTeaDecember = a.high_tea
@@ -254,7 +254,7 @@ def rebate(request):
     except Allocation.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"
     except Allocation.MultipleObjectsReturned:
-        allocation_id = Allocation.objects.filter(roll_no__email = str(request.user.email)).first()
+        allocation_id = Allocation.objects.filter(roll_no__email = str(request.user.email)).last()
         key = str(allocation_id.student_id)
     if request.method =='POST' and request.user.is_authenticated:
             try:
@@ -264,7 +264,7 @@ def rebate(request):
                     diff = ((end_date-start_date).days)+1
                     diff2 = (start_date-datetime.date.today()).days
                     try:
-                        Allocation.objects.get(student_id = request.POST['allocation_id'])
+                        Allocation.objects.filter(student_id = request.POST['allocation_id']).last()
                         try:
                             a=Allocation.objects.get(roll_no__email = str(request.user.email), student_id = request.POST['allocation_id'])
                             s=Student.objects.filter(email = str(request.user.email)).first()
