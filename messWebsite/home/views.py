@@ -8,6 +8,7 @@ import io
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.dateparse import parse_date
 from django.core.exceptions import MultipleObjectsReturned
+
 # Create your views here.
 def home(request):
     aboutInfo=About.objects.all()
@@ -305,71 +306,75 @@ def rebate(request):
 
 
 
-class allocation(TemplateView):
-    template_name = 'allocation.html'
-    def post(self, request):
-        context = {
-            'messages':[],
-        }
-        if request.user.is_authenticated and request.user.is_staff :
-            csv = request.FILES['csv']
-            csv_data = pd.read_csv(
-                io.StringIO(
-                    csv.read().decode("utf-8")
-                )
+def allocation(request):
+    messages=""
+    if request.method =='POST'and request.user.is_authenticated and request.user.is_staff :
+        csv = request.FILES['csv']
+        csv_data = pd.read_csv(
+            io.StringIO(
+                csv.read().decode("utf-8")
             )
-            print(csv_data.head())
-      
-            for record in csv_data.to_dict(orient="records"):
-                try:
-                    first_pref = str(record["first_pref"]).capitalize()
-                    second_pref = str(record["second_pref"]).capitalize()
-                    third_pref = str(record["third_pref"]).capitalize()
-                    high_tea = record["high_tea"]
-                    r = Student.objects.get(roll_no = record["roll_no"])    
-                    print(r)
-                    print("hi1")
-                    for pref in [first_pref,second_pref,third_pref]:
-                        kanaka = Caterer.objects.get(name = "Kanaka")
-                        ajay = Caterer.objects.get(name = "Ajay")
-                        gauri = Caterer.objects.get(name = "Gauri")
-                        if(pref == kanaka.name and kanaka.student_limit>0):
-                            student_id=str(kanaka.name[0])
-                            if(high_tea==True): student_id+="H"
-                            student_id+=str(kanaka.student_limit) 
-                            caterer_name = kanaka.name
-                            kanaka.student_limit-=1
-                            kanaka.save(update_fields=["student_limit"])
-                            break 
-                        elif(pref == ajay.name and ajay.student_limit>0):
-                            student_id=str(ajay.name[0])
-                            if(high_tea==True): student_id+="H"
-                            student_id+=str(ajay.student_limit) 
-                            caterer_name = ajay.name
-                            ajay.student_limit-=1
-                            ajay.save(update_fields=["student_limit"])
-                            break
-                        elif(pref == gauri.name and gauri.student_limit>0):
-                            student_id=str(gauri.name[0])
-                            if(high_tea==True): student_id+="H"
-                            student_id+=str(gauri.student_limit) 
-                            caterer_name = gauri.name
-                            gauri.student_limit-=1
-                            gauri.save(update_fields=["student_limit"])
-                            break
-                    a = Allocation(
-                        roll_no = r,
-                        student_id = student_id,
-                        month = record["month"],
-                        caterer_name = caterer_name,
-                        high_tea = high_tea,
-                        first_pref = first_pref,
-                        second_pref = second_pref,
-                        third_pref = third_pref
-                    )
-                    a.save()
-                except Exception as e:
-                    context['exceptions_raised'] = e
-                    print(e)  
-            messages="Form submitted. Please check the admin page."              
-        return render(request, self.template_name, context)
+        )
+        print(csv_data.head())
+    
+        for record in csv_data.to_dict(orient="records"):
+            try:
+                first_pref = str(record["first_pref"]).capitalize()
+                second_pref = str(record["second_pref"]).capitalize()
+                third_pref = str(record["third_pref"]).capitalize()
+                high_tea = record["high_tea"]
+                r = Student.objects.get(roll_no = record["roll_no"])    
+                print(r)
+                print("hi1")
+                for pref in [first_pref,second_pref,third_pref]:
+                    kanaka = Caterer.objects.get(name = "Kanaka")
+                    ajay = Caterer.objects.get(name = "Ajay")
+                    gauri = Caterer.objects.get(name = "Gauri")
+                    if(pref == kanaka.name and kanaka.student_limit>0):
+                        student_id=str(kanaka.name[0])
+                        if(high_tea==True): student_id+="H"
+                        student_id+=str(kanaka.student_limit) 
+                        caterer_name = kanaka.name
+                        kanaka.student_limit-=1
+                        kanaka.save(update_fields=["student_limit"])
+                        break 
+                    elif(pref == ajay.name and ajay.student_limit>0):
+                        student_id=str(ajay.name[0])
+                        if(high_tea==True): student_id+="H"
+                        student_id+=str(ajay.student_limit) 
+                        caterer_name = ajay.name
+                        ajay.student_limit-=1
+                        ajay.save(update_fields=["student_limit"])
+                        break
+                    elif(pref == gauri.name and gauri.student_limit>0):
+                        student_id=str(gauri.name[0])
+                        if(high_tea==True): student_id+="H"
+                        student_id+=str(gauri.student_limit) 
+                        caterer_name = gauri.name
+                        gauri.student_limit-=1
+                        gauri.save(update_fields=["student_limit"])
+                        break
+                a = Allocation(
+                    roll_no = r,
+                    student_id = student_id,
+                    month = record["month"],
+                    caterer_name = caterer_name,
+                    high_tea = high_tea,
+                    first_pref = first_pref,
+                    second_pref = second_pref,
+                    third_pref = third_pref
+                )
+                a.save()
+            except Exception as e:
+                print(e)  
+        messages="Form submitted. Please check the admin page."
+    context={'messages':messages}            
+    return render(request, "allocation.html",context)
+
+
+
+def addAllocation(request):
+    text="hi"
+    caterers={'Kanaka','Gauri','Ajay'}
+    context = {'text': text,'caterers':caterers}
+    return render(request,"addAllocation.html",context)

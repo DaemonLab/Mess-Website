@@ -16,10 +16,10 @@ class StudentResource(resources.ModelResource):
         fields = ('name', 'email','roll_no', "hostel", "room_no", "degree", "department")
 
 class AllocationResource(resources.ModelResource):
-    roll_no = ForeignKeyField(attribute='roll_no', column='roll_no', column_name="Roll No.")
+    roll_no__roll_no = fields.Field(attribute='roll_no__roll_no', column_name="Roll No.")
     roll_no__name = fields.Field(attribute="roll_no__name", column_name="Name")
     roll_no__department = fields.Field(attribute="roll_no__department", column_name="Department")
-    roll_no__degree = fields.Field(attribute="roll_no__degree", column_name="Degree")
+    roll_no__degree = fields.Field(attribute="roll_no__degree", column_name="Academic Program")
     roll_no__hostel = fields.Field(attribute="roll_no__hostel", column_name="Hostel")
     roll_no__room_no = fields.Field(attribute="roll_no__room_no", column_name="Room No.")
     month = fields.Field(attribute="month", column_name="Month")
@@ -32,7 +32,7 @@ class AllocationResource(resources.ModelResource):
 
     class Meta:
         model = Allocation
-        fields = ("roll_no",
+        fields = ("roll_no__roll_no",
                     "roll_no__name",
                     "roll_no__department",
                     "roll_no__degree",
@@ -46,7 +46,7 @@ class AllocationResource(resources.ModelResource):
                     "second_pref",
                     "third_pref")
         
-        export_order = ["roll_no",
+        export_order = ["roll_no__roll_no",
                     "roll_no__name",
                     "roll_no__department",
                     "roll_no__degree",
@@ -61,9 +61,8 @@ class AllocationResource(resources.ModelResource):
                     "third_pref"]
 
 class RebateResource(resources.ModelResource):
-    allocation_id = ForeignKeyField(attribute='allocation_id', column='student_id')
+    allocation_id__student_id  = fields.Field(attribute='allocation_id__student_id', column_name='Allocation ID')
     # def get_approved_value(self, obj):
-
     email = fields.Field(attribute="email", column_name="Email")
     allocation_id__roll_no__name = fields.Field(attribute="allocation_id__roll_no__name", column_name="Name")
     allocation_id__roll_no__roll_no = fields.Field(attribute="allocation_id__roll_no__roll_no", column_name="Roll No.")
@@ -71,7 +70,6 @@ class RebateResource(resources.ModelResource):
     allocation_id__roll_no__degree = fields.Field(attribute="allocation_id__roll_no__degree", column_name="Degree")
     allocation_id__roll_no__hostel = fields.Field(attribute="allocation_id__roll_no__hostel", column_name="Hostel")
     allocation_id__roll_no__room_no = fields.Field(attribute="allocation_id__roll_no__room_no", column_name="Room No.")
-    allocation_id = fields.Field(attribute="allocation_id", column_name="Student ID")
     allocation_id__caterer_name = fields.Field(attribute="allocation_id__caterer_name", column_name="Caterer Alloted")
     allocation_id__high_tea = fields.Field(attribute="allocation_id__high_tea", column_name="High Tea")
     date_applied = fields.Field(attribute="date_applied", column_name="date_applied")
@@ -90,7 +88,7 @@ class RebateResource(resources.ModelResource):
                     "allocation_id__roll_no__room_no",
                     "allocation_id__high_tea",
                     "allocation_id__caterer_name",
-                    "allocation_id",
+                    "allocation_id__student_id",
                     "date_applied",
                     "start_date",
                     "end_date",
@@ -102,7 +100,7 @@ class RebateResource(resources.ModelResource):
                         "allocation_id__roll_no__degree",
                         "allocation_id__roll_no__hostel",
                         "allocation_id__roll_no__room_no",
-                        "allocation_id",
+                        "allocation_id__student_id",
                         "date_applied",
                         "start_date",
                         "end_date",
@@ -114,6 +112,19 @@ class RebateSpringResource(resources.ModelResource):
         model = RebateSpringSem
         exclude='id'
         import_id_fields = ['email']
+        export_order = ["email",
+                    "january",
+                    "highTeaJanuary",
+                    "feburary",
+                    "highTeaFeburary",
+                    "march",
+                    "highTeaMarch",
+                    "april",
+                    "highTeaApril",
+                    "may",
+                    "highTeaMay",
+                    "june",
+                    "highTeaJune",]
         fields = ("email",
                     "january",
                     "highTeaJanuary",
@@ -133,6 +144,19 @@ class RebateAutumnResource(resources.ModelResource):
         model = RebateAutumnSem
         exclude='id'
         import_id_fields = ['email']
+        export_order=["email",
+                    "july",
+                    "highTeaJuly",
+                    "august",
+                    "highTeaAugust",
+                    "september",
+                    "highTeaSeptember",
+                    "october",
+                    "highTeaOctober",
+                    "november",
+                    "highTeaNovember",
+                    "december",
+                    "highTeaDecember",]
         fields = ( "email",
                     "july",
                     "highTeaJuly",

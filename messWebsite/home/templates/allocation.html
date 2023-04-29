@@ -10,7 +10,6 @@
 
 {% block body %}
 <Main class="mb-5 py-3 text-center">
-  {{message}}
 {% if user.is_authenticated and user.is_staff%}
   <p class="m-0">Hello Admin!</p>
   <span>{% trans 'You are logged in as:' %}
@@ -22,6 +21,7 @@
         <input type="file" class="custom-file-input" id="customFile" name="csv" required accept=".csv" size="60">
       <button type="submit" class="btn btn-primary p-2 mb-3" style="background-color: rgb(30, 55, 146);">Submit</button> 
   </form>
+  <div> {{messages}}</div>
 {% else %}
     <h1 class="text-decoration-none">Access to this page is only for Administration. Please login to continue.</h1>
 {% endif %}
