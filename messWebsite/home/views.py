@@ -374,7 +374,45 @@ def allocation(request):
 
 
 def addAllocation(request):
-    text="hi"
-    caterers={'Kanaka','Gauri','Ajay'}
-    context = {'text': text,'caterers':caterers}
+    text=""
+    all_caterers = Caterer.objects.all()
+    available_caterer=[]
+    for caterer in all_caterers:
+        current = Caterer.objects.get(name=caterer.name)
+        if(current.student_limit>0):
+            available_caterer.append(current.name)
+    if request.method =='POST'and request.user.is_authenticated and request.user.is_staff :
+        try:
+            high_tea = "on" in request.POST.getlist("high_tea")
+            student = Student.objects.filter(email = request.POST["email"])
+            if student.exists():
+                student=student.first()
+                caterer=Caterer.objects.get(name=request.POST["caterer"])
+                student_id=str(caterer.name[0])
+                # print(high_tea)
+                if(high_tea==True): student_id+="H"
+                student_id+=str(caterer.student_limit)
+                caterer_name = caterer.name
+                caterer.student_limit-=1
+                caterer.save(update_fields=["student_limit"])
+                month = str(request.POST["month"]).capitalize()
+                a = Allocation(
+                roll_no = student,
+                student_id = student_id,
+                month = month,
+                caterer_name = caterer_name,
+                high_tea = high_tea,
+                first_pref = caterer_name,
+                second_pref = caterer_name,
+                third_pref = caterer_name
+                )
+                a.save()
+                text="Allocation successful with allocation id {}".format(student_id)
+            else:
+                print(1)
+                text="Email is not present in the Database"
+        except Exception as e:
+            print(e)
+            print(12121)
+    context = {'text': text,'caterers':available_caterer}
     return render(request,"addAllocation.html",context)
