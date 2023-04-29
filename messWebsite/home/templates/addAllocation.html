@@ -7,9 +7,9 @@
 {% endblock %} 
 {% block body %}
 <main>
-  <h1 class="m-0 pb-2">Rebate Form</h1>
-  <div class="text-center">
     {% if user.is_authenticated and user.is_staff%}
+    <h1 class="m-0 pb-2">Allocation Form</h1>
+    <div class="text-center">
     <p class="m-0">Hello Admin!</p>
     <span>{% trans 'You are logged in as:' %} {{ user.email}}</span>
     <a class="btn btn-danger" href="{% url 'account_logout' %}">Sign Out</a>
@@ -58,7 +58,9 @@
     >
       Submit
     </button>
-    {% endif %}
+    {% else %}
+    <h1 class="text-decoration-none my-5">Access to this page is only for Administration. Please login to continue.</h1>
+{% endif %}
   </form>
 </main>
 
