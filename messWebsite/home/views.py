@@ -16,11 +16,6 @@ def home(request):
     """
     Display the Home Page :model:`home.models.home`.
 
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.home`.
-
     **Template:**
 
     :template:`home/home.html`
@@ -39,11 +34,6 @@ def home(request):
 def rules(request):
     """
     Display the Rules Page :model:`home.models.rules`.
-
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.rules`.
 
     **Template:**
 
@@ -65,11 +55,6 @@ def caterer(request, name):
     """
     Display the Caterer Page :model:`home.models.caterer`.
 
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.caterer`.
-
     **Template:**
 
     :template:`home/caterer.html`
@@ -83,11 +68,6 @@ def caterer(request, name):
 def links(request):
     """
     Display the Forms Page :model:`home.models.links`.
-
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.links`.
 
     **Template:**
 
@@ -103,11 +83,6 @@ def cafeteria(request):
     """
     Display the Cafeteria Page :model:`home.models.cafeteria`.
 
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.cafeteria`.
-
     **Template:**
 
     :template:`home/cafeteria.html`
@@ -121,11 +96,6 @@ def cafeteria(request):
 def contact(request):
     """
     Display the Contact Page :model:`home.models.contacts`.
-
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.contacts`.
 
     **Template:**
 
@@ -337,19 +307,14 @@ def check(a, s, start, end, month):
 def rebate(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
-
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.students`.
-
-    **Template:**
-
-    :template:`home/rebateForm.html`
-
+    
     Gets the data from the rebate form checks for the validity of the rebate filled, 
     adds the rebte to the rebate model and rebate bills of that semester.
     This form can only be accessed by the Institute community
+
+    **Template:**
+
+    :template:`rebateForm.html`
     """
     text = ""
     list = []
@@ -418,11 +383,6 @@ def rebate(request):
 def allocation(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
-
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.students`.
 
     **Template:**
 
@@ -506,11 +466,6 @@ def allocation(request):
 def addAllocation(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
-
-    **Context**
-
-    ``mymodel``
-        An instance of :model:`home.models.students`.
 
     **Template:**
 
