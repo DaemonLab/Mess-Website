@@ -8,6 +8,17 @@ from .models import(
     RebateSpringSem   
 )
 
+'''
+File-name: resources.py
+Functions: StudentResource
+    AllocationResource
+    RebateResource
+    RebateSpringResource
+    RebateAutumnResource
+Resource defines how objects are mapped to their import and export representations and 
+handle importing and exporting data.
+'''
+
 class StudentResource(resources.ModelResource):
     class Meta:
         model = Student

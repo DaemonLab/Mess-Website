@@ -28,6 +28,9 @@ class LoginRequiredMiddleware:
             return
         
         if (not request.user.is_authenticated) and (not url_is_exempt):
+            '''
+            To check if the user is authenticated, If not redirect it to the google login page
+            '''
             if (request.path =="/rebateForm/"):
                 print(request.path)
                 settings.LOGIN_REDIRECT_URL = request.path
