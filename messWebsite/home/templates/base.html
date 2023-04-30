@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,12 +60,41 @@
           <li class="nav-item">
             <a class="nav-link {% if request.path == links_url %} active {%endif%}" href="/links">Forms</a>
           </li>
-          <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link {% if request.path == cafe_url %} active {%endif%}" href="/cafeteria">Cafeterias</a>
-          </li>
+          </li> {% endcomment %}
           <li class="nav-item ">
             <a class="nav-link {% if request.path == contact_url %} active {%endif%}" href="/contact">Contact</a>
           </li>
+          {% if user.is_authenticated %}
+            {% if user.is_staff%}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Hello Admin
+              </a>
+              <ul class="dropdown-menu me-5" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/allocation/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Allocation</a></li>
+                <li><a class="dropdown-item" href="/addAllocation/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Add Allocation</a></li>
+                <li><a class="dropdown-item" href="/accounts/logout/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Logout</a></li>
+              </ul>
+            </li>
+            {% else %}
+              <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                hello, {{user.first_name}}
+              </a>
+              <ul class="dropdown-menu me-5" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/accounts/logout/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Logout</a></li>
+              </ul>
+            </li>
+            {% endif %}
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/accounts/google/login/">Login</a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>
