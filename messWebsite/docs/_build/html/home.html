@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>home package &mdash; Mess Website 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Mess Website
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">home package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-home.admin">home.admin module</a><ul>
+<li><a class="reference internal" href="#home.admin.about_Admin"><code class="docutils literal notranslate"><span class="pre">about_Admin</span></code></a><ul>
+<li><a class="reference internal" href="#home.admin.about_Admin.actions"><code class="docutils literal notranslate"><span class="pre">about_Admin.actions</span></code></a></li>
+<li><a class="reference internal" href="#home.admin.about_Admin.export_as_csv"><code class="docutils literal notranslate"><span class="pre">about_Admin.export_as_csv()</span></code></a></li>
+<li><a class="reference internal" href="#home.admin.about_Admin.fieldsets"><code class="docutils literal notranslate"><span class="pre">about_Admin.fieldsets</span></code></a></li>
+<li><a class="reference internal" href="#home.admin.about_Admin.list_filter"><code class="docutils literal notranslate"><span class="pre">about_Admin.list_filter</span></code></a></li>
+<li><a class="reference internal" href="#home.admin.about_Admin.media"><code class="docutils literal notranslate"><span class="pre">about_Admin.media</span></code></a></li>
+<li><a class="reference internal" href="#home.admin.about_Admin.model"><code class="docutils literal notranslate"><span class="pre">about_Admin.model</span></code></a></li>
+<li><a class="reference internal" href="#home.admin.about_Admin.resource_class"><code class="docutils literal notranslate"><span class="pre">about_Admin.resource_class</span></code></a></li>
+<li><a class="reference internal" href="#home.admin.about_Admin.search_fields"><code class="docutils literal notranslate"><span class="pre">about_Admin.search_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-home.apps">home.apps module</a><ul>
+<li><a class="reference internal" href="#home.apps.HomeConfig"><code class="docutils literal notranslate"><span class="pre">HomeConfig</span></code></a><ul>
+<li><a class="reference internal" href="#home.apps.HomeConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">HomeConfig.default_auto_field</span></code></a></li>
+<li><a class="reference internal" href="#home.apps.HomeConfig.name"><code class="docutils literal notranslate"><span class="pre">HomeConfig.name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-home.context_processors">home.context_processors module</a><ul>
+<li><a class="reference internal" href="#home.context_processors.base"><code class="docutils literal notranslate"><span class="pre">base()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-home.fields">home.fields module</a><ul>
+<li><a class="reference internal" href="#home.fields.ForeignKeyField"><code class="docutils literal notranslate"><span class="pre">ForeignKeyField</span></code></a><ul>
+<li><a class="reference internal" href="#home.fields.ForeignKeyField.clean"><code class="docutils literal notranslate"><span class="pre">ForeignKeyField.clean()</span></code></a></li>
+<li><a class="reference internal" href="#home.fields.ForeignKeyField.export"><code class="docutils literal notranslate"><span class="pre">ForeignKeyField.export()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-home.resources">home.resources module</a><ul>
+<li><a class="reference internal" href="#home.resources.AllocationResource"><code class="docutils literal notranslate"><span class="pre">AllocationResource</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.AllocationResource.Meta"><code class="docutils literal notranslate"><span class="pre">AllocationResource.Meta</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.AllocationResource.Meta.export_order"><code class="docutils literal notranslate"><span class="pre">AllocationResource.Meta.export_order</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.AllocationResource.Meta.fields"><code class="docutils literal notranslate"><span class="pre">AllocationResource.Meta.fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.AllocationResource.Meta.model"><code class="docutils literal notranslate"><span class="pre">AllocationResource.Meta.model</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.AllocationResource.fields"><code class="docutils literal notranslate"><span class="pre">AllocationResource.fields</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource.Meta"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource.Meta</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource.Meta.exclude"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource.Meta.exclude</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource.Meta.export_order"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource.Meta.export_order</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource.Meta.fields"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource.Meta.fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource.Meta.import_id_fields"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource.Meta.import_id_fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource.Meta.model"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource.Meta.model</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.RebateAutumnResource.fields"><code class="docutils literal notranslate"><span class="pre">RebateAutumnResource.fields</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.RebateResource"><code class="docutils literal notranslate"><span class="pre">RebateResource</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.RebateResource.Meta"><code class="docutils literal notranslate"><span class="pre">RebateResource.Meta</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.RebateResource.Meta.export_order"><code class="docutils literal notranslate"><span class="pre">RebateResource.Meta.export_order</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateResource.Meta.fields"><code class="docutils literal notranslate"><span class="pre">RebateResource.Meta.fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateResource.Meta.model"><code class="docutils literal notranslate"><span class="pre">RebateResource.Meta.model</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.RebateResource.fields"><code class="docutils literal notranslate"><span class="pre">RebateResource.fields</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource.Meta"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource.Meta</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource.Meta.exclude"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource.Meta.exclude</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource.Meta.export_order"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource.Meta.export_order</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource.Meta.fields"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource.Meta.fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource.Meta.import_id_fields"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource.Meta.import_id_fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource.Meta.model"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource.Meta.model</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.RebateSpringResource.fields"><code class="docutils literal notranslate"><span class="pre">RebateSpringResource.fields</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.StudentResource"><code class="docutils literal notranslate"><span class="pre">StudentResource</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.StudentResource.Meta"><code class="docutils literal notranslate"><span class="pre">StudentResource.Meta</span></code></a><ul>
+<li><a class="reference internal" href="#home.resources.StudentResource.Meta.exclude"><code class="docutils literal notranslate"><span class="pre">StudentResource.Meta.exclude</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.StudentResource.Meta.fields"><code class="docutils literal notranslate"><span class="pre">StudentResource.Meta.fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.StudentResource.Meta.import_id_fields"><code class="docutils literal notranslate"><span class="pre">StudentResource.Meta.import_id_fields</span></code></a></li>
+<li><a class="reference internal" href="#home.resources.StudentResource.Meta.model"><code class="docutils literal notranslate"><span class="pre">StudentResource.Meta.model</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#home.resources.StudentResource.fields"><code class="docutils literal notranslate"><span class="pre">StudentResource.fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-home.tests">home.tests module</a></li>
+<li><a class="reference internal" href="#module-home.urls">home.urls module</a></li>
+<li><a class="reference internal" href="#module-home.views">home.views module</a><ul>
+<li><a class="reference internal" href="#home.views.addAllocation"><code class="docutils literal notranslate"><span class="pre">addAllocation()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.allocation"><code class="docutils literal notranslate"><span class="pre">allocation()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.cafeteria"><code class="docutils literal notranslate"><span class="pre">cafeteria()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.caterer"><code class="docutils literal notranslate"><span class="pre">caterer()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.contact"><code class="docutils literal notranslate"><span class="pre">contact()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.count"><code class="docutils literal notranslate"><span class="pre">count()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.home"><code class="docutils literal notranslate"><span class="pre">home()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.is_present_autumn"><code class="docutils literal notranslate"><span class="pre">is_present_autumn()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.is_present_spring"><code class="docutils literal notranslate"><span class="pre">is_present_spring()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.links"><code class="docutils literal notranslate"><span class="pre">links()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.rebate"><code class="docutils literal notranslate"><span class="pre">rebate()</span></code></a></li>
+<li><a class="reference internal" href="#home.views.rules"><code class="docutils literal notranslate"><span class="pre">rules()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-home">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mess Website</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">home package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/home.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="home-package">
+<h1>home package<a class="headerlink" href="#home-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="home.models.html">home.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models.cafeteria">home.models.cafeteria module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria"><code class="docutils literal notranslate"><span class="pre">Cafeteria</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Cafeteria.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Cafeteria.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.contact"><code class="docutils literal notranslate"><span class="pre">Cafeteria.contact</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.id"><code class="docutils literal notranslate"><span class="pre">Cafeteria.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.image"><code class="docutils literal notranslate"><span class="pre">Cafeteria.image</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.name"><code class="docutils literal notranslate"><span class="pre">Cafeteria.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.objects"><code class="docutils literal notranslate"><span class="pre">Cafeteria.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.cafeteria.Cafeteria.poc"><code class="docutils literal notranslate"><span class="pre">Cafeteria.poc</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models.caterer">home.models.caterer module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer"><code class="docutils literal notranslate"><span class="pre">Caterer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Caterer.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Caterer.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.id"><code class="docutils literal notranslate"><span class="pre">Caterer.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.lower_description"><code class="docutils literal notranslate"><span class="pre">Caterer.lower_description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.name"><code class="docutils literal notranslate"><span class="pre">Caterer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.objects"><code class="docutils literal notranslate"><span class="pre">Caterer.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.sheet_url"><code class="docutils literal notranslate"><span class="pre">Caterer.sheet_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.student_limit"><code class="docutils literal notranslate"><span class="pre">Caterer.student_limit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.caterer.Caterer.upper_description"><code class="docutils literal notranslate"><span class="pre">Caterer.upper_description</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models.contacts">home.models.contacts module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.contacts.Contact"><code class="docutils literal notranslate"><span class="pre">Contact</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Contact.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Contact.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.contact"><code class="docutils literal notranslate"><span class="pre">Contact.contact</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.email"><code class="docutils literal notranslate"><span class="pre">Contact.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.hostel_sec"><code class="docutils literal notranslate"><span class="pre">Contact.hostel_sec</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.id"><code class="docutils literal notranslate"><span class="pre">Contact.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.name"><code class="docutils literal notranslate"><span class="pre">Contact.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.objects"><code class="docutils literal notranslate"><span class="pre">Contact.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.contacts.Contact.occupation"><code class="docutils literal notranslate"><span class="pre">Contact.occupation</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models.home">home.models.home module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.home.About"><code class="docutils literal notranslate"><span class="pre">About</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.About.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">About.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.About.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">About.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.About.description"><code class="docutils literal notranslate"><span class="pre">About.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.About.id"><code class="docutils literal notranslate"><span class="pre">About.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.About.objects"><code class="docutils literal notranslate"><span class="pre">About.objects</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.home.Carousel"><code class="docutils literal notranslate"><span class="pre">Carousel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Carousel.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Carousel.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Carousel.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Carousel.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Carousel.id"><code class="docutils literal notranslate"><span class="pre">Carousel.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Carousel.image"><code class="docutils literal notranslate"><span class="pre">Carousel.image</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Carousel.objects"><code class="docutils literal notranslate"><span class="pre">Carousel.objects</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.home.Photos"><code class="docutils literal notranslate"><span class="pre">Photos</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Photos.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Photos.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Photos.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Photos.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Photos.id"><code class="docutils literal notranslate"><span class="pre">Photos.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Photos.image"><code class="docutils literal notranslate"><span class="pre">Photos.image</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Photos.objects"><code class="docutils literal notranslate"><span class="pre">Photos.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Photos.occupation"><code class="docutils literal notranslate"><span class="pre">Photos.occupation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Photos.poc"><code class="docutils literal notranslate"><span class="pre">Photos.poc</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.home.Update"><code class="docutils literal notranslate"><span class="pre">Update</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Update.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Update.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.get_next_by_time_stamp"><code class="docutils literal notranslate"><span class="pre">Update.get_next_by_time_stamp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.get_previous_by_time_stamp"><code class="docutils literal notranslate"><span class="pre">Update.get_previous_by_time_stamp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.id"><code class="docutils literal notranslate"><span class="pre">Update.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.objects"><code class="docutils literal notranslate"><span class="pre">Update.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.time_stamp"><code class="docutils literal notranslate"><span class="pre">Update.time_stamp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.home.Update.update"><code class="docutils literal notranslate"><span class="pre">Update.update</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models.links">home.models.links module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.links.Form"><code class="docutils literal notranslate"><span class="pre">Form</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.links.Form.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Form.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.links.Form.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Form.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.links.Form.description"><code class="docutils literal notranslate"><span class="pre">Form.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.links.Form.heading"><code class="docutils literal notranslate"><span class="pre">Form.heading</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.links.Form.id"><code class="docutils literal notranslate"><span class="pre">Form.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.links.Form.objects"><code class="docutils literal notranslate"><span class="pre">Form.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.links.Form.url"><code class="docutils literal notranslate"><span class="pre">Form.url</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models.rules">home.models.rules module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.rules.LongRebate"><code class="docutils literal notranslate"><span class="pre">LongRebate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.LongRebate.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">LongRebate.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.LongRebate.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">LongRebate.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.LongRebate.id"><code class="docutils literal notranslate"><span class="pre">LongRebate.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.LongRebate.objects"><code class="docutils literal notranslate"><span class="pre">LongRebate.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.LongRebate.rule"><code class="docutils literal notranslate"><span class="pre">LongRebate.rule</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.rules.Penalty"><code class="docutils literal notranslate"><span class="pre">Penalty</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Penalty.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Penalty.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Penalty.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Penalty.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Penalty.id"><code class="docutils literal notranslate"><span class="pre">Penalty.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Penalty.objects"><code class="docutils literal notranslate"><span class="pre">Penalty.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Penalty.penalty"><code class="docutils literal notranslate"><span class="pre">Penalty.penalty</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.rules.Rule"><code class="docutils literal notranslate"><span class="pre">Rule</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Rule.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Rule.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Rule.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Rule.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Rule.objects"><code class="docutils literal notranslate"><span class="pre">Rule.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Rule.rule"><code class="docutils literal notranslate"><span class="pre">Rule.rule</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.Rule.sno"><code class="docutils literal notranslate"><span class="pre">Rule.sno</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate"><code class="docutils literal notranslate"><span class="pre">ShortRebate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">ShortRebate.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.Memebers"><code class="docutils literal notranslate"><span class="pre">ShortRebate.Memebers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">ShortRebate.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.biling"><code class="docutils literal notranslate"><span class="pre">ShortRebate.biling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.circulation"><code class="docutils literal notranslate"><span class="pre">ShortRebate.circulation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.desc"><code class="docutils literal notranslate"><span class="pre">ShortRebate.desc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.id"><code class="docutils literal notranslate"><span class="pre">ShortRebate.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.infoToCaterer"><code class="docutils literal notranslate"><span class="pre">ShortRebate.infoToCaterer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.link"><code class="docutils literal notranslate"><span class="pre">ShortRebate.link</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.note"><code class="docutils literal notranslate"><span class="pre">ShortRebate.note</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.objects"><code class="docutils literal notranslate"><span class="pre">ShortRebate.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.rules.ShortRebate.policy"><code class="docutils literal notranslate"><span class="pre">ShortRebate.policy</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models.students">home.models.students module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.students.Allocation"><code class="docutils literal notranslate"><span class="pre">Allocation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Allocation.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Allocation.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.allocation_id"><code class="docutils literal notranslate"><span class="pre">Allocation.allocation_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.caterer_name"><code class="docutils literal notranslate"><span class="pre">Allocation.caterer_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.first_pref"><code class="docutils literal notranslate"><span class="pre">Allocation.first_pref</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.high_tea"><code class="docutils literal notranslate"><span class="pre">Allocation.high_tea</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.id"><code class="docutils literal notranslate"><span class="pre">Allocation.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.month"><code class="docutils literal notranslate"><span class="pre">Allocation.month</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.objects"><code class="docutils literal notranslate"><span class="pre">Allocation.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.roll_no"><code class="docutils literal notranslate"><span class="pre">Allocation.roll_no</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.roll_no_id"><code class="docutils literal notranslate"><span class="pre">Allocation.roll_no_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.scan_set"><code class="docutils literal notranslate"><span class="pre">Allocation.scan_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.second_pref"><code class="docutils literal notranslate"><span class="pre">Allocation.second_pref</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.student_id"><code class="docutils literal notranslate"><span class="pre">Allocation.student_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Allocation.third_pref"><code class="docutils literal notranslate"><span class="pre">Allocation.third_pref</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.students.Rebate"><code class="docutils literal notranslate"><span class="pre">Rebate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Rebate.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Rebate.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.allocation_id"><code class="docutils literal notranslate"><span class="pre">Rebate.allocation_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.allocation_id_id"><code class="docutils literal notranslate"><span class="pre">Rebate.allocation_id_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.approved"><code class="docutils literal notranslate"><span class="pre">Rebate.approved</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.date_applied"><code class="docutils literal notranslate"><span class="pre">Rebate.date_applied</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.email"><code class="docutils literal notranslate"><span class="pre">Rebate.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.end_date"><code class="docutils literal notranslate"><span class="pre">Rebate.end_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.get_next_by_date_applied"><code class="docutils literal notranslate"><span class="pre">Rebate.get_next_by_date_applied()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.get_next_by_end_date"><code class="docutils literal notranslate"><span class="pre">Rebate.get_next_by_end_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.get_next_by_start_date"><code class="docutils literal notranslate"><span class="pre">Rebate.get_next_by_start_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.get_previous_by_date_applied"><code class="docutils literal notranslate"><span class="pre">Rebate.get_previous_by_date_applied()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.get_previous_by_end_date"><code class="docutils literal notranslate"><span class="pre">Rebate.get_previous_by_end_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.get_previous_by_start_date"><code class="docutils literal notranslate"><span class="pre">Rebate.get_previous_by_start_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.id"><code class="docutils literal notranslate"><span class="pre">Rebate.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.objects"><code class="docutils literal notranslate"><span class="pre">Rebate.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Rebate.start_date"><code class="docutils literal notranslate"><span class="pre">Rebate.start_date</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.NovemberBill"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.NovemberBill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.august"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.august</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.augustBill"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.augustBill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.december"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.december</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.decemberBill"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.decemberBill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.email"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.highTeaAugust"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.highTeaAugust</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.highTeaDecember"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.highTeaDecember</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.highTeaJuly"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.highTeaJuly</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.highTeaNovember"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.highTeaNovember</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.highTeaOctober"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.highTeaOctober</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.highTeaSeptember"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.highTeaSeptember</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.id"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.july"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.july</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.julyBill"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.julyBill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.november"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.november</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.objects"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.october"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.october</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.octoberBill"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.octoberBill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.september"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.september</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem.septemberBill"><code class="docutils literal notranslate"><span class="pre">RebateAutumnSem.septemberBill</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.april"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.april</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.email"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.feburary"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.feburary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.highTeaApril"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.highTeaApril</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.highTeaFeburary"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.highTeaFeburary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.highTeaJanuary"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.highTeaJanuary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.highTeaJune"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.highTeaJune</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.highTeaMarch"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.highTeaMarch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.highTeaMay"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.highTeaMay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.id"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.january"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.january</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.june"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.june</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.march"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.march</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.may"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.may</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem.objects"><code class="docutils literal notranslate"><span class="pre">RebateSpringSem.objects</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.students.Scan"><code class="docutils literal notranslate"><span class="pre">Scan</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Scan.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Scan.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.breakfast"><code class="docutils literal notranslate"><span class="pre">Scan.breakfast</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.date"><code class="docutils literal notranslate"><span class="pre">Scan.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.dinner"><code class="docutils literal notranslate"><span class="pre">Scan.dinner</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.get_next_by_date"><code class="docutils literal notranslate"><span class="pre">Scan.get_next_by_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.get_previous_by_date"><code class="docutils literal notranslate"><span class="pre">Scan.get_previous_by_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.high_tea"><code class="docutils literal notranslate"><span class="pre">Scan.high_tea</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.id"><code class="docutils literal notranslate"><span class="pre">Scan.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.lunch"><code class="docutils literal notranslate"><span class="pre">Scan.lunch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.objects"><code class="docutils literal notranslate"><span class="pre">Scan.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.student_id"><code class="docutils literal notranslate"><span class="pre">Scan.student_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Scan.student_id_id"><code class="docutils literal notranslate"><span class="pre">Scan.student_id_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="home.models.html#home.models.students.Student"><code class="docutils literal notranslate"><span class="pre">Student</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Student.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Student.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.allocation_set"><code class="docutils literal notranslate"><span class="pre">Student.allocation_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.degree"><code class="docutils literal notranslate"><span class="pre">Student.degree</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.department"><code class="docutils literal notranslate"><span class="pre">Student.department</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.email"><code class="docutils literal notranslate"><span class="pre">Student.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.hostel"><code class="docutils literal notranslate"><span class="pre">Student.hostel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.id"><code class="docutils literal notranslate"><span class="pre">Student.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.name"><code class="docutils literal notranslate"><span class="pre">Student.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.objects"><code class="docutils literal notranslate"><span class="pre">Student.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.roll_no"><code class="docutils literal notranslate"><span class="pre">Student.roll_no</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="home.models.html#home.models.students.Student.room_no"><code class="docutils literal notranslate"><span class="pre">Student.room_no</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="home.models.html#module-home.models">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-home.admin">
+<span id="home-admin-module"></span><h2>home.admin module<a class="headerlink" href="#module-home.admin" title="Permalink to this heading"></a></h2>
+<p>File-name: admin.py
+This file is registers the models on the adming page and customizes the admin page
+For more information please see: <a class="reference external" href="https://docs.djangoproject.com/en/4.1/ref/contrib/admin/">https://docs.djangoproject.com/en/4.1/ref/contrib/admin/</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.admin.about_Admin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.admin.</span></span><span class="sig-name descname"><span class="pre">about_Admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.admin.about_Admin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportExportModelAdmin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.admin.about_Admin.actions">
+<span class="sig-name descname"><span class="pre">actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['export_as_csv']</span></em><a class="headerlink" href="#home.admin.about_Admin.actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="home.admin.about_Admin.export_as_csv">
+<span class="sig-name descname"><span class="pre">export_as_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.admin.about_Admin.export_as_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Export action available in the admin page</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.admin.about_Admin.fieldsets">
+<span class="sig-name descname"><span class="pre">fieldsets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">((None,</span> <span class="pre">{'fields':</span> <span class="pre">('email',</span> <span class="pre">'january',</span> <span class="pre">'highTeaJanuary',</span> <span class="pre">'feburary',</span> <span class="pre">'highTeaFeburary',</span> <span class="pre">'march',</span> <span class="pre">'highTeaMarch',</span> <span class="pre">'april',</span> <span class="pre">'highTeaApril',</span> <span class="pre">'may',</span> <span class="pre">'highTeaMay',</span> <span class="pre">'june',</span> <span class="pre">'highTeaJune'),</span> <span class="pre">'description':</span> <span class="pre">'This</span> <span class="pre">contains</span> <span class="pre">the</span> <span class="pre">rebate</span> <span class="pre">bills</span> <span class="pre">of</span> <span class="pre">each</span> <span class="pre">students.'}),)</span></em><a class="headerlink" href="#home.admin.about_Admin.fieldsets" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.admin.about_Admin.list_filter">
+<span class="sig-name descname"><span class="pre">list_filter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('email',)</span></em><a class="headerlink" href="#home.admin.about_Admin.list_filter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="home.admin.about_Admin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#home.admin.about_Admin.media" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.admin.about_Admin.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#home.admin.about_Admin.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem" title="home.models.students.RebateSpringSem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RebateSpringSem</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.admin.about_Admin.resource_class">
+<span class="sig-name descname"><span class="pre">resource_class</span></span><a class="headerlink" href="#home.admin.about_Admin.resource_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#home.resources.RebateSpringResource" title="home.resources.RebateSpringResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">RebateSpringResource</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.admin.about_Admin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('email',)</span></em><a class="headerlink" href="#home.admin.about_Admin.search_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-home.apps">
+<span id="home-apps-module"></span><h2>home.apps module<a class="headerlink" href="#module-home.apps" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.apps.HomeConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.apps.</span></span><span class="sig-name descname"><span class="pre">HomeConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.apps.HomeConfig" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.apps.HomeConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#home.apps.HomeConfig.default_auto_field" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.apps.HomeConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'home'</span></em><a class="headerlink" href="#home.apps.HomeConfig.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-home.context_processors">
+<span id="home-context-processors-module"></span><h2>home.context_processors module<a class="headerlink" href="#module-home.context_processors" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="home.context_processors.base">
+<span class="sig-prename descclassname"><span class="pre">home.context_processors.</span></span><span class="sig-name descname"><span class="pre">base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.context_processors.base" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-home.fields">
+<span id="home-fields-module"></span><h2>home.fields module<a class="headerlink" href="#module-home.fields" title="Permalink to this heading"></a></h2>
+<p>File-name: fields.py
+Functions: ForeignKeyField
+This file is now redundant as now resource.py doesn’t use it anymorehe</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.fields.ForeignKeyField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.fields.</span></span><span class="sig-name descname"><span class="pre">ForeignKeyField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'__str__'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.fields.ForeignKeyField" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></p>
+<p>This method is called from the resource.py file to get the string name of the foreign key field in that model</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="home.fields.ForeignKeyField.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.fields.ForeignKeyField.clean" title="Permalink to this definition"></a></dt>
+<dd><p>Translates the value stored in the imported datasource to an
+appropriate Python object and returns it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="home.fields.ForeignKeyField.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.fields.ForeignKeyField.export" title="Permalink to this definition"></a></dt>
+<dd><p>Returns value from the provided object converted to export
+representation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-home.resources">
+<span id="home-resources-module"></span><h2>home.resources module<a class="headerlink" href="#module-home.resources" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.AllocationResource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.resources.</span></span><span class="sig-name descname"><span class="pre">AllocationResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.resources.AllocationResource" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelResource</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.AllocationResource.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#home.resources.AllocationResource.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.AllocationResource.Meta.export_order">
+<span class="sig-name descname"><span class="pre">export_order</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['roll_no__roll_no',</span> <span class="pre">'roll_no__name',</span> <span class="pre">'roll_no__department',</span> <span class="pre">'roll_no__degree',</span> <span class="pre">'roll_no__hostel',</span> <span class="pre">'roll_no__room_no',</span> <span class="pre">'month',</span> <span class="pre">'student_id',</span> <span class="pre">'caterer_name',</span> <span class="pre">'high_tea',</span> <span class="pre">'first_pref',</span> <span class="pre">'second_pref',</span> <span class="pre">'third_pref']</span></em><a class="headerlink" href="#home.resources.AllocationResource.Meta.export_order" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.AllocationResource.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('roll_no__roll_no',</span> <span class="pre">'roll_no__name',</span> <span class="pre">'roll_no__department',</span> <span class="pre">'roll_no__degree',</span> <span class="pre">'roll_no__hostel',</span> <span class="pre">'roll_no__room_no',</span> <span class="pre">'month',</span> <span class="pre">'student_id',</span> <span class="pre">'caterer_name',</span> <span class="pre">'high_tea',</span> <span class="pre">'first_pref',</span> <span class="pre">'second_pref',</span> <span class="pre">'third_pref')</span></em><a class="headerlink" href="#home.resources.AllocationResource.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.AllocationResource.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#home.resources.AllocationResource.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="home.models.html#home.models.students.Allocation" title="home.models.students.Allocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Allocation</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.AllocationResource.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'caterer_name':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Caterer</span> <span class="pre">Alloted&gt;,</span> <span class="pre">'first_pref':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">First</span> <span class="pre">Preferences&gt;,</span> <span class="pre">'high_tea':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">High</span> <span class="pre">Tea&gt;,</span> <span class="pre">'month':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Month&gt;,</span> <span class="pre">'roll_no__degree':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Academic</span> <span class="pre">Program&gt;,</span> <span class="pre">'roll_no__department':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Department&gt;,</span> <span class="pre">'roll_no__hostel':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Hostel&gt;,</span> <span class="pre">'roll_no__name':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Name&gt;,</span> <span class="pre">'roll_no__roll_no':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Roll</span> <span class="pre">No.&gt;,</span> <span class="pre">'roll_no__room_no':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Room</span> <span class="pre">No.&gt;,</span> <span class="pre">'second_pref':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Second</span> <span class="pre">Preferences&gt;,</span> <span class="pre">'student_id':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Student</span> <span class="pre">ID&gt;,</span> <span class="pre">'third_pref':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Third</span> <span class="pre">Preferences&gt;}</span></em><a class="headerlink" href="#home.resources.AllocationResource.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.resources.</span></span><span class="sig-name descname"><span class="pre">RebateAutumnResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.resources.RebateAutumnResource" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelResource</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#home.resources.RebateAutumnResource.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource.Meta.exclude">
+<span class="sig-name descname"><span class="pre">exclude</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'id'</span></em><a class="headerlink" href="#home.resources.RebateAutumnResource.Meta.exclude" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource.Meta.export_order">
+<span class="sig-name descname"><span class="pre">export_order</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['email',</span> <span class="pre">'july',</span> <span class="pre">'highTeaJuly',</span> <span class="pre">'august',</span> <span class="pre">'highTeaAugust',</span> <span class="pre">'september',</span> <span class="pre">'highTeaSeptember',</span> <span class="pre">'october',</span> <span class="pre">'highTeaOctober',</span> <span class="pre">'november',</span> <span class="pre">'highTeaNovember',</span> <span class="pre">'december',</span> <span class="pre">'highTeaDecember']</span></em><a class="headerlink" href="#home.resources.RebateAutumnResource.Meta.export_order" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('email',</span> <span class="pre">'july',</span> <span class="pre">'highTeaJuly',</span> <span class="pre">'august',</span> <span class="pre">'highTeaAugust',</span> <span class="pre">'september',</span> <span class="pre">'highTeaSeptember',</span> <span class="pre">'october',</span> <span class="pre">'highTeaOctober',</span> <span class="pre">'november',</span> <span class="pre">'highTeaNovember',</span> <span class="pre">'december',</span> <span class="pre">'highTeaDecember')</span></em><a class="headerlink" href="#home.resources.RebateAutumnResource.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource.Meta.import_id_fields">
+<span class="sig-name descname"><span class="pre">import_id_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['email']</span></em><a class="headerlink" href="#home.resources.RebateAutumnResource.Meta.import_id_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#home.resources.RebateAutumnResource.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="home.models.html#home.models.students.RebateAutumnSem" title="home.models.students.RebateAutumnSem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RebateAutumnSem</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateAutumnResource.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'august':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">august&gt;,</span> <span class="pre">'december':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">december&gt;,</span> <span class="pre">'email':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">email&gt;,</span> <span class="pre">'highTeaAugust':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaAugust&gt;,</span> <span class="pre">'highTeaDecember':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaDecember&gt;,</span> <span class="pre">'highTeaJuly':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaJuly&gt;,</span> <span class="pre">'highTeaNovember':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaNovember&gt;,</span> <span class="pre">'highTeaOctober':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaOctober&gt;,</span> <span class="pre">'highTeaSeptember':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaSeptember&gt;,</span> <span class="pre">'july':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">july&gt;,</span> <span class="pre">'november':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">november&gt;,</span> <span class="pre">'october':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">october&gt;,</span> <span class="pre">'september':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">september&gt;}</span></em><a class="headerlink" href="#home.resources.RebateAutumnResource.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.RebateResource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.resources.</span></span><span class="sig-name descname"><span class="pre">RebateResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.resources.RebateResource" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelResource</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.RebateResource.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#home.resources.RebateResource.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateResource.Meta.export_order">
+<span class="sig-name descname"><span class="pre">export_order</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['email',</span> <span class="pre">'allocation_id__roll_no__name',</span> <span class="pre">'allocation_id__roll_no__roll_no',</span> <span class="pre">'allocation_id__roll_no__department',</span> <span class="pre">'allocation_id__roll_no__degree',</span> <span class="pre">'allocation_id__roll_no__hostel',</span> <span class="pre">'allocation_id__roll_no__room_no',</span> <span class="pre">'allocation_id__student_id',</span> <span class="pre">'date_applied',</span> <span class="pre">'start_date',</span> <span class="pre">'end_date',</span> <span class="pre">'approved']</span></em><a class="headerlink" href="#home.resources.RebateResource.Meta.export_order" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateResource.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('email',</span> <span class="pre">'allocation_id__roll_no__name',</span> <span class="pre">'allocation_id__roll_no__roll_no',</span> <span class="pre">'allocation_id__roll_no__department',</span> <span class="pre">'allocation_id__roll_no__degree',</span> <span class="pre">'allocation_id__roll_no__hostel',</span> <span class="pre">'allocation_id__roll_no__room_no',</span> <span class="pre">'allocation_id__high_tea',</span> <span class="pre">'allocation_id__caterer_name',</span> <span class="pre">'allocation_id__student_id',</span> <span class="pre">'date_applied',</span> <span class="pre">'start_date',</span> <span class="pre">'end_date',</span> <span class="pre">'approved')</span></em><a class="headerlink" href="#home.resources.RebateResource.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateResource.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#home.resources.RebateResource.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="home.models.html#home.models.students.Rebate" title="home.models.students.Rebate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rebate</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateResource.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'allocation_id__caterer_name':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Caterer</span> <span class="pre">Alloted&gt;,</span> <span class="pre">'allocation_id__high_tea':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">High</span> <span class="pre">Tea&gt;,</span> <span class="pre">'allocation_id__roll_no__degree':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Degree&gt;,</span> <span class="pre">'allocation_id__roll_no__department':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Department&gt;,</span> <span class="pre">'allocation_id__roll_no__hostel':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Hostel&gt;,</span> <span class="pre">'allocation_id__roll_no__name':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Name&gt;,</span> <span class="pre">'allocation_id__roll_no__roll_no':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Roll</span> <span class="pre">No.&gt;,</span> <span class="pre">'allocation_id__roll_no__room_no':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Room</span> <span class="pre">No.&gt;,</span> <span class="pre">'allocation_id__student_id':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Allocation</span> <span class="pre">ID&gt;,</span> <span class="pre">'approved':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Approved&gt;,</span> <span class="pre">'date_applied':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">date_applied&gt;,</span> <span class="pre">'email':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Email&gt;,</span> <span class="pre">'end_date':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">End</span> <span class="pre">Date&gt;,</span> <span class="pre">'start_date':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">Start</span> <span class="pre">Date&gt;}</span></em><a class="headerlink" href="#home.resources.RebateResource.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.resources.</span></span><span class="sig-name descname"><span class="pre">RebateSpringResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.resources.RebateSpringResource" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelResource</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#home.resources.RebateSpringResource.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource.Meta.exclude">
+<span class="sig-name descname"><span class="pre">exclude</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'id'</span></em><a class="headerlink" href="#home.resources.RebateSpringResource.Meta.exclude" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource.Meta.export_order">
+<span class="sig-name descname"><span class="pre">export_order</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['email',</span> <span class="pre">'january',</span> <span class="pre">'highTeaJanuary',</span> <span class="pre">'feburary',</span> <span class="pre">'highTeaFeburary',</span> <span class="pre">'march',</span> <span class="pre">'highTeaMarch',</span> <span class="pre">'april',</span> <span class="pre">'highTeaApril',</span> <span class="pre">'may',</span> <span class="pre">'highTeaMay',</span> <span class="pre">'june',</span> <span class="pre">'highTeaJune']</span></em><a class="headerlink" href="#home.resources.RebateSpringResource.Meta.export_order" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('email',</span> <span class="pre">'january',</span> <span class="pre">'highTeaJanuary',</span> <span class="pre">'feburary',</span> <span class="pre">'highTeaFeburary',</span> <span class="pre">'march',</span> <span class="pre">'highTeaMarch',</span> <span class="pre">'april',</span> <span class="pre">'highTeaApril',</span> <span class="pre">'may',</span> <span class="pre">'highTeaMay',</span> <span class="pre">'june',</span> <span class="pre">'highTeaJune')</span></em><a class="headerlink" href="#home.resources.RebateSpringResource.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource.Meta.import_id_fields">
+<span class="sig-name descname"><span class="pre">import_id_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['email']</span></em><a class="headerlink" href="#home.resources.RebateSpringResource.Meta.import_id_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#home.resources.RebateSpringResource.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="home.models.html#home.models.students.RebateSpringSem" title="home.models.students.RebateSpringSem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RebateSpringSem</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.RebateSpringResource.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'april':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">april&gt;,</span> <span class="pre">'email':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">email&gt;,</span> <span class="pre">'feburary':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">feburary&gt;,</span> <span class="pre">'highTeaApril':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaApril&gt;,</span> <span class="pre">'highTeaFeburary':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaFeburary&gt;,</span> <span class="pre">'highTeaJanuary':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaJanuary&gt;,</span> <span class="pre">'highTeaJune':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaJune&gt;,</span> <span class="pre">'highTeaMarch':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaMarch&gt;,</span> <span class="pre">'highTeaMay':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">highTeaMay&gt;,</span> <span class="pre">'january':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">january&gt;,</span> <span class="pre">'june':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">june&gt;,</span> <span class="pre">'march':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">march&gt;,</span> <span class="pre">'may':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">may&gt;}</span></em><a class="headerlink" href="#home.resources.RebateSpringResource.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.StudentResource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">home.resources.</span></span><span class="sig-name descname"><span class="pre">StudentResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.resources.StudentResource" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelResource</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="home.resources.StudentResource.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#home.resources.StudentResource.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.StudentResource.Meta.exclude">
+<span class="sig-name descname"><span class="pre">exclude</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'id'</span></em><a class="headerlink" href="#home.resources.StudentResource.Meta.exclude" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.StudentResource.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('name',</span> <span class="pre">'email',</span> <span class="pre">'roll_no',</span> <span class="pre">'hostel',</span> <span class="pre">'room_no',</span> <span class="pre">'degree',</span> <span class="pre">'department')</span></em><a class="headerlink" href="#home.resources.StudentResource.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.StudentResource.Meta.import_id_fields">
+<span class="sig-name descname"><span class="pre">import_id_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'email',</span> <span class="pre">'roll_no',</span> <span class="pre">'hostel',</span> <span class="pre">'room_no',</span> <span class="pre">'degree',</span> <span class="pre">'department']</span></em><a class="headerlink" href="#home.resources.StudentResource.Meta.import_id_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.StudentResource.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#home.resources.StudentResource.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="home.models.html#home.models.students.Student" title="home.models.students.Student"><code class="xref py py-class docutils literal notranslate"><span class="pre">Student</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="home.resources.StudentResource.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'degree':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">degree&gt;,</span> <span class="pre">'department':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">department&gt;,</span> <span class="pre">'email':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">email&gt;,</span> <span class="pre">'hostel':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">hostel&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">name&gt;,</span> <span class="pre">'roll_no':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">roll_no&gt;,</span> <span class="pre">'room_no':</span> <span class="pre">&lt;import_export.fields.Field:</span> <span class="pre">room_no&gt;}</span></em><a class="headerlink" href="#home.resources.StudentResource.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-home.tests">
+<span id="home-tests-module"></span><h2>home.tests module<a class="headerlink" href="#module-home.tests" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-home.urls">
+<span id="home-urls-module"></span><h2>home.urls module<a class="headerlink" href="#module-home.urls" title="Permalink to this heading"></a></h2>
+<p>Mess Website URL Configuration</p>
+<dl class="simple">
+<dt>The <cite>urlpatterns</cite> list routes URLs to views. For more information please see:</dt><dd><p><a class="reference external" href="https://docs.djangoproject.com/en/4.1/topics/http/urls/">https://docs.djangoproject.com/en/4.1/topics/http/urls/</a></p>
+</dd>
+</dl>
+<p>Examples:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Function views (This is used here)</dt><dd><ol class="arabic simple">
+<li><p>Add an import:  from . import views</p></li>
+<li><p>Add a URL to urlpatterns:  path(‘’, views.home, name=’home’)</p></li>
+</ol>
+</dd>
+<dt>Class-based views</dt><dd><ol class="arabic simple">
+<li><p>Add an import:  from other_app.views import Home</p></li>
+<li><p>Add a URL to urlpatterns:  path(‘’, Home.as_view(), name=’home’)</p></li>
+</ol>
+</dd>
+<dt>Including another URLconf </dt><dd><ol class="arabic simple">
+<li><p>Import the include() function: from django.urls import include, path</p></li>
+<li><p>Add a URL to urlpatterns:  path(‘blog/’, include(‘blog.urls’))</p></li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="module-home.views">
+<span id="home-views-module"></span><h2>home.views module<a class="headerlink" href="#module-home.views" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.addAllocation">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">addAllocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.addAllocation" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Rebate Form Page <a href="#id1"><span class="problematic" id="id2">:model:`home.models.students`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id3"><span class="problematic" id="id4">:template:`home/addAllocation.html`</span></a></p>
+<p>Gets the data from the allocation form , and 
+allocates an allocation ID and caterer for that month corresponding to the student with submitted email ID.
+This is for students who did not filled the allocation form
+Allocation data should only be filled 2 days prior to the next month
+This form can only be accessed by the Institute’s admin</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.allocation">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">allocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.allocation" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Rebate Form Page <a href="#id5"><span class="problematic" id="id6">:model:`home.models.students`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id7"><span class="problematic" id="id8">:template:`home/allocation.html`</span></a></p>
+<p>Gets the data from the allocation csv, 
+parses each row and allocates each student an allocation ID and caterer for that month.
+Which can be then exported in the admin page.
+CSV should be imported from /allocation/ url only
+Allocation data should only be filled 2 days prior to the next month
+This form can only be accessed by the Institute’s admin</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.cafeteria">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">cafeteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.cafeteria" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Cafeteria Page <a href="#id9"><span class="problematic" id="id10">:model:`home.models.cafeteria`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id11"><span class="problematic" id="id12">:template:`home/cafeteria.html`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.caterer">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">caterer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.caterer" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Caterer Page <a href="#id13"><span class="problematic" id="id14">:model:`home.models.caterer`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id15"><span class="problematic" id="id16">:template:`home/caterer.html`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.check">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.check" title="Permalink to this definition"></a></dt>
+<dd><p>Checks what month rebate is being applied, 
+if the rebate doesnot exceeds 8 days for that month approves the rebate and 
+adds the rebate to rebate bills</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.contact">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.contact" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Contact Page <a href="#id17"><span class="problematic" id="id18">:model:`home.models.contacts`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id19"><span class="problematic" id="id20">:template:`home/contact.html`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.count">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.count" title="Permalink to this definition"></a></dt>
+<dd><p>Counts the number of days of rebate applied</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.home">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.home" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Home Page <a href="#id21"><span class="problematic" id="id22">:model:`home.models.home`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id23"><span class="problematic" id="id24">:template:`home/home.html`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.is_present_autumn">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">is_present_autumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.is_present_autumn" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if student is registered in the rebate bills of autumn semester, 
+if not the function registers it with that email ID</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.is_present_spring">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">is_present_spring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.is_present_spring" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if student is registered in the rebate bills of spring semester, 
+if not the function registers it with that email ID</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.links">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.links" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Forms Page <a href="#id25"><span class="problematic" id="id26">:model:`home.models.links`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id27"><span class="problematic" id="id28">:template:`home/links.html`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.rebate">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">rebate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.rebate" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Rebate Form Page <a href="#id29"><span class="problematic" id="id30">:model:`home.models.students`</span></a>.</p>
+<p>Gets the data from the rebate form checks for the validity of the rebate filled, 
+adds the rebte to the rebate model and rebate bills of that semester.
+This form can only be accessed by the Institute community</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id31"><span class="problematic" id="id32">:template:`rebateForm.html`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="home.views.rules">
+<span class="sig-prename descclassname"><span class="pre">home.views.</span></span><span class="sig-name descname"><span class="pre">rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#home.views.rules" title="Permalink to this definition"></a></dt>
+<dd><p>Display the Rules Page <a href="#id33"><span class="problematic" id="id34">:model:`home.models.rules`</span></a>.</p>
+<p><strong>Template:</strong></p>
+<p><a href="#id35"><span class="problematic" id="id36">:template:`home/rules.html`</span></a></p>
+</dd></dl>
+
+</section>
+<section id="module-home">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-home" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ishaan Mittal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

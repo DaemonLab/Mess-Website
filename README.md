@@ -1,1 +1,9 @@
 # Mess-Website
+
+Website for Dining Facility at IIT Indore
+
+Note to Developers
+Clone the repository using git clone https://github.com/DaemonLab/Mess-Website.git <br>
+Install all the dependencies mentioned in requirements.txt <br>
+SQLite is as the default database during development. <br>
+Read the Documentaions on index.html present in /docs/_build/html/index.html

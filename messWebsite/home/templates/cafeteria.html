@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block externalCss%}
+
+<link rel="stylesheet" href="{% static 'css/menu.css' %}" />
+<link rel="stylesheet" href="{% static 'css/cafe.css' %}" />
+<link rel="stylesheet" href="{% static 'css/rules.css' %}" />
+
+
+{% endblock %}
+{% block body %}
+<Main class="parent">
+  <h1>Cafeteria</h1>
+  <div class="container">
+    <div class="row">
+      {% for i in cafeteria %}
+      <div class="col box">
+        <div class="card" style="width: 20rem;">
+          <img
+            src="/media/{{i.image}}"
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <p class="card-text"><b>{{i.name}}</b><br>{{i.poc}}<br>Contact no. {{i.contact}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</Main>
+{% endblock %}

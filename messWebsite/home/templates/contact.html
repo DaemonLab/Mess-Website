@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block externalCss%}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}" />
+<link rel="stylesheet" href="{% static 'css/rules.css' %}" />
+
+
+{% endblock %}
+{% block body %}
+<main>
+<h1 class="text-center">Contacts</h1>
+<p class="line">
+  The following people can be contacted in case of any requirements:
+</p>
+<div class="section">
+  {% for i in contact %}
+  {% if i.hostel_sec is False %}
+  <div class="contact">
+    <span class="contact-heading"><b>{{i.occupation}}</b></span>
+    <div class="desc">
+      {% if i.name%}
+      {{i.name}}
+      {%endif%}
+      <p>
+      {% if i.contact%}
+      <i class="fa-solid fa-phone"></i>{{i.contact}}<br>
+      {% endif %}
+      <i class="fa-regular fa-envelope"></i>{{i.email}}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  <br />
+  <span class="contact-heading"
+    ><span>Dining Secretary Hall of Residences:</span>b></span
+  >
+  <div class="row">
+    
+    {% for i in contact %}
+  {% if i.hostel_sec is True %}
+  <div class="col-sm-4 mt-4">
+    <h6>{{i.occupation}}</h6>
+    <div>{{i.name}}</div>
+    <p><i class="fa-solid fa-phone"></i>{{i.contact}}<br><i class="fa-regular fa-envelope"></i>{{i.email}}</p>
+  </div>
+  {% endif %}
+  {% endfor %}
+    
+  </div>
+  
+</div>
+</main>
+{% endblock %}
