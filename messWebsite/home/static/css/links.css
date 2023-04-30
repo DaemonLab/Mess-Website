@@ -1,50 +1,51 @@
-/* ------links---------- */
-/* .section-link{
-    width: 90vw;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 20px;
-    background: rgb(138, 138, 236);
-    border-radius: 30px;
-    height: none;
-} */
+body {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+}
 
+h1 {
+    color: rgb(18, 37, 106);
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 3rem;
+    padding: 20px 10px;
+}
 
-.panel{
+.panel {
     padding: 10px 0;
-    margin-left: 10px; 
-
+    margin-left: 10px;
 }
-.bg-panel{
+
+.bg-panel {
     background-color: #F5F5F5;
-	border-radius: 3px;
+    border-radius: 3px;
     margin-bottom: 20px;
 }
 
-.heading-form{
-    font-weight: 500;
-    color: rgb(18 ,37,106);
+.heading-form {
+    font-weight: 800;
+    color: rgb(18, 37, 106);
     margin: 10px 0 20px;
 }
-.desc-form{
-    font-weight: 100;
-}
-.btn-outline-primary{
+
+.btn-outline-primary {
     background-color: rgb(46, 37, 37);
     color: #e0eefa;
     border: none;
     padding: 10px 20px;
 }
 
-.btn-outline-primary:hover, .btn-outline-primary:focus{
-    background-color: rgb(18 ,37,106);
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: rgb(18, 37, 106);
 }
 
 @media (max-width: 768px) {
-    .heading-form{
+    .heading-form {
         margin-bottom: 10px;
     }
-    .desc-form{
+
+    .desc-form {
         margin-bottom: 20px;
     }
 }
