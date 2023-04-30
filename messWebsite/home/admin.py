@@ -1,3 +1,8 @@
+"""
+File-name: admin.py
+This file is registers the models on the adming page and customizes the admin page
+For more information please see: https://docs.djangoproject.com/en/4.1/ref/contrib/admin/
+"""
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
@@ -23,37 +28,38 @@ from home.models import (
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 
-from .resources import StudentResource, AllocationResource,RebateResource, RebateSpringResource, RebateAutumnResource
+from .resources import StudentResource, AllocationResource, RebateResource, RebateSpringResource, RebateAutumnResource
 
-#Customising the heading and title of the admin page
+# Customising the heading and title of the admin page
 admin.site.site_header = 'Dining Website Admin Page'
 admin.site.site_title = 'Admin Page'
 admin.site.index_title = 'Website Admin panel'
 
 
-
-#Text of description content of each model
-ABOUT_DESC_TEXT="This contains the content that will show up in the about section of the home page. Add all of the About us Content in one field itself."
-CAROUSEL_DESC_TEXT="This contains the images that will show up in the carousel of the home page. Add new field for each new image."
-UPDATE_DESC_TEXT="This contains the content that will show up in the update section of the home page. Add new field for each new update."
-PHOTOS_DESC_TEXT="This contains the photographs that will show up in the bottom section of the home page. Add new field for each new image."
-RULE_DESC_TEXT="This contains the content that will show up in the rule section of the Rules page. Add new field for each new rule."
-PENALTY_DESC_TEXT="This contains the content that will show up in the penalty section of the Rules page. Add new field for each new penalty."
-SHORT_REBATE_DESC_TEXT="This contains the content that will show up in the short rebate section of the rules page. Add all of the short term rebate Content in one field itself."
-LONG_REBATE_DESC_TEXT="This contains the content that will show up in the rule section of the Rules page. Add new field for each new rule."
-CATERER_DESC_TEXT="This contains the content that will show up in the respective caterers page. Add new field for each new caterer."
-FORM_DESC_TEXT="This contains the content that will show up in the forms page. Add new field for each new form data."
-CAFETERIA_DESC_TEXT="This contains the content that will show up in the cafeteria page. Add new field for each new cafeteria."
-CONTACT_DESC_TEXT="This contains the content that will show up in the contact page. Add new field for each new contact."
+# Text of description content of each model
+ABOUT_DESC_TEXT = "This contains the content that will show up in the about section of the home page. Add all of the About us Content in one field itself."
+CAROUSEL_DESC_TEXT = "This contains the images that will show up in the carousel of the home page. Add new field for each new image."
+UPDATE_DESC_TEXT = "This contains the content that will show up in the update section of the home page. Add new field for each new update."
+PHOTOS_DESC_TEXT = "This contains the photographs that will show up in the bottom section of the home page. Add new field for each new image."
+RULE_DESC_TEXT = "This contains the content that will show up in the rule section of the Rules page. Add new field for each new rule."
+PENALTY_DESC_TEXT = "This contains the content that will show up in the penalty section of the Rules page. Add new field for each new penalty."
+SHORT_REBATE_DESC_TEXT = "This contains the content that will show up in the short rebate section of the rules page. Add all of the short term rebate Content in one field itself."
+LONG_REBATE_DESC_TEXT = "This contains the content that will show up in the rule section of the Rules page. Add new field for each new rule."
+CATERER_DESC_TEXT = "This contains the content that will show up in the respective caterers page. Add new field for each new caterer."
+FORM_DESC_TEXT = "This contains the content that will show up in the forms page. Add new field for each new form data."
+CAFETERIA_DESC_TEXT = "This contains the content that will show up in the cafeteria page. Add new field for each new cafeteria."
+CONTACT_DESC_TEXT = "This contains the content that will show up in the contact page. Add new field for each new contact."
+ALLOCATION_DESC_TEXT = "This contains the Allocation details of the students. First import data through /allocation/ url then export"
+STUDENT_DESC_TEXT = "This contains the Basic details of each students."
+REBATE_DESC_TEXT = "This contains the rebate details of each rebate applied by the students."
+REBATE_BILLS_DESC_TEXT = "This contains the rebate bills of each students."
 
 # Register your models here
+
+
 @admin.register(About)
 class about_Admin(admin.ModelAdmin):
     model = About
-#    ordering=("description",)
-#    search_fields = ("description")
-#    list_display = ("description")
-#    list_filter = ("description",)
     fieldsets = (
         (
             None,
@@ -61,12 +67,12 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "description",
                 ),
-                "description": "%s" %ABOUT_DESC_TEXT,
+                "description": "%s" % ABOUT_DESC_TEXT,
             },
         ),
     )
 
-# Register your models here
+
 @admin.register(Carousel)
 class about_Admin(admin.ModelAdmin):
     model = Carousel
@@ -81,17 +87,17 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "image",
                 ),
-                "description": "%s" %CAROUSEL_DESC_TEXT,
+                "description": "%s" % CAROUSEL_DESC_TEXT,
             },
         ),
     )
+
 
 @admin.register(Update)
 class about_Admin(admin.ModelAdmin):
     model = Update
     ordering = ("-time_stamp",)
-    search_fields = ("update","time_stamp")
-#    list_display = ("update","time_stamp")
+    search_fields = ("update", "time_stamp")
     list_filter = ("time_stamp",)
     fieldsets = (
         (
@@ -100,20 +106,18 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "update",
                 ),
-                "description": "%s" %UPDATE_DESC_TEXT,
+                "description": "%s" % UPDATE_DESC_TEXT,
             },
         ),
     )
 
 
-# Register your models here
 @admin.register(Photos)
 class about_Admin(admin.ModelAdmin):
     model = Photos
-#    ordering=("image",)
-    search_fields = ("poc","occupation",)
+    search_fields = ("poc", "occupation",)
     list_display = ("poc",)
-    list_filter = ("poc","occupation",)
+    list_filter = ("poc", "occupation",)
     fieldsets = (
         (
             None,
@@ -123,10 +127,11 @@ class about_Admin(admin.ModelAdmin):
                     "poc",
                     "occupation"
                 ),
-                "description": "%s" %PHOTOS_DESC_TEXT,
+                "description": "%s" % PHOTOS_DESC_TEXT,
             },
         ),
     )
+
 
 @admin.register(Rule)
 class about_Admin(admin.ModelAdmin):
@@ -142,10 +147,11 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "rule",
                 ),
-                "description": "%s" %RULE_DESC_TEXT,
+                "description": "%s" % RULE_DESC_TEXT,
             },
         ),
     )
+
 
 @admin.register(Penalty)
 class about_Admin(admin.ModelAdmin):
@@ -161,18 +167,15 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "penalty",
                 ),
-                "description": "%s" %PENALTY_DESC_TEXT,
+                "description": "%s" % PENALTY_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(ShortRebate)
 class about_Admin(admin.ModelAdmin):
     model = ShortRebate
-#    ordering = ("",)
-#    search_fields = ("",)
-#    list_display = ("",)
-#    list_filter = ("",)
     fieldsets = (
         (
             None,
@@ -187,10 +190,11 @@ class about_Admin(admin.ModelAdmin):
                     'Memebers',
                     'biling',
                 ),
-                "description": "%s" %SHORT_REBATE_DESC_TEXT,
+                "description": "%s" % SHORT_REBATE_DESC_TEXT,
             },
         ),
     )
+
 
 @admin.register(LongRebate)
 class about_Admin(admin.ModelAdmin):
@@ -206,17 +210,16 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "rule",
                 ),
-                "description": "%s" %LONG_REBATE_DESC_TEXT,
+                "description": "%s" % LONG_REBATE_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(Caterer)
 class about_Admin(admin.ModelAdmin):
     model = Caterer
-#    ordering = ("name",)
     search_fields = ("name",)
-#    list_display = ()
     list_filter = ("name",)
     fieldsets = (
         (
@@ -229,17 +232,16 @@ class about_Admin(admin.ModelAdmin):
                     "lower_description",
                     "student_limit"
                 ),
-                "description": "%s" %CATERER_DESC_TEXT,
+                "description": "%s" % CATERER_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(Form)
 class about_Admin(admin.ModelAdmin):
     model = Form
-#    ordering = ("name",)
-    search_fields = ("heading","description")
-#    list_display = ()
+    search_fields = ("heading", "description")
     list_filter = ("heading",)
     fieldsets = (
         (
@@ -250,17 +252,16 @@ class about_Admin(admin.ModelAdmin):
                     "url",
                     "description",
                 ),
-                "description": "%s" %FORM_DESC_TEXT,
+                "description": "%s" % FORM_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(Cafeteria)
 class about_Admin(admin.ModelAdmin):
     model = Cafeteria
-#    ordering = ()
-    search_fields = ("name","poc")
-#    list_display = ()
+    search_fields = ("name", "poc")
     list_filter = ("name",)
     fieldsets = (
         (
@@ -272,41 +273,39 @@ class about_Admin(admin.ModelAdmin):
                     "contact",
                     "image",
                 ),
-                "description": "%s" %CAFETERIA_DESC_TEXT,
+                "description": "%s" % CAFETERIA_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(Contact)
 class about_Admin(admin.ModelAdmin):
     model = Contact
-#    ordering = ("rule",)
-    search_fields = ("occupation","name","hostel_sec")
-#    list_display = ("rule",)
-    list_filter = ("occupation","hostel_sec")
+    search_fields = ("occupation", "name", "hostel_sec")
+    list_filter = ("occupation", "hostel_sec")
     fieldsets = (
         (
             None,
             {
                 "fields": (
-                    ("occupation","hostel_sec"),
+                    ("occupation", "hostel_sec"),
                     "name",
                     "contact",
                     "email",
                 ),
-                "description": "%s" %CONTACT_DESC_TEXT,
+                "description": "%s" % CONTACT_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(Allocation)
 class about_Admin(ImportExportMixin, admin.ModelAdmin):
-    resource_class  = AllocationResource
+    resource_class = AllocationResource
     model = Allocation
-#    ordering = ("rule",)
-    search_fields = ("student_id","month","caterer_name","high_tea")
-#    list_display = ("rule",)
-    list_filter = ("month","caterer_name","high_tea")
+    search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    list_filter = ("month", "caterer_name", "high_tea")
     fieldsets = (
         (
             None,
@@ -321,12 +320,16 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                     "second_pref",
                     "third_pref"
                 ),
-#                "description": "%s" %CONTACT_DESC_TEXT,
+                "description": "%s" %ALLOCATION_DESC_TEXT,
             },
         ),
     )
     actions = ['export_as_csv']
+
     def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
         resource = AllocationResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
@@ -359,17 +362,13 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
 #     actions = [import_csv] + ModelAdmin.actions
 
 
-
-
-
 @admin.register(Student)
-class about_Admin(ImportExportMixin,admin.ModelAdmin):
-    resource_class  = StudentResource
+class about_Admin(ImportExportMixin, admin.ModelAdmin):
+    resource_class = StudentResource
     model = Student
-#    ordering = ("rule",)
-    search_fields = ("student_id","name","roll_no","hostel","degree","department")
-#    list_display = ("rule",)
-    list_filter = ("hostel","degree","department")
+    search_fields = ("student_id", "name", "roll_no",
+                     "hostel", "degree", "department")
+    list_filter = ("hostel", "degree", "department")
     fieldsets = (
         (
             None,
@@ -383,12 +382,16 @@ class about_Admin(ImportExportMixin,admin.ModelAdmin):
                     "degree",
                     "department"
                 ),
-#                "description": "%s" %CONTACT_DESC_TEXT,
+                "description": "%s" %STUDENT_DESC_TEXT,
             },
         ),
     )
     actions = ['export_as_csv']
+
     def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
         resource = StudentResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
@@ -397,12 +400,11 @@ class about_Admin(ImportExportMixin,admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Student details to CSV"
 
+
 @admin.register(Scan)
 class about_Admin(admin.ModelAdmin):
     model = Scan
-#    ordering = ("rule",)
-    search_fields = ("student_id","date")
-#    list_display = ("rule",)
+    search_fields = ("student_id", "date")
     list_filter = ("date",)
     fieldsets = (
         (
@@ -416,17 +418,20 @@ class about_Admin(admin.ModelAdmin):
                     "high_tea",
                     "dinner"
                 ),
-#                "description": "%s" %CONTACT_DESC_TEXT,
+                #                "description": "%s" %_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(Rebate)
-class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
-    resource_class  = RebateResource
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateResource
     model = Rebate
-    search_fields = ("allocation_id__student_id","approved","date_applied","start_date","end_date")
-    list_filter = ("approved","date_applied","allocation_id","start_date","end_date")
+    search_fields = ("allocation_id__student_id", "approved",
+                     "date_applied", "start_date", "end_date")
+    list_filter = ("approved", "date_applied",
+                   "allocation_id", "start_date", "end_date")
     fieldsets = (
         (
             None,
@@ -439,12 +444,16 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
                     "end_date",
                     "approved",
                 ),
-#                "description": "%s" %CONTACT_DESC_TEXT,
+                "description": "%s" %REBATE_DESC_TEXT,
             },
         ),
     )
     actions = ['export_as_csv']
+
     def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
         resource = RebateResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
@@ -453,9 +462,10 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
+
 @admin.register(RebateAutumnSem)
-class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
-    resource_class  = RebateAutumnResource
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateAutumnResource
     model = RebateAutumnSem
     search_fields = ("email",)
     list_filter = ("email",)
@@ -478,12 +488,16 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
                     "december",
                     "highTeaDecember",
                 ),
-#                "description": "%s" %CONTACT_DESC_TEXT,
+                "description": "%s" %REBATE_BILLS_DESC_TEXT,
             },
         ),
     )
     actions = ['export_as_csv']
+
     def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
         resource = RebateAutumnResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
@@ -494,8 +508,8 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
 
 
 @admin.register(RebateSpringSem)
-class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
-    resource_class  = RebateSpringResource
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateSpringResource
     model = RebateSpringSem
     search_fields = ("email",)
     list_filter = ("email",)
@@ -518,12 +532,16 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
                     "june",
                     "highTeaJune",
                 ),
-#                "description": "%s" %CONTACT_DESC_TEXT,
+                "description": "%s" %REBATE_BILLS_DESC_TEXT,
             },
         ),
     )
     actions = ['export_as_csv']
+
     def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
         resource = RebateSpringResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
@@ -531,4 +549,3 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
         return response
 
     export_as_csv.short_description = "Export Rebate details to CSV"
-
