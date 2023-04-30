@@ -1,7 +1,14 @@
-.section li{
+.section li {
     margin-bottom: 10px;
 }
-.section{
+
+body {
+    font-size: 1.1rem;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+}
+
+.section {
     width: 90vw;
     margin-right: auto;
     margin-left: auto;
@@ -9,15 +16,14 @@
     background: #F5F5F5;
     border-radius: 30px;
     padding: 20px 20px 0px 20px;
-    font-family: 'Raleway', sans-serif;
     color: black;
-    font-weight: 600;
 }
-.section p{
+
+.section p {
     padding: 10px;
 }
-h1{
-    font-family: 'Raleway', sans-serif;
+
+h1 {
     color: rgb(18, 37, 106);
     font-weight: bolder;
     letter-spacing: 1px;
@@ -25,11 +31,15 @@ h1{
     padding: 20px 10px;
     text-align: center;
 }
-h4,h5 ,h6{
+
+h4,
+h5,
+h6 {
     font-weight: bolder;
     font-family: 'Josefin Sans', sans-serif;
 }
-.section b{
+
+.section b {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
 }
