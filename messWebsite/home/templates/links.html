@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block externalCss%}
+<link rel="stylesheet" href="{% static 'css/links.css' %}" />
+<link rel="stylesheet" href="{% static 'css/rules.css' %}" />
+
+
+{% endblock %}
+{% block body %}
+<Main>
+  <h1 class="text-center">Forms</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        {% for i in form %}
+        <div class="row d-flex justify-content-between align-items-center panel bg-panel">
+          <div class="col-md-9">
+            <h3 class="heading-form">{{i.heading}} </h3>
+            <h6 class="desc-form">{{i.description}}</h6>
+          </div>
+          <div class="col-md-3">
+            <a class="btn btn-outline-primary"
+              href="{{i.url}}">FILL
+              OUT</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-md-3 d-none d-md-flex align-items-center">
+        <img src="{% static 'images/links_white-space.png' %}" class="img-fluid img-center">
+        <img src="">
+      </div>
+    </div>
+  </div>
+</Main>
+{% endblock %}

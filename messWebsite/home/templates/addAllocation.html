@@ -1,0 +1,67 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{%block externalCss%} 
+{% load i18n%}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+
+{% endblock %} 
+{% block body %}
+<main>
+    {% if user.is_authenticated and user.is_staff%}
+    <h1 class="m-0 pb-2">Allocation Form</h1>
+    <div class="text-center">
+    <p class="m-0">Hello Admin!</p>
+    <span>{% trans 'You are logged in as:' %} {{ user.email}}</span>
+    <a class="btn btn-danger" href="{% url 'account_logout' %}">Sign Out</a>
+  </div>
+  <div class="text-center">{{text}}</div>
+  <form action="" method="post" class="px-5 mx-md-5">
+    {% csrf_token %}
+    <div class="form-group p-2">
+      <label for="email">Email ID</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        placeholder="Institute Email ID"
+      />
+    </div>
+    <div class="form-group p-2">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="High_Tea"
+        name="high_tea"
+      />
+      <label class="form-check-label" for="High_Tea">High Tea</label>
+        <select name="caterer" class="form-select-sm mx-5">
+        <option selected>Select a Caterer</option>
+        {% for caterer in caterers%}
+            <option value="{{caterer}}">{{caterer}}</option>
+        {% endfor %}
+        </select>
+    </div>
+    <div>
+    <label for="month">Month</label>
+      <input
+        type="text"
+        id="month"
+        name="month"
+        class="form-control"
+        placeholder="Allocation Month"/>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary p-2 my-3"
+      style="background-color: rgb(30, 55, 146)"
+    >
+      Submit
+    </button>
+    {% else %}
+    <h1 class="text-decoration-none my-5">Access to this page is only for Administration. Please login to continue.</h1>
+{% endif %}
+  </form>
+</main>
+
+{% endblock %}
