@@ -35,4 +35,5 @@ urlpatterns = [
     path("rebateForm/", views.rebate, name="rebate"),
     path("addAllocation/", views.addAllocation, name="addAllocation"),
     url('allocation/', views.allocation, name='allocation'),
+    url('longRebate/', views.addLongRebateBill, name='addLongRebateBill'),
 ]

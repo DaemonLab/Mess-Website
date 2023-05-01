@@ -257,7 +257,7 @@ def check(a, s, start, end, month):
             sum = count(start, end)
             if (student.august+sum <= 8):
                 student.august+=sum
-                student.highTeaAugust == a.high_tea
+                student.highTeaAugust = a.high_tea
                 student.save(update_fields=["august", "highTeaAugust"])
                 return -1
             elif (start.month != 8 and end.month != 8):
@@ -473,7 +473,7 @@ def allocation(request):
                 print(e)
         messages = "Form submitted. Please check the admin page."
     context = {'messages': messages}
-    return render(request, "allocation.html", context)
+    return render(request, "admin/allocation.html", context)
 
 
 def addAllocation(request):
@@ -533,4 +533,97 @@ def addAllocation(request):
             print(e)
             print(12121)
     context = {'text': text, 'caterers': available_caterer}
-    return render(request, "addAllocation.html", context)
+    return render(request, "admin/addAllocation.html", context)
+
+def addLongRebateBill(request):
+    """
+    Display the Rebate Form Page :model:`home.models.students`.
+
+    **Template:**
+
+    :template:`home/longRebate.html`
+
+    Gets the data from the log term rebate form , and adds it to the coresponding rebate bill 
+    This form can only be accessed by the Institute's admin
+    """
+    text=""
+    if request.method == 'POST' and request.user.is_authenticated and request.user.is_staff:
+        try:
+            student = Student.objects.filter(email=request.POST['email']).first()
+            month = str(request.POST['month']).capitalize()
+            days = int(request.POST['days'])
+            try:
+                print(student)
+                allocation = Allocation.objects.filter(roll_no = student, month = month).last()
+                text="Long Term rebate added Successfully"
+                match month:
+                    case "January":
+                        student = is_present_spring(student)
+                        student.januaryLong+=days
+                        student.highTeaJanuary = allocation.high_tea
+                        student.save(update_fields=["januaryLong", "highTeaJanuary"])
+                    case "Feburary":
+                        student = is_present_spring(student)
+                        student.feburaryLong+=days
+                        student.highTeaFeburary = allocation.high_tea
+                        student.save(update_fields=["feburaryLong", "highTeaFeburary"])
+                    case "March":
+                        student = is_present_spring(student)
+                        student.marchLong+=days
+                        student.highTeaMarch = allocation.high_tea
+                        student.save(update_fields=["marchLong", "highTeaMarch"])
+                    case "April":
+                        student = is_present_spring(student)
+                        student.aprilLong+=days
+                        student.highTeaApril = allocation.high_tea
+                        student.save(update_fields=["aprilLong", "highTeaApril"])
+                    case "May":
+                        student = is_present_spring(student)
+                        student.mayLong+=days
+                        student.highTeaMay = allocation.high_tea
+                        student.save(update_fields=["mayLong", "highTeaMay"])
+                    case "June":
+                        student = is_present_spring(student)
+                        student.juneLong+=days
+                        student.highTeaJune = allocation.high_tea
+                        student.save(update_fields=["juneLong", "highTeaJune"])
+                    case "July":
+                        student = is_present_autumn(student)
+                        student.julyLong+=days
+                        student.highTeaJuly = allocation.high_tea
+                        student.save(update_fields=["julyLong", "highTeaJuly"])
+                    case "August":
+                        student = is_present_autumn(student)
+                        student.augustLong+=days
+                        student.highTeaAugust = allocation.high_tea
+                        student.save(update_fields=["augustLong", "highTeaAugust"])
+
+                    case "September":
+                        student = is_present_autumn(student)
+                        student.septemberLong+=days
+                        student.highTeaSeptember = allocation.high_tea
+                        student.save(update_fields=["septemberLong", "highTeaSeptember"])
+                    case "October":
+                        student = is_present_autumn(student)
+                        student.octoberLong+=days
+                        student.highTeaOctober = allocation.high_tea
+                        student.save(update_fields=["octoberLong", "highTeaOctober"])
+                    case "November":
+                        student = is_present_autumn(student)
+                        student.novemberLong+=days
+                        student.highTeaNovember = allocation.high_tea
+                        student.save(update_fields=["novemberLong", "highTeaNovember"])
+                    case "December":
+                        student = is_present_autumn(student)
+                        student.decemberLong+=days
+                        student.highTeaDecember = allocation.high_tea
+                        student.save(update_fields=["decemberLong", "highTeaDecember"])
+                    case default:
+                        text="Invalid Month"
+            except Exception as e:
+                text="Allocation ID for the entered email does not exist"
+                print(e)
+        except:
+            text = "Email ID does not exist in the database. Please eneter the correct email ID"
+    context={'text': text}
+    return render(request,"admin/longRebate.html",context)

@@ -24,7 +24,7 @@ from home.models import (
     Scan,
     Rebate,
     RebateSpringSem,
-    RebateAutumnSem
+    RebateAutumnSem,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 
@@ -366,7 +366,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
 class about_Admin(ImportExportMixin, admin.ModelAdmin):
     resource_class = StudentResource
     model = Student
-    search_fields = ("student_id", "name", "roll_no",
+    search_fields = ("name", "roll_no",
                      "hostel", "degree", "department")
     list_filter = ("hostel", "degree", "department")
     fieldsets = (
@@ -475,18 +475,30 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    "july",
+                    "julyShort",
+                    "julyLong",
                     "highTeaJuly",
-                    "august",
+                    "julyBill",
+                    "augustShort",
+                    "augustLong",
                     "highTeaAugust",
-                    "september",
+                    "augustBill",
+                    "septemberShort",
+                    "septemberLong",
                     "highTeaSeptember",
-                    "october",
+                    "septemberBill",
+                    "octoberShort",
+                    "octoberLong",
                     "highTeaOctober",
-                    "november",
+                    "octoberBill",
+                    "novemberShort",
+                    "novemberLong",
                     "highTeaNovember",
-                    "december",
+                    "NovemberBill",
+                    "decemberShort",
+                    "decemberLong",
                     "highTeaDecember",
+                    "decemberBill",
                 ),
                 "description": "%s" %REBATE_BILLS_DESC_TEXT,
             },
@@ -519,18 +531,30 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    "january",
+                    "januaryShort",
+                    "januaryLong",
                     "highTeaJanuary",
-                    "feburary",
+                    "januaryBill",
+                    "feburaryShort",
+                    "feburaryLong",
                     "highTeaFeburary",
-                    "march",
+                    "feburaryBill",
+                    "marchShort",
+                    "marchLong",
                     "highTeaMarch",
-                    "april",
+                    "marchBill",
+                    "aprilShort",
+                    "aprilLong",
                     "highTeaApril",
-                    "may",
+                    "aprilBill",
+                    "mayShort",
+                    "mayLong",
                     "highTeaMay",
-                    "june",
+                    "mayBill",
+                    "juneShort",
+                    "juneLong",
                     "highTeaJune",
+                    "juneBill",
                 ),
                 "description": "%s" %REBATE_BILLS_DESC_TEXT,
             },
