@@ -6,6 +6,7 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
+from .signals import update_bill
 from home.models import (
     About,
     Update,
@@ -116,7 +117,7 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(admin.ModelAdmin):
     model = Photos
     search_fields = ("poc", "occupation",)
-    list_display = ("poc",)
+    list_display = ("poc","occupation")
     list_filter = ("poc", "occupation",)
     fieldsets = (
         (
@@ -306,6 +307,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
     model = Allocation
     search_fields = ("student_id", "month", "caterer_name", "high_tea")
     list_filter = ("month", "caterer_name", "high_tea")
+    list_display = ("month", "caterer_name", "high_tea")
     fieldsets = (
         (
             None,
@@ -368,6 +370,8 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
     model = Student
     search_fields = ("name", "roll_no",
                      "hostel", "degree", "department")
+    list_display = ("name", "roll_no",
+                     "hostel", "degree", "department")
     list_filter = ("hostel", "degree", "department")
     fieldsets = (
         (
@@ -424,6 +428,7 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
+
 @admin.register(Rebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateResource
@@ -431,7 +436,8 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ("allocation_id__student_id", "approved",
                      "date_applied", "start_date", "end_date")
     list_filter = ("approved", "date_applied",
-                   "allocation_id", "start_date", "end_date")
+                   "start_date", "end_date")
+    list_display = ( "date_applied", "allocation_id", "start_date", "end_date", "approved")
     fieldsets = (
         (
             None,
@@ -448,7 +454,25 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ['export_as_csv']
+    actions = ['export_as_csv',"disapprove","approve"]
+
+    @admin.action(description="Disapprove the students")
+    def disapprove(self, request, queryset):
+        """
+        Disapprove action available in the admin page
+        """
+        for obj in queryset:
+            obj.approved = False
+            obj.save()
+
+    @admin.action(description="Approve the students")
+    def approve(self, request, queryset):
+        """
+        Approve action available in the admin page
+        """
+        for obj in queryset:
+            obj.approved = True
+            obj.save()
 
     def export_as_csv(self, request, queryset):
         """
@@ -459,8 +483,16 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         response = HttpResponse(dataset.csv, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="Rebate.csv"'
         return response
-
     export_as_csv.short_description = "Export Rebate details to CSV"
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        update_bill( instance=obj, sender=obj.__class__,created=change)
+    
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        print("save related")
+        update_bill(sender=form.instance.__class__, instance=form.instance, created=change)
 
 
 @admin.register(RebateAutumnSem)

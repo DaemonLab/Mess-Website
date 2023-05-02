@@ -106,21 +106,6 @@ def contact(request):
     context = {'contact': contact}
     return render(request, 'contact.html', context)
 
-# def days(s,list):
-#     total_days = 0
-#     try:
-#         count = Rebate.objects.filter(allocation_id = s).count()
-#         for i in range(count):
-#             rebate = Rebate.objects.filter(allocation_id = s)[i]
-#             start_date = rebate.start_date
-#             end_date = rebate.end_date
-#             list.append([(start_date),(end_date)])
-#             total_days += ((end_date-start_date).days)+1
-#         return total_days
-#     except Exception as e:
-#         print(e)
-#         return total_days
-
 
 def count(start, end):
     '''Counts the number of days of rebate applied'''
@@ -171,10 +156,10 @@ def check(a, s, start, end, month):
         case "January":
             student = is_present_spring(s)
             sum = count(start, end)
-            if (student.january+sum <= 8):
-                student.january+=sum
-                student.highTeaJanuary = a.high_tea
-                student.save(update_fields=["january", "highTeaJanuary"])
+            if (student.januaryShort+sum <= 8):
+                # student.january+=sum
+                # student.highTeaJanuary = a.high_tea
+                # student.save(update_fields=["january", "highTeaJanuary"])
                 return -1
             if (start.month == 1 and end.month == 1):
                 return -2
@@ -183,10 +168,10 @@ def check(a, s, start, end, month):
         case "Feburary":
             student = is_present_spring(s)
             sum = count(start, end)
-            if (student.feburary+sum <= 8):
-                student.feburary+=sum
-                student.highTeaFeburary = a.high_tea
-                student.save(update_fields=["feburary", "highTeaFeburary"])
+            if (student.feburaryShort +sum <= 8):
+                # student.feburary+=sum
+                # student.highTeaFeburary = a.high_tea
+                # student.save(update_fields=["feburary", "highTeaFeburary"])
                 return -1
             elif (start.month != 2 and end.month != 2):
                 return -2
@@ -196,9 +181,9 @@ def check(a, s, start, end, month):
             student = is_present_spring(s)
             sum = count(start, end)
             if (student.march+sum <= 8):
-                student.march+=sum
-                student.highTeaMarch = a.high_tea
-                student.save(update_fields=["march", "highTeaMarch"])
+                # student.march+=sum
+                # student.highTeaMarch = a.high_tea
+                # student.save(update_fields=["march", "highTeaMarch"])
                 return -1
             elif (start.month != 3 and end.month != 3):
                 return -2
@@ -208,9 +193,9 @@ def check(a, s, start, end, month):
             student = is_present_spring(s)
             sum = count(start, end)
             if (sum+student.april <= 8):
-                student.april+=sum
-                student.highTeaApril = a.high_tea
-                student.save(update_fields=["april", "highTeaApril"])
+                # student.april+=sum
+                # student.highTeaApril = a.high_tea
+                # student.save(update_fields=["april", "highTeaApril"])
                 return -1
             elif (start.month != 4 and end.month != 4):
                 return -2
@@ -219,10 +204,10 @@ def check(a, s, start, end, month):
         case "May":
             student = is_present_spring(s)
             sum = count(start, end)
-            if (sum+student.may <= 8):
-                student.may+=sum
-                student.highTeaMay = a.high_tea
-                student.save(update_fields=["may", "highTeaMay"])
+            if (sum+student.mayShort <= 8):
+                # student.may+=sum
+                # student.highTeaMay = a.high_tea
+                # student.save(update_fields=["may", "highTeaMay"])
                 return -1
             elif (start.month != 5 and end.month != 5):
                 return -2
@@ -232,9 +217,9 @@ def check(a, s, start, end, month):
             student = is_present_spring(s)
             sum = count(start, end)
             if (student.june+sum <= 8):
-                student.june+=sum
-                student.highTeaJune = a.high_tea
-                student.save(update_fields=["june", "highTeaJune"])
+                # student.june+=sum
+                # student.highTeaJune = a.high_tea
+                # student.save(update_fields=["june", "highTeaJune"])
                 return -1
             elif (start.month != 6 and end.month != 6):
                 return -2
@@ -244,9 +229,9 @@ def check(a, s, start, end, month):
             student = is_present_autumn(s)
             sum = count(start, end)
             if (student.july+sum <= 8):
-                student.july+=sum
-                student.highTeaJuly = a.high_tea
-                student.save(update_fields=["july", "highTeaJuly"])
+                # student.july+=sum
+                # student.highTeaJuly = a.high_tea
+                # student.save(update_fields=["july", "highTeaJuly"])
                 return -1
             elif (start.month != 7 and end.month != 7):
                 return -2
@@ -256,9 +241,9 @@ def check(a, s, start, end, month):
             student = is_present_autumn(s)
             sum = count(start, end)
             if (student.august+sum <= 8):
-                student.august+=sum
-                student.highTeaAugust = a.high_tea
-                student.save(update_fields=["august", "highTeaAugust"])
+                # student.august+=sum
+                # student.highTeaAugust = a.high_tea
+                # student.save(update_fields=["august", "highTeaAugust"])
                 return -1
             elif (start.month != 8 and end.month != 8):
                 return -2
@@ -268,9 +253,9 @@ def check(a, s, start, end, month):
             student = is_present_autumn(s)
             sum = count(start, end)
             if (student.september+sum <= 8):
-                student.september+=sum
-                student.highTeaSeptember = a.high_tea
-                student.save(update_fields=["september", "highTeaSeptember"])
+                # student.september+=sum
+                # student.highTeaSeptember = a.high_tea
+                # student.save(update_fields=["september", "highTeaSeptember"])
                 return -1
             elif (start.month != 9 and end.month != 9):
                 return -2
@@ -280,9 +265,9 @@ def check(a, s, start, end, month):
             student = is_present_autumn(s)
             sum = count(start, end)
             if (student.october+sum <= 8):
-                student.october+=sum
-                student.highTeaOctober = a.high_tea
-                student.save(update_fields=["october", "highTeaOctober"])
+                # student.october+=sum
+                # student.highTeaOctober = a.high_tea
+                # student.save(update_fields=["october", "highTeaOctober"])
                 return -1
             elif (start.month != 10 and end.month != 10):
                 return -2
@@ -292,9 +277,9 @@ def check(a, s, start, end, month):
             student = is_present_autumn(s)
             sum = count(start, end)
             if (student.november+sum <= 8):
-                student.november+=sum
-                student.highTeaNovember = a.high_tea
-                student.save(update_fields=["november", "highTeaNovember"])
+                # student.november+=sum
+                # student.highTeaNovember = a.high_tea
+                # student.save(update_fields=["november", "highTeaNovember"])
                 return -1
             elif (start.month != 11 and end.month != 11):
                 return -2
@@ -304,9 +289,9 @@ def check(a, s, start, end, month):
             student = is_present_autumn(s)
             sum = count(start, end)
             if (student.december+sum <= 8):
-                student.december+=sum
-                student.highTeaDecember = a.high_tea
-                student.save(update_fields=["december", "highTeaDecember"])
+                # student.december+=sum
+                # student.highTeaDecember = a.high_tea
+                # student.save(update_fields=["december", "highTeaDecember"])
                 return -1
             elif (start.month != 12 and end.month != 12):
                 return -2
@@ -351,27 +336,25 @@ def rebate(request):
                     Allocation.objects.filter(
                         student_id=request.POST['allocation_id']).last()
                     try:
-                        a = Allocation.objects.get(roll_no__email=str(
+                        allocation = Allocation.objects.get(roll_no__email=str(
                             request.user.email), student_id=request.POST['allocation_id'])
-                        s = Student.objects.filter(
+                        student = Student.objects.filter(
                             email=str(request.user.email)).first()
-                        month = a.month
+                        month = allocation.month
                         print(month)
                         # total_days = days(a,list)+diff
                         # print(total_days)
                         # print(list)
-                        ch = check(a, s, start_date, end_date, month)
-                        print(ch)
+                        ch = check(allocation, student, start_date, end_date, month)
                         if (ch == -2):
                             text = "Please fill the rebate of this month only"
                         elif (ch >= 0):
                             text = "You can only apply for max 8 days in a month. Days left for this month: "+str(ch) 
                         else:
-                            print(ch)
                             if ((diff) <= 7 and diff >= 2 and diff2 >= 2):
                                 r = Rebate(
                                     email=request.user.email,
-                                    allocation_id=a,
+                                    allocation_id=allocation,
                                     start_date=request.POST['start_date'],
                                     end_date=request.POST['end_date'],
                                     approved=False
