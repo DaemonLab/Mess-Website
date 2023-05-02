@@ -52,7 +52,7 @@ class Allocation(models.Model):
                                   help_text="This contians the first preference caterer of the student")
 
     def __str__(self):
-        return "Allocation id : " + self.student_id
+        return self.student_id
 
     class Meta:
         verbose_name = "Allocation Details"
