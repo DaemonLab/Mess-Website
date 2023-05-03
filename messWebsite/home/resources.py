@@ -119,65 +119,200 @@ class RebateResource(resources.ModelResource):
 
 
 class RebateSpringResource(resources.ModelResource):
+    email = fields.Field(attribute="email", column_name="Email")
+    januaryShort = fields.Field(attribute="januaryShort", column_name="January Short")
+    januaryLong = fields.Field(attribute="januaryLong", column_name="January Long")
+    highTeaJanuary = fields.Field(attribute="highTeaJanuary", column_name="High Tea January")
+    januaryBill = fields.Field(attribute="januaryBill", column_name="January Bill")
+    feburaryShort = fields.Field(attribute="feburaryShort", column_name="Feburary Short")
+    feburaryLong = fields.Field(attribute="feburaryLong", column_name="Feburary Long")
+    highTeaFeburary = fields.Field(attribute="highTeaFeburary", column_name="High Tea Feburary")
+    feburaryBill = fields.Field(attribute="feburaryBill", column_name="Feburary Bill")
+    marchShort = fields.Field(attribute="marchShort", column_name="March Short")
+    marchLong = fields.Field(attribute="marchLong", column_name="March Long")
+    highTeaMarch = fields.Field(attribute="highTeaMarch", column_name="High Tea March")
+    marchBill = fields.Field(attribute="marchBill", column_name="March Bill")
+    aprilShort = fields.Field(attribute="aprilShort", column_name="April Short")
+    aprilLong = fields.Field(attribute="aprilLong", column_name="April Long")
+    highTeaApril = fields.Field(attribute="highTeaApril", column_name="High Tea April")
+    aprilBill = fields.Field(attribute="aprilBill", column_name="April Bill")
+    mayShort = fields.Field(attribute="mayShort", column_name="May Short")
+    mayLong = fields.Field(attribute="mayLong", column_name="May Long")
+    highTeaMay = fields.Field(attribute="highTeaMay", column_name="High Tea May")
+    mayBill = fields.Field(attribute="mayBill", column_name="May Bill")
+    juneShort = fields.Field(attribute="juneShort", column_name="June Short")
+    juneLong = fields.Field(attribute="juneLong", column_name="June Long")
+    highTeaJune = fields.Field(attribute="highTeaJune", column_name="High Tea June")
+    juneBill = fields.Field(attribute="juneBill", column_name="June Bill")
+    
     class Meta:
         model = RebateSpringSem
         exclude='id'
         import_id_fields = ['email']
         export_order = ["email",
-                    "january",
+                    "januaryShort",
+                    "januaryLong",
                     "highTeaJanuary",
-                    "feburary",
+                    "januaryBill",
+                    "feburaryShort",
+                    "feburaryLong",
                     "highTeaFeburary",
-                    "march",
+                    "feburaryBill",
+                    "marchShort",
+                    "marchLong",
                     "highTeaMarch",
-                    "april",
+                    "marchBill",
+                    "aprilShort",
+                    "aprilLong",
                     "highTeaApril",
-                    "may",
+                    "aprilBill",
+                    "mayShort",
+                    "mayLong",
                     "highTeaMay",
-                    "june",
-                    "highTeaJune",]
+                    "mayBill",
+                    "juneShort",
+                    "juneLong",
+                    "highTeaJune",
+                    "juneBill",]
         fields = ("email",
-                    "january",
+                    "januaryShort",
+                    "januaryLong",
                     "highTeaJanuary",
-                    "feburary",
+                    "januaryBill",
+                    "feburaryShort",
+                    "feburaryLong",
                     "highTeaFeburary",
-                    "march",
+                    "feburaryBill",
+                    "marchShort",
+                    "marchLong",
                     "highTeaMarch",
-                    "april",
+                    "marchBill",
+                    "aprilShort",
+                    "aprilLong",
                     "highTeaApril",
-                    "may",
+                    "aprilBill",
+                    "mayShort",
+                    "mayLong",
                     "highTeaMay",
-                    "june",
-                    "highTeaJune",)
+                    "mayBill",
+                    "juneShort",
+                    "juneLong",
+                    "highTeaJune",
+                    "juneBill",)
+    # def after_export(self, queryset, data, *args, **kwargs):
+    #     amount=130
+    #     for row in data:
+    #         # row['email'] = row['email'].lower()
+    #         if(row['highTeajanuary'] == False):
+    #             amount=amount-15
+    #             row['januaryBill'] = 31*15                       
+    #         row['januaryBill'] = (row['januaryShort']+row['januaryLong'])*amount
+    #         if(row['highTeaFeburary'] == False):
+    #             amount=amount-15
+    #             row['feburaryBill'] = 28*15
+    #         row['feburaryBill'] = (row['feburaryShort']+row['feburaryLong'])*amount
+    #         if(row['highTeaMarch'] == False):
+    #             amount=amount-15
+    #             row['marchBill'] = 31*15
+    #         row['marchBill'] = (row['marchShort']+row['marchLong'])*amount
+    #         if(row['highTeaApril'] == False):
+    #             amount=amount-15
+    #             row['aprilBill'] = 30*15
+    #         row['aprilBill'] = (row['aprilShort']+row['aprilLong'])*amount
+    #         if(row['highTeaMay'] == False):
+    #             amount=amount-15
+    #             row['mayBill'] = 31*15
+    #         row['mayBill'] = (row['mayShort']+row['mayLong'])*amount
+    #         if(row['highTeaJune'] == False):
+    #             amount=amount-15
+    #             row['juneBill'] = 30*15
+    #        row['juneBill'] = (row['juneShort']+row['juneLong'])*amount
+            # row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
+
+    # def dehydrate(self, row):
+    #     print(row)
+    #     AprBill_val = 2
+    #     row.update({'AprBill': AprBill_val})
+    #     MayBill_val = row.mayShort * 2
+    #     row.update({'MayBill': MayBill_val})
+    #     return row
         
 class RebateAutumnResource(resources.ModelResource):
+    julyShort = fields.Field(attribute="julyShort", column_name="July Short")
+    julyLong = fields.Field(attribute="julyLong", column_name="July Long")
+    highTeaJuly = fields.Field(attribute="highTeaJuly", column_name="High Tea July")
+    julyBill = fields.Field(attribute="julyBill", column_name="July Bill")
+    augustShort = fields.Field(attribute="augustShort", column_name="August Short")
+    augustLong = fields.Field(attribute="augustLong", column_name="August Long")
+    highTeaAugust = fields.Field(attribute="highTeaAugust", column_name="High Tea August")
+    augustBill = fields.Field(attribute="augustBill", column_name="August Bill")
+    septemberShort = fields.Field(attribute="septemberShort", column_name="September Short")
+    septemberLong = fields.Field(attribute="septemberLong", column_name="September Long")
+    highTeaSeptember = fields.Field(attribute="highTeaSeptember", column_name="High Tea September")
+    septemberBill = fields.Field(attribute="septemberBill", column_name="September Bill")
+    octoberShort = fields.Field(attribute="octoberShort", column_name="October Short")
+    octoberLong = fields.Field(attribute="octoberLong", column_name="October Long")
+    highTeaOctober = fields.Field(attribute="highTeaOctober", column_name="High Tea October")
+    octoberBill = fields.Field(attribute="octoberBill", column_name="October Bill")
+    novemberShort = fields.Field(attribute="novemberShort", column_name="November Short")
+    novemberLong = fields.Field(attribute="novemberLong", column_name="November Long")
+    highTeaNovember = fields.Field(attribute="highTeaNovember", column_name="High Tea November")
+    novemberBill = fields.Field(attribute="novemberBill", column_name="November Bill")
+    decemberShort = fields.Field(attribute="decemberShort", column_name="December Short")
+    decemberLong = fields.Field(attribute="decemberLong", column_name="December Long")
+    highTeaDecember = fields.Field(attribute="highTeaDecember", column_name="High Tea December")
+    decemberBill = fields.Field(attribute="decemberBill", column_name="December Bill")
     class Meta:
         model = RebateAutumnSem
         exclude='id'
         import_id_fields = ['email']
         export_order=["email",
-                    "july",
+                    "julyShort",
+                    "julyLong",
                     "highTeaJuly",
-                    "august",
+                    "julyBill",
+                    "augustShort",
+                    "augustLong",
                     "highTeaAugust",
-                    "september",
+                    "augustBill",
+                    "septemberShort",
+                    "septemberLong",
                     "highTeaSeptember",
-                    "october",
+                    "septemberBill",
+                    "octoberShort",
+                    "octoberLong",
                     "highTeaOctober",
-                    "november",
+                    "octoberBill",
+                    "novemberShort",
+                    "novemberLong",
                     "highTeaNovember",
-                    "december",
-                    "highTeaDecember",]
+                    "NovemberBill",
+                    "decemberShort",
+                    "decemberLong",
+                    "highTeaDecember",
+                    "decemberBill",]
         fields = ( "email",
-                    "july",
+                    "julyShort",
+                    "julyLong",
                     "highTeaJuly",
-                    "august",
+                    "julyBill",
+                    "augustShort",
+                    "augustLong",
                     "highTeaAugust",
-                    "september",
+                    "augustBill",
+                    "septemberShort",
+                    "septemberLong",
                     "highTeaSeptember",
-                    "october",
+                    "septemberBill",
+                    "octoberShort",
+                    "octoberLong",
                     "highTeaOctober",
-                    "november",
+                    "octoberBill",
+                    "novemberShort",
+                    "novemberLong",
                     "highTeaNovember",
-                    "december",
-                    "highTeaDecember",)
+                    "NovemberBill",
+                    "decemberShort",
+                    "decemberLong",
+                    "highTeaDecember",
+                    "decemberBill",)
