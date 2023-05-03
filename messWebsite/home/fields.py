@@ -1,6 +1,6 @@
 '''
 File-name: fields.py
-Functions: ForeignKeyField
+Class: ForeignKeyField
 This file is now redundant as now resource.py doesn't use it anymorehe
 '''
 

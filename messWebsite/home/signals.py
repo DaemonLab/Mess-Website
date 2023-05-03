@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from .models import Student, RebateSpringSem,RebateAutumnSem, Rebate, Allocation
 from .views import count
+
 __doc__="This file contains the signals for the home app"
 
 @receiver(post_save, sender=Student)

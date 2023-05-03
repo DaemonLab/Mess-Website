@@ -15,7 +15,7 @@ class Student(models.Model):
                                help_text="This contains the roll number of the Student")
     department = models.CharField(_("Department of Student"), max_length=30,
                                   help_text="This contains the department of the Student")
-    degree = models.CharField(_("Degree of Student"), max_length=10,
+    degree = models.CharField(_("Academic Program"), max_length=10,
                               help_text="This contains the degree of the Student")
     hostel = models.CharField(_("Hostel of Student"), max_length=3,
                               help_text="This contains the hostel of the Student")
