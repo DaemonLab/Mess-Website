@@ -13,7 +13,6 @@
       <a class="btn btn-danger text-end mt-2" href="{% url 'account_logout' %}">Sign Out</a>
     {% endif %}
   </div>
-  <div class="text-center">{{text}}</div>
   <form action="" method="post" class="px-5 mx-md-5">
     {% csrf_token %} {% if text == "" %}
     <div class="form-group p-2">
@@ -52,14 +51,7 @@
       Submit
     </button>
     {% else %}
-    <div class="my-5 pb-5 text-center">
-    You have applied rebate from <br>
-      {% for dates in list%}
-      <span>{{dates.0}} to</span>
-      <span>{{dates.1}}</span>
-      <br>
-      {%endfor%}
-    </div>
+    <div class="text-center my-5 pb-5">{{text}}</div>
     {% endif %}
   </form>
 </main>
