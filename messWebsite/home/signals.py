@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Student, RebateSpringSem,RebateAutumnSem, Rebate, Allocation
+from .models import Student, RebateSpringSem,RebateAutumnSem, Rebate, LongRebate
 from .views import count
 
 __doc__="This file contains the signals for the home app"
@@ -15,7 +15,7 @@ def create_bill(sender, instance, created, **kwargs):
         instance.rebatespringsem.save()
 
 
-def save_bill(email,month,days,high_tea):
+def save_short_bill(email,month,days,high_tea):
     # Add  in every if else block
     print (email,month,days,high_tea)
     if month == "January":
@@ -25,8 +25,8 @@ def save_bill(email,month,days,high_tea):
         rebate.save()
     elif month == "February":
         rebate = RebateSpringSem.objects.get(email=email)
-        rebate.highTeaFebruary = high_tea
-        rebate.februaryShort = rebate.februaryShort + days
+        rebate.highTeaFeburary = high_tea
+        rebate.feburaryShort = rebate.februaryShort + days
         rebate.save()
     elif month == "March":
         rebate = RebateSpringSem.objects.get(email=email)
@@ -79,7 +79,6 @@ def save_bill(email,month,days,high_tea):
         rebate.decemberShort = rebate.decemberShort + days
         rebate.save()
 
-
 @receiver(pre_save, sender=Rebate)
 def update_bill(sender, instance, **kwargs):
     print("Signal called")
@@ -91,8 +90,89 @@ def update_bill(sender, instance, **kwargs):
             email = instance.email
             allocation = Rebate.objects.filter(allocation_id=instance.allocation_id).last().allocation_id
             if instance.approved == True:
-                save_bill(email,allocation.month,days,allocation.high_tea)
+                save_short_bill(email,allocation.month,days,allocation.high_tea)
             else:
-                save_bill(email,allocation.month,-days,allocation.high_tea)
+                save_short_bill(email,allocation.month,-days,allocation.high_tea)
     except Exception as e:
         print(e)
+
+def save_long_bill(email,high_tea,days,month):
+    print (email,month,days,high_tea)
+    if month == "January":
+        rebate = RebateSpringSem.objects.get(email=email)
+        rebate.highTeaJanuary = high_tea
+        rebate.januaryLong = rebate.januaryLong + days
+        rebate.save()
+    elif month == "February":
+        rebate = RebateSpringSem.objects.get(email=email)
+        rebate.highTeaFeburary = high_tea
+        rebate.feburaryLong = rebate.februaryLong + days
+        rebate.save()
+    elif month == "March":
+        rebate = RebateSpringSem.objects.get(email=email)
+        rebate.highTeaMarch = high_tea
+        rebate.marchLong = rebate.marchLong + days
+        rebate.save()
+    elif month == "April":
+        rebate = RebateSpringSem.objects.get(email=email)
+        rebate.highTeaApril = high_tea  
+        rebate.aprilLong = rebate.aprilLong + days
+        rebate.save()
+    elif month == "May":
+        rebate = RebateSpringSem.objects.get(email=email)
+        rebate.highTeaMay = high_tea
+        rebate.mayLong = rebate.mayLong + days
+        rebate.save()
+    elif month == "June":
+        rebate = RebateSpringSem.objects.get(email=email)
+        rebate.highTeaJune = high_tea
+        rebate.juneLong = rebate.juneLong + days
+        rebate.save()
+    elif month == "July":
+        rebate = RebateAutumnSem.objects.get(email=email)
+        rebate.highTeaJuly = high_tea
+        rebate.julyLong = rebate.julyLong + days
+        rebate.save()
+    elif month == "August":
+        rebate = RebateAutumnSem.objects.get(email=email)
+        rebate.highTeaAugust = high_tea
+        rebate.augustLong = rebate.augustLong + days
+        rebate.save()
+    elif month == "September":
+        rebate = RebateAutumnSem.objects.get(email=email)
+        rebate.highTeaSeptember = high_tea
+        rebate.septemberLong = rebate.septemberLong + days
+        rebate.save()
+    elif month == "October":
+        rebate = RebateAutumnSem.objects.get(email=email)
+        rebate.highTeaOctober = high_tea
+        rebate.octoberLong = rebate.octoberLong + days
+        rebate.save()
+    elif month == "November":
+        rebate = RebateAutumnSem.objects.get(email=email)
+        rebate.highTeaNovember = high_tea
+        rebate.novemberLong = rebate.novemberLong + days
+        rebate.save()
+    elif month == "December":
+        rebate = RebateAutumnSem.objects.get(email=email)
+        rebate.highTeaDecember = high_tea
+        rebate.decemberLong = rebate.decemberLong + days
+        rebate.save()
+
+@receiver(pre_save, sender=LongRebate)
+def update_long_bill(sender, instance, **kwargs):
+    print("Signals called")
+    try:
+        old_instance = LongRebate.objects.get(pk=instance.pk)
+        print(old_instance.approved,instance.approved)
+        if old_instance.approved != instance.approved:
+            allocation = Rebate.objects.filter(allocation_id=instance.allocation_id).last().allocation_id
+            email = instance.email
+            if instance.approved == True:
+                save_long_bill(email,allocation.high_tea,instance.days,instance.month)
+            else:
+                save_long_bill(email,allocation.high_tea,-instance.days,instance.month)
+    except Exception as e:
+        print(e)
+
+        

@@ -7,26 +7,16 @@
 {% endblock %} 
 {% block body %}
 <main>
-    {% if user.is_authenticated and user.is_staff%}
+    {% if user.is_authenticated%}
     <h1 class="m-0 pb-2">Long Term Rebate Form</h1>
     <div class="text-center">
-    <p class="m-0">Hello Admin!</p>
+    <p class="m-0">Hello {{user.first_name}}!</p>
     <span>{% trans 'You are logged in as:' %} {{ user.email}}</span>
     <a class="btn btn-danger" href="{% url 'account_logout' %}">Sign Out</a>
   </div>
   <div class="text-center">{{text}}</div>
   <form action="" method="post" class="px-5 mx-md-5">
     {% csrf_token %}
-    <div class="form-group p-2">
-      <label for="email">Email ID</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        class="form-control"
-        placeholder="Institute Email ID"
-      />
-    </div>
     <div class="form-group p-2">
       <label for="month">Month</label>
         <input
@@ -36,6 +26,15 @@
           class="form-control"
           placeholder="Rebate Month"/>
       </div>
+    <div class="form-group p-2">
+      <label for="allocation_id">Allocation ID</label>
+      <input
+        type="text"
+        id="allocation_id"
+        name="allocation_id"
+        class="form-control"
+        placeholder="{{key}}"/>
+    </div>
     <div class="form-group p-2">
     <label for="days">No. of days</label>
       <input

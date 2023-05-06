@@ -4,6 +4,7 @@ from .models import(
     Student,
     Allocation,
     Rebate,
+    LongRebate,
     RebateAutumnSem,
     RebateSpringSem   
 )
@@ -117,6 +118,51 @@ class RebateResource(resources.ModelResource):
                         "end_date",
                         "approved",]
 
+class LongRebateResource(resources.ModelResource):
+    allocation_id__student_id  = fields.Field(attribute='allocation_id__student_id', column_name='Allocation ID')
+    # def get_approved_value(self, obj):
+    email = fields.Field(attribute="email", column_name="Email")
+    allocation_id__roll_no__name = fields.Field(attribute="allocation_id__roll_no__name", column_name="Name")
+    allocation_id__roll_no__roll_no = fields.Field(attribute="allocation_id__roll_no__roll_no", column_name="Roll No.")
+    allocation_id__roll_no__department = fields.Field(attribute="allocation_id__roll_no__department", column_name="Department")
+    allocation_id__roll_no__degree = fields.Field(attribute="allocation_id__roll_no__degree", column_name="Degree")
+    allocation_id__roll_no__hostel = fields.Field(attribute="allocation_id__roll_no__hostel", column_name="Hostel")
+    allocation_id__roll_no__room_no = fields.Field(attribute="allocation_id__roll_no__room_no", column_name="Room No.")
+    allocation_id__caterer_name = fields.Field(attribute="allocation_id__caterer_name", column_name="Caterer Alloted")
+    allocation_id__high_tea = fields.Field(attribute="allocation_id__high_tea", column_name="High Tea")
+    date_applied = fields.Field(attribute="date_applied", column_name="date_applied")
+    days = fields.Field(attribute="days", column_name="days")
+    month = fields.Field(attribute="month", column_name="month")
+    approved = fields.Field(attribute="approved", column_name="Approved")
+    
+    class Meta:
+        model = Rebate
+        fields = (  "email",
+                    "allocation_id__roll_no__name",
+                    "allocation_id__roll_no__roll_no",
+                    "allocation_id__roll_no__department",
+                    "allocation_id__roll_no__degree",
+                    "allocation_id__roll_no__hostel",
+                    "allocation_id__roll_no__room_no",
+                    "allocation_id__high_tea",
+                    "allocation_id__caterer_name",
+                    "allocation_id__student_id",
+                    "date_applied",
+                    "days",
+                    "month",
+                    "approved",)
+        export_order = ["email",
+                        "allocation_id__roll_no__name",
+                        "allocation_id__roll_no__roll_no",
+                        "allocation_id__roll_no__department",
+                        "allocation_id__roll_no__degree",
+                        "allocation_id__roll_no__hostel",
+                        "allocation_id__roll_no__room_no",
+                        "allocation_id__student_id",
+                        "date_applied",
+                        "days",
+                        "month",
+                        "approved",]
 
 class RebateSpringResource(resources.ModelResource):
     email = fields.Field(attribute="email", column_name="Email")
