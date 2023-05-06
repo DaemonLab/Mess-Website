@@ -15,7 +15,7 @@ from home.models import (
     Photos,
     Penalty,
     ShortRebate,
-    LongRebate,
+    LongRebateData,
     Caterer,
     Form,
     Cafeteria,
@@ -24,6 +24,7 @@ from home.models import (
     Allocation,
     Scan,
     Rebate,
+    LongRebate,
     RebateSpringSem,
     RebateAutumnSem,
 )
@@ -197,9 +198,9 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-@admin.register(LongRebate)
+@admin.register(LongRebateData)
 class about_Admin(admin.ModelAdmin):
-    model = LongRebate
+    model = LongRebateData
     ordering = ("rule",)
     search_fields = ("rule",)
     list_display = ("rule",)
@@ -427,6 +428,71 @@ class about_Admin(admin.ModelAdmin):
         ),
     )
 
+@admin.register(LongRebate)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateResource
+    model = LongRebate
+    search_fields = ("allocation_id__student_id", "approved",
+                     "date_applied", "month")
+    list_filter = ("allocation_id__student_id", "approved",
+                     "date_applied", "month", "days")
+    list_display = ( "allocation_id__student_id", "approved",
+                     "date_applied", "month")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "allocation_id",
+                    "date_applied",
+                    "days",
+                    "month",
+                    "approved",
+                ),
+                "description": "%s" %REBATE_DESC_TEXT,
+            },
+        ),
+    )
+    actions = ['export_as_csv',"disapprove","approve"]
+
+    @admin.action(description="Disapprove the students")
+    def disapprove(self, request, queryset):
+        """
+        Disapprove action available in the admin page
+        """
+        for obj in queryset:
+            obj.approved = False
+            obj.save()
+
+    @admin.action(description="Approve the students")
+    def approve(self, request, queryset):
+        """
+        Approve action available in the admin page
+        """
+        for obj in queryset:
+            obj.approved = True
+            obj.save()
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = RebateResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="LongRebate.csv"'
+        return response
+    export_as_csv.short_description = "Export Rebate details to CSV"
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        update_bill( instance=obj, sender=obj.__class__,created=change)
+    
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        print("save related")
+        update_bill(sender=form.instance.__class__, instance=form.instance, created=change)
 
 
 @admin.register(Rebate)

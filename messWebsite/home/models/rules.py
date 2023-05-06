@@ -57,7 +57,7 @@ class ShortRebate(models.Model):
         verbose_name_plural = "Short Rebate"
 
 
-class LongRebate(models.Model):
+class LongRebateData(models.Model):
     """
     Stores all the long term rebate info on the rules page
     will show all point of long term rebate, using for loop

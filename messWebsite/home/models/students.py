@@ -86,7 +86,7 @@ class Scan(models.Model):
 
 class Rebate(models.Model):
     """
-    Stores the rebate details of every allocation ID
+    Stores the rebate details of every student
     """
     email = models.CharField(max_length=30, default=0)
     allocation_id = models.ForeignKey(
@@ -105,3 +105,23 @@ class Rebate(models.Model):
         verbose_name = "Rebate Details"
         verbose_name_plural = "Rebate Details"
 
+class LongRebate(models.Model):
+    """
+    Stores the long rebate details of every student
+    """
+    email= models.CharField(_("email"), max_length=30, default="")
+    #what does the related_name attribute mean
+    allocation_id = models.ForeignKey(
+        Allocation, default=0, on_delete=models.SET_NULL, null=True)
+    month = models.CharField(_("Month"),max_length=10, default="")
+    days = models.IntegerField(_("days"), default=0)
+    approved = models.BooleanField(_(""),default=False)
+    date_applied = models.DateField(
+        default=now, help_text="Date on which the rebate was applied")
+
+    def __str__(self):
+        return str(self.allocation_id) + " " + str(self.date_applied)
+
+    class Meta:
+        verbose_name = "Long Rebate Details"
+        verbose_name_plural = "Long Rebate Details"
