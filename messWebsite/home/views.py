@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebate, Caterer, Form, Cafeteria, Contact, Rebate, Allocation, Student, RebateAutumnSem, RebateSpringSem
+from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebateData, Caterer, Form, Cafeteria, Contact, Rebate, Allocation, Student, RebateAutumnSem, RebateSpringSem, LongRebate
 import pandas as pd
 import datetime
 from django.views.generic import TemplateView
@@ -42,7 +42,7 @@ def rules(request):
     """
     rules = Rule.objects.all()
     shortRebates = ShortRebate.objects.all()
-    LongRebates = LongRebate.objects.all()
+    LongRebates = LongRebateData.objects.all()
     form = Form.objects.all()
     caterer = Caterer.objects.all()
     params = {'rule': rules, 'shortRebate': shortRebates,
@@ -164,7 +164,7 @@ def check(a, s, start, end, month):
             if (start.month == 1 and end.month == 1):
                 return -2
             else:
-                return 8-student.january
+                return 8-student.januaryShort
         case "Feburary":
             student = is_present_spring(s)
             sum = count(start, end)
@@ -176,7 +176,7 @@ def check(a, s, start, end, month):
             elif (start.month != 2 and end.month != 2):
                 return -2
             else:
-                return 8-student.feburary
+                return 8-student.feburaryShort
         case "March":
             student = is_present_spring(s)
             sum = count(start, end)
@@ -188,7 +188,7 @@ def check(a, s, start, end, month):
             elif (start.month != 3 and end.month != 3):
                 return -2
             else:
-                return 8-student.march
+                return 8-student.marchShort
         case "April":
             student = is_present_spring(s)
             sum = count(start, end)
@@ -200,7 +200,7 @@ def check(a, s, start, end, month):
             elif (start.month != 4 and end.month != 4):
                 return -2
             else:
-                return 8-student.april
+                return 8-student.aprilShort
         case "May":
             student = is_present_spring(s)
             sum = count(start, end)
@@ -212,7 +212,7 @@ def check(a, s, start, end, month):
             elif (start.month != 5 and end.month != 5):
                 return -2
             else:
-                return 8-student.may
+                return 8-student.mayShort
         case "June":
             student = is_present_spring(s)
             sum = count(start, end)
@@ -224,7 +224,7 @@ def check(a, s, start, end, month):
             elif (start.month != 6 and end.month != 6):
                 return -2
             else:
-                return 8-student.june
+                return 8-student.juneShort
         case "July":
             student = is_present_autumn(s)
             sum = count(start, end)
@@ -236,7 +236,7 @@ def check(a, s, start, end, month):
             elif (start.month != 7 and end.month != 7):
                 return -2
             else:
-                return 8-student.july
+                return 8-student.julyShort
         case "August":
             student = is_present_autumn(s)
             sum = count(start, end)
@@ -248,7 +248,7 @@ def check(a, s, start, end, month):
             elif (start.month != 8 and end.month != 8):
                 return -2
             else:
-                return 8-student.august
+                return 8-student.augustShort
         case "September":
             student = is_present_autumn(s)
             sum = count(start, end)
@@ -260,7 +260,7 @@ def check(a, s, start, end, month):
             elif (start.month != 9 and end.month != 9):
                 return -2
             else:
-                return 8-student.september
+                return 8-student.septemberShort
         case "October":
             student = is_present_autumn(s)
             sum = count(start, end)
@@ -272,7 +272,7 @@ def check(a, s, start, end, month):
             elif (start.month != 10 and end.month != 10):
                 return -2
             else:
-                return 8-student.october
+                return 8-student.octoberShort
         case "November":
             student = is_present_autumn(s)
             sum = count(start, end)
@@ -284,7 +284,7 @@ def check(a, s, start, end, month):
             elif (start.month != 11 and end.month != 11):
                 return -2
             else:
-                return 8-student.november
+                return 8-student.novemberShort
         case "December":
             student = is_present_autumn(s)
             sum = count(start, end)
@@ -296,7 +296,7 @@ def check(a, s, start, end, month):
             elif (start.month != 12 and end.month != 12):
                 return -2
             else:
-                return 8-student.december
+                return 8-student.decemberShort
         # case default:
         #     return "something"
 
@@ -342,9 +342,6 @@ def rebate(request):
                             email=str(request.user.email)).first()
                         month = allocation.month
                         print(month)
-                        # total_days = days(a,list)+diff
-                        # print(total_days)
-                        # print(list)
                         ch = check(allocation, student, start_date, end_date, month)
                         if (ch == -2):
                             text = "Please fill the rebate of this month only"
@@ -361,6 +358,14 @@ def rebate(request):
                                 )
                                 r.save()
                                 text = "You have successfully submitted the form. Thank you"
+                            elif (0<diff < 2):
+                                text="Min no of days for rebate is 2"
+                            elif (diff2 < 2):
+                                text="You can only apply for rebate with a minimum of 2 days gap before the start date"
+                            elif (diff > 7):
+                                text="Max no of days for rebate is 7"
+                            elif(diff<0):
+                                text="Please enter the correct dates"
                             else:
                                 text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
                     except Allocation.DoesNotExist:
@@ -530,14 +535,30 @@ def addLongRebateBill(request):
     This form can only be accessed by the Institute's admin
     """
     text=""
-    if request.method == 'POST' and request.user.is_authenticated and request.user.is_staff:
+    try:
+        allocation_id = Allocation.objects.get(
+            roll_no__email=str(request.user.email))
+        key = str(allocation_id.student_id)
+    except Allocation.DoesNotExist:
+        key = "Signed in account does not does not have any allocation ID"
+    except Allocation.MultipleObjectsReturned:
+        allocation_id = Allocation.objects.filter(
+            roll_no__email=str(request.user.email)).last()
+        key = str(allocation_id.student_id)
+    if request.method == 'POST' and request.user.is_authenticated:
         try:
-            student = Student.objects.filter(email=request.POST['email']).first()
             month = str(request.POST['month']).capitalize()
             days = int(request.POST['days'])
             try:
-                print(student)
-                allocation = Allocation.objects.filter(roll_no = student, month = month).last()
+                allocation = Allocation.objects.filter(allocation_id = request.POST["allocation_id"], month = month).last()
+                long=LongRebate(
+                    email= request.user.email,
+                    allocation_id = allocation,
+                    month = month,
+                    days = days,
+                    approved = False,
+                )
+                long.save()
                 text="Long Term rebate added Successfully"
                 match month:
                     case "January":
@@ -608,5 +629,5 @@ def addLongRebateBill(request):
                 print(e)
         except:
             text = "Email ID does not exist in the database. Please eneter the correct email ID"
-    context={'text': text}
-    return render(request,"admin/longRebate.html",context)
+    context={'text': text,'key':key}
+    return render(request,"longRebate.html",context)
