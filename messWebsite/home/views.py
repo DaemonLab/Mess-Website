@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from home.models import About, Update, Carousel, Photos, Rule, Penalty, ShortRebate, LongRebateData, Caterer, Form, Cafeteria, Contact, Rebate, Allocation, Student, RebateAutumnSem, RebateSpringSem, LongRebate
 import pandas as pd
 import datetime
-from django.views.generic import TemplateView
 import io
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.dateparse import parse_date
@@ -44,9 +43,8 @@ def rules(request):
     shortRebates = ShortRebate.objects.all()
     LongRebates = LongRebateData.objects.all()
     form = Form.objects.all()
-    caterer = Caterer.objects.all()
     params = {'rule': rules, 'shortRebate': shortRebates,
-              'longRebate': LongRebates, 'form': form, 'caterer': caterer}
+              'longRebate': LongRebates, 'form': form}
 
     return render(request, 'rules.html', params)
 
