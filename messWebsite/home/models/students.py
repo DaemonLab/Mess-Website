@@ -110,13 +110,13 @@ class LongRebate(models.Model):
     Stores the long rebate details of every student
     """
     email= models.CharField(_("email"), max_length=30, default="")
-    #what does the related_name attribute mean
     allocation_id = models.ForeignKey(Allocation, related_name="allocation_id_long", default=0, on_delete=models.SET_NULL, null=True)
     month = models.CharField(_("Month"),max_length=10, default="")
     days = models.IntegerField(_("days"), default=0)
     approved = models.BooleanField(_("Approved"),default=False)
     date_applied = models.DateField(
         default=now, help_text="Date on which the rebate was applied")
+    file = models.FileField(_("File"), upload_to='documents/', default=None, null=True, blank=True)
 
     def __str__(self):
         return str(self.date_applied)

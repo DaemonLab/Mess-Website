@@ -23,26 +23,26 @@
           type="text"
           id="month"
           name="month"
-          class="form-control"
+          class="form-control-sm"
           placeholder="Rebate Month"/>
-      </div>
-    <div class="form-group p-2">
-      <label for="allocation_id">Allocation ID</label>
+      <label for="allocation_id" class="ms-3">Allocation ID</label>
       <input
         type="text"
         id="allocation_id"
         name="allocation_id"
-        class="form-control"
+        class="form-control-sm"
         placeholder="{{key}}"/>
-    </div>
-    <div class="form-group p-2">
-    <label for="days">No. of days</label>
+    <label for="days" class="ms-3">No. of days</label>
       <input
         type="number"
         id="days"
         name="days"
         class="form-control-sm"
         placeholder="No. of Days of Rebate"/>
+    </div>
+    <div class="form-group p-2">
+    <input type="file" class="custom-file-input" id="file" name="pdf" required accept=".pdf" size="60">
+    <label class="custom-file-label" for="file">Choose file</label>
     </div>
     <button
       type="submit"

@@ -163,10 +163,12 @@ def save_long_bill(email,high_tea,days,month):
 def update_long_bill(sender, instance, **kwargs):
     print("Signals called")
     try:
+        print(instance.pk)
         old_instance = LongRebate.objects.get(pk=instance.pk)
+        print("inside try")
         print(old_instance.approved,instance.approved)
         if old_instance.approved != instance.approved:
-            allocation = Rebate.objects.filter(allocation_id=instance.allocation_id).last().allocation_id
+            allocation = LongRebate.objects.filter(allocation_id=instance.allocation_id).last().allocation_id
             email = instance.email
             if instance.approved == True:
                 save_long_bill(email,allocation.high_tea,instance.days,instance.month)
