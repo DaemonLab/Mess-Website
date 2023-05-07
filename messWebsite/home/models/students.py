@@ -111,16 +111,15 @@ class LongRebate(models.Model):
     """
     email= models.CharField(_("email"), max_length=30, default="")
     #what does the related_name attribute mean
-    allocation_id = models.ForeignKey(
-        Allocation, default=0, on_delete=models.SET_NULL, null=True)
+    allocation_id = models.ForeignKey(Allocation, related_name="allocation_id_long", default=0, on_delete=models.SET_NULL, null=True)
     month = models.CharField(_("Month"),max_length=10, default="")
     days = models.IntegerField(_("days"), default=0)
-    approved = models.BooleanField(_(""),default=False)
+    approved = models.BooleanField(_("Approved"),default=False)
     date_applied = models.DateField(
         default=now, help_text="Date on which the rebate was applied")
 
     def __str__(self):
-        return str(self.allocation_id) + " " + str(self.date_applied)
+        return str(self.date_applied)
 
     class Meta:
         verbose_name = "Long Rebate Details"
