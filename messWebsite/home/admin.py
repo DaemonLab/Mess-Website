@@ -449,6 +449,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "days",
                     "month",
                     "approved",
+                    "file",
                 ),
                 "description": "%s" %REBATE_DESC_TEXT,
             },

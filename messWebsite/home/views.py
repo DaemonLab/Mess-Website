@@ -548,13 +548,14 @@ def addLongRebateBill(request):
             month = str(request.POST['month']).capitalize()
             days = int(request.POST['days'])
             try:
-                allocation = Allocation.objects.filter(allocation_id = request.POST["allocation_id"], month = month).last()
+                allocation = Allocation.objects.filter(student_id = request.POST["allocation_id"], month = month).last()
                 long=LongRebate(
                     email= request.user.email,
                     allocation_id = allocation,
                     month = month,
                     days = days,
                     approved = False,
+                    file = request.POST['pdf']
                 )
                 long.save()
                 text="Long Term rebate added Successfully"
