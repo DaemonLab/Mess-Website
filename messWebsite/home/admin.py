@@ -27,9 +27,9 @@ from home.models import (
     LongRebate,
     RebateSpringSem,
     RebateAutumnSem,
+    UnregisteredStudent,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
-
 from .resources import StudentResource, AllocationResource, RebateResource, RebateSpringResource, RebateAutumnResource
 
 # Customising the heading and title of the admin page
@@ -391,7 +391,16 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ['export_as_csv']
+    actions = ['export_as_csv', 'generate_table']
+
+    
+    def generate_table(Student, request, queryset):
+        """
+        Generate action available in the admin page
+        """
+        for obj in queryset:
+            Unregistered_instance=UnregisteredStudent(email=obj.email)
+            Unregistered_instance.save()    
 
     def export_as_csv(self, request, queryset):
         """
@@ -444,7 +453,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    "allocation_id",
+                    "allocation_id_id",
                     "date_applied",
                     "days",
                     "month",
@@ -672,3 +681,25 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         return response
 
     export_as_csv.short_description = "Export Rebate details to CSV"
+
+
+@admin.register(UnregisteredStudent)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    actions_on_empty_queryset = True
+    resource_class = UnregisteredStudent
+    model = UnregisteredStudent
+    search_fields = ("email",)
+    list_filter = ("email",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                ),
+            },
+        ),
+    )
+
+
+
