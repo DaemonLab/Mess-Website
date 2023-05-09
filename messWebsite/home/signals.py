@@ -168,7 +168,7 @@ def update_long_bill(sender, instance, **kwargs):
         print("inside try")
         print(old_instance.approved,instance.approved)
         if old_instance.approved != instance.approved:
-            allocation = LongRebate.objects.filter(allocation_id=instance.allocation_id).last().allocation_id
+            allocation = LongRebate.objects.filter(allocation_id_id=instance.allocation_id_id).last().allocation_id_id
             email = instance.email
             if instance.approved == True:
                 save_long_bill(email,allocation.high_tea,instance.days,instance.month)
