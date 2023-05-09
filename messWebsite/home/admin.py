@@ -30,7 +30,7 @@ from home.models import (
     UnregisteredStudent,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
-from .resources import StudentResource, AllocationResource, RebateResource, RebateSpringResource, RebateAutumnResource
+from .resources import StudentResource, AllocationResource, RebateResource, RebateSpringResource, RebateAutumnResource, UnregisteredStudentResource
 
 # Customising the heading and title of the admin page
 admin.site.site_header = 'Dining Website Admin Page'
@@ -686,7 +686,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(UnregisteredStudent)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     actions_on_empty_queryset = True
-    resource_class = UnregisteredStudent
+    resource_class = UnregisteredStudentResource
     model = UnregisteredStudent
     search_fields = ("email",)
     list_filter = ("email",)
@@ -700,6 +700,18 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
+
+    actions = ['allocate Unregistered Students']
+
+    @admin.action(description="Approve the students")
+    def allocate(self, request, queryset):
+        """
+        Allocate action available in the admin page
+        """
+        for obj in queryset:
+            obj.approved = True
+            obj.save()
+
 
 
 

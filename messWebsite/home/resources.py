@@ -7,6 +7,7 @@ from .models import (
     LongRebate,
     RebateAutumnSem,
     RebateSpringSem,
+    UnregisteredStudent,
 )
 
 """
@@ -472,4 +473,15 @@ class RebateAutumnResource(resources.ModelResource):
             "decemberLong",
             "highTeaDecember",
             "decemberBill",
+        )
+
+class UnregisteredStudentResource(resources.ModelResource):
+    class Meta:
+        model = UnregisteredStudent
+        exclude = "id"
+        import_id_fields = [
+            "email",
+        ]
+        fields = (
+            "email",
         )
