@@ -8,7 +8,6 @@ from home.models import (
     Carousel,
     Photos,
     Rule,
-    Penalty,
     ShortRebate,
     LongRebateData,
     Caterer,
@@ -26,9 +25,9 @@ from home.models import (
 import pandas as pd
 import datetime
 import io
-from django.core.exceptions import ObjectDoesNotExist
 from django.utils.dateparse import parse_date
 from django.core.exceptions import MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 

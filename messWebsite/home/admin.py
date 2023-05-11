@@ -30,12 +30,20 @@ from home.models import (
     UnregisteredStudent,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
-from .resources import StudentResource, AllocationResource, RebateResource, RebateSpringResource, RebateAutumnResource, UnregisteredStudentResource
+from .resources import (
+    StudentResource,
+    AllocationResource,
+    RebateResource,
+    RebateSpringResource,
+    RebateAutumnResource,
+    UnregisteredStudentResource,
+    LongRebateResource,
+)
 
 # Customising the heading and title of the admin page
-admin.site.site_header = 'Dining Website Admin Page'
-admin.site.site_title = 'Admin Page'
-admin.site.index_title = 'Website Admin panel'
+admin.site.site_header = "Dining Website Admin Page"
+admin.site.site_title = "Admin Page"
+admin.site.index_title = "Website Admin panel"
 
 
 # Text of description content of each model
@@ -53,7 +61,9 @@ CAFETERIA_DESC_TEXT = "This contains the content that will show up in the cafete
 CONTACT_DESC_TEXT = "This contains the content that will show up in the contact page. Add new field for each new contact."
 ALLOCATION_DESC_TEXT = "This contains the Allocation details of the students. First import data through /allocation/ url then export"
 STUDENT_DESC_TEXT = "This contains the Basic details of each students."
-REBATE_DESC_TEXT = "This contains the rebate details of each rebate applied by the students."
+REBATE_DESC_TEXT = (
+    "This contains the rebate details of each rebate applied by the students."
+)
 REBATE_BILLS_DESC_TEXT = "This contains the rebate bills of each students."
 
 # Register your models here
@@ -66,9 +76,7 @@ class about_Admin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": (
-                    "description",
-                ),
+                "fields": ("description",),
                 "description": "%s" % ABOUT_DESC_TEXT,
             },
         ),
@@ -78,17 +86,15 @@ class about_Admin(admin.ModelAdmin):
 @admin.register(Carousel)
 class about_Admin(admin.ModelAdmin):
     model = Carousel
-#    ordering=("image",)
-#    search_fields = ("image")
-#    list_display = ("image")
-#    list_filter = ("image",)
+    #    ordering=("image",)
+    #    search_fields = ("image")
+    #    list_display = ("image")
+    #    list_filter = ("image",)
     fieldsets = (
         (
             None,
             {
-                "fields": (
-                    "image",
-                ),
+                "fields": ("image",),
                 "description": "%s" % CAROUSEL_DESC_TEXT,
             },
         ),
@@ -105,9 +111,7 @@ class about_Admin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": (
-                    "update",
-                ),
+                "fields": ("update",),
                 "description": "%s" % UPDATE_DESC_TEXT,
             },
         ),
@@ -117,18 +121,20 @@ class about_Admin(admin.ModelAdmin):
 @admin.register(Photos)
 class about_Admin(admin.ModelAdmin):
     model = Photos
-    search_fields = ("poc", "occupation",)
-    list_display = ("poc","occupation")
-    list_filter = ("poc", "occupation",)
+    search_fields = (
+        "poc",
+        "occupation",
+    )
+    list_display = ("poc", "occupation")
+    list_filter = (
+        "poc",
+        "occupation",
+    )
     fieldsets = (
         (
             None,
             {
-                "fields": (
-                    "image",
-                    "poc",
-                    "occupation"
-                ),
+                "fields": ("image", "poc", "occupation"),
                 "description": "%s" % PHOTOS_DESC_TEXT,
             },
         ),
@@ -146,9 +152,7 @@ class about_Admin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": (
-                    "rule",
-                ),
+                "fields": ("rule",),
                 "description": "%s" % RULE_DESC_TEXT,
             },
         ),
@@ -166,9 +170,7 @@ class about_Admin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": (
-                    "penalty",
-                ),
+                "fields": ("penalty",),
                 "description": "%s" % PENALTY_DESC_TEXT,
             },
         ),
@@ -185,12 +187,12 @@ class about_Admin(admin.ModelAdmin):
                 "fields": (
                     "desc",
                     "link",
-                    'policy',
-                    'circulation',
-                    'infoToCaterer',
-                    'note',
-                    'Memebers',
-                    'biling',
+                    "policy",
+                    "circulation",
+                    "infoToCaterer",
+                    "note",
+                    "Memebers",
+                    "biling",
                 ),
                 "description": "%s" % SHORT_REBATE_DESC_TEXT,
             },
@@ -209,9 +211,7 @@ class about_Admin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": (
-                    "rule",
-                ),
+                "fields": ("rule",),
                 "description": "%s" % LONG_REBATE_DESC_TEXT,
             },
         ),
@@ -232,7 +232,7 @@ class about_Admin(admin.ModelAdmin):
                     "upper_description",
                     "sheet_url",
                     "lower_description",
-                    "student_limit"
+                    "student_limit",
                 ),
                 "description": "%s" % CATERER_DESC_TEXT,
             },
@@ -308,7 +308,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
     model = Allocation
     search_fields = ("student_id", "month", "caterer_name", "high_tea")
     list_filter = ("month", "caterer_name", "high_tea")
-    list_display = ("student_id","month", "caterer_name", "high_tea")
+    list_display = ("student_id", "month", "caterer_name", "high_tea")
     fieldsets = (
         (
             None,
@@ -321,13 +321,13 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                     "high_tea",
                     "first_pref",
                     "second_pref",
-                    "third_pref"
+                    "third_pref",
                 ),
-                "description": "%s" %ALLOCATION_DESC_TEXT,
+                "description": "%s" % ALLOCATION_DESC_TEXT,
             },
         ),
     )
-    actions = ['export_as_csv']
+    actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
         """
@@ -335,11 +335,12 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
         """
         resource = AllocationResource()
         dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="allocation.csv"'
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
         return response
 
     export_as_csv.short_description = "Export Allocation details to CSV"
+
 
 #  # Define the import action
 #     def import_csv(self, request, queryset):
@@ -369,10 +370,8 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
 class about_Admin(ImportExportMixin, admin.ModelAdmin):
     resource_class = StudentResource
     model = Student
-    search_fields = ("name", "roll_no",
-                     "hostel", "degree", "department")
-    list_display = ("name", "roll_no",
-                     "hostel","email")
+    search_fields = ("name", "roll_no", "hostel", "degree", "department")
+    list_display = ("name", "roll_no", "hostel", "email")
     list_filter = ("hostel", "degree", "department")
     fieldsets = (
         (
@@ -385,22 +384,21 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                     "hostel",
                     "room_no",
                     "degree",
-                    "department"
+                    "department",
                 ),
-                "description": "%s" %STUDENT_DESC_TEXT,
+                "description": "%s" % STUDENT_DESC_TEXT,
             },
         ),
     )
-    actions = ['export_as_csv', 'generate_table']
+    actions = ["export_as_csv", "generate_table"]
 
-    
     def generate_table(Student, request, queryset):
         """
         Generate action available in the admin page
         """
         for obj in queryset:
-            Unregistered_instance=UnregisteredStudent(email=obj.email)
-            Unregistered_instance.save()    
+            Unregistered_instance = UnregisteredStudent(email=obj.email)
+            Unregistered_instance.save()
 
     def export_as_csv(self, request, queryset):
         """
@@ -408,8 +406,8 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
         """
         resource = StudentResource()
         dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="Student.csv"'
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="Student.csv"'
         return response
 
     export_as_csv.short_description = "Export Student details to CSV"
@@ -430,23 +428,26 @@ class about_Admin(admin.ModelAdmin):
                     "breakfast",
                     "lunch",
                     "high_tea",
-                    "dinner"
+                    "dinner",
                 ),
                 #                "description": "%s" %_DESC_TEXT,
             },
         ),
     )
 
+
 @admin.register(LongRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateResource
+    resource_class = LongRebateResource
     model = LongRebate
-    search_fields = ("approved",
-                     "date_applied", "month")
-    list_filter = ("approved",
-                     "date_applied", "month", "days")
-    list_display = ( "allocation_id_id",
-                     "date_applied", "month","approved",)
+    search_fields = ("approved", "date_applied", "month")
+    list_filter = ("approved", "date_applied", "month", "days")
+    list_display = (
+        "allocation_id_id",
+        "date_applied",
+        "month",
+        "approved",
+    )
     fieldsets = (
         (
             None,
@@ -460,11 +461,11 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "approved",
                     "file",
                 ),
-                "description": "%s" %REBATE_DESC_TEXT,
+                "description": "%s" % REBATE_DESC_TEXT,
             },
         ),
     )
-    actions = ['export_as_csv',"disapprove","approve"]
+    actions = ["export_as_csv", "disapprove", "approve"]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -490,30 +491,43 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         resource = RebateResource()
         dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="LongRebate.csv"'
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="LongRebate.csv"'
         return response
+
     export_as_csv.short_description = "Export Rebate details to CSV"
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        update_bill( instance=obj, sender=obj.__class__,created=change)
-    
+        update_bill(instance=obj, sender=obj.__class__, created=change)
+
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
         print("save related")
-        update_bill(sender=form.instance.__class__, instance=form.instance, created=change)
+        update_bill(
+            sender=form.instance.__class__, instance=form.instance, created=change
+        )
 
 
 @admin.register(Rebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateResource
     model = Rebate
-    search_fields = ("allocation_id__student_id", "approved",
-                     "date_applied", "start_date", "end_date")
-    list_filter = ("approved", "date_applied",
-                   "start_date", "end_date")
-    list_display = ( "date_applied", "allocation_id", "start_date", "end_date", "approved")
+    search_fields = (
+        "allocation_id__student_id",
+        "approved",
+        "date_applied",
+        "start_date",
+        "end_date",
+    )
+    list_filter = ("approved", "date_applied", "start_date", "end_date")
+    list_display = (
+        "date_applied",
+        "allocation_id",
+        "start_date",
+        "end_date",
+        "approved",
+    )
     fieldsets = (
         (
             None,
@@ -526,11 +540,11 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "end_date",
                     "approved",
                 ),
-                "description": "%s" %REBATE_DESC_TEXT,
+                "description": "%s" % REBATE_DESC_TEXT,
             },
         ),
     )
-    actions = ['export_as_csv',"disapprove","approve"]
+    actions = ["export_as_csv", "disapprove", "approve"]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -556,19 +570,22 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         resource = RebateResource()
         dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="Rebate.csv"'
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="Rebate.csv"'
         return response
+
     export_as_csv.short_description = "Export Rebate details to CSV"
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        update_bill( instance=obj, sender=obj.__class__,created=change)
-    
+        update_bill(instance=obj, sender=obj.__class__, created=change)
+
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
         print("save related")
-        update_bill(sender=form.instance.__class__, instance=form.instance, created=change)
+        update_bill(
+            sender=form.instance.__class__, instance=form.instance, created=change
+        )
 
 
 @admin.register(RebateAutumnSem)
@@ -583,36 +600,48 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    ("julyShort",
-                    "julyLong",
-                    "highTeaJuly",),
+                    (
+                        "julyShort",
+                        "julyLong",
+                        "highTeaJuly",
+                    ),
                     # "julyBill",
-                    ("augustShort",
-                    "augustLong",
-                    "highTeaAugust",),
+                    (
+                        "augustShort",
+                        "augustLong",
+                        "highTeaAugust",
+                    ),
                     # "augustBill",
-                    ("septemberShort",
-                    "septemberLong",
-                    "highTeaSeptember",),
+                    (
+                        "septemberShort",
+                        "septemberLong",
+                        "highTeaSeptember",
+                    ),
                     # "septemberBill",
-                    ("octoberShort",
-                    "octoberLong",
-                    "highTeaOctober",),
+                    (
+                        "octoberShort",
+                        "octoberLong",
+                        "highTeaOctober",
+                    ),
                     # "octoberBill",
-                    ("novemberShort",
-                    "novemberLong",
-                    "highTeaNovember",),
+                    (
+                        "novemberShort",
+                        "novemberLong",
+                        "highTeaNovember",
+                    ),
                     # "NovemberBill",
-                    ("decemberShort",
-                    "decemberLong",
-                    "highTeaDecember",),
+                    (
+                        "decemberShort",
+                        "decemberLong",
+                        "highTeaDecember",
+                    ),
                     # "decemberBill",
                 ),
-                "description": "%s" %REBATE_BILLS_DESC_TEXT,
+                "description": "%s" % REBATE_BILLS_DESC_TEXT,
             },
         ),
     )
-    actions = ['export_as_csv']
+    actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
         """
@@ -620,8 +649,8 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         resource = RebateAutumnResource()
         dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="RebateAutumn.csv"'
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
         return response
 
     export_as_csv.short_description = "Export Rebate details to CSV"
@@ -639,36 +668,48 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    ("januaryShort",
-                    "januaryLong",
-                    "highTeaJanuary",),
+                    (
+                        "januaryShort",
+                        "januaryLong",
+                        "highTeaJanuary",
+                    ),
                     # "januaryBill",
-                    ("feburaryShort",
-                    "feburaryLong",
-                    "highTeaFeburary",),
+                    (
+                        "feburaryShort",
+                        "feburaryLong",
+                        "highTeaFeburary",
+                    ),
                     # "feburaryBill",
-                    ("marchShort",
-                    "marchLong",
-                    "highTeaMarch",),
+                    (
+                        "marchShort",
+                        "marchLong",
+                        "highTeaMarch",
+                    ),
                     # "marchBill",
-                    ("aprilShort",
-                    "aprilLong",
-                    "highTeaApril",),
+                    (
+                        "aprilShort",
+                        "aprilLong",
+                        "highTeaApril",
+                    ),
                     # "aprilBill",
-                    ("mayShort",
-                    "mayLong",
-                    "highTeaMay",),
+                    (
+                        "mayShort",
+                        "mayLong",
+                        "highTeaMay",
+                    ),
                     # "mayBill",
-                    ("juneShort",
-                    "juneLong",
-                    "highTeaJune",),
+                    (
+                        "juneShort",
+                        "juneLong",
+                        "highTeaJune",
+                    ),
                     # "juneBill",
                 ),
-                "description": "%s" %REBATE_BILLS_DESC_TEXT,
+                "description": "%s" % REBATE_BILLS_DESC_TEXT,
             },
         ),
     )
-    actions = ['export_as_csv']
+    actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
         """
@@ -676,8 +717,8 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         resource = RebateSpringResource()
         dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="RebateSpring.csv"'
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="RebateSpring.csv"'
         return response
 
     export_as_csv.short_description = "Export Rebate details to CSV"
@@ -694,14 +735,12 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         (
             None,
             {
-                "fields": (
-                    "email",
-                ),
+                "fields": ("email",),
             },
         ),
     )
 
-    actions = ['allocate Unregistered Students']
+    actions = ["allocate Unregistered Students"]
 
     @admin.action(description="Approve the students")
     def allocate(self, request, queryset):
@@ -711,7 +750,3 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             obj.approved = True
             obj.save()
-
-
-
-

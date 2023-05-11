@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext as _
-import datetime
 from django.utils.timezone import now
 
 
@@ -211,4 +210,4 @@ class UnregisteredStudent(models.Model):
 
     class Meta:
         verbose_name = "Unregistered Students"
-        verbose_name_plural = "Ungegistered Students"
+        verbose_name_plural = "Unregistered Students"
