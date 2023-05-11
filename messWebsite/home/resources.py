@@ -179,28 +179,28 @@ class RebateResource(resources.ModelResource):
 class LongRebateResource(resources.ModelResource):
     email = fields.Field(attribute="email", column_name="Email")
     allocation_id_id__roll_no__name = fields.Field(
-        attribute="allocation_id__roll_no__name", column_name="Name"
+        attribute="allocation_id_id__roll_no__name", column_name="Name"
     )
     allocation_id_id__roll_no__roll_no = fields.Field(
-        attribute="allocation_id__roll_no__roll_no", column_name="Roll No."
+        attribute="allocation_id_id__roll_no__roll_no", column_name="Roll No."
     )
     allocation_id_id__roll_no__department = fields.Field(
-        attribute="allocation_id__roll_no__department", column_name="Department"
+        attribute="allocation_id_id__roll_no__department", column_name="Department"
     )
     allocation_id_id__roll_no__degree = fields.Field(
-        attribute="allocation_id__roll_no__degree", column_name="Degree"
+        attribute="allocation_id_id__roll_no__degree", column_name="Degree"
     )
     allocation_id_id__roll_no__hostel = fields.Field(
-        attribute="allocation_id__roll_no__hostel", column_name="Hostel"
+        attribute="allocation_id_id__roll_no__hostel", column_name="Hostel"
     )
     allocation_id_id__roll_no__room_no = fields.Field(
-        attribute="allocation_id__roll_no__room_no", column_name="Room No."
+        attribute="allocation_id_id__roll_no__room_no", column_name="Room No."
     )
     allocation_id_id__caterer_name = fields.Field(
-        attribute="allocation_id__caterer_name", column_name="Caterer Alloted"
+        attribute="allocation_id_id__caterer_name", column_name="Caterer Alloted"
     )
     allocation_id_id__high_tea = fields.Field(
-        attribute="allocation_id__high_tea", column_name="High Tea"
+        attribute="allocation_id_id__high_tea", column_name="High Tea"
     )
     date_applied = fields.Field(attribute="date_applied", column_name="date_applied")
     days = fields.Field(attribute="days", column_name="days")
@@ -208,17 +208,17 @@ class LongRebateResource(resources.ModelResource):
     approved = fields.Field(attribute="approved", column_name="Approved")
 
     class Meta:
-        model = Rebate
+        model = LongRebate
         fields = (
             "email",
-            "allocation_id__roll_no__name",
-            "allocation_id__roll_no__roll_no",
-            "allocation_id__roll_no__department",
-            "allocation_id__roll_no__degree",
-            "allocation_id__roll_no__hostel",
-            "allocation_id__roll_no__room_no",
-            "allocation_id__high_tea",
-            "allocation_id__caterer_name",
+            "allocation_id_id__roll_no__name",
+            "allocation_id_id__roll_no__roll_no",
+            "allocation_id_id__roll_no__department",
+            "allocation_id_id__roll_no__degree",
+            "allocation_id_id__roll_no__hostel",
+            "allocation_id_id__roll_no__room_no",
+            "allocation_id_id__high_tea",
+            "allocation_id_id__caterer_name",
             "date_applied",
             "days",
             "month",
@@ -226,12 +226,14 @@ class LongRebateResource(resources.ModelResource):
         )
         export_order = [
             "email",
-            "allocation_id__roll_no__name",
-            "allocation_id__roll_no__roll_no",
-            "allocation_id__roll_no__department",
-            "allocation_id__roll_no__degree",
-            "allocation_id__roll_no__hostel",
-            "allocation_id__roll_no__room_no",
+            "allocation_id_id__roll_no__name",
+            "allocation_id_id__roll_no__roll_no",
+            "allocation_id_id__roll_no__department",
+            "allocation_id_id__roll_no__degree",
+            "allocation_id_id__roll_no__hostel",
+            "allocation_id_id__roll_no__room_no",
+            "allocation_id_id__high_tea",
+            "allocation_id_id__caterer_name",
             "date_applied",
             "days",
             "month",
@@ -331,35 +333,36 @@ class RebateSpringResource(resources.ModelResource):
             "juneBill",
         )
 
-    # def after_export(self, queryset, data, *args, **kwargs):
-    #     amount=130
-    #     for row in data:
-    #         # row['email'] = row['email'].lower()
-    #         if(row['highTeajanuary'] == False):
-    #             amount=amount-15
-    #             row['januaryBill'] = 31*15
-    #         row['januaryBill'] = (row['januaryShort']+row['januaryLong'])*amount
-    #         if(row['highTeaFeburary'] == False):
-    #             amount=amount-15
-    #             row['feburaryBill'] = 28*15
-    #         row['feburaryBill'] = (row['feburaryShort']+row['feburaryLong'])*amount
-    #         if(row['highTeaMarch'] == False):
-    #             amount=amount-15
-    #             row['marchBill'] = 31*15
-    #         row['marchBill'] = (row['marchShort']+row['marchLong'])*amount
-    #         if(row['highTeaApril'] == False):
-    #             amount=amount-15
-    #             row['aprilBill'] = 30*15
-    #         row['aprilBill'] = (row['aprilShort']+row['aprilLong'])*amount
-    #         if(row['highTeaMay'] == False):
-    #             amount=amount-15
-    #             row['mayBill'] = 31*15
-    #         row['mayBill'] = (row['mayShort']+row['mayLong'])*amount
-    #         if(row['highTeaJune'] == False):
-    #             amount=amount-15
-    #             row['juneBill'] = 30*15
-    #        row['juneBill'] = (row['juneShort']+row['juneLong'])*amount
-    # row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
+    def after_export(self, queryset, data, *args, **kwargs):
+        amount=130
+        for row in data:
+            
+            row['email'] = row['email'].lower()
+            if(row['highTeajanuary'] == False):
+                amount=amount-15
+                row['januaryBill'] = 31*15
+            row['januaryBill'] = (row['januaryShort']+row['januaryLong'])*amount
+            if(row['highTeaFeburary'] == False):
+                amount=amount-15
+                row['feburaryBill'] = 28*15
+            row['feburaryBill'] = (row['feburaryShort']+row['feburaryLong'])*amount
+            if(row['highTeaMarch'] == False):
+                amount=amount-15
+                row['marchBill'] = 31*15
+            row['marchBill'] = (row['marchShort']+row['marchLong'])*amount
+            if(row['highTeaApril'] == False):
+                amount=amount-15
+                row['aprilBill'] = 30*15
+            row['aprilBill'] = (row['aprilShort']+row['aprilLong'])*amount
+            if(row['highTeaMay'] == False):
+                amount=amount-15
+                row['mayBill'] = 31*15
+            row['mayBill'] = (row['mayShort']+row['mayLong'])*amount
+            if(row['highTeaJune'] == False):
+                amount=amount-15
+                row['juneBill'] = 30*15
+            row['juneBill'] = (row['juneShort']+row['juneLong'])*amount
+            row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
 
     # def dehydrate(self, row):
     #     print(row)
@@ -485,3 +488,4 @@ class UnregisteredStudentResource(resources.ModelResource):
         fields = (
             "email",
         )
+
