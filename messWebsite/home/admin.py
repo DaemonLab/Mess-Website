@@ -445,8 +445,8 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                      "date_applied", "month")
     list_filter = ("approved",
                      "date_applied", "month", "days")
-    list_display = ( "approved",
-                     "date_applied", "month")
+    list_display = ( "allocation_id_id",
+                     "date_applied", "month","approved",)
     fieldsets = (
         (
             None,
