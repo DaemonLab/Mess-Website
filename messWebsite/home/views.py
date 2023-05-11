@@ -601,7 +601,7 @@ def addLongRebateBill(request):
                 allocation = Allocation.objects.filter(
                     student_id=request.POST["allocation_id"], month=month
                 ).last()
-                file=request.POST["pdf"]
+                file=request.FILES["pdf"]
                 print(file)
                 long = LongRebate(
                     email=request.user.email,
