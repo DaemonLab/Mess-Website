@@ -25,14 +25,15 @@
   <form action="" method="post" class="px-5 mx-md-5">
     {% csrf_token %} {% if text == "" %}
     <div class="form-group p-2">
-      <label for="allocation_id">Allocation ID</label>
+      <!-- <label for="allocation_id">Allocation ID</label>
       <input
         type="string"
         id="allocation_id"
         name="allocation_id"
         class="form-control"
         placeholder="{{key}}"
-      />
+      /> -->
+      Allocation ID: {{key}}
     </div>
     <div class="form-group p-2">
       <label for="exampleFormControlInput4">Start Date</label>
@@ -60,7 +61,7 @@
       Submit
     </button>
     {% else %}
-    <div class="text-center my-5 pb-5 fst-italic fw-bold">{{text}}</div>
+    <div class="text-center my-5 pb-5 fst-italic display-6">{{text}}</div>
     {% endif %}
   </form>
 </main>

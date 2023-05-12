@@ -10,12 +10,15 @@
 
 {% block body %}
 <Main class="mb-5 py-3 text-center">
+ <h1>Allocation CSV uploader</h1>
 {% if user.is_authenticated and user.is_staff%}
   <p class="m-0">Hello Admin!</p>
   <span>{% trans 'You are logged in as:' %}
-  {{ user.email}}</span>
-  <a class="btn btn-danger" href="{% url 'account_logout' %}">Sign Out</a>
-  <h1>Allocation CSV uploader</h1>
+  {{ user.email}}</span><br>
+  {% for caterer in caterers%}
+  <span></span>
+  <span>{{caterer.student_limit}} students can be alloted {{caterer.name}}</span><br>
+  {% endfor %}
   <form action="." method="post" class="px-5 pt-2 mx-md-5" enctype="multipart/form-data">
     {% csrf_token %}
         <input type="file" class="custom-file-input" id="customFile" name="csv" required accept=".csv" size="60">
