@@ -51,6 +51,18 @@
         <h1 class="text-center">Updates</h1>
         <div class="container-fluid">
           <ul>
+            <li>
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">Know Your Menu</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for caterer in all_caterer%}
+                  <li><a class="dropdown-item" href="/caterer/{{ caterer.name }}" style=" font-weight: bold; ">{{caterer.name}} Caterers</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li>
+              <a class="text-decoration-none text-black" href="#" role="button" >Know Your Bill</a>
+            </li>
             {% for i in updates %}
             <li>
               {{i.update}}
