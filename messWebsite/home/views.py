@@ -595,18 +595,16 @@ def addLongRebateBill(request):
         key = str(allocation_id.student_id)
     if request.method == "POST" and request.user.is_authenticated:
         try:
-            month = str(request.POST["month"]).capitalize()
-            days = int(request.POST["days"])
+            start_date = parse_date(request.POST["start_date"])
+            end_date = parse_date(request.POST["end_date"])
+            days = (end_date - start_date).days + 1
             try:
-                allocation = Allocation.objects.filter(
-                    student_id=request.POST["allocation_id"], month=month
-                ).last()
                 file=request.FILES["pdf"]
                 print(file)
                 long = LongRebate(
                     email=request.user.email,
-                    allocation_id_id=allocation,
-                    month=month,
+                    start_date=start_date,
+                    end_date=end_date,
                     days=days,
                     approved=False,
                     file=file,
