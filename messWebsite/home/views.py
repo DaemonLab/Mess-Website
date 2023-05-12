@@ -388,11 +388,11 @@ def rebate(request):
                                     approved=False,
                                 )
                                 r.save()
-                                text = "You have successfully submitted the form. Thank you"
+                                text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
                             elif 0 < diff < 2:
                                 text = "Min no of days for rebate is 2"
                             elif diff2 < 2:
-                                text = "You can only apply for rebate with a minimum of 2 days gap before the start date"
+                                text = "Form needs to be filled atleast 2 days prior the comencement of leave."
                             elif diff > 7:
                                 text = "Max no of days for rebate is 7"
                             elif diff < 0:
