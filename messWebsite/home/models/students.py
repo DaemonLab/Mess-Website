@@ -173,14 +173,15 @@ class LongRebate(models.Model):
     """
 
     email = models.CharField(_("email"), max_length=30, default="")
-    allocation_id_id = models.ForeignKey(
-        Allocation,
-        related_name="allocation_id_long",
-        default=0,
-        on_delete=models.SET_NULL,
-        null=True,
-    )
-    month = models.CharField(_("Month"), max_length=10, default="")
+    # allocation_id_id = models.ForeignKey(
+    #     Allocation,
+    #     related_name="allocation_id_long",
+    #     default=0,
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    # )
+    start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
+    end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)   
     days = models.IntegerField(_("days"), default=0)
     approved = models.BooleanField(_("Approved"), default=False)
     date_applied = models.DateField(

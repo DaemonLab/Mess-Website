@@ -12,37 +12,30 @@
     <div class="text-center">
     <p class="m-0">Hello {{user.first_name}}!</p>
     <span>{% trans 'You are logged in as:' %} {{ user.email}}</span>
-    <a class="btn btn-danger" href="{% url 'account_logout' %}">Sign Out</a>
   </div>
   <div class="text-center">{{text}}</div>
   <form action="." method="post" class="px-5 mx-md-5" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group p-2">
-      <label for="month">Month</label>
-        <input
-          type="text"
-          id="month"
-          name="month"
-          class="form-control-sm"
-          placeholder="Rebate Month"/>
-      <label for="allocation_id" class="ms-3">Allocation ID</label>
+      <label for="exampleFormControlInput4">Start Date</label>
       <input
-        type="text"
-        id="allocation_id"
-        name="allocation_id"
-        class="form-control-sm"
-        placeholder="{{key}}"/>
-    <label for="days" class="ms-3">No. of days</label>
+        type="date"
+        class="form-control"
+        id="exampleFormControlInput4"
+        name="start_date"
+      />
+    </div>
+    <div class="form-group p-2">
+      <label for="exampleFormControlInput5">End Date</label>
       <input
-        type="number"
-        id="days"
-        name="days"
-        class="form-control-sm"
-        placeholder="No. of Days of Rebate"/>
+        type="date"
+        class="form-control"
+        id="exampleFormControlInput5"
+        name="end_date"
+      />
     </div>
     <div class="form-group p-2">
     <input type="file" class="custom-file-input" id="file" name="pdf" required accept=".pdf" size="60">
-    <!-- <label class="custom-file-label" for="file">Choose file</label> -->
     </div>
     <button
       type="submit"

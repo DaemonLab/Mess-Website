@@ -440,12 +440,11 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = LongRebateResource
     model = LongRebate
-    search_fields = ("approved", "date_applied", "month")
-    list_filter = ("approved", "date_applied", "month", "days")
+    search_fields = ("email","approved", "date_applied", )
+    list_filter = ("approved", "date_applied", "days")
     list_display = (
-        "allocation_id_id",
+        "email",
         "date_applied",
-        "month",
         "approved",
     )
     fieldsets = (
@@ -454,10 +453,10 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             {
                 "fields": (
                     "email",
-                    "allocation_id_id",
-                    "date_applied",
+                    # "date_applied",
+                    "start_date",
+                    "end_date",
                     "days",
-                    "month",
                     "approved",
                     "file",
                 ),
