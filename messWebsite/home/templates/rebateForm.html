@@ -4,13 +4,22 @@
 
 {% endblock %} {% block body %}
 <main>
-<h1 class="m-0 pb-2">Rebate Form</h1>
+<h1 class="m-0 pb-2">Short Term Rebate Form</h1>
+<div class="px-3">
+  <div class="px-5 mx-5">
+    <ul>
+      <li>Rebate can be availed for a minimum of 2 days, upto 7 days at a stretch.</li>
+      <li>Maximum of 8 days rebate per month will be provided through the short term rebate forms. </li>
+      <li>Fill the form atleast 2 days prior the comencement of leave, else the application will not be accepted.</li>
+    <ul>
+    </div> 
+  </div>
   <div class="text-center">
     {% if user.is_authenticated %}
+    <br>
       <p class="m-0">Hello {{ user.first_name }}!</p>
       <div>{% trans 'The following e-mail address will be noted while submitting this form:' %}
       {{ user.email}}</div>
-      <a class="btn btn-danger text-end mt-2" href="{% url 'account_logout' %}">Sign Out</a>
     {% endif %}
   </div>
   <form action="" method="post" class="px-5 mx-md-5">
@@ -51,7 +60,7 @@
       Submit
     </button>
     {% else %}
-    <div class="text-center my-5 pb-5">{{text}}</div>
+    <div class="text-center my-5 pb-5 fst-italic fw-bold">{{text}}</div>
     {% endif %}
   </form>
 </main>

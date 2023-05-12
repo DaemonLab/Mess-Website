@@ -335,34 +335,39 @@ class RebateSpringResource(resources.ModelResource):
 
     def after_export(self, queryset, data, *args, **kwargs):
         amount=130
+        data = [list(row) for row in data]
         for row in data:
-            
-            row['email'] = row['email'].lower()
-            if(row['highTeajanuary'] == False):
+            row[0] = row[0].lower()
+            janbill = row[4]
+            febbill = row[8]
+            if(row[3] == False):
                 amount=amount-15
-                row['januaryBill'] = 31*15
-            row['januaryBill'] = (row['januaryShort']+row['januaryLong'])*amount
-            if(row['highTeaFeburary'] == False):
+                janbill = 31*15
+            janbill += (row[1]+row[2])*amount
+            row[4] = janbill
+            if(row[7] == False):
                 amount=amount-15
-                row['feburaryBill'] = 28*15
-            row['feburaryBill'] = (row['feburaryShort']+row['feburaryLong'])*amount
-            if(row['highTeaMarch'] == False):
-                amount=amount-15
-                row['marchBill'] = 31*15
-            row['marchBill'] = (row['marchShort']+row['marchLong'])*amount
-            if(row['highTeaApril'] == False):
-                amount=amount-15
-                row['aprilBill'] = 30*15
-            row['aprilBill'] = (row['aprilShort']+row['aprilLong'])*amount
-            if(row['highTeaMay'] == False):
-                amount=amount-15
-                row['mayBill'] = 31*15
-            row['mayBill'] = (row['mayShort']+row['mayLong'])*amount
-            if(row['highTeaJune'] == False):
-                amount=amount-15
-                row['juneBill'] = 30*15
-            row['juneBill'] = (row['juneShort']+row['juneLong'])*amount
-            row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
+                febbill = 28*15
+            febbill += (row[5]+row[6])*amount
+            row[8] = febbill
+        data = [tuple(row) for row in data]
+            # if(row['highTeaMarch'] == False):
+            #     amount=amount-15
+            #     row['marchBill'] = 31*15
+            # row['marchBill'] = (row['marchShort']+row['marchLong'])*amount
+            # if(row['highTeaApril'] == False):
+            #     amount=amount-15
+            #     row['aprilBill'] = 30*15
+            # row['aprilBill'] = (row['aprilShort']+row['aprilLong'])*amount
+            # if(row['highTeaMay'] == False):
+            #     amount=amount-15
+            #     row['mayBill'] = 31*15
+            # row['mayBill'] = (row['mayShort']+row['mayLong'])*amount
+            # if(row['highTeaJune'] == False):
+            #     amount=amount-15
+            #     row['juneBill'] = 30*15
+            # row['juneBill'] = (row['juneShort']+row['juneLong'])*amount
+            # row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
 
     # def dehydrate(self, row):
     #     print(row)

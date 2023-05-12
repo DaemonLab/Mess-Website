@@ -27,19 +27,25 @@
 {% url 'links' as links_url %}
 {% url 'cafeteria' as cafe_url %}
 {% url 'contact' as contact_url %}
-
-  <div class="navigation py-1">
-  <nav class="navbar navbar-expand-lg navbar-dark text-white">
+<div class="logo bg-white py-2 px-0 mx-3 container">
+  <a href="https://www.iiti.ac.in/" target="_blank" class="row text-decoration-none header">
+    <img src="{% static '../static/images/Indian_Institute_of_Technology,_Indore_Logo.png' %}" alt="" height="80px" width="100px" class="col-1">
+    <span class="col-11 py-2 flex align-self-center">
+      <span class="h3 ">केंद्रीय भोजन सुविधा | Dining Facility</span>
+      <br>
+      <span class="fw-bold">भारतीय प्रौद्योगिकी संस्थान, इंदौर | Indian Institute of Technology, Indore</span>         
+    </span>
+  </a>
+</div>
+  <div class="navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark text-white">
     <div class="container-fluid">
-      <div class="logo" style="border-radius: 30px;"><img src="{% static 'images/IITI3.png' %}" alt="" height="50px" width="50px">
-      </div>
-      <a class="navbar-brand" href="#">Students Dining Committee<div class="iiti">- IIT Indore</div></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-size: 0.9rem ; font-weight: 600; margin-right: 10px;">
+        <ul class="navbar-nav mb-2 mb-lg-0 h5" style="font-weight: 600;">
           <li class="nav-item">
             <a class="nav-link {% if request.path == home_url %} active {%endif%}" aria-current="page" href="/home">Home</a>
           </li>
@@ -63,7 +69,7 @@
           {% comment %} <li class="nav-item">
             <a class="nav-link {% if request.path == cafe_url %} active {%endif%}" href="/cafeteria">Cafeterias</a>
           </li> {% endcomment %}
-          <li class="nav-item ">
+          <li class="nav-item">
             <a class="nav-link {% if request.path == contact_url %} active {%endif%}" href="/contact">Contact</a>
           </li>
           {% if user.is_authenticated %}
@@ -73,9 +79,9 @@
                 aria-expanded="false">
                 Hello Admin
               </a>
-              <ul class="dropdown-menu me-5" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu dropdown-menu-end me-5" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="/allocation/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Allocation</a></li>
-                <li><a class="dropdown-item" href="/addAllocation/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Add Allocation</a></li>
+                <li><a class="dropdown-item" href="/addAllocation/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Add Unregistered Allocation</a></li>
                 <li><a class="dropdown-item" href="/accounts/logout/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Logout</a></li>
               </ul>
             </li>

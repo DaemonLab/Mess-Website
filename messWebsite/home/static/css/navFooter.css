@@ -7,7 +7,19 @@
     position: sticky;
     top: 0;
 }
-
+.navbar-nav,
+.mr-auto {
+flex: 1;
+margin: auto !important;
+display: flex;
+justify-content: space-around;
+}
+.header{
+    color: rgb(18, 37, 106);
+  }
+.header:hover{
+    color: rgb(18, 37, 106);
+  }
 body {
     overflow-x: hidden;
 }
