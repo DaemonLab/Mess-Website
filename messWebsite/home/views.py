@@ -358,20 +358,20 @@ def rebate(request):
                 diff = ((end_date - start_date).days) + 1
                 diff2 = (start_date - datetime.date.today()).days
                 try:
-                    Allocation.objects.filter(
-                        student_id=request.POST["allocation_id"]
-                    ).last()
+                    # Allocation.objects.filter(
+                    #     student_id=request.POST["allocation_id"]
+                    # ).last()
                     try:
-                        allocation = Allocation.objects.get(
-                            roll_no__email=str(request.user.email),
-                            student_id=request.POST["allocation_id"],
-                        )
+                        # allocation = Allocation.objects.get(
+                        #     roll_no__email=str(request.user.email),
+                        #     student_id=request.POST["allocation_id"],
+                        # )
                         student = Student.objects.filter(
                             email=str(request.user.email)
                         ).first()
-                        month = allocation.month
+                        month = allocation_id.month
                         print(month)
-                        ch = check(allocation, student, start_date, end_date, month)
+                        ch = check(allocation_id, student, start_date, end_date, month)
                         if ch == -2:
                             text = "Please fill the rebate of this month only"
                         elif ch >= 0:
@@ -383,7 +383,7 @@ def rebate(request):
                             if (diff) <= 7 and diff >= 2 and diff2 >= 2:
                                 r = Rebate(
                                     email=request.user.email,
-                                    allocation_id=allocation,
+                                    allocation_id=allocation_id,
                                     start_date=request.POST["start_date"],
                                     end_date=request.POST["end_date"],
                                     approved=False,
@@ -494,7 +494,10 @@ def allocation(request):
             except Exception as e:
                 print(e)
         messages = "Form submitted. Please check the admin page."
-    context = {"messages": messages}
+        Ajay_high_tea = Caterer.objects.get(name="Kanaka", high_tea=True).student_limit
+        kanaka_high_tea = Caterer.objects.get(name="Kanaka", high_tea=True).student_limit
+        kanaka_high_tea = Caterer.objects.get(name="Kanaka", high_tea=True).student_limit
+    context = {"messages": messages,"caterers":Caterer.objects.all()}
     return render(request, "admin/allocation.html", context)
 
 
