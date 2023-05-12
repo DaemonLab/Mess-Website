@@ -16,6 +16,8 @@ justify-content: space-around;
 }
 .header{
     color: rgb(18, 37, 106);
+    font-family: sans-serif;
+    font-size: 1rem;
   }
 .header:hover{
     color: rgb(18, 37, 106);

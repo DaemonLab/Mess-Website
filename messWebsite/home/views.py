@@ -52,6 +52,7 @@ def home(request):
         "caterer": caterer,
         "carousel": carousel,
         "photos": photos,
+        'all_caterer' : Caterer.objects.all()
     }
     return render(request, "home.html", context)
 
