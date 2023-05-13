@@ -1,5 +1,4 @@
 from import_export import resources, fields
-from .fields import ForeignKeyField
 from .models import (
     Student,
     Allocation,
@@ -273,6 +272,7 @@ class RebateSpringResource(resources.ModelResource):
     juneLong = fields.Field(attribute="juneLong", column_name="June Long")
     highTeaJune = fields.Field(attribute="highTeaJune", column_name="High Tea June")
     juneBill = fields.Field(attribute="juneBill", column_name="June Bill")
+    empty = fields.Field(column_name=" ")
 
     class Meta:
         model = RebateSpringSem
@@ -284,22 +284,27 @@ class RebateSpringResource(resources.ModelResource):
             "januaryLong",
             "highTeaJanuary",
             "januaryBill",
+            "empty",
             "feburaryShort",
             "feburaryLong",
             "highTeaFeburary",
             "feburaryBill",
+            "empty",
             "marchShort",
             "marchLong",
             "highTeaMarch",
             "marchBill",
+            "empty",
             "aprilShort",
             "aprilLong",
             "highTeaApril",
             "aprilBill",
+            "empty",
             "mayShort",
             "mayLong",
             "highTeaMay",
             "mayBill",
+            "empty",
             "juneShort",
             "juneLong",
             "highTeaJune",
@@ -333,50 +338,63 @@ class RebateSpringResource(resources.ModelResource):
             "juneBill",
         )
 
-    def after_export(self, queryset, data, *args, **kwargs):
+        # row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
+
+    def dehydrate_januaryBill(self, RebateSpringSem):
         amount=130
-        data = [list(row) for row in data]
-        for row in data:
-            row[0] = row[0].lower()
-            janbill = row[4]
-            febbill = row[8]
-            if(row[3] == False):
-                amount=amount-15
-                janbill = 31*15
-            janbill += (row[1]+row[2])*amount
-            row[4] = janbill
-            if(row[7] == False):
-                amount=amount-15
-                febbill = 28*15
-            febbill += (row[5]+row[6])*amount
-            row[8] = febbill
-        data = [tuple(row) for row in data]
-            # if(row['highTeaMarch'] == False):
-            #     amount=amount-15
-            #     row['marchBill'] = 31*15
-            # row['marchBill'] = (row['marchShort']+row['marchLong'])*amount
-            # if(row['highTeaApril'] == False):
-            #     amount=amount-15
-            #     row['aprilBill'] = 30*15
-            # row['aprilBill'] = (row['aprilShort']+row['aprilLong'])*amount
-            # if(row['highTeaMay'] == False):
-            #     amount=amount-15
-            #     row['mayBill'] = 31*15
-            # row['mayBill'] = (row['mayShort']+row['mayLong'])*amount
-            # if(row['highTeaJune'] == False):
-            #     amount=amount-15
-            #     row['juneBill'] = 30*15
-            # row['juneBill'] = (row['juneShort']+row['juneLong'])*amount
-            # row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
+        januaryBill = 0
+        if(RebateSpringSem.highTeaJanuary == False):
+            amount=amount-15
+            januaryBill = 31*15 
+        januaryBill += (RebateSpringSem.januaryShort+RebateSpringSem.januaryLong)*amount
+        return januaryBill
+    
+    def dehydrate_feburaryBill(self, RebateSpringSem):
+        amount=130
+        feburaryBill = 0
+        if(RebateSpringSem.highTeaFeburary == False):
+            amount=amount-15
+            feburaryBill = 28*15 
+        feburaryBill += (RebateSpringSem.feburaryShort+RebateSpringSem.feburaryLong)*amount
+        return feburaryBill
+    
+    def dehydrate_marchBill(self, RebateSpringSem):
+        amount=130
+        marchBill = 0
+        if(RebateSpringSem.highTeaMarch == False):
+            amount=amount-15
+            marchBill = 31*15 
+        marchBill += (RebateSpringSem.marchShort+RebateSpringSem.marchLong)*amount
+        return marchBill
+    
+    def dehydrate_aprilBill(self, RebateSpringSem):
+        amount=130
+        aprilBill = 0
+        if(RebateSpringSem.highTeaApril == False):
+            amount=amount-15
+            aprilBill = 30*15 
+        aprilBill += (RebateSpringSem.aprilShort+RebateSpringSem.aprilLong)*amount
+        return aprilBill
+    
+    def dehydrate_mayBill(self, RebateSpringSem):
+        amount=130
+        mayBill = 0
+        if(RebateSpringSem.highTeaMay == False):
+            amount=amount-15
+            mayBill = 31*15 
+        mayBill += (RebateSpringSem.mayShort+RebateSpringSem.mayLong)*amount
+        return mayBill
+    
+    def dehydrate_juneBill(self, RebateSpringSem):
+        amount=130
+        juneBill = 0
+        if(RebateSpringSem.highTeaJune == False):
+            amount=amount-15
+            juneBill = 30*15 
+        juneBill += (RebateSpringSem.juneShort+RebateSpringSem.juneLong)*amount
+        return juneBill
 
-    # def dehydrate(self, row):
-    #     print(row)
-    #     AprBill_val = 2
-    #     row.update({'AprBill': AprBill_val})
-    #     MayBill_val = row.mayShort * 2
-    #     row.update({'MayBill': MayBill_val})
-    #     return row
-
+    #Try implementing dehydrate_total function later    
 
 class RebateAutumnResource(resources.ModelResource):
     julyShort = fields.Field(attribute="julyShort", column_name="July Short")
@@ -423,7 +441,7 @@ class RebateAutumnResource(resources.ModelResource):
         attribute="highTeaDecember", column_name="High Tea December"
     )
     decemberBill = fields.Field(attribute="decemberBill", column_name="December Bill")
-
+    empty = fields.Field(column_name=" ")
     class Meta:
         model = RebateAutumnSem
         exclude = "id"
@@ -434,26 +452,32 @@ class RebateAutumnResource(resources.ModelResource):
             "julyLong",
             "highTeaJuly",
             "julyBill",
+            "empty",
             "augustShort",
             "augustLong",
             "highTeaAugust",
             "augustBill",
+            "empty",
             "septemberShort",
             "septemberLong",
             "highTeaSeptember",
             "septemberBill",
+            "empty",
             "octoberShort",
             "octoberLong",
             "highTeaOctober",
             "octoberBill",
+            "empty",
             "novemberShort",
             "novemberLong",
             "highTeaNovember",
             "NovemberBill",
+            "empty",
             "decemberShort",
             "decemberLong",
             "highTeaDecember",
             "decemberBill",
+            "empty"
         ]
         fields = (
             "email",
@@ -482,6 +506,61 @@ class RebateAutumnResource(resources.ModelResource):
             "highTeaDecember",
             "decemberBill",
         )
+
+    def dehydrate_julyBill(self, RebateAutumnSem):
+        amount=130
+        julyBill = 0
+        if(RebateAutumnSem.highTeaJuly == False):
+            amount=amount-15
+            julyBill = 31*15 
+        julyBill += (RebateAutumnSem.julyShort+RebateAutumnSem.julyLong)*amount
+        return julyBill
+    
+    def dehydrate_augustBill(self, RebateAutumnSem):
+        amount=130
+        augustBill = 0
+        if(RebateAutumnSem.highTeaAugust == False):
+            amount=amount-15
+            augustBill = 31*15 
+        augustBill += (RebateAutumnSem.augustShort+RebateAutumnSem.augustLong)*amount
+        return augustBill
+    
+    def dehydrate_septemberBill(self, RebateAutumnSem):
+        amount=130
+        septemberBill = 0
+        if(RebateAutumnSem.highTeaSeptember == False):
+            amount=amount-15
+            septemberBill = 30*15 
+        septemberBill += (RebateAutumnSem.septemberShort+RebateAutumnSem.septemberLong)*amount
+        return septemberBill
+    
+    def dehydrate_octoberBill(self, RebateAutumnSem):
+        amount=130
+        octoberBill = 0
+        if(RebateAutumnSem.highTeaOctober == False):
+            amount=amount-15
+            octoberBill = 31*15 
+        octoberBill += (RebateAutumnSem.octoberShort+RebateAutumnSem.octoberLong)*amount
+        return octoberBill
+    
+    def dehydrate_novemberBill(self, RebateAutumnSem):
+        amount=130
+        novemberBill = 0
+        if(RebateAutumnSem.highTeaNovember == False):
+            amount=amount-15
+            novemberBill = 30*15 
+        novemberBill += (RebateAutumnSem.novemberShort+RebateAutumnSem.novemberLong)*amount
+        return novemberBill
+    
+    def dehydrate_decemberBill(self, RebateAutumnSem):
+        amount=130
+        decemberBill = 0
+        if(RebateAutumnSem.highTeaDecember == False):
+            amount=amount-15
+            decemberBill = 31*15 
+        decemberBill += (RebateAutumnSem.decemberShort+RebateAutumnSem.decemberLong)*amount
+        return decemberBill
+    
 
 class UnregisteredStudentResource(resources.ModelResource):
     class Meta:
