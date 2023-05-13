@@ -15,9 +15,10 @@
   <p class="m-0">Hello Admin!</p>
   <span>{% trans 'You are logged in as:' %}
   {{ user.email}}</span><br>
-  {% for caterer in caterers%}
+  {% for caterer in list%}
   <span></span>
-  <span>{{caterer.student_limit}} students can be alloted {{caterer.name}}</span><br>
+  <span>{{caterer}} Caterer has been alloted {{caterer}} students out of which {{caterer}} have taken the high tea.</span><br>
+  <span>{{caterer}} more students can be attocated to {{caterer}} caterer</span><br>
   {% endfor %}
   <form action="." method="post" class="px-5 pt-2 mx-md-5" enctype="multipart/form-data">
     {% csrf_token %}

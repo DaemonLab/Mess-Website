@@ -494,10 +494,17 @@ def allocation(request):
             except Exception as e:
                 print(e)
         messages = "Form submitted. Please check the admin page."
-        Ajay_high_tea = Caterer.objects.get(name="Kanaka", high_tea=True).student_limit
-        kanaka_high_tea = Caterer.objects.get(name="Kanaka", high_tea=True).student_limit
-        kanaka_high_tea = Caterer.objects.get(name="Kanaka", high_tea=True).student_limit
-    context = {"messages": messages,"caterers":Caterer.objects.all()}
+    Ajay_high_tea = Allocation.objects.filter(caterer_name="Ajay", high_tea=True).count()
+    Gauri_high_tea = Allocation.objects.filter(caterer_name="Gauri", high_tea=True).count()
+    Kanaka_high_tea = Allocation.objects.filter(caterer_name="Kanaka", high_tea=True).count()
+    Ajay_total = Allocation.objects.filter(caterer_name="Ajay").count()
+    Gauri_total = Allocation.objects.filter(caterer_name="Gauri").count()
+    Kanaka_total = Allocation.objects.filter(caterer_name="Kanaka").count()
+    Ajay_left = Caterer.objects.get(name="Ajay").student_limit
+    Gauri_left = Caterer.objects.get(name="Gauri").student_limit
+    Kanaka_left = Caterer.objects.get(name="Kanaka").student_limit
+    caterer_list = [["Ajay",Ajay_high_tea,Ajay_total,Ajay_left], ["Gauri",Gauri_high_tea,Gauri_total,Gauri_left], ["Kanaka", Kanaka_high_tea,Kanaka_total,Kanaka_left]]
+    context = {"messages": messages,"list": caterer_list}
     return render(request, "admin/allocation.html", context)
 
 

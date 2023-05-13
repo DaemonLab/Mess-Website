@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from .models import Student, RebateSpringSem,RebateAutumnSem, Rebate, LongRebate
 from .views import count
+from .django_email_server import rebate_mail
 
 __doc__="This file contains the signals for the home app"
 
@@ -93,6 +94,7 @@ def update_bill(sender, instance, **kwargs):
                 save_short_bill(email,allocation.month,days,allocation.high_tea)
             else:
                 save_short_bill(email,allocation.month,-days,allocation.high_tea)
+            rebate_mail(instance.start_date,instance.end_date,instance.approved,email)
     except Exception as e:
         print(e)
 
