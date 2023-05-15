@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Student, RebateSpringSem,RebateAutumnSem, Rebate, LongRebate
+from .models import Student, RebateSpringSem,RebateAutumnSem, Rebate, LongRebate, TodayRebate
 from .views import count
 from .django_email_server import rebate_mail
 
@@ -92,8 +92,13 @@ def update_bill(sender, instance, **kwargs):
             allocation = Rebate.objects.filter(allocation_id=instance.allocation_id).last().allocation_id
             if instance.approved == True:
                 save_short_bill(email,allocation.month,days,allocation.high_tea)
+                new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer_name,allocation_id = allocation.student_id,start_date=instance.start_date,end_date=instance.end_date)
+                new_rebate.save()
+                print("Saved")
             else:
                 save_short_bill(email,allocation.month,-days,allocation.high_tea)
+                new_rebate = TodayRebate.objects.filter(allocation_id=allocation.student_id).last().delete()
+                print("Deleted")
             rebate_mail(instance.start_date,instance.end_date,instance.approved,email)
     except Exception as e:
         print(e)

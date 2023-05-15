@@ -63,13 +63,17 @@
             <li>
               <a class="text-decoration-none text-black" href="#" role="button" >Know Your Bill</a>
             </li>
-            <li>Information</li>
-            {% for i in updates %}
             <li>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">Information</a>
+            <ul class="dropdown-menu">
+            {% for i in updates %}
+            <li class="mx-3 dropdown-item" style=" font-weight: bold;">
               {{i.update}}
             </li>
             {% endfor %}
           </ul>
+          </li>
         </div>
 
       </div>
