@@ -1,9 +1,8 @@
 h1{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Arial', sans-serif;
     color: rgb(18, 37, 106);
-    font-weight: bold;
     letter-spacing: 1px;
-    font-size: 3rem;
+    font-size: 2rem;
     padding: 20px 10px;
 }
 .section{
@@ -22,7 +21,7 @@ h1{
     background: #F5F5F5;
     border-radius: 30px;
     padding: 20px 20px 10px 20px;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Arial', sans-serif;
     color: black;
     font-weight: 600;
 }

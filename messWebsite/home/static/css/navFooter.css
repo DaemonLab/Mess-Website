@@ -1,7 +1,7 @@
 .navigation {
     background: rgb(18, 37, 106);
     color: white;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Arial', sans-serif;
     height: auto;
     width: 100vw;
     position: sticky;
@@ -16,7 +16,7 @@ justify-content: space-around;
 }
 .header{
     color: rgb(18, 37, 106);
-    font-family: sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 1rem;
   }
 .header:hover{
@@ -28,12 +28,6 @@ body {
 
 
 /* style="color: rgb(239, 233, 233); font-size: 1.8rem; font-weight: bold; letter-spacing: 0.5px;" */
-.navbar-brand {
-    color: rgb(239, 233, 233);
-    font-size: 2.5vw;
-    font-weight: bold;
-    letter-spacing: 0.3px;
-}
 
 .iiti {
     display: inline;

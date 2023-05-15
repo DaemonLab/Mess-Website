@@ -965,11 +965,21 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         Send mail action available in the admin page
         """
         text = "<li> {allocation_id}: {start_date} to {end_date}</li>"
-        message=""
-        name=queryset[0].Caterer
+        messageKanaka=""
+        messageGauri=""
+        messageAjay=""
         date = queryset[0].date
         for obj in queryset:
-            message +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
+            if(obj.Caterer.name == "Kanaka"):
+                messageKanaka +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
+            elif(obj.Caterer.name == "Gauri"):
+                messageGauri +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
+            elif(obj.Caterer.name == "Ajay"):
+                messageAjay +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
             obj.delete()
-        print(message)
-        caterer_mail(message, name,"webhead.sg@iiti.ac.in", date)
+        print(messageKanaka)
+        print(messageGauri)
+        print(messageAjay)
+        caterer_mail(messageKanaka, "Kanaka","KanakaEmail",date)
+        caterer_mail(messageGauri, "Gauri","GauriEmail",date)
+        caterer_mail(messageAjay, "Ajay","AjayEmail", date)
