@@ -205,6 +205,7 @@ class UnregisteredStudent(models.Model):
     """
 
     email = models.CharField(_("email"), max_length=30, default="")
+    month = models.CharField(_("month"), max_length=30, default="")
 
     def __str__(self):
         return str(self.email)

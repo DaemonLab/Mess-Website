@@ -726,6 +726,47 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
+def unregister_student(obj):
+    all_caterers = Caterer.objects.all()
+    available_caterer = []
+    for caterer in all_caterers:
+        current = Caterer.objects.get(name=caterer.name)
+        if current.student_limit > 0:
+            available_caterer.append(current.name)
+    student= Student.objects.get(email=obj.email)
+    high_tea=False
+    caterer = available_caterer[0]
+    month = str(obj.month).capitalize()
+    if(caterer=="Kanaka"):
+        kanaka = Caterer.objects.get(name="Kanaka")
+        student_id = str(kanaka.name[0])
+        student_id += str(kanaka.student_limit)
+        kanaka.student_limit -= 1
+        kanaka.save(update_fields=["student_limit"])
+    elif(caterer=="Ajay"):
+        ajay = Caterer.objects.get(name="Ajay")
+        student_id = str(ajay.name[0])
+        student_id += str(ajay.student_limit)
+        ajay.student_limit -= 1
+        ajay.save(update_fields=["student_limit"])
+    elif(caterer=="Gauri"):
+        gauri = Caterer.objects.get(name="Gauri")
+        student_id = str(gauri.name[0])
+        student_id += str(gauri.student_limit)
+        gauri.student_limit -= 1
+        gauri.save(update_fields=["student_limit"])
+    a = Allocation(
+        roll_no=student,
+        student_id=student_id,
+        month=month,
+        caterer_name=caterer,
+        high_tea=high_tea,
+        first_pref=caterer,
+        second_pref=caterer,
+        third_pref=caterer,
+    )
+    a.save()
+    UnregisteredStudent.objects.filter(email=student.email).delete()
 
 @admin.register(UnregisteredStudent)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
@@ -733,25 +774,133 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     model = UnregisteredStudent
     search_fields = ("email",)
     list_filter = ("email",)
+    list_display = ("email", "month")
     fieldsets = (
         (
             None,
             {
-                "fields": ("email",),
+                "fields": ("email","month"),
             },
         ),
     )
 
-    actions = ["allocate Unregistered Students"]
+    actions = ["allocate","january","feburary","march","april","may","june","july","august","september","october","november","december"]
 
-    @admin.action(description="Approve the students")
+    @admin.action(description="Add Allocation month as January")
+    def january(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "january"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as Feburary")
+    def feburary(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "feburary"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as March")
+    def march(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "march"
+            obj.save(update_fields=["month"])
+    
+    @admin.action(description="Add Allocation month as April")
+    def april(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "april"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as May")
+    def may(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "may"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as June")
+    def june(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "june"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as July")
+    def july(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "july"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as August")
+    def august(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "august"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as September")
+    def september(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "september"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as October")
+    def october(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "october"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as November")
+    def november(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "november"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Add Allocation month as December")
+    def december(self, request, queryset):
+        """
+        Allocation Month action available in the admin page
+        """
+        for obj in queryset:
+            obj.month = "december"
+            obj.save(update_fields=["month"])
+
+    @admin.action(description="Allocate the unregistered students")
     def allocate(self, request, queryset):
         """
         Allocate action available in the admin page
         """
         for obj in queryset:
-            obj.approved = True
-            obj.save()
+            unregister_student(obj)
 
 @admin.register(CatererBillsAutumn)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
@@ -821,5 +970,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         date = queryset[0].date
         for obj in queryset:
             message +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
+            obj.delete()
         print(message)
         caterer_mail(message, name,"webhead.sg@iiti.ac.in", date)
