@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-
-
 class RebateAutumnSem(models.Model):
     """
     Storing the Rebate Bills of the Students for the Autumn Semester
@@ -89,3 +87,4 @@ class RebateSpringSem(models.Model):
     class Meta:
         verbose_name = "Rebate Bill Spring Semester"
         verbose_name_plural = "Rebate Bills Spring Semester"
+

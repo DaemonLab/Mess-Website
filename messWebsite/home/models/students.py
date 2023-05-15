@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from django.utils.timezone import now
-
+import datetime
 
 class Student(models.Model):
     """
@@ -212,3 +212,17 @@ class UnregisteredStudent(models.Model):
     class Meta:
         verbose_name = "Unregistered Students"
         verbose_name_plural = "Unregistered Students"
+
+class TodayRebate(models.Model):
+    date = models.DateField(help_text="Date of the rebate",default=now)
+    Caterer = models.CharField(max_length=30, default="")
+    allocation_id = models.CharField(max_length=30, default="")
+    start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
+    end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)
+
+    def __str__(self):
+        return str(self.date)
+    
+    class Meta:
+        verbose_name = "Today's Rebate"
+        verbose_name_plural = "Today's Rebate"

@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from .signals import update_bill
+from .django_email_server import rebate_mail,caterer_mail
 from home.models import (
     About,
     Update,
@@ -28,6 +29,9 @@ from home.models import (
     RebateSpringSem,
     RebateAutumnSem,
     UnregisteredStudent,
+    CatererBillsAutumn,
+    CatererBillsSpring,
+    TodayRebate,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 from .resources import (
@@ -725,7 +729,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(UnregisteredStudent)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    actions_on_empty_queryset = True
     resource_class = UnregisteredStudentResource
     model = UnregisteredStudent
     search_fields = ("email",)
@@ -749,3 +752,74 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             obj.approved = True
             obj.save()
+
+@admin.register(CatererBillsAutumn)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateAutumnResource
+    model = CatererBillsAutumn
+    search_fields = ("Caterer__name",)
+    list_filter = ("Caterer__name",)
+    fieldsets = (  
+        (
+            None,
+            {
+                "fields": (
+                    "Caterer__name",
+                )
+            },
+        ),
+    )
+
+@admin.register(CatererBillsSpring)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateAutumnResource
+    model = CatererBillsSpring
+    search_fields = ("Caterer__name",)
+    list_filter = ("Caterer__name",)
+    fieldsets = (  
+        (
+            None,
+            {
+                "fields": (
+                    "Caterer__name",
+                )
+            },
+        ),
+    )
+
+@admin.register(TodayRebate)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateAutumnResource
+    model = TodayRebate
+    # search_fields = ()
+    # list_filter = ()
+    fieldsets = (  
+        (
+            None,
+            {
+                "fields": (
+                    "date",
+                    "Caterer",
+                    "allocation_id",
+                    "start_date",
+                    "end_date",
+                )
+            },
+        ),
+    )
+
+    actions = ["send_mail"]
+
+    @admin.action(description="Send mail to the caterer")
+    def send_mail(self, request, queryset):
+        """
+        Send mail action available in the admin page
+        """
+        text = "<li> {allocation_id}: {start_date} to {end_date}</li>"
+        message=""
+        name=queryset[0].Caterer
+        date = queryset[0].date
+        for obj in queryset:
+            message +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
+        print(message)
+        caterer_mail(message, name,"webhead.sg@iiti.ac.in", date)
