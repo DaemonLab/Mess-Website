@@ -507,78 +507,79 @@ def allocation(request):
     context = {"messages": messages,"list": caterer_list}
     return render(request, "admin/allocation.html", context)
 
+"""This function is not used anymore. It was used to add allocations for students who did not fill the allocation form.
+It is now done by the admin using the allocation admin action."""
+# def addAllocation(request):
+#     """
+#     Display the Rebate Form Page :model:`home.models.students`.
 
-def addAllocation(request):
-    """
-    Display the Rebate Form Page :model:`home.models.students`.
+#     **Template:**
 
-    **Template:**
+#     :template:`home/addAllocation.html`
 
-    :template:`home/addAllocation.html`
+#     Gets the data from the allocation form , and
+#     allocates an allocation ID and caterer for that month corresponding to the student with submitted email ID.
+#     This is for students who did not filled the allocation form
+#     Allocation data should only be filled 2 days prior to the next month
+#     This form can only be accessed by the Institute's admin
+#     """
+#     text = ""
+#     all_caterers = Caterer.objects.all()
+#     available_caterer = []
+#     for caterer in all_caterers:
+#         current = Caterer.objects.get(name=caterer.name)
+#         if current.student_limit > 0:
+#             available_caterer.append(current.name)
+#     if (
+#         request.method == "POST"
+#         and request.user.is_authenticated
+#         and request.user.is_staff
+#     ):
+#         csv = request.FILES["csv"]
+#         csv_data = pd.read_csv(io.StringIO(csv.read().decode("utf-8")))
+#         print(csv_data.head())
 
-    Gets the data from the allocation form , and
-    allocates an allocation ID and caterer for that month corresponding to the student with submitted email ID.
-    This is for students who did not filled the allocation form
-    Allocation data should only be filled 2 days prior to the next month
-    This form can only be accessed by the Institute's admin
-    """
-    text = ""
-    all_caterers = Caterer.objects.all()
-    available_caterer = []
-    for caterer in all_caterers:
-        current = Caterer.objects.get(name=caterer.name)
-        if current.student_limit > 0:
-            available_caterer.append(current.name)
-    if (
-        request.method == "POST"
-        and request.user.is_authenticated
-        and request.user.is_staff
-    ):
-        csv = request.FILES["csv"]
-        csv_data = pd.read_csv(io.StringIO(csv.read().decode("utf-8")))
-        print(csv_data.head())
-
-        for record in csv_data.to_dict(orient="records"):
-            try:
-                student= Student.objects.get(email=record["email"])
-                high_tea=False
-                caterer = available_caterer[0]
-                month = str(record["month"]).capitalize()
-                if(caterer=="Kanaka"):
-                    kanaka = Caterer.objects.get(name="Kanaka")
-                    student_id = str(kanaka.name[0])
-                    student_id += str(kanaka.student_limit)
-                    kanaka.student_limit -= 1
-                    kanaka.save(update_fields=["student_limit"])
-                elif(caterer=="Ajay"):
-                    ajay = Caterer.objects.get(name="Ajay")
-                    student_id = str(ajay.name[0])
-                    student_id += str(ajay.student_limit)
-                    ajay.student_limit -= 1
-                    ajay.save(update_fields=["student_limit"])
-                elif(caterer=="Gauri"):
-                    gauri = Caterer.objects.get(name="Gauri")
-                    student_id = str(gauri.name[0])
-                    student_id += str(gauri.student_limit)
-                    gauri.student_limit -= 1
-                    gauri.save(update_fields=["student_limit"])
-                a = Allocation(
-                    roll_no=student,
-                    student_id=student_id,
-                    month=month,
-                    caterer_name=caterer,
-                    high_tea=high_tea,
-                    first_pref=caterer,
-                    second_pref=caterer,
-                    third_pref=caterer,
-                )
-                a.save()
-                UnregisteredStudent.objects.filter(email=student.email).delete()
-            except Exception as e:
-                print(e)
-                print(12121)
-    context = {"text": text, "caterers": available_caterer}
-    return render(request, "admin/addAllocation.html", context)
+#         for record in csv_data.to_dict(orient="records"):
+#             try:
+#                 student= Student.objects.get(email=record["email"])
+#                 high_tea=False
+#                 caterer = available_caterer[0]
+#                 month = str(record["month"]).capitalize()
+#                 if(caterer=="Kanaka"):
+#                     kanaka = Caterer.objects.get(name="Kanaka")
+#                     student_id = str(kanaka.name[0])
+#                     student_id += str(kanaka.student_limit)
+#                     kanaka.student_limit -= 1
+#                     kanaka.save(update_fields=["student_limit"])
+#                 elif(caterer=="Ajay"):
+#                     ajay = Caterer.objects.get(name="Ajay")
+#                     student_id = str(ajay.name[0])
+#                     student_id += str(ajay.student_limit)
+#                     ajay.student_limit -= 1
+#                     ajay.save(update_fields=["student_limit"])
+#                 elif(caterer=="Gauri"):
+#                     gauri = Caterer.objects.get(name="Gauri")
+#                     student_id = str(gauri.name[0])
+#                     student_id += str(gauri.student_limit)
+#                     gauri.student_limit -= 1
+#                     gauri.save(update_fields=["student_limit"])
+#                 a = Allocation(
+#                     roll_no=student,
+#                     student_id=student_id,
+#                     month=month,
+#                     caterer_name=caterer,
+#                     high_tea=high_tea,
+#                     first_pref=caterer,
+#                     second_pref=caterer,
+#                     third_pref=caterer,
+#                 )
+#                 a.save()
+#                 UnregisteredStudent.objects.filter(email=student.email).delete()
+#             except Exception as e:
+#                 print(e)
+#                 print(12121)
+#     context = {"text": text, "caterers": available_caterer}
+#     return render(request, "admin/addAllocation.html", context)
 
 
 def addLongRebateBill(request):
