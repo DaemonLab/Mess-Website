@@ -19,7 +19,7 @@ def create_bill(sender, instance, created, **kwargs):
 
 def save_short_bill(email,month,days,high_tea, caterer):
     # Add  in every if else block
-    caterer = Caterer.objects.get(caterer=caterer)
+    caterer = Caterer.objects.get(name=caterer)
     amount = days*115
     if(high_tea):
         amount = amount + days*15
@@ -29,7 +29,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaJanuary = high_tea
         rebate.januaryShort = rebate.januaryShort + days
         rebate.save()
-        catererBill = CatererBillsSpring.objects.get(caterer=caterer)
+        catererBill = CatererBillsSpring.objects.get(Caterer=caterer)
         catererBill.januaryBill = catererBill.januaryBill + amount
         catererBill.save()
     elif month == "February":
@@ -37,7 +37,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaFeburary = high_tea
         rebate.feburaryShort = rebate.februaryShort + days
         rebate.save()
-        catererBill = CatererBillsSpring.objects.get(caterer=caterer)
+        catererBill = CatererBillsSpring.objects.get(Caterer=caterer)
         catererBill.feburaryBill = catererBill.feburaryBill + amount
         catererBill.save()
     elif month == "March":
@@ -45,7 +45,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaMarch = high_tea
         rebate.marchShort = rebate.marchShort + days
         rebate.save()
-        catererBill = CatererBillsSpring.objects.get(caterer=caterer)
+        catererBill = CatererBillsSpring.objects.get(Caterer=caterer)
         catererBill.marchBill = catererBill.marchBill + amount
         catererBill.save()
     elif month == "April":
@@ -53,7 +53,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaApril = high_tea  
         rebate.aprilShort = rebate.aprilShort + days
         rebate.save()
-        catererBill = CatererBillsSpring.objects.get(caterer=caterer)
+        catererBill = CatererBillsSpring.objects.get(Caterer=caterer)
         catererBill.aprilBill = catererBill.aprilBill + amount
         catererBill.save()
     elif month == "May":
@@ -61,7 +61,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaMay = high_tea
         rebate.mayShort = rebate.mayShort + days
         rebate.save()
-        catererBill = CatererBillsSpring.objects.get(caterer=caterer)
+        catererBill = CatererBillsSpring.objects.get(Caterer=caterer)
         catererBill.mayBill = catererBill.mayBill + amount
         catererBill.save()
     elif month == "June":
@@ -69,7 +69,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaJune = high_tea
         rebate.juneShort = rebate.juneShort + days
         rebate.save()
-        catererBill = CatererBillsSpring.objects.get(caterer=caterer)
+        catererBill = CatererBillsSpring.objects.get(Caterer=caterer)
         catererBill.juneBill = catererBill.juneBill + amount
         catererBill.save()
     elif month == "July":
@@ -77,7 +77,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaJuly = high_tea
         rebate.julyShort = rebate.julyShort + days
         rebate.save()
-        catererBill = CatererBillsAutumn.objects.get(caterer=caterer)
+        catererBill = CatererBillsAutumn.objects.get(Caterer=caterer)
         catererBill.julyBill = catererBill.julyBill + amount
         catererBill.save()
     elif month == "August":
@@ -85,7 +85,7 @@ def save_short_bill(email,month,days,high_tea, caterer):
         rebate.highTeaAugust = high_tea
         rebate.augustShort = rebate.augustShort + days
         rebate.save()
-        catererBill = CatererBillsAutumn.objects.get(caterer=caterer)
+        catererBill = CatererBillsAutumn.objects.get(Caterer=caterer)
         catererBill.augustBill = catererBill.augustBill + amount
         catererBill.save()
     elif month == "September":

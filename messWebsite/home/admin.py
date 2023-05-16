@@ -899,7 +899,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             None,
             {
                 "fields": (
-                    "Caterer__name",
+                    "Caterer",
+                    "julyBill",
+                    "augustBill",
+                    "septemberBill",
+                    "octoberBill",
+                    "novemberBill",
+                    "decemberBill",
                 )
             },
         ),
@@ -916,7 +922,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             None,
             {
                 "fields": (
-                    "Caterer__name",
+                    "Caterer",
+                    "januaryBill",
+                    "feburaryBill",
+                    "marchBill",
+                    "aprilBill",
+                    "mayBill",
+                    "juneBill",
                 )
             },
         ),
@@ -956,16 +968,16 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         messageAjay=""
         date = queryset[0].date
         for obj in queryset:
-            if(obj.Caterer.name == "Kanaka"):
+            if(obj.Caterer == "Kanaka"):
                 messageKanaka +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
-            elif(obj.Caterer.name == "Gauri"):
+            elif(obj.Caterer == "Gauri"):
                 messageGauri +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
-            elif(obj.Caterer.name == "Ajay"):
+            elif(obj.Caterer == "Ajay"):
                 messageAjay +=(text.format(allocation_id=obj.allocation_id, start_date=obj.start_date, end_date=obj.end_date))
             obj.delete()
         print(messageKanaka)
         print(messageGauri)
         print(messageAjay)
-        caterer_mail(messageKanaka, "Kanaka","KanakaEmail",date)
-        caterer_mail(messageGauri, "Gauri","GauriEmail",date)
-        caterer_mail(messageAjay, "Ajay","AjayEmail", date)
+        caterer_mail(messageKanaka, "Kanaka","me210003039@iiti.ac.in",date)
+        caterer_mail(messageGauri, "Gauri","me210003039@iiti.ac.in",date)
+        caterer_mail(messageAjay, "Ajay","me210003039@iiti.ac.in", date)
