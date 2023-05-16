@@ -79,12 +79,6 @@ body {
     }
 }
 
-.logo {
-    border-radius: 30px;
-    padding-right: 10px;
-}
-
-
 /* footersection styling */
 .bg-color-footer {
     background-color: rgb(18, 37, 106);
@@ -100,5 +94,12 @@ body {
     }
     .padding {
         padding-left: 10px;
+    }
+    .logo img {
+        width: 60px;
+        height: 40px;
+    }
+    .logo span{
+        font-size: 0.5rem;
     }
 }

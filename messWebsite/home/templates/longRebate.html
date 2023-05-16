@@ -9,6 +9,15 @@
 <main>
     {% if user.is_authenticated%}
     <h1 class="m-0 pb-2">Long Term Rebate Form</h1>
+    <div class="px-3">
+      <div class="px-5 mx-5">
+        <ul>
+          <li>For a period exceeding 7 consecutive days, residents are to apply for long term rebate
+            duly recommended by the concerned Faculty Advisor/Supervisor/HoD.</li>
+          <li>All recommended applications for a rebate should be submitted two days before the day of commencement of rebate period, latest by 5 p.m.</li>
+        <ul>
+        </div> 
+      </div>
     <div class="text-center">
     <p class="m-0">Hello {{user.first_name}}!</p>
     <span>{% trans 'You are logged in as:' %} {{ user.email}}</span>
