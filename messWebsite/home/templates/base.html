@@ -27,10 +27,10 @@
 {% url 'links' as links_url %}
 {% url 'cafeteria' as cafe_url %}
 {% url 'contact' as contact_url %}
-<div class="logo bg-white py-2 px-0 mx-3 container">
-  <a href="https://www.iiti.ac.in/" target="_blank" class="row text-decoration-none header">
-    <img src="{% static '../static/images/Indian_Institute_of_Technology,_Indore_Logo.png' %}" alt="" height="80px" width="100px" class="col-1">
-    <span class="col-11 py-2 flex align-self-center">
+<div class="logo bg-white py-2 px-0 mx-md-3 mx-0 container-md">
+  <a href="https://www.iiti.ac.in/" target="_blank" class="row text-decoration-none header mx-0 flex justify-content-center">
+    <img src="{% static '../static/images/Indian_Institute_of_Technology,_Indore_Logo.png' %}" alt="" height="80px" width="100px" class="col-lg-1 col-2">
+    <span class="col-lg-11 col-10 py-2 flex align-self-center">
       <span class="h3">केंद्रीय आहार सुविधा | Central Dining Facility</span>
       <br>
       <span class="fw-bold">भारतीय प्रौद्योगिकी संस्थान, इंदौर | Indian Institute of Technology, Indore</span>         
@@ -66,9 +66,9 @@
           <li class="nav-item">
             <a class="nav-link {% if request.path == links_url %} active {%endif%}" href="/links">Forms</a>
           </li>
-          {% comment %} <li class="nav-item">
-            <a class="nav-link {% if request.path == cafe_url %} active {%endif%}" href="/cafeteria">Cafeterias</a>
-          </li> {% endcomment %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == cafe_url %} active {%endif%}" href="/cafeteria">Additional Services</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link {% if request.path == contact_url %} active {%endif%}" href="/contact">Contact</a>
           </li>
@@ -109,16 +109,15 @@
       {%block body%} {% endblock %}
     <!-- footer -->
     <footer class="bg-color-footer text-white pt-4 pb-2" style="font-size: small;">
-      <div class="container mx-md-2">
-          <div class="row text-start align-self-center padding">
+      <div class="container-md">
+          <div class="row text-md-start text-center">
               <!-- <div class="col-md-2 mt-0 px-md-0 align-self-center text-md-end text-center">
                   <img src="{% static '../static/images/Indian_Institute_of_Technology,_Indore_Logo.png' %}" width="100px" height="100px">
               </div>
               <div class="col-md-3 mt-4 align-self-center text-md-start text-center">
                 <h5 class="text-uppercase mb-md-0 mb-2 fw-bold text-white">Central Dining Website</h5>
               </div> -->
-              <div class="col-md-4"></div>
-              <div class="col-md-4 mt-md-0 mt-4 border-footer">
+              <div class="col-md-7 mt-md-0 mt-4 border-footer ms-md-3">
                   <h5 class="text-uppercase mb-2 fw-bold text-white">Location :</h5>
                   <p class="text-white text-decoration-none ">Central Dining Facility<br>Indian Institute of Technology Indore,<br>Khandwa Road, Simrol,<br>Indore 453552</p>
               </div>
