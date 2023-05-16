@@ -719,7 +719,7 @@ def unregister_student(obj):
         current = Caterer.objects.get(name=caterer.name)
         if current.student_limit > 0:
             available_caterer.append(current.name)
-    student= Student.objects.get(email=obj.email)
+    student= Student.objects.filter(email=obj.email).last()
     high_tea=False
     caterer = available_caterer[0]
     month = str(obj.month).capitalize()
