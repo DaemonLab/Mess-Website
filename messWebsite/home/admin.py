@@ -13,10 +13,7 @@ from home.models import (
     Update,
     Rule,
     Carousel,
-    Photos,
-    Penalty,
     ShortRebate,
-    LongRebateData,
     Caterer,
     Form,
     Cafeteria,
@@ -90,10 +87,6 @@ class about_Admin(admin.ModelAdmin):
 @admin.register(Carousel)
 class about_Admin(admin.ModelAdmin):
     model = Carousel
-    #    ordering=("image",)
-    #    search_fields = ("image")
-    #    list_display = ("image")
-    #    list_filter = ("image",)
     fieldsets = (
         (
             None,
@@ -122,27 +115,27 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-@admin.register(Photos)
-class about_Admin(admin.ModelAdmin):
-    model = Photos
-    search_fields = (
-        "poc",
-        "occupation",
-    )
-    list_display = ("poc", "occupation")
-    list_filter = (
-        "poc",
-        "occupation",
-    )
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("image", "poc", "occupation"),
-                "description": "%s" % PHOTOS_DESC_TEXT,
-            },
-        ),
-    )
+# @admin.register(Photos)
+# class about_Admin(admin.ModelAdmin):
+#     model = Photos
+#     search_fields = (
+#         "poc",
+#         "occupation",
+#     )
+#     list_display = ("poc", "occupation")
+#     list_filter = (
+#         "poc",
+#         "occupation",
+#     )
+#     fieldsets = (
+#         (
+#             None,
+#             {
+#                 "fields": ("image", "poc", "occupation"),
+#                 "description": "%s" % PHOTOS_DESC_TEXT,
+#             },
+#         ),
+#     )
 
 
 @admin.register(Rule)
@@ -163,22 +156,22 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-@admin.register(Penalty)
-class about_Admin(admin.ModelAdmin):
-    model = Penalty
-    ordering = ("penalty",)
-    search_fields = ("penalty",)
-    list_display = ("penalty",)
-    list_filter = ("penalty",)
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("penalty",),
-                "description": "%s" % PENALTY_DESC_TEXT,
-            },
-        ),
-    )
+# @admin.register(Penalty)
+# class about_Admin(admin.ModelAdmin):
+#     model = Penalty
+#     ordering = ("penalty",)
+#     search_fields = ("penalty",)
+#     list_display = ("penalty",)
+#     list_filter = ("penalty",)
+#     fieldsets = (
+#         (
+#             None,
+#             {
+#                 "fields": ("penalty",),
+#                 "description": "%s" % PENALTY_DESC_TEXT,
+#             },
+#         ),
+#     )
 
 
 @admin.register(ShortRebate)
@@ -190,13 +183,6 @@ class about_Admin(admin.ModelAdmin):
             {
                 "fields": (
                     "desc",
-                    "link",
-                    "policy",
-                    "circulation",
-                    "infoToCaterer",
-                    "note",
-                    "Memebers",
-                    "biling",
                 ),
                 "description": "%s" % SHORT_REBATE_DESC_TEXT,
             },
@@ -204,22 +190,22 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-@admin.register(LongRebateData)
-class about_Admin(admin.ModelAdmin):
-    model = LongRebateData
-    ordering = ("rule",)
-    search_fields = ("rule",)
-    list_display = ("rule",)
-    list_filter = ("rule",)
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("rule",),
-                "description": "%s" % LONG_REBATE_DESC_TEXT,
-            },
-        ),
-    )
+# @admin.register(LongRebateData)
+# class about_Admin(admin.ModelAdmin):
+#     model = LongRebateData
+#     ordering = ("rule",)
+#     search_fields = ("rule",)
+#     list_display = ("rule",)
+#     list_filter = ("rule",)
+#     fieldsets = (
+#         (
+#             None,
+#             {
+#                 "fields": ("rule",),
+#                 "description": "%s" % LONG_REBATE_DESC_TEXT,
+#             },
+#         ),
+#     )
 
 
 @admin.register(Caterer)

@@ -28,6 +28,7 @@ h1 {
 .heading-form {
     color: rgb(18, 37, 106);
     margin: 10px 0 20px;
+    font-size: 1.2rem;
 }
 
 .btn-outline-primary {
