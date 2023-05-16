@@ -10,7 +10,7 @@ def send(subject, message, recipient):
             subject,
             message,
             settings.EMAIL_HOST_USER,
-            [recipient,"@iiti.ac.in"],
+            [recipient],
             connection=connection,
         ).send()
     print("Mail sent to " + recipient)
