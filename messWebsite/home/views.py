@@ -6,10 +6,8 @@ from home.models import (
     About,
     Update,
     Carousel,
-    Photos,
     Rule,
     ShortRebate,
-    LongRebateData,
     Caterer,
     Form,
     Cafeteria,
@@ -45,13 +43,11 @@ def home(request):
     update = Update.objects.all()
     caterer = Caterer.objects.all()
     carousel = Carousel.objects.all()
-    photos = Photos.objects.all()
     context = {
         "about": aboutInfo,
         "updates": update,
         "caterer": caterer,
         "carousel": carousel,
-        "photos": photos,
         'all_caterer' : Caterer.objects.all()
     }
     return render(request, "home.html", context)
@@ -68,13 +64,9 @@ def rules(request):
     """
     rules = Rule.objects.all()
     shortRebates = ShortRebate.objects.all()
-    LongRebates = LongRebateData.objects.all()
-    form = Form.objects.all()
     params = {
         "rule": rules,
         "shortRebate": shortRebates,
-        "longRebate": LongRebates,
-        "form": form,
     }
 
     return render(request, "rules.html", params)

@@ -7,6 +7,17 @@ body {
     font-family: 'Arial', sans-serif;
     font-weight: 400;
 }
+pre {
+    white-space: pre-wrap;
+}
+pre .p{
+    padding: 0px;
+}
+.rules{
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: 400;
+}
 
 .section {
     width: 90vw;
