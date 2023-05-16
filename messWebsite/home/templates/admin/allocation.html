@@ -17,8 +17,8 @@
   {{ user.email}}</span><br>
   {% for caterer in list%}
   <span></span>
-  <span>{{caterer}} Caterer has been alloted {{caterer}} students out of which {{caterer}} have taken the high tea.</span><br>
-  <span>{{caterer}} more students can be attocated to {{caterer}} caterer</span><br>
+  <span>{{caterer.0}} Caterer has been alloted {{caterer.2}} students out of which {{caterer.1}} have taken the high tea.
+    {{caterer.3}} more students can be attocated to {{caterer.0}} caterer</span><br>
   {% endfor %}
   <form action="." method="post" class="px-5 pt-2 mx-md-5" enctype="multipart/form-data">
     {% csrf_token %}
