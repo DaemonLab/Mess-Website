@@ -10,9 +10,8 @@ __doc__="This file contains the signals for the home app"
 @receiver(post_save, sender=Student)
 def create_bill(sender, instance, created, **kwargs):
     if created:
-        email = instance.email
-        rebate_autumn_sem, _ =RebateAutumnSem.objects.get_or_create(email=email)
-        rebate_spring_sem, _ =RebateSpringSem.objects.get_or_create(email=email)
+        rebate_autumn_sem, _ =RebateAutumnSem.objects.get_or_create(email=instance)
+        rebate_spring_sem, _ =RebateSpringSem.objects.get_or_create(email=instance)
         rebate_autumn_sem.save()
         rebate_spring_sem.save()
 
