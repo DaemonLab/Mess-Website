@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from .students import Student
 
 class RebateAutumnSem(models.Model):
     """
     Storing the Rebate Bills of the Students for the Autumn Semester
     """
-    email = models.CharField(max_length=30, default="", null=True)
+    email = models.ForeignKey(Student, on_delete=models.SET_NULL, default="", null=True)
 
     julyShort = models.IntegerField(_("July Short"),default=0, null=True)
     julyLong = models.IntegerField(_("July Long"),default=0,null=True)
@@ -49,7 +50,7 @@ class RebateSpringSem(models.Model):
     """
     Storing the Rebate Bills of the Students for the Spring Semester
     """
-    email = models.CharField(_("Email"),max_length=30, default="", null=True)
+    email = models.ForeignKey(Student, on_delete=models.SET_NULL, default="", null=True)
 
     januaryShort = models.IntegerField(_("January Short"),default=0, null=True)
     januaryLong = models.IntegerField(_("January Long"),default=0,null=True)

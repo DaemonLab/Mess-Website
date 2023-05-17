@@ -1,4 +1,5 @@
 from import_export import resources, fields
+from import_export.widgets import ForeignKeyWidget
 from .models import (
     Student,
     Allocation,
@@ -49,6 +50,7 @@ class AllocationResource(resources.ModelResource):
     roll_no__roll_no = fields.Field(
         attribute="roll_no__roll_no", column_name="Roll No."
     )
+    roll_no__email = fields.Field(attribute="roll_no__email", column_name="Email")
     roll_no__name = fields.Field(attribute="roll_no__name", column_name="Name")
     roll_no__department = fields.Field(
         attribute="roll_no__department", column_name="Department"
@@ -74,6 +76,7 @@ class AllocationResource(resources.ModelResource):
         model = Allocation
         fields = (
             "roll_no__roll_no",
+            "roll_no__email",
             "roll_no__name",
             "roll_no__department",
             "roll_no__degree",
@@ -90,6 +93,7 @@ class AllocationResource(resources.ModelResource):
 
         export_order = [
             "roll_no__roll_no",
+            "roll_no__email",
             "roll_no__name",
             "roll_no__department",
             "roll_no__degree",
@@ -241,7 +245,25 @@ class LongRebateResource(resources.ModelResource):
 
 
 class RebateSpringResource(resources.ModelResource):
-    email = fields.Field(attribute="email", column_name="Email")
+    email = fields.Field(
+        column_name='Email',
+        attribute='email',
+        widget=ForeignKeyWidget(Student, field='email')
+    )
+    email__roll_no = fields.Field(
+        attribute="email__roll_no", column_name="Roll No."
+    )
+    email__name = fields.Field(attribute="email__name", column_name="Name")
+    email__department = fields.Field(
+        attribute="email__department", column_name="Department"
+    )
+    email__degree = fields.Field(
+        attribute="email__degree", column_name="Academic Program"
+    )
+    email__hostel = fields.Field(attribute="email__hostel", column_name="Hostel")
+    email__room_no = fields.Field(
+        attribute="email__room_no", column_name="Room No."
+    )
     januaryShort = fields.Field(attribute="januaryShort", column_name="January Short")
     januaryLong = fields.Field(attribute="januaryLong", column_name="January Long")
     highTeaJanuary = fields.Field(
@@ -279,7 +301,13 @@ class RebateSpringResource(resources.ModelResource):
         exclude = "id"
         import_id_fields = ["email",]
         export_order = [
+            "email__roll_no",
             "email",
+            "email__name",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
             "januaryShort",
             "januaryLong",
             "highTeaJanuary",
@@ -312,6 +340,12 @@ class RebateSpringResource(resources.ModelResource):
         ]
         fields = (
             "email",
+            "email__roll_no",
+            "email__name",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
             "januaryShort",
             "januaryLong",
             "highTeaJanuary",
@@ -339,6 +373,10 @@ class RebateSpringResource(resources.ModelResource):
         )
 
         # row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
+        def before_import_rom(self,row, **kwargs):
+            email=row.get('email')
+            email=Student.objects.get(email=email)
+            row['email']=email
 
     def dehydrate_januaryBill(self, RebateSpringSem):
         amount=130
@@ -397,6 +435,25 @@ class RebateSpringResource(resources.ModelResource):
     #Try implementing dehydrate_total function later    
 
 class RebateAutumnResource(resources.ModelResource):
+    email = fields.Field(
+        column_name='Email',
+        attribute='email',
+        widget=ForeignKeyWidget(Student, field='email')
+    )
+    email__roll_no = fields.Field(
+        attribute="email__roll_no", column_name="Roll No."
+    )
+    email__name = fields.Field(attribute="email__name", column_name="Name")
+    email__department = fields.Field(
+        attribute="email__department", column_name="Department"
+    )
+    email__degree = fields.Field(
+        attribute="email__degree", column_name="Academic Program"
+    )
+    email__hostel = fields.Field(attribute="email__hostel", column_name="Hostel")
+    email__room_no = fields.Field(
+        attribute="email__room_no", column_name="Room No."
+    )
     julyShort = fields.Field(attribute="julyShort", column_name="July Short")
     julyLong = fields.Field(attribute="julyLong", column_name="July Long")
     highTeaJuly = fields.Field(attribute="highTeaJuly", column_name="High Tea July")
@@ -442,12 +499,19 @@ class RebateAutumnResource(resources.ModelResource):
     )
     decemberBill = fields.Field(attribute="decemberBill", column_name="December Bill")
     empty = fields.Field(column_name=" ")
+
     class Meta:
         model = RebateAutumnSem
         exclude = "id"
-        import_id_fields = ["email"]
+        import_id_fields = ["email__email",]
         export_order = [
+            "email__roll_no",
             "email",
+            "email__name",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
             "julyShort",
             "julyLong",
             "highTeaJuly",
@@ -480,7 +544,13 @@ class RebateAutumnResource(resources.ModelResource):
             "empty"
         ]
         fields = (
+            "email__roll_no",
             "email",
+            "email__name",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
             "julyShort",
             "julyLong",
             "highTeaJuly",
@@ -506,6 +576,10 @@ class RebateAutumnResource(resources.ModelResource):
             "highTeaDecember",
             "decemberBill",
         )
+        def before_import_rom(self,row, **kwargs):
+            email=row.get('email')
+            email=Student.objects.get(email=email)
+            row['email']=email
 
     def dehydrate_julyBill(self, RebateAutumnSem):
         amount=130
