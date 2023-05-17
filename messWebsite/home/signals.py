@@ -11,10 +11,10 @@ __doc__="This file contains the signals for the home app"
 def create_bill(sender, instance, created, **kwargs):
     if created:
         email = instance.email
-        RebateAutumnSem.objects.get_or_create(email=email)
-        RebateSpringSem.objects.get_or_create(email=email)
-        instance.rebateautumnsem.save()
-        instance.rebatespringsem.save()
+        rebate_autumn_sem, _ =RebateAutumnSem.objects.get_or_create(email=email)
+        rebate_spring_sem, _ =RebateSpringSem.objects.get_or_create(email=email)
+        rebate_autumn_sem.save()
+        rebate_spring_sem.save()
 
 
 def save_short_bill(email,month,days,high_tea, caterer):
