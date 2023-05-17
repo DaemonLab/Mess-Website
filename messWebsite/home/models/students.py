@@ -68,32 +68,38 @@ class Allocation(models.Model):
         _("Month"),
         max_length=10,
         help_text="This contains for which month the allocation id is alloted",
+        default="",null=True,blank=True
     )
     caterer_name = models.CharField(
         _("Caterer Name"),
         max_length=50,
         help_text="The text in this text field contains the caterer name.",
+        default="",null=True,blank=True
     )
     high_tea = models.BooleanField(
-        _("High Tea"), help_text="This contains the info if high tea is taken or not"
+        _("High Tea"), help_text="This contains the info if high tea is taken or not",
+        default=False,null=True,blank=True
     )
     first_pref = models.CharField(
         _("First Preference"),
         default=None,
         max_length=10,
         help_text="This contians the first preference caterer of the student",
+        null=True,blank=True
     )
     second_pref = models.CharField(
         _("Second Preference"),
         default=None,
         max_length=10,
         help_text="This contians the first preference caterer of the student",
+        null=True,blank=True
     )
     third_pref = models.CharField(
         _("Third Preference"),
         default=None,
         max_length=10,
         help_text="This contians the first preference caterer of the student",
+        null=True,blank=True
     )
 
     def __str__(self):
