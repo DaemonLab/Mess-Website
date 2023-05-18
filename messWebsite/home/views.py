@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from home.models import (
     About,
     Update,
@@ -317,7 +319,7 @@ def check(a, s, start, end, month):
         # case default:
         #     return "something"
 
-
+@login_required
 def rebate(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
@@ -404,7 +406,7 @@ def rebate(request):
     context = {"text": text, "key": key, "list": list}
     return render(request, "rebateForm.html", context)
 
-
+@staff_member_required(redirect_field_name="/", login_url="/")
 def allocation(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
@@ -573,7 +575,7 @@ It is now done by the admin using the allocation admin action."""
 #     context = {"text": text, "caterers": available_caterer}
 #     return render(request, "admin/addAllocation.html", context)
 
-
+@login_required
 def addLongRebateBill(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
