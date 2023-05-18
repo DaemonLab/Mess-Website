@@ -581,8 +581,9 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateAutumnResource
     model = RebateAutumnSem
-    search_fields = ("email",)
-    list_filter = ("email",)
+    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
+    list_filter = ("email__hostel","email__department","email__degree")
+    list_display = ("__str__","roll_number","name","hostel")
     fieldsets = (
         (
             None,
@@ -630,6 +631,20 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description="roll number")
+    def roll_number(self, obj):
+        return obj.email.roll_no
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+    @admin.display(description="hostel")
+    def hostel(self, obj):
+        return obj.email.hostel
+    @admin.display(description="room number")
+    def room_number(self, obj):
+        return obj.email.room_no
+
     actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
@@ -649,8 +664,9 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateSpringResource
     model = RebateSpringSem
-    search_fields = ("email",)
-    list_filter = ("email",)
+    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
+    list_filter = ("email__hostel","email__department","email__degree")
+    list_display = ("__str__","roll_number","name","hostel")
     fieldsets = (
         (
             None,
@@ -698,6 +714,21 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description="roll number")
+    def roll_number(self, obj):
+        return obj.email.roll_no
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+    @admin.display(description="hostel")
+    def hostel(self, obj):
+        return obj.email.hostel
+    @admin.display(description="room number")
+    def room_number(self, obj):
+        return obj.email.room_no
+    
+
     actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):

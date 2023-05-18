@@ -39,7 +39,7 @@ class RebateAutumnSem(models.Model):
     decemberBill = models.IntegerField(_("December Rebate Amount"),default=0, null=True)
 
     def __str__(self):
-        return str(self.email)
+        return str(self.email.email)
 
     class Meta:
         verbose_name = "Rebate Bill Autumn Semester"
@@ -83,7 +83,7 @@ class RebateSpringSem(models.Model):
     juneBill = models.IntegerField(_("June Rebate Amount"),default=0,null=True)
 
     def __str__(self):
-        return str(self.email)
+        return str(self.email.email)
 
     class Meta:
         verbose_name = "Rebate Bill Spring Semester"

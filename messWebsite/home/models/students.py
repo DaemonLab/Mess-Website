@@ -38,6 +38,7 @@ class Student(models.Model):
         _("Room Number of Student"),
         max_length=5,
         help_text="This contains the room number of the Student",
+        null=True,
     )
 
     def __str__(self):
