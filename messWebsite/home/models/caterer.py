@@ -28,7 +28,7 @@ class CatererBillsSpring(models.Model):
     """
     Storing the Bills of the Caterers for the Spring Semester
     """
-    Caterer = models.ForeignKey(Caterer,max_length=30, default="", on_delete=models.SET_NULL, null=True)
+    Caterer = models.ForeignKey(Caterer,max_length=30, on_delete=models.SET_NULL, null=True)
 
     januaryBill = models.IntegerField(_("January Bill"),default=0, null=True)
     feburaryBill = models.IntegerField(_("Feburary Bill"),default=0, null=True)
@@ -48,7 +48,7 @@ class CatererBillsAutumn(models.Model):
     """
     Storing the Bills of the Caterers for the Autumn Semester
     """
-    Caterer = models.ForeignKey(Caterer,max_length=30, default="",on_delete=models.SET_NULL, null=True)
+    Caterer = models.ForeignKey(Caterer,max_length=30,on_delete=models.SET_NULL, null=True)
 
     julyBill = models.IntegerField(_("July Bill"),default=0, null=True)
     augustBill = models.IntegerField(_("August Bill"),default=0, null=True)

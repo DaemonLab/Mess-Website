@@ -6,7 +6,8 @@ from ..caterer import Caterer
 
 class PeriodAutumn22(models.Model):
     Sno = models.IntegerField(_("Sno"),default=0,help_text="This contains the serial number of the Period")
-    period = models.CharField(max_length=30,help_text="This contains the period of the allotement of this semester",default="",null=True,blank=True)
+    start_date = models.DateField(help_text="This contains the start date of this Period for this semester",null=True,blank=True)
+    end_date = models.DateField(help_text="This contains the end date of this Period of this semester",null=True,blank=True)
 
     def __str__(self):
         return "Period :" + str(self.period) + str(self.Sno)
@@ -81,35 +82,35 @@ class RebateAutumn22(models.Model):
     """
     email = models.ForeignKey(Student, on_delete=models.SET_NULL, default="", null=True)
 
-    julyShort = models.IntegerField(_("July Short"),default=0, null=True)
-    julyLong = models.IntegerField(_("July Long"),default=0,null=True)
-    highTeaJuly = models.BooleanField(_("July High Tea"),default=True)
-    julyBill = models.IntegerField(_("July Rebate Amount"),default=0, null=True)
+    period1_short = models.IntegerField(_("July Short"),default=0, null=True)
+    period1_long = models.IntegerField(_("July Long"),default=0,null=True)
+    period1_high_tea = models.BooleanField(_("July High Tea"),default=True)
+    period1_bill = models.IntegerField(_("July Rebate Amount"),default=0, null=True)
 
-    augustShort = models.IntegerField(_("August Short"),default=0, null=True)
-    augustLong = models.IntegerField(_("August Long"),default=0,null=True)
-    highTeaAugust = models.BooleanField(_("August High Tea"),default=True)
-    augustBill = models.IntegerField(_("August Rebate Amount"),default=0, null=True)
+    period2_short = models.IntegerField(_("August Short"),default=0, null=True)
+    period2_long = models.IntegerField(_("August Long"),default=0,null=True)
+    period2_high_tea = models.BooleanField(_("August High Tea"),default=True)
+    period2_bill = models.IntegerField(_("August Rebate Amount"),default=0, null=True)
 
-    septemberShort = models.IntegerField(_("September Short"),default=0, null=True)
-    septemberLong = models.IntegerField(_("September Long"),default=0,null=True)
-    highTeaSeptember = models.BooleanField(_("September High Tea"),default=True)
-    septemberBill = models.IntegerField(_("September Rebate Amount"),default=0, null=True)
+    period3_short = models.IntegerField(_("September Short"),default=0, null=True)
+    period3_long = models.IntegerField(_("September Long"),default=0,null=True)
+    period3_high_tea = models.BooleanField(_("September High Tea"),default=True)
+    period3_bill = models.IntegerField(_("September Rebate Amount"),default=0, null=True)
 
-    octoberShort = models.IntegerField(_("October Short"),default=0, null=True)
-    octoberLong = models.IntegerField(_("October Long"),default=0,null=True)
-    highTeaOctober = models.BooleanField(_("October High Tea"),default=True)
-    octoberBill = models.IntegerField(_("October Rebate Amount"),default=0, null=True)
+    period4_short = models.IntegerField(_("October Short"),default=0, null=True)
+    period4_long = models.IntegerField(_("October Long"),default=0,null=True)
+    period4_high_tea = models.BooleanField(_("October High Tea"),default=True)
+    period4_bill = models.IntegerField(_("October Rebate Amount"),default=0, null=True)
 
-    novemberShort = models.IntegerField(_("November Short"),default=0, null=True)
-    novemberLong = models.IntegerField(_("November Long"),default=0,null=True)
-    highTeaNovember = models.BooleanField(_("November High Tea"),default=True)
-    NovemberBill = models.IntegerField(_("November Rebate Amount"),default=0, null=True)
+    period5_short = models.IntegerField(_("November Short"),default=0, null=True)
+    period5_long = models.IntegerField(_("November Long"),default=0,null=True)
+    period5_high_tea = models.BooleanField(_("November High Tea"),default=True)
+    period5_bill = models.IntegerField(_("November Rebate Amount"),default=0, null=True)
 
-    decemberShort = models.IntegerField(_("December Short"),default=0, null=True)
-    decemberLong = models.IntegerField(_("December Long"),default=0,null=True)
-    highTeaDecember = models.BooleanField(_("December High Tea"),default=True)
-    decemberBill = models.IntegerField(_("December Rebate Amount"),default=0, null=True)
+    period6_short = models.IntegerField(_("December Short"),default=0, null=True)
+    period6_long = models.IntegerField(_("December Long"),default=0,null=True)
+    period6_high_tea = models.BooleanField(_("December High Tea"),default=True)
+    period6_bill = models.IntegerField(_("December Rebate Amount"),default=0, null=True)
 
     def __str__(self):
         return str(self.email.email)
@@ -124,12 +125,12 @@ class CatererBillsAutumn22(models.Model):
     """
     Caterer = models.ForeignKey(Caterer,max_length=30, default="",on_delete=models.SET_NULL, null=True)
 
-    julyBill = models.IntegerField(_("July Bill"),default=0, null=True)
-    augustBill = models.IntegerField(_("August Bill"),default=0, null=True)
-    septemberBill = models.IntegerField(_("September Bill"),default=0, null=True)
-    octoberBill = models.IntegerField(_("October Bill"),default=0, null=True)
-    novemberBill = models.IntegerField(_("November Bill"),default=0, null=True)
-    decemberBill = models.IntegerField(_("December Bill"),default=0, null=True)
+    period1_bills = models.IntegerField(_("July Bill"),default=0, null=True)
+    period2_bills = models.IntegerField(_("August Bill"),default=0, null=True)
+    period3_bills = models.IntegerField(_("September Bill"),default=0, null=True)
+    period4_bills = models.IntegerField(_("October Bill"),default=0, null=True)
+    period5_bills = models.IntegerField(_("November Bill"),default=0, null=True)
+    period6_bills = models.IntegerField(_("December Bill"),default=0, null=True)
 
     def __str__(self):
         return str(self.Caterer.name)

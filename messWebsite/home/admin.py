@@ -29,6 +29,18 @@ from home.models import (
     CatererBillsAutumn,
     CatererBillsSpring,
     TodayRebate,
+    AllocationAutumn22,
+    AllocationSpring23,
+    AllocationAutumn23,
+    RebateAutumn22,
+    RebateSpring23,
+    RebateAutumn23,
+    CatererBillsAutumn22,
+    CatererBillsSpring23,
+    CatererBillsAutumn23,
+    PeriodAutumn22,
+    PeriodSpring23,
+    PeriodAutumn23,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 from .resources import (
@@ -1012,3 +1024,253 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         caterer_mail(messageKanaka, "Kanaka","me210003039@iiti.ac.in",date)
         caterer_mail(messageGauri, "Gauri","me210003039@iiti.ac.in",date)
         caterer_mail(messageAjay, "Ajay","me210003039@iiti.ac.in", date)
+
+rebate_fields={"fields": (
+                    "email",
+                    (
+                        "period1_short",
+                        "period1_long",
+                        "period1_high_tea",
+                    ),
+                    # "julyBill",
+                    (
+                        "period2_short",
+                        "period2_long",
+                        "period2_high_tea",
+                    ),
+                    # "augustBill",
+                    (
+                        "period3_short",
+                        "period3_long",
+                        "period3_high_tea",
+                    ),
+                    # "septemberBill",
+                    (
+                        "period4_short",
+                        "period4_long",
+                        "period4_high_tea",
+                    ),
+                    # "octoberBill",
+                    (
+                        "period5_short",
+                        "period5_long",
+                        "period5_high_tea",
+                    ),
+                    # "NovemberBill",
+                    (
+                        "period6_short",
+                        "period6_long",
+                        "period6_high_tea",
+                    ),
+                    # "decemberBill",
+                ),
+                "description": "%s" % REBATE_BILLS_DESC_TEXT,
+            }
+
+@admin.register(RebateAutumn22)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    model=RebateAutumn22
+    resource_class = RebateAutumnResource
+    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
+    list_filter = ("email__hostel","email__department","email__degree")
+    list_display = ("__str__","roll_number","name","hostel")
+    fieldsets = ((None,rebate_fields,),)
+
+    @admin.display(description="roll number")
+    def roll_number(self, obj):
+        return obj.email.roll_no
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+    @admin.display(description="hostel")
+    def hostel(self, obj):
+        return obj.email.hostel
+    @admin.display(description="room number")
+    def room_number(self, obj):
+        return obj.email.room_no
+
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = RebateAutumnResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
+
+@admin.register(RebateSpring23)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateSpringResource
+    model=RebateSpring23
+    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
+    list_filter = ("email__hostel","email__department","email__degree")
+    list_display = ("__str__","roll_number","name","hostel")
+    fieldsets = ((None,rebate_fields,),)
+
+    @admin.display(description="roll number")
+    def roll_number(self, obj):
+        return obj.email.roll_no
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+    @admin.display(description="hostel")
+    def hostel(self, obj):
+        return obj.email.hostel
+    @admin.display(description="room number")
+    def room_number(self, obj):
+        return obj.email.room_no
+
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = RebateAutumnResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
+
+@admin.register(RebateAutumn23)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateAutumnResource
+    model=RebateAutumn23
+    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
+    list_filter = ("email__hostel","email__department","email__degree")
+    list_display = ("__str__","roll_number","name","hostel")
+    fieldsets = ((None,rebate_fields,),)
+
+    @admin.display(description="roll number")
+    def roll_number(self, obj):
+        return obj.email.roll_no
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+    @admin.display(description="hostel")
+    def hostel(self, obj):
+        return obj.email.hostel
+    @admin.display(description="room number")
+    def room_number(self, obj):
+        return obj.email.room_no
+
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = RebateAutumnResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
+
+allocation_fields = {
+                "fields": (
+                    "roll_no",
+                    "month",
+                    "student_id",
+                    "caterer_name",
+                    "high_tea",
+                    "first_pref",
+                    "second_pref",
+                    "third_pref",
+                ),
+                "description": "%s" % ALLOCATION_DESC_TEXT,
+            }
+
+@admin.register(AllocationAutumn22)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = AllocationResource
+    model = AllocationAutumn22
+    search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    list_filter = ("month", "caterer_name", "high_tea")
+    list_display = ("student_id", "month", "caterer_name", "high_tea")
+    fieldsets = ((None,allocation_fields,),)
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = AllocationResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Allocation details to CSV"
+
+@admin.register(AllocationSpring23)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = AllocationResource
+    model = AllocationSpring23
+    search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    list_filter = ("month", "caterer_name", "high_tea")
+    list_display = ("student_id", "month", "caterer_name", "high_tea")
+    fieldsets = ((None,allocation_fields,),)
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = AllocationResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Allocation details to CSV"
+
+@admin.register(AllocationAutumn23)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = AllocationResource
+    model = AllocationAutumn23
+    search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    list_filter = ("month", "caterer_name", "high_tea")
+    list_display = ("student_id", "month", "caterer_name", "high_tea")
+    fieldsets = ((None,allocation_fields,),)
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = AllocationResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Allocation details to CSV"
+
+
+@admin.register(PeriodAutumn22)
+class about_Admin(admin.ModelAdmin):
+    model = PeriodAutumn22
+    fieldsets = (
+        (None,{"fields": ("Sno", "start_date", "end_date")},),)
+    
+@admin.register(PeriodSpring23)
+class about_Admin(admin.ModelAdmin):
+    model = PeriodSpring23
+    fieldsets = (
+        (None,{"fields": ("Sno", "start_date", "end_date")},),)
+    
+@admin.register(PeriodAutumn23)
+class about_Admin(admin.ModelAdmin):
+    model = PeriodAutumn23
+    fieldsets = (
+        (None,{"fields": ("Sno", "start_date", "end_date")},),)
+    

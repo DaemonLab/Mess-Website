@@ -20,7 +20,23 @@ from home.models import (
     RebateAutumnSem,
     RebateSpringSem,
     LongRebate,
-    UnregisteredStudent
+    UnregisteredStudent,
+    PeriodAutumn22,
+    AllocationAutumn22,
+    RebateAutumn22,
+    PeriodSpring23,
+    AllocationSpring23,
+    RebateSpring23,
+    PeriodAutumn23,
+    AllocationAutumn23,
+    RebateAutumn23,
+)
+from .utils.rebate_helpers import (
+    count,
+    is_present_autumn,
+    is_present_spring,
+    check_rebate_autumn,
+    check_rebate_spring
 )
 import pandas as pd
 import datetime
@@ -130,195 +146,6 @@ def contact(request):
     return render(request, "contact.html", context)
 
 
-def count(start, end):
-    """Counts the number of days of rebate applied"""
-    sum = ((end - start).days) + 1
-    return sum
-
-
-def is_present_autumn(s):
-    """
-    Checks if student is registered in the rebate bills of autumn semester,
-    if not the function registers it with that email ID
-    """
-    try:
-        student = RebateAutumnSem.objects.get(email=str(s.email))
-    except:
-        print(Exception)
-        student = RebateAutumnSem(email=str(s.email))
-        student.save()
-    return student
-
-
-def is_present_spring(s):
-    """
-    Checks if student is registered in the rebate bills of spring semester,
-    if not the function registers it with that email ID
-    """
-    try:
-        student = RebateSpringSem.objects.get(email=str(s.email))
-    except:
-        print(Exception)
-        print(2)
-        student = RebateSpringSem(email=str(s.email))
-        student.save()
-    return student
-
-
-def check(a, s, start, end, month):
-    """
-    Checks what month rebate is being applied,
-    if the rebate doesnot exceeds 8 days for that month approves the rebate and
-    adds the rebate to rebate bills
-    """
-    match month:
-        case "January":
-            student = is_present_spring(s)
-            sum = count(start, end)
-            if student.januaryShort + sum <= 8:
-                # student.january+=sum
-                # student.highTeaJanuary = a.high_tea
-                # student.save(update_fields=["january", "highTeaJanuary"])
-                return -1
-            if start.month == 1 and end.month == 1:
-                return -2
-            else:
-                return 8 - student.januaryShort
-        case "Feburary":
-            student = is_present_spring(s)
-            sum = count(start, end)
-            if student.feburaryShort + sum <= 8:
-                # student.feburary+=sum
-                # student.highTeaFeburary = a.high_tea
-                # student.save(update_fields=["feburary", "highTeaFeburary"])
-                return -1
-            elif start.month != 2 and end.month != 2:
-                return -2
-            else:
-                return 8 - student.feburaryShort
-        case "March":
-            student = is_present_spring(s)
-            sum = count(start, end)
-            if student.march + sum <= 8:
-                # student.march+=sum
-                # student.highTeaMarch = a.high_tea
-                # student.save(update_fields=["march", "highTeaMarch"])
-                return -1
-            elif start.month != 3 and end.month != 3:
-                return -2
-            else:
-                return 8 - student.marchShort
-        case "April":
-            student = is_present_spring(s)
-            sum = count(start, end)
-            if sum + student.april <= 8:
-                # student.april+=sum
-                # student.highTeaApril = a.high_tea
-                # student.save(update_fields=["april", "highTeaApril"])
-                return -1
-            elif start.month != 4 and end.month != 4:
-                return -2
-            else:
-                return 8 - student.aprilShort
-        case "May":
-            student = is_present_spring(s)
-            sum = count(start, end)
-            if sum + student.mayShort <= 8:
-                # student.may+=sum
-                # student.highTeaMay = a.high_tea
-                # student.save(update_fields=["may", "highTeaMay"])
-                return -1
-            elif start.month != 5 and end.month != 5:
-                return -2
-            else:
-                return 8 - student.mayShort
-        case "June":
-            student = is_present_spring(s)
-            sum = count(start, end)
-            if student.june + sum <= 8:
-                # student.june+=sum
-                # student.highTeaJune = a.high_tea
-                # student.save(update_fields=["june", "highTeaJune"])
-                return -1
-            elif start.month != 6 and end.month != 6:
-                return -2
-            else:
-                return 8 - student.juneShort
-        case "July":
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.july + sum <= 8:
-                # student.july+=sum
-                # student.highTeaJuly = a.high_tea
-                # student.save(update_fields=["july", "highTeaJuly"])
-                return -1
-            elif start.month != 7 and end.month != 7:
-                return -2
-            else:
-                return 8 - student.julyShort
-        case "August":
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.august + sum <= 8:
-                # student.august+=sum
-                # student.highTeaAugust = a.high_tea
-                # student.save(update_fields=["august", "highTeaAugust"])
-                return -1
-            elif start.month != 8 and end.month != 8:
-                return -2
-            else:
-                return 8 - student.augustShort
-        case "September":
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.september + sum <= 8:
-                # student.september+=sum
-                # student.highTeaSeptember = a.high_tea
-                # student.save(update_fields=["september", "highTeaSeptember"])
-                return -1
-            elif start.month != 9 and end.month != 9:
-                return -2
-            else:
-                return 8 - student.septemberShort
-        case "October":
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.october + sum <= 8:
-                # student.october+=sum
-                # student.highTeaOctober = a.high_tea
-                # student.save(update_fields=["october", "highTeaOctober"])
-                return -1
-            elif start.month != 10 and end.month != 10:
-                return -2
-            else:
-                return 8 - student.octoberShort
-        case "November":
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.november + sum <= 8:
-                # student.november+=sum
-                # student.highTeaNovember = a.high_tea
-                # student.save(update_fields=["november", "highTeaNovember"])
-                return -1
-            elif start.month != 11 and end.month != 11:
-                return -2
-            else:
-                return 8 - student.novemberShort
-        case "December":
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.december + sum <= 8:
-                # student.december+=sum
-                # student.highTeaDecember = a.high_tea
-                # student.save(update_fields=["december", "highTeaDecember"])
-                return -1
-            elif start.month != 12 and end.month != 12:
-                return -2
-            else:
-                return 8 - student.decemberShort
-        # case default:
-        #     return "something"
-
 @login_required
 def rebate(request):
     """
@@ -335,12 +162,13 @@ def rebate(request):
     text = ""
     list = []
     try:
-        allocation_id = Allocation.objects.get(roll_no__email=str(request.user.email))
+        allocation_id = AllocationSpring23.objects.get(roll_no__email=str(request.user.email))
         key = str(allocation_id.student_id)
-    except Allocation.DoesNotExist:
+    except AllocationSpring23.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"
-    except Allocation.MultipleObjectsReturned:
-        allocation_id = Allocation.objects.filter(
+    # Instead of last use period model to get the allocation id for that period
+    except AllocationSpring23.MultipleObjectsReturned:
+        allocation_id = AllocationSpring23.objects.filter(
             roll_no__email=str(request.user.email)
         ).last()
         key = str(allocation_id.student_id)
@@ -352,52 +180,44 @@ def rebate(request):
                 diff = ((end_date - start_date).days) + 1
                 diff2 = (start_date - datetime.date.today()).days
                 try:
-                    # Allocation.objects.filter(
-                    #     student_id=request.POST["allocation_id"]
-                    # ).last()
-                    try:
-                        # allocation = Allocation.objects.get(
-                        #     roll_no__email=str(request.user.email),
-                        #     student_id=request.POST["allocation_id"],
-                        # )
-                        student = Student.objects.filter(
-                            email=str(request.user.email)
-                        ).first()
-                        month = allocation_id.month
-                        print(month)
-                        ch = check(allocation_id, student, start_date, end_date, month)
-                        if ch == -2:
-                            text = "Please fill the rebate of this month only"
-                        elif ch >= 0:
-                            text = (
-                                "You can only apply for max 8 days in a month. Days left for this month: "
-                                + str(ch)
+                    student = Student.objects.filter(
+                        email=str(request.user.email)
+                    ).first()
+                    period = allocation_id.month.Sno
+                    period_start = allocation_id.month.start_date
+                    period_end = allocation_id.month.end_date
+                    print(period)
+                    ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
+                    if period_start<=start_date<=period_end and period_start<=end_date<=period_end:
+                        text = "Please fill the rebate of this period only"
+                    elif ch >= 0:
+                        text = (
+                            "You can only apply for max 8 days in a period. Days left for this period: "
+                            + str(ch)
+                        )
+                    else:
+                        if (diff) <= 7 and diff >= 2 and diff2 >= 2:
+                            r = Rebate(
+                                email=request.user.email,
+                                allocation_id=allocation_id,
+                                start_date=request.POST["start_date"],
+                                end_date=request.POST["end_date"],
+                                approved=False,
                             )
+                            r.save()
+                            text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
+                        elif 0 < diff < 2:
+                            text = "Min no of days for rebate is 2"
+                        elif diff2 < 2:
+                            text = "Form needs to be filled atleast 2 days prior the comencement of leave."
+                        elif diff > 7:
+                            text = "Max no of days for rebate is 7"
+                        elif diff < 0:
+                            text = "Please enter the correct dates"
                         else:
-                            if (diff) <= 7 and diff >= 2 and diff2 >= 2:
-                                r = Rebate(
-                                    email=request.user.email,
-                                    allocation_id=allocation_id,
-                                    start_date=request.POST["start_date"],
-                                    end_date=request.POST["end_date"],
-                                    approved=False,
-                                )
-                                r.save()
-                                text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
-                            elif 0 < diff < 2:
-                                text = "Min no of days for rebate is 2"
-                            elif diff2 < 2:
-                                text = "Form needs to be filled atleast 2 days prior the comencement of leave."
-                            elif diff > 7:
-                                text = "Max no of days for rebate is 7"
-                            elif diff < 0:
-                                text = "Please enter the correct dates"
-                            else:
-                                text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-                    except Allocation.DoesNotExist:
-                        text = "Email ID does not match with the allocation ID"
+                            text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
                 except Allocation.DoesNotExist:
-                    text = " The asked allocation ID does not exist. Please enter the correct ID."
+                    text = "Email ID does not match with the allocation ID"
             else:
                 text = "Please enter the rebate dates within this month only"
         except Exception as e:
@@ -437,11 +257,11 @@ def allocation(request):
                 first_pref = str(record["first_pref"]).capitalize()
                 second_pref = str(record["second_pref"]).capitalize()
                 third_pref = str(record["third_pref"]).capitalize()
-                month = str(record["month"]).capitalize()
+                period = str(record["period"]).capitalize()
+                period_obj = PeriodSpring23.objects.get(Sno=period)
                 high_tea = record["high_tea"]
                 r = Student.objects.filter(email=record["email"]).first()
                 print(r)
-                print("hi1")
                 for pref in [first_pref, second_pref, third_pref]:
                     kanaka = Caterer.objects.get(name="Kanaka")
                     ajay = Caterer.objects.get(name="Ajay")
@@ -473,10 +293,10 @@ def allocation(request):
                         gauri.student_limit -= 1
                         gauri.save(update_fields=["student_limit"])
                         break
-                a = Allocation(
+                a = AllocationSpring23(
                     roll_no=r,
                     student_id=student_id,
-                    month=month,
+                    month=period_obj,
                     caterer_name=caterer_name,
                     high_tea=high_tea,
                     first_pref=first_pref,
@@ -488,12 +308,13 @@ def allocation(request):
             except Exception as e:
                 print(e)
         messages = "Form submitted. Please check the admin page."
-    Ajay_high_tea = Allocation.objects.filter(caterer_name="Ajay", high_tea=True).count()
-    Gauri_high_tea = Allocation.objects.filter(caterer_name="Gauri", high_tea=True).count()
-    Kanaka_high_tea = Allocation.objects.filter(caterer_name="Kanaka", high_tea=True).count()
-    Ajay_total = Allocation.objects.filter(caterer_name="Ajay").count()
-    Gauri_total = Allocation.objects.filter(caterer_name="Gauri").count()
-    Kanaka_total = Allocation.objects.filter(caterer_name="Kanaka").count()
+    period_obj = PeriodSpring23.objects.filter().last()
+    Ajay_high_tea = AllocationSpring23.objects.filter(caterer_name="Ajay", high_tea=True,month=period_obj).count()
+    Gauri_high_tea = AllocationSpring23.objects.filter(caterer_name="Gauri", high_tea=True,month=period_obj).count()
+    Kanaka_high_tea = AllocationSpring23.objects.filter(caterer_name="Kanaka", high_tea=True,month=period_obj).count()
+    Ajay_total = AllocationSpring23.objects.filter(caterer_name="Ajay",month=period_obj).count()
+    Gauri_total = AllocationSpring23.objects.filter(caterer_name="Gauri",month=period_obj).count()
+    Kanaka_total = AllocationSpring23.objects.filter(caterer_name="Kanaka",month=period_obj).count()
     Ajay_left = Caterer.objects.get(name="Ajay").student_limit
     Gauri_left = Caterer.objects.get(name="Gauri").student_limit
     Kanaka_left = Caterer.objects.get(name="Kanaka").student_limit
@@ -589,12 +410,13 @@ def addLongRebateBill(request):
     """
     text = ""
     try:
-        allocation_id = Allocation.objects.get(roll_no__email=str(request.user.email))
+        allocation_id = AllocationSpring23.objects.get(roll_no__email=str(request.user.email))
         key = str(allocation_id.student_id)
-    except Allocation.DoesNotExist:
+    except AllocationSpring23.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"
-    except Allocation.MultipleObjectsReturned:
-        allocation_id = Allocation.objects.filter(
+    # Instead of last use period model to get the allocation id for that period
+    except AllocationSpring23.MultipleObjectsReturned:
+        allocation_id = AllocationSpring23.objects.filter(
             roll_no__email=str(request.user.email)
         ).last()
         key = str(allocation_id.student_id)
