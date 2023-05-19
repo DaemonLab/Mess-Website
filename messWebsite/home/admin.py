@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from .signals import update_bill
-from .django_email_server import rebate_mail,caterer_mail
+from .utils.django_email_server import rebate_mail,caterer_mail
 from home.models import (
     About,
     Update,

@@ -11,3 +11,6 @@ from .links import Form
 from .rules import Rule, ShortRebate
 from .students import Student, Allocation, Scan, Rebate, LongRebate, UnregisteredStudent, TodayRebate
 from .rebateBills import RebateAutumnSem, RebateSpringSem
+from .Semesters.autumn22 import PeriodAutumn22, AllocationAutumn22, RebateAutumn22, CatererBillsAutumn22
+from .Semesters.spring23 import PeriodSpring23, AllocationSpring23, RebateSpring23, CatererBillsSpring23
+from .Semesters.autumn23 import PeriodAutumn23, AllocationAutumn23, RebateAutumn23, CatererBillsAutumn23
