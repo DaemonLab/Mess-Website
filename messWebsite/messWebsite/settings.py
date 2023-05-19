@@ -56,7 +56,7 @@ ROOT_URLCONF = "messWebsite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR , 'templates').replace('\\','/')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -160,7 +160,10 @@ LOGIN_EXEMPT_URLS = ["/admin/*"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # managing media
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')

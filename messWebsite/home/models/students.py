@@ -23,6 +23,7 @@ class Student(models.Model):
         _("Department of Student"),
         max_length=30,
         help_text="This contains the department of the Student",
+        null=True,
     )
     degree = models.CharField(
         _("Academic Program"),
@@ -38,7 +39,6 @@ class Student(models.Model):
         _("Room Number of Student"),
         max_length=5,
         help_text="This contains the room number of the Student",
-        null=True,
     )
 
     def __str__(self):
