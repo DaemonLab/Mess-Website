@@ -6,8 +6,9 @@ from ..caterer import Caterer
 
 class PeriodSpring23(models.Model):
     Sno = models.IntegerField(_("Sno"),default=0,help_text="This contains the serial number of the Period")
-    period = models.CharField(max_length=30,help_text="This contains the period of the allotement of this semester",default="",null=True,blank=True)
-
+    start_date = models.DateField(help_text="This contains the start date of this Period for this semester",null=True,blank=True)
+    end_date = models.DateField(help_text="This contains the end date of this Period of this semester",null=True,blank=True)
+    
     def __str__(self):
         return "Period :" + str(self.period) + str(self.Sno)
 
@@ -81,35 +82,35 @@ class RebateSpring23(models.Model):
     """
     email = models.ForeignKey(Student, on_delete=models.SET_NULL, default="", null=True)
 
-    januaryShort = models.IntegerField(_("January Short"),default=0, null=True)
-    januaryLong = models.IntegerField(_("January Long"),default=0,null=True)
-    highTeaJanuary = models.BooleanField(_("January High Tea"),default=True)
-    januaryBill = models.IntegerField(_("January Rebate Amount"),default=0,null=True)
+    period1_short = models.IntegerField(_("January Short"),default=0, null=True)
+    period1_long = models.IntegerField(_("January Long"),default=0,null=True)
+    period1_high_tea = models.BooleanField(_("January High Tea"),default=True)
+    period1_bill = models.IntegerField(_("January Rebate Amount"),default=0,null=True)
 
-    feburaryShort = models.IntegerField(_("Feburary Short"),default=0, null=True)
-    feburaryLong = models.IntegerField(_("Feburary Long"),default=0,null=True)
-    highTeaFeburary = models.BooleanField(_("Feburary High Tea"),default=True)
-    feburaryBill = models.IntegerField(_("Feburary Rebate Amount"),default=0,null=True)
+    period1_short = models.IntegerField(_("Feburary Short"),default=0, null=True)
+    period1_long = models.IntegerField(_("Feburary Long"),default=0,null=True)
+    period1_high_tea = models.BooleanField(_("Feburary High Tea"),default=True)
+    period1_bill = models.IntegerField(_("Feburary Rebate Amount"),default=0,null=True)
 
-    marchShort = models.IntegerField(_("March Short"),default=0, null=True)
-    marchLong = models.IntegerField(_("March Long"),default=0,null=True)
-    highTeaMarch = models.BooleanField(_("March High Tea"),default=True)
-    marchBill = models.IntegerField(_("March Rebate Amount"),default=0,null=True)
+    period1_short = models.IntegerField(_("March Short"),default=0, null=True)
+    period1_long = models.IntegerField(_("March Long"),default=0,null=True)
+    period1_high_tea = models.BooleanField(_("March High Tea"),default=True)
+    period1_bill = models.IntegerField(_("March Rebate Amount"),default=0,null=True)
 
-    aprilShort = models.IntegerField(_("April Short"),default=0, null=True)
-    aprilLong = models.IntegerField(_("April Long"),default=0,null=True)
-    highTeaApril = models.BooleanField(_("April High Tea"),default=True)
-    aprilBill = models.IntegerField(_("April Rebate Amount"),default=0,null=True)
+    period1_short = models.IntegerField(_("April Short"),default=0, null=True)
+    period1_long = models.IntegerField(_("April Long"),default=0,null=True)
+    period1_high_tea = models.BooleanField(_("April High Tea"),default=True)
+    period1_bill = models.IntegerField(_("April Rebate Amount"),default=0,null=True)
 
-    mayShort = models.IntegerField(_("May Short"),default=0, null=True)
-    mayLong = models.IntegerField(_("May Long"),default=0,null=True)
-    highTeaMay = models.BooleanField(_("May High Tea"),default=True)
-    mayBill = models.IntegerField(_("May Rebate Amount"),default=0,null=True)
+    period1_short = models.IntegerField(_("May Short"),default=0, null=True)
+    period1_long = models.IntegerField(_("May Long"),default=0,null=True)
+    period1_high_tea = models.BooleanField(_("May High Tea"),default=True)
+    period1_bill = models.IntegerField(_("May Rebate Amount"),default=0,null=True)
 
-    juneShort = models.IntegerField(_("June Short"),default=0, null=True)
-    juneLong = models.IntegerField(_("June Long"),default=0,null=True)
-    highTeaJune = models.BooleanField(_("June High Tea"),default=True)
-    juneBill = models.IntegerField(_("June Rebate Amount"),default=0,null=True)
+    period1_short = models.IntegerField(_("June Short"),default=0, null=True)
+    period1_long = models.IntegerField(_("June Long"),default=0,null=True)
+    period1_high_tea = models.BooleanField(_("June High Tea"),default=True)
+    period1_bill = models.IntegerField(_("June Rebate Amount"),default=0,null=True)
 
     def __str__(self):
         return str(self.email.email)
@@ -124,12 +125,12 @@ class CatererBillsSpring23(models.Model):
     """
     Caterer = models.ForeignKey(Caterer,max_length=30, default="", on_delete=models.SET_NULL, null=True)
 
-    januaryBill = models.IntegerField(_("January Bill"),default=0, null=True)
-    feburaryBill = models.IntegerField(_("Feburary Bill"),default=0, null=True)
-    marchBill = models.IntegerField(_("March Bill"),default=0, null=True)
-    aprilBill = models.IntegerField(_("April Bill"),default=0, null=True)
-    mayBill = models.IntegerField(_("May Bill"),default=0, null=True)
-    juneBill = models.IntegerField(_("June Bill"),default=0, null=True)
+    period1_bills = models.IntegerField(_("January Bill"),default=0, null=True)
+    period2_bills = models.IntegerField(_("Feburary Bill"),default=0, null=True)
+    period3_bills = models.IntegerField(_("March Bill"),default=0, null=True)
+    period4_bills = models.IntegerField(_("April Bill"),default=0, null=True)
+    period5_bills = models.IntegerField(_("May Bill"),default=0, null=True)
+    period6_bills = models.IntegerField(_("June Bill"),default=0, null=True)
 
     def __str__(self):
         return str(self.Caterer.name)
