@@ -6,7 +6,6 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
-from .signals import update_bill
 from .utils.django_email_server import rebate_mail,caterer_mail
 from home.models import (
     About,
@@ -23,8 +22,6 @@ from home.models import (
     Scan,
     Rebate,
     LongRebate,
-    RebateSpringSem,
-    RebateAutumnSem,
     UnregisteredStudent,
     CatererBillsAutumn,
     CatererBillsSpring,
@@ -498,16 +495,16 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        update_bill(instance=obj, sender=obj.__class__, created=change)
+    # def save_model(self, request, obj, form, change):
+    #     super().save_model(request, obj, form, change)
+    #     update_bill(instance=obj, sender=obj.__class__, created=change)
 
-    def save_related(self, request, form, formsets, change):
-        super().save_related(request, form, formsets, change)
-        print("save related")
-        update_bill(
-            sender=form.instance.__class__, instance=form.instance, created=change
-        )
+    # def save_related(self, request, form, formsets, change):
+    #     super().save_related(request, form, formsets, change)
+    #     print("save related")
+    #     update_bill(
+    #         sender=form.instance.__class__, instance=form.instance, created=change
+    #     )
 
 
 @admin.register(Rebate)
@@ -577,183 +574,17 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        update_bill(instance=obj, sender=obj.__class__, created=change)
+    # def save_model(self, request, obj, form, change):
+    #     super().save_model(request, obj, form, change)
+    #     update_bill(instance=obj, sender=obj.__class__, created=change)
 
-    def save_related(self, request, form, formsets, change):
-        super().save_related(request, form, formsets, change)
-        print("save related")
-        update_bill(
-            sender=form.instance.__class__, instance=form.instance, created=change
-        )
+    # def save_related(self, request, form, formsets, change):
+    #     super().save_related(request, form, formsets, change)
+    #     print("save related")
+    #     update_bill(
+    #         sender=form.instance.__class__, instance=form.instance, created=change
+    #     )
 
-
-@admin.register(RebateAutumnSem)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateAutumnResource
-    model = RebateAutumnSem
-    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
-    list_filter = ("email__hostel","email__department","email__degree")
-    list_display = ("__str__","roll_number","name","hostel")
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "email",
-                    (
-                        "julyShort",
-                        "julyLong",
-                        "highTeaJuly",
-                    ),
-                    # "julyBill",
-                    (
-                        "augustShort",
-                        "augustLong",
-                        "highTeaAugust",
-                    ),
-                    # "augustBill",
-                    (
-                        "septemberShort",
-                        "septemberLong",
-                        "highTeaSeptember",
-                    ),
-                    # "septemberBill",
-                    (
-                        "octoberShort",
-                        "octoberLong",
-                        "highTeaOctober",
-                    ),
-                    # "octoberBill",
-                    (
-                        "novemberShort",
-                        "novemberLong",
-                        "highTeaNovember",
-                    ),
-                    # "NovemberBill",
-                    (
-                        "decemberShort",
-                        "decemberLong",
-                        "highTeaDecember",
-                    ),
-                    # "decemberBill",
-                ),
-                "description": "%s" % REBATE_BILLS_DESC_TEXT,
-            },
-        ),
-    )
-
-    @admin.display(description="roll number")
-    def roll_number(self, obj):
-        return obj.email.roll_no
-    @admin.display(description="name")
-    def name(self, obj):
-        return obj.email.name
-    @admin.display(description="hostel")
-    def hostel(self, obj):
-        return obj.email.hostel
-    @admin.display(description="room number")
-    def room_number(self, obj):
-        return obj.email.room_no
-
-    actions = ["export_as_csv"]
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = RebateAutumnResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Rebate details to CSV"
-
-
-@admin.register(RebateSpringSem)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateSpringResource
-    model = RebateSpringSem
-    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
-    list_filter = ("email__hostel","email__department","email__degree")
-    list_display = ("__str__","roll_number","name","hostel")
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "email",
-                    (
-                        "januaryShort",
-                        "januaryLong",
-                        "highTeaJanuary",
-                    ),
-                    # "januaryBill",
-                    (
-                        "feburaryShort",
-                        "feburaryLong",
-                        "highTeaFeburary",
-                    ),
-                    # "feburaryBill",
-                    (
-                        "marchShort",
-                        "marchLong",
-                        "highTeaMarch",
-                    ),
-                    # "marchBill",
-                    (
-                        "aprilShort",
-                        "aprilLong",
-                        "highTeaApril",
-                    ),
-                    # "aprilBill",
-                    (
-                        "mayShort",
-                        "mayLong",
-                        "highTeaMay",
-                    ),
-                    # "mayBill",
-                    (
-                        "juneShort",
-                        "juneLong",
-                        "highTeaJune",
-                    ),
-                    # "juneBill",
-                ),
-                "description": "%s" % REBATE_BILLS_DESC_TEXT,
-            },
-        ),
-    )
-
-    @admin.display(description="roll number")
-    def roll_number(self, obj):
-        return obj.email.roll_no
-    @admin.display(description="name")
-    def name(self, obj):
-        return obj.email.name
-    @admin.display(description="hostel")
-    def hostel(self, obj):
-        return obj.email.hostel
-    @admin.display(description="room number")
-    def room_number(self, obj):
-        return obj.email.room_no
-    
-
-    actions = ["export_as_csv"]
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = RebateSpringResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="RebateSpring.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Rebate details to CSV"
 
 def unregister_student(obj):
     all_caterers = Caterer.objects.all()
