@@ -5,9 +5,9 @@ from .models import (
     Allocation,
     Rebate,
     LongRebate,
-    RebateAutumnSem,
-    RebateSpringSem,
     UnregisteredStudent,
+    RebateSpring23,
+    RebateAutumn23,
 )
 
 """
@@ -304,7 +304,7 @@ class RebateSpringResource(resources.ModelResource):
     empty = fields.Field(column_name=" ")
 
     class Meta:
-        model = RebateSpringSem
+        model = RebateSpring23
         exclude = "id"
         import_id_fields = ["email",]
         export_order = [
@@ -508,7 +508,7 @@ class RebateAutumnResource(resources.ModelResource):
     empty = fields.Field(column_name=" ")
 
     class Meta:
-        model = RebateAutumnSem
+        model = RebateAutumn23
         exclude = "id"
         import_id_fields = ["email__email",]
         export_order = [

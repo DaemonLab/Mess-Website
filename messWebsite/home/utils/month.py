@@ -1,19 +1,23 @@
 from datetime import date, timedelta
+from ..models.Semesters.spring23 import PeriodSpring23
 
-def fill_days(start_date, end_date):
+def fill_periods(start_date, end_date):
+    print(f"Start date: {start_date}, End date: {end_date}")
     current_date = start_date
-    days_per_month = []
+    days_per_period = []
 
-    while current_date <= end_date:
-        days_in_month = (current_date.replace(day=1) + timedelta(days=32)).replace(day=1) - current_date
-        days_in_month = min(days_in_month.days, (end_date - current_date).days + 1)
-        days_per_month.append((current_date.strftime("%B"), days_in_month))
+    for period in PeriodSpring23.objects.all():
+        if period.start_date <= current_date <= period.end_date and period.start_date <= end_date:
+            days_in_period = min((period.end_date - current_date).days + 1, (end_date - current_date).days + 1)
+            days_per_period.append((period.Sno, days_in_period))
+            current_date = current_date + days_in_period
+    
+    if(current_date <= end_date and (end_date - current_date).days + 1 >0):
+        days_per_period.append((7, start_date))
+        days_per_period.append((8, end_date))
+    
+    for period_no, days in days_per_period:
+        print(f"{period_no}: {days} days")
 
-        current_date = current_date.replace(day=1) + timedelta(days=32)
-        current_date = current_date.replace(day=1)
-
-    for month_name, days in days_per_month:
-        print(f"{month_name}: {days} days")
-
-    return days_per_month
+    return days_per_period
 

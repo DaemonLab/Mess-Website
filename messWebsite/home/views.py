@@ -17,8 +17,6 @@ from home.models import (
     Rebate,
     Allocation,
     Student,
-    RebateAutumnSem,
-    RebateSpringSem,
     LongRebate,
     UnregisteredStudent,
     PeriodAutumn22,
@@ -31,7 +29,7 @@ from home.models import (
     AllocationAutumn23,
     RebateAutumn23,
 )
-from .utils.rebate_helpers import (
+from .utils.rebate_checker import (
     count,
     is_present_autumn,
     is_present_spring,
