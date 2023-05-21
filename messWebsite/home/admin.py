@@ -44,8 +44,7 @@ from .resources import (
     StudentResource,
     AllocationResource,
     RebateResource,
-    RebateSpringResource,
-    RebateAutumnResource,
+    RebateBillsResource,
     UnregisteredStudentResource,
     LongRebateResource,
 )
@@ -764,7 +763,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(CatererBillsAutumn)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateAutumnResource
+    resource_class = RebateBillsResource
     model = CatererBillsAutumn
     search_fields = ("Caterer__name",)
     list_filter = ("Caterer__name",)
@@ -787,7 +786,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(CatererBillsSpring)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateAutumnResource
+    resource_class = RebateBillsResource
     model = CatererBillsSpring
     search_fields = ("Caterer__name",)
     list_filter = ("Caterer__name",)
@@ -810,7 +809,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(TodayRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateAutumnResource
+    resource_class = RebateBillsResource
     model = TodayRebate
     # search_fields = ()
     # list_filter = ()
@@ -901,7 +900,7 @@ rebate_fields={"fields": (
 @admin.register(RebateAutumn22)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     model=RebateAutumn22
-    resource_class = RebateAutumnResource
+    resource_class = RebateBillsResource
     search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
     list_filter = ("email__hostel","email__department","email__degree")
     list_display = ("__str__","roll_number","name","hostel")
@@ -926,7 +925,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Export action available in the admin page
         """
-        resource = RebateAutumnResource()
+        resource = RebateBillsResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
@@ -936,7 +935,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(RebateSpring23)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateSpringResource
+    resource_class = RebateBillsResource
     model=RebateSpring23
     search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
     list_filter = ("email__hostel","email__department","email__degree")
@@ -962,7 +961,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Export action available in the admin page
         """
-        resource = RebateAutumnResource()
+        resource = RebateBillsResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
@@ -972,7 +971,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(RebateAutumn23)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateAutumnResource
+    resource_class = RebateBillsResource
     model=RebateAutumn23
     search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
     list_filter = ("email__hostel","email__department","email__degree")
@@ -998,7 +997,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Export action available in the admin page
         """
-        resource = RebateAutumnResource()
+        resource = RebateBillsResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'

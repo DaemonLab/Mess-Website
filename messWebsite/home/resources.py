@@ -8,6 +8,13 @@ from .models import (
     UnregisteredStudent,
     RebateSpring23,
     RebateAutumn23,
+    RebateAutumn22,
+    PeriodSpring23,
+    PeriodAutumn23,
+    PeriodAutumn22,
+    AllocationAutumn22,
+    AllocationSpring23,
+    AllocationAutumn23,
 )
 
 """
@@ -251,11 +258,10 @@ class LongRebateResource(resources.ModelResource):
         ]
 
 
-class RebateSpringResource(resources.ModelResource):
-    email = fields.Field(
+class RebateBillsResource(resources.ModelResource): 
+    email__email = fields.Field(
         column_name='Email',
-        attribute='email',
-        widget=ForeignKeyWidget(Student, field='email')
+        attribute='email__email',
     )
     email__roll_no = fields.Field(
         attribute="email__roll_no", column_name="Roll No."
@@ -271,377 +277,239 @@ class RebateSpringResource(resources.ModelResource):
     email__room_no = fields.Field(
         attribute="email__room_no", column_name="Room No."
     )
-    januaryShort = fields.Field(attribute="januaryShort", column_name="January Short")
-    januaryLong = fields.Field(attribute="januaryLong", column_name="January Long")
-    highTeaJanuary = fields.Field(
-        attribute="highTeaJanuary", column_name="High Tea January"
-    )
-    januaryBill = fields.Field(attribute="januaryBill", column_name="January Bill")
-    feburaryShort = fields.Field(
-        attribute="feburaryShort", column_name="Feburary Short"
-    )
-    feburaryLong = fields.Field(attribute="feburaryLong", column_name="Feburary Long")
-    highTeaFeburary = fields.Field(
-        attribute="highTeaFeburary", column_name="High Tea Feburary"
-    )
-    feburaryBill = fields.Field(attribute="feburaryBill", column_name="Feburary Bill")
-    marchShort = fields.Field(attribute="marchShort", column_name="March Short")
-    marchLong = fields.Field(attribute="marchLong", column_name="March Long")
-    highTeaMarch = fields.Field(attribute="highTeaMarch", column_name="High Tea March")
-    marchBill = fields.Field(attribute="marchBill", column_name="March Bill")
-    aprilShort = fields.Field(attribute="aprilShort", column_name="April Short")
-    aprilLong = fields.Field(attribute="aprilLong", column_name="April Long")
-    highTeaApril = fields.Field(attribute="highTeaApril", column_name="High Tea April")
-    aprilBill = fields.Field(attribute="aprilBill", column_name="April Bill")
-    mayShort = fields.Field(attribute="mayShort", column_name="May Short")
-    mayLong = fields.Field(attribute="mayLong", column_name="May Long")
-    highTeaMay = fields.Field(attribute="highTeaMay", column_name="High Tea May")
-    mayBill = fields.Field(attribute="mayBill", column_name="May Bill")
-    juneShort = fields.Field(attribute="juneShort", column_name="June Short")
-    juneLong = fields.Field(attribute="juneLong", column_name="June Long")
-    highTeaJune = fields.Field(attribute="highTeaJune", column_name="High Tea June")
-    juneBill = fields.Field(attribute="juneBill", column_name="June Bill")
-    empty = fields.Field(column_name=" ")
-
+    allocation1 = fields.Field(attribute="allocation1", column_name="Allocation for period 1")
+    period1_short = fields.Field(attribute="period1_short", column_name="Short Rebate")
+    period1_long = fields.Field(attribute="period1_long", column_name="Long Rebate")
+    period1_high_tea = fields.Field(attribute="period1_high_tea", column_name="High Tea")
+    period1_bill = fields.Field(attribute="period1_bill", column_name="Bill")
+    allocation2 = fields.Field(attribute="allocation2", column_name="Allocation for period 2")
+    period2_short = fields.Field(attribute="period2_short", column_name="Short Rebate")
+    period2_long = fields.Field(attribute="period2_long", column_name="Long Rebate")
+    period2_high_tea = fields.Field(attribute="period2_high_tea", column_name="High Tea")
+    period2_bill = fields.Field(attribute="period2_bill", column_name="Bill")
+    allocation3 = fields.Field(attribute="allocation3", column_name="Allocation for period 3")
+    period3_short = fields.Field(attribute="period3_short", column_name="Short Rebate")
+    period3_long = fields.Field(attribute="period3_long", column_name="Long Rebate")
+    period3_high_tea = fields.Field(attribute="period3_high_tea", column_name="High Tea")
+    period3_bill = fields.Field(attribute="period3_bill", column_name="Bill")
+    allocation4 = fields.Field(attribute="allocation4", column_name="Allocation for period 4")
+    period4_short = fields.Field(attribute="period4_short", column_name="Short Rebate")
+    period4_long = fields.Field(attribute="period4_long", column_name="Long Rebate")
+    period4_high_tea = fields.Field(attribute="period4_high_tea", column_name="High Tea")
+    period4_bill = fields.Field(attribute="period4_bill", column_name="Bill")
+    allocation5 = fields.Field(attribute="allocation5", column_name="Allocation for period 5")
+    period5_short = fields.Field(attribute="period5_short", column_name="Short Rebate")
+    period5_long = fields.Field(attribute="period5_long", column_name="Long Rebate")
+    period5_high_tea = fields.Field(attribute="period5_high_tea", column_name="High Tea")
+    period5_bill = fields.Field(attribute="period5_bill", column_name="Bill")
+    allocation6 = fields.Field(attribute="allocation6", column_name="Allocation for period 6")
+    period6_short = fields.Field(attribute="period6_short", column_name="Short Rebate")
+    period6_long = fields.Field(attribute="period6_long", column_name="Long Rebate")
+    period6_high_tea = fields.Field(attribute="period6_high_tea", column_name="High Tea")
+    period6_bill = fields.Field(attribute="period6_bill", column_name="Bill")
+    empty = fields.Field(attribute="empty", column_name="")
+    
     class Meta:
+        model = RebateAutumn22
+        model = RebateAutumn23
         model = RebateSpring23
         exclude = "id"
-        import_id_fields = ["email",]
-        export_order = [
-            "email__roll_no",
-            "email",
-            "email__name",
-            "email__department",
-            "email__degree",
-            "email__hostel",
-            "email__room_no",
-            "januaryShort",
-            "januaryLong",
-            "highTeaJanuary",
-            "januaryBill",
-            "empty",
-            "feburaryShort",
-            "feburaryLong",
-            "highTeaFeburary",
-            "feburaryBill",
-            "empty",
-            "marchShort",
-            "marchLong",
-            "highTeaMarch",
-            "marchBill",
-            "empty",
-            "aprilShort",
-            "aprilLong",
-            "highTeaApril",
-            "aprilBill",
-            "empty",
-            "mayShort",
-            "mayLong",
-            "highTeaMay",
-            "mayBill",
-            "empty",
-            "juneShort",
-            "juneLong",
-            "highTeaJune",
-            "juneBill",
-        ]
+        import_id_fields = ["email_email"]
         fields = (
-            "email",
+            "email__email",
             "email__roll_no",
             "email__name",
             "email__department",
             "email__degree",
             "email__hostel",
             "email__room_no",
-            "januaryShort",
-            "januaryLong",
-            "highTeaJanuary",
-            "januaryBill",
-            "feburaryShort",
-            "feburaryLong",
-            "highTeaFeburary",
-            "feburaryBill",
-            "marchShort",
-            "marchLong",
-            "highTeaMarch",
-            "marchBill",
-            "aprilShort",
-            "aprilLong",
-            "highTeaApril",
-            "aprilBill",
-            "mayShort",
-            "mayLong",
-            "highTeaMay",
-            "mayBill",
-            "juneShort",
-            "juneLong",
-            "highTeaJune",
-            "juneBill",
+            "period1_short",
+            "period1_long",
+            "period1_high_tea",
+            "period1_bill",
+            "period2_short",
+            "period2_long",
+            "period2_high_tea",
+            "period2_bill",
+            "period3_short",
+            "period3_long",
+            "period3_high_tea",
+            "period3_bill",
+            "period4_short",
+            "period4_long",
+            "period4_high_tea",
+            "period4_bill",
+            "period5_short",
+            "period5_long",
+            "period5_high_tea",
+            "period5_bill",
+            "period6_short",
+            "period6_long",
+            "period6_high_tea",
+            "period6_bill",
+            "empty",
+            "allocation1",
+            "allocation2",
+            "allocation3",
+            "allocation4",
+            "allocation5",
+            "allocation6",
+        )
+        export_order = (
+            "email__email",
+            "email__roll_no",
+            "email__name",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
+            "empty",
+            "allocation1",
+            "period1_short",
+            "period1_long",
+            "period1_high_tea",
+            "period1_bill",
+            "empty",
+            "allocation2",
+            "period2_short",
+            "period2_long",
+            "period2_high_tea",
+            "period2_bill",
+            "empty",
+            "allocation3",
+            "period3_short",
+            "period3_long",
+            "period3_high_tea",
+            "period3_bill",
+            "empty",
+            "allocation4",
+            "period4_short",
+            "period4_long",
+            "period4_high_tea",
+            "period4_bill",
+            "empty",
+            "allocation5",
+            "period5_short",
+            "period5_long",
+            "period5_high_tea",
+            "period5_bill",
+            "empty",
+            "allocation6",
+            "period6_short",
+            "period6_long",
+            "period6_high_tea",
+            "period6_bill",
         )
 
-        # row['total'] = row['januaryBill']+row['feburaryBill']+row['marchBill']+row['aprilBill']+row['mayBill']+row['juneBill']
-        def before_import_rom(self,row, **kwargs):
-            email=row.get('email')
-            email=Student.objects.get(email=email)
-            row['email']=email
+    obj = RebateAutumn22.objects.all()
+    def dehydrate_empty(self, obj):
+        return ""
+        
+    def dehydrate_period1_bill(self, obj):
+        amount=130
+        period1_bill=0
+        if(obj.period1_high_tea == False):
+            amount=amount-15
+            period1_bill = 31*15
+        period1_bill += (int(obj.period1_short)+int(obj.period1_long))*int(amount)
+        return period1_bill
+    
+    def dehydrate_period2_bill(self, obj):
+        amount=130
+        period2_bill=0
+        if(obj.period2_high_tea == False):
+            amount=amount-15
+            period2_bill = 31*15
+        period2_bill += (int(obj.period2_short)+int(obj.period2_long))*int(amount)
+        return period2_bill
+    
+    def dehydrate_period3_bill(self, obj):
+        amount=130
+        period3_bill=0
+        if(obj.period3_high_tea == False):
+            amount=amount-15
+            period3_bill = 31*15
+        period3_bill += (int(obj.period3_short)+int(obj.period3_long))*int(amount)
+        return period3_bill
+    
+    def dehydrate_period4_bill(self, obj):
+        amount=130
+        period4_bill=0
+        if(obj.period4_high_tea == False):
+            amount=amount-15
+            period4_bill = 31*15
+        period4_bill += (int(obj.period4_short)+int(obj.period4_long))*int(amount)
+        return period4_bill
+    
+    def dehydrate_period5_bill(self, obj):
+        amount=130
+        period5_bill=0
+        if(obj.period5_high_tea == False):
+            amount=amount-15
+            period5_bill = 31*15
+        period5_bill += (int(obj.period5_short)+int(obj.period5_long))*int(amount)
+        return period5_bill
+    
+    def dehydrate_period6_bill(self, obj):
+        amount=130
+        period6_bill=0
+        if(obj.period6_high_tea == False):
+            amount=amount-15
+            period6_bill = 31*15
+        period6_bill += (int(obj.period6_short)+int(obj.period6_long))*int(amount)
+        return period6_bill
+    
+    def dehydrate_allocation1(self,obj):
+        try:
+            period = PeriodSpring23.objects.get(Sno=1)
+            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
+            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+        except Exception as e:
+            return "Not yet allocated"
+    
+    def dehydrate_allocation2(self,obj):
+        try:
+            period = PeriodSpring23.objects.get(Sno=2)
+            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
+            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+        except:
+            return "Not yet allocated"
+    
+    def dehydrate_allocation3(self, obj):
+        try:
+            period = PeriodSpring23.objects.get(Sno=3)
+            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
+            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+        except:
+            return "Not yet allocated"
+        
+    def dehydrate_allocation4(self,obj):
+        try:
+            period = PeriodSpring23.objects.get(Sno=4)
+            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
+            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+        except:
+            return "Not yet allocated"
+        
+    def dehydrate_allocation5(self,obj):
+        try:
+            period = PeriodSpring23.objects.get(Sno=5)
+            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
+            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+        except:
+            return "Not yet allocated"
+        
+    def dehydrate_allocation6(self,obj):
+        try:
+            period = PeriodSpring23.objects.get(Sno=6)
+            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
+            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+        except:
+            return "Not yet allocated"
 
-    def dehydrate_januaryBill(self, RebateSpringSem):
-        amount=130
-        januaryBill = 0
-        if(RebateSpringSem.highTeaJanuary == False):
-            amount=amount-15
-            januaryBill = 31*15 
-        januaryBill += (int(RebateSpringSem.januaryShort)+int(RebateSpringSem.januaryLong))*int(amount)
-        return januaryBill
-    
-    def dehydrate_feburaryBill(self, RebateSpringSem):
-        amount=130
-        feburaryBill = 0
-        if(RebateSpringSem.highTeaFeburary == False):
-            amount=amount-15
-            feburaryBill = 28*15 
-        feburaryBill += (int(RebateSpringSem.feburaryShort)+int(RebateSpringSem.feburaryLong))*int(amount)
-        return feburaryBill
-    
-    def dehydrate_marchBill(self, RebateSpringSem):
-        amount=130
-        marchBill = 0
-        if(RebateSpringSem.highTeaMarch == False):
-            amount=amount-15
-            marchBill = 31*15 
-        marchBill += (int(RebateSpringSem.marchShort)+int(RebateSpringSem.marchLong))*int(amount)
-        return marchBill
-    
-    def dehydrate_aprilBill(self, RebateSpringSem):
-        amount=130
-        aprilBill = 0
-        if(RebateSpringSem.highTeaApril == False):
-            amount=amount-15
-            aprilBill = 30*15 
-        aprilBill += (int(RebateSpringSem.aprilShort)+int(RebateSpringSem.aprilLong))*int(amount)
-        return aprilBill
-    
-    def dehydrate_mayBill(self, RebateSpringSem):
-        amount=130
-        mayBill = 0
-        if(RebateSpringSem.highTeaMay == False):
-            amount=amount-15
-            mayBill = 31*15 
-        mayBill += (int(RebateSpringSem.mayShort)+int(RebateSpringSem.mayLong))*int(amount)
-        return mayBill
-    
-    def dehydrate_juneBill(self, RebateSpringSem):
-        amount=130
-        juneBill = 0
-        if(RebateSpringSem.highTeaJune == False):
-            amount=amount-15
-            juneBill = 30*15 
-        juneBill += (int(RebateSpringSem.juneShort)+int(RebateSpringSem.juneLong))*int(amount)
-        return juneBill
-
-    #Try implementing dehydrate_total function later    
-
-class RebateAutumnResource(resources.ModelResource):
-    email = fields.Field(
-        column_name='Email',
-        attribute='email',
-        widget=ForeignKeyWidget(Student, field='email')
-    )
-    email__roll_no = fields.Field(
-        attribute="email__roll_no", column_name="Roll No."
-    )
-    email__name = fields.Field(attribute="email__name", column_name="Name")
-    email__department = fields.Field(
-        attribute="email__department", column_name="Department"
-    )
-    email__degree = fields.Field(
-        attribute="email__degree", column_name="Academic Program"
-    )
-    email__hostel = fields.Field(attribute="email__hostel", column_name="Hostel")
-    email__room_no = fields.Field(
-        attribute="email__room_no", column_name="Room No."
-    )
-    julyShort = fields.Field(attribute="julyShort", column_name="July Short")
-    julyLong = fields.Field(attribute="julyLong", column_name="July Long")
-    highTeaJuly = fields.Field(attribute="highTeaJuly", column_name="High Tea July")
-    julyBill = fields.Field(attribute="julyBill", column_name="July Bill")
-    augustShort = fields.Field(attribute="augustShort", column_name="August Short")
-    augustLong = fields.Field(attribute="augustLong", column_name="August Long")
-    highTeaAugust = fields.Field(
-        attribute="highTeaAugust", column_name="High Tea August"
-    )
-    augustBill = fields.Field(attribute="augustBill", column_name="August Bill")
-    septemberShort = fields.Field(
-        attribute="septemberShort", column_name="September Short"
-    )
-    septemberLong = fields.Field(
-        attribute="septemberLong", column_name="September Long"
-    )
-    highTeaSeptember = fields.Field(
-        attribute="highTeaSeptember", column_name="High Tea September"
-    )
-    septemberBill = fields.Field(
-        attribute="septemberBill", column_name="September Bill"
-    )
-    octoberShort = fields.Field(attribute="octoberShort", column_name="October Short")
-    octoberLong = fields.Field(attribute="octoberLong", column_name="October Long")
-    highTeaOctober = fields.Field(
-        attribute="highTeaOctober", column_name="High Tea October"
-    )
-    octoberBill = fields.Field(attribute="octoberBill", column_name="October Bill")
-    novemberShort = fields.Field(
-        attribute="novemberShort", column_name="November Short"
-    )
-    novemberLong = fields.Field(attribute="novemberLong", column_name="November Long")
-    highTeaNovember = fields.Field(
-        attribute="highTeaNovember", column_name="High Tea November"
-    )
-    novemberBill = fields.Field(attribute="novemberBill", column_name="November Bill")
-    decemberShort = fields.Field(
-        attribute="decemberShort", column_name="December Short"
-    )
-    decemberLong = fields.Field(attribute="decemberLong", column_name="December Long")
-    highTeaDecember = fields.Field(
-        attribute="highTeaDecember", column_name="High Tea December"
-    )
-    decemberBill = fields.Field(attribute="decemberBill", column_name="December Bill")
-    empty = fields.Field(column_name=" ")
-
-    class Meta:
-        model = RebateAutumn23
-        exclude = "id"
-        import_id_fields = ["email__email",]
-        export_order = [
-            "email__roll_no",
-            "email",
-            "email__name",
-            "email__department",
-            "email__degree",
-            "email__hostel",
-            "email__room_no",
-            "julyShort",
-            "julyLong",
-            "highTeaJuly",
-            "julyBill",
-            "empty",
-            "augustShort",
-            "augustLong",
-            "highTeaAugust",
-            "augustBill",
-            "empty",
-            "septemberShort",
-            "septemberLong",
-            "highTeaSeptember",
-            "septemberBill",
-            "empty",
-            "octoberShort",
-            "octoberLong",
-            "highTeaOctober",
-            "octoberBill",
-            "empty",
-            "novemberShort",
-            "novemberLong",
-            "highTeaNovember",
-            "NovemberBill",
-            "empty",
-            "decemberShort",
-            "decemberLong",
-            "highTeaDecember",
-            "decemberBill",
-            "empty"
-        ]
-        fields = (
-            "email__roll_no",
-            "email",
-            "email__name",
-            "email__department",
-            "email__degree",
-            "email__hostel",
-            "email__room_no",
-            "julyShort",
-            "julyLong",
-            "highTeaJuly",
-            "julyBill",
-            "augustShort",
-            "augustLong",
-            "highTeaAugust",
-            "augustBill",
-            "septemberShort",
-            "septemberLong",
-            "highTeaSeptember",
-            "septemberBill",
-            "octoberShort",
-            "octoberLong",
-            "highTeaOctober",
-            "octoberBill",
-            "novemberShort",
-            "novemberLong",
-            "highTeaNovember",
-            "NovemberBill",
-            "decemberShort",
-            "decemberLong",
-            "highTeaDecember",
-            "decemberBill",
-        )
-        def before_import_rom(self,row, **kwargs):
-            email=row.get('email')
-            email=Student.objects.get(email=email)
-            row['email']=email
-
-    def dehydrate_julyBill(self, RebateAutumnSem):
-        amount=130
-        julyBill = 0
-        if(RebateAutumnSem.highTeaJuly == False):
-            amount=amount-15
-            julyBill = 31*15 
-        julyBill += (int(RebateAutumnSem.julyShort)+int(RebateAutumnSem.julyLong))*int(amount)
-        return julyBill
-    
-    def dehydrate_augustBill(self, RebateAutumnSem):
-        amount=130
-        augustBill = 0
-        if(RebateAutumnSem.highTeaAugust == False):
-            amount=amount-15
-            augustBill = 31*15 
-        augustBill += (int(RebateAutumnSem.augustShort)+int(RebateAutumnSem.augustLong))*int(amount)
-        return augustBill
-    
-    def dehydrate_septemberBill(self, RebateAutumnSem):
-        amount=130
-        septemberBill = 0
-        if(RebateAutumnSem.highTeaSeptember == False):
-            amount=amount-15
-            septemberBill = 30*15 
-        septemberBill += (int(RebateAutumnSem.septemberShort)+int(RebateAutumnSem.septemberLong))*int(amount)
-        return septemberBill
-    
-    def dehydrate_octoberBill(self, RebateAutumnSem):
-        amount=130
-        octoberBill = 0
-        if(RebateAutumnSem.highTeaOctober == False):
-            amount=amount-15
-            octoberBill = 31*15 
-        octoberBill += (int(RebateAutumnSem.octoberShort)+int(RebateAutumnSem.octoberLong))*int(amount)
-        return octoberBill
-    
-    def dehydrate_novemberBill(self, RebateAutumnSem):
-        amount=130
-        novemberBill = 0
-        if(RebateAutumnSem.highTeaNovember == False):
-            amount=amount-15
-            novemberBill = 30*15 
-        novemberBill += (int(RebateAutumnSem.novemberShort)+int(RebateAutumnSem.novemberLong))*int(amount)
-        return novemberBill
-    
-    def dehydrate_decemberBill(self, RebateAutumnSem):
-        amount=130
-        decemberBill = 0
-        if(RebateAutumnSem.highTeaDecember == False):
-            amount=amount-15
-            decemberBill = 31*15 
-        decemberBill += (int(RebateAutumnSem.decemberShort)+int(RebateAutumnSem.decemberLong))*int(amount)
-        return decemberBill
-    
+   #Try implementing dehydrate_total function later    
+    def dehydrate_total(self,obj):
+        return 0
 
 class UnregisteredStudentResource(resources.ModelResource):
     class Meta:
