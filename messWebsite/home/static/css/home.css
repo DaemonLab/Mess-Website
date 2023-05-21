@@ -1,7 +1,6 @@
 h1{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Arial', sans-serif;
     color: rgb(18, 37, 106);
-    font-weight: bolder;
     text-align: center;
     letter-spacing: 1px;
     font-size: 2rem;
@@ -35,7 +34,7 @@ h1{
   text-align: center;
 }
 
-/*....Ishan.....*/
+/*....Ishaan.....*/
 
 .sticky{
   z-index: 20;
@@ -44,7 +43,6 @@ h1{
 
   padding-top: 40px;
   font-size: 20px;
-
 }
 .updates{
   line-height: 1.5;
@@ -53,10 +51,9 @@ h1{
   margin-bottom: 20px;
   background: rgb(244, 246, 248);
   border-radius: 30px;
-  padding: 10px 10px 0px 10px;
-  font-family: 'Raleway', sans-serif;
+  padding: 10px 10px 10px 10px;
+  font-family: 'Arial', sans-serif;
   color: black;
-  font-weight: 600;
 }
 
 .navigation{

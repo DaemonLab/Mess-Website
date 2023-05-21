@@ -9,7 +9,7 @@ class Form(models.Model):
     heading = models.CharField(_("Form Heading"), max_length=30,
                                help_text="This contains the heading of the form to be added.")
     description = models.CharField(_("Form Description"), max_length=120,
-                                   help_text="This contains the description of the form to be added.")
+                                   help_text="This contains the description of the form to be added.",blank=True)
     url = models.URLField(_("Form URL"), 
                           help_text="This contains the URL link of the form.")
 

@@ -26,6 +26,7 @@ from allauth.account.views import logout
 from allauth.socialaccount.providers.google.views import oauth2_login, oauth2_callback
 
 urlpatterns = [
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
     path("admin/", admin.site.urls),
     # path('accounts/', include('allauth.urls')),
     path('accounts/logout/', logout, name="account_logout"),

@@ -13,14 +13,13 @@ a:hover {
     margin-top: 25px;
 }
 .contact-heading {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: left;
     color: #083AA9;
 }
 h1{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Arial', sans-serif;
     color: rgb(18, 37, 106);
-    font-weight: bolder;
     letter-spacing: 1px;
     font-size: 2rem;
     padding: 20px 10px;

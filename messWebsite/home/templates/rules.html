@@ -1,56 +1,84 @@
-{% extends 'base.html' %}
-{% load static %}
-{%block externalCss%}
+{% extends 'base.html' %} {% load static %} {%block externalCss%}
 
 <link rel="stylesheet" href="{% static 'css/rules.css' %}" />
 
-
-{% endblock %}
-
-
-{%block body%}
-<Main>
+{% endblock %} {%block body%}
+<main>
   <h1>Rules And Policies</h1>
   <div class="section">
+    <h4>General Rules and Policies:</h4>
     <ol>
       {% for i in rule %}
-      <li>
-        {{i.rule}}
-      </li>
+      <li>{{i.rule}}</li>
       {% endfor %}
     </ol>
-    <p>(a)Noncompliance of above rules may lead to disciplinary action decided by Wardens/Hall of
-      Residence staff. <br>
-      (b) The decision regarding fines and penalties imposed is non-negotiable; hence no discussion/
-      argument will be entertained.
-    </p>
-    <h4>POLICY FOR AVAILING REBATE IN DINING FACILITY</h4>
-    <h6>1. Short Duration Rebate (Between 2-7 days)</h6>
-    <p>{{shortRebate.0.desc}}</p>
-    <b> Link for Google Form:</b> <a href="{{shortRebate.0.link}}">{{shortRebate.0.link}}</a>
-    <br> <br>
-    <h6>Policy of Rebate for Students: </h6>
-    <p>
-      {{shortRebate.0.policy}}
-    </p>
-    <b> Circulation: </b>{{shortRebate.0.circulation}}<br><br>
-    <b> Information to the Caterer: </b>{{shortRebate.0.infoToCaterer}} <br> <br>
-    {{shortRebate.0.note}} <br> <br>
-    <b>Members: </b> {{shortRebate.0.Memebers}} <br> <br>
-    <h6>Billing</h6>
-    {{shortRebate.0.biling}} <br> <br>
-    <h6>2. Long Duration Rebate (Greater than 7 days)</h6>
+    <h4>Rebate Rules</h4>
     <ol>
-      {% for i in longRebate %}
       <li>
-        {{i.rule}}
+        Mess is mandatory for Hostellers. Students cannot mess out on their own
+        and cannot claim mess rebate for the same.
       </li>
-      {% endfor %}
+      <li>
+        Residents, desirous of availing mess rebate, will be required to inform
+        the caterer, through the Dining Committee,
+      </li>
+      <li>
+        All rebate requests are to be filled in the prescribed form and no email
+        request will be entertained.
+      </li>
+      <li>
+        As per current rules, short term rebate can be applied for a minimum of
+        2-7 consecutive days. Further, a maximum of 8 days/month of rebate can
+        be availed in short term rebate.
+      </li>
+      <li>
+        For a period exceeding 7 consecutive days, residents are to apply for
+        long term rebate duly recommended by the concerned Faculty
+        Advisor/Supervisor/HoD.
+      </li>
+      <li>
+        All recommended applications for a rebate should be submitted to the
+        Dining Office, two days before the day of commencement of rebate period,
+        latest by 5 p.m.
+      </li>
+      <li>
+        No resident, who is on rebate, will be allowed to avail the mess
+        facility based on extras or guest of other residents.
+      </li>
+      <li>
+        Full rebate is admissible on below mentioned cases, subject to providing
+        information to the Caterer, through the Dining Committee, as mentioned
+        Para 1 of Rebate Rules:
+        <ul>
+          <li>
+            Resident is on vacation leave during the vacation period declared by
+            the Institute.
+          </li>
+          <li>
+            Resident is out of station and needs to supported by documentary
+            proof from the concerned department or Institute i.e. Faculty
+            Advisor/Supervisor/DPGC Convener/ HoD/ Project Coordinator.
+          </li>
+          <li>
+            Resident is on medical leave as certified by Institute Health
+            Centre.
+          </li>
+          <li>
+            Resident is unable to take mess food owing to health reasons as
+            certified by Health Centre.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Residents found violating any of the above-mentioned rules will be fined
+        with a penalty which will be deposited in the Institute account.
+      </li>
+      <li>
+        The rebate rules are subject to change from time to time and the latest
+        rules prevails.
+      </li>
     </ol>
-    <b>Link for Long Term rebate form :</b><a href="{{form.0.url}}"> Link</a>
-    <br>
   </div>
-
-</Main>
+</main>
 
 {% endblock %}

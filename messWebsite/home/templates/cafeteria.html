@@ -10,15 +10,17 @@
 {% endblock %}
 {% block body %}
 <Main class="parent">
-  <h1>Cafeteria</h1>
+  <h1>Additional Services</h1>
   <div class="container">
     <div class="row">
       {% for i in cafeteria %}
       <div class="col box">
         <div class="card" style="width: 20rem;">
+          {% if i.image %}
           <img
             src="/media/{{i.image}}"
             class="card-img-top" alt="...">
+            {% endif %}
           <div class="card-body">
             <p class="card-text"><b>{{i.name}}</b><br>{{i.poc}}<br>Contact no. {{i.contact}}</p>
           </div>

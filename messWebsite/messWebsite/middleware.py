@@ -43,3 +43,7 @@ class LoginRequiredMiddleware:
                 print(request.path)
                 settings.LOGIN_REDIRECT_URL = request.path
                 return redirect(settings.LOGIN_URL+ "?next=" + request.path)
+            if (request.path =="/longRebate/"):
+                print(request.path)
+                settings.LOGIN_REDIRECT_URL = request.path
+                return redirect(settings.LOGIN_URL+ "?next=" + request.path)

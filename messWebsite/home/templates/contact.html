@@ -9,9 +9,9 @@
 {% block body %}
 <main>
 <h1 class="text-center">Contacts</h1>
-<p class="line">
+<!-- <p class="line">
   The following people can be contacted in case of any requirements:
-</p>
+</p> -->
 <div class="section">
   {% for i in contact %}
   {% if i.hostel_sec is False %}
@@ -32,23 +32,45 @@
   {% endif %}
   {% endfor %}
   <br />
-  <span class="contact-heading"
-    ><span>Dining Secretary Hall of Residences:</span>b></span
-  >
+  <div class="contact">
+  <span class="contact-heading"><b>Dining Secretary Hall of Residences:</b></span>
   <div class="row">
-    
-    {% for i in contact %}
+  {% for i in contact %}
   {% if i.hostel_sec is True %}
-  <div class="col-sm-4 mt-4">
+  <div class="col-sm-2 mt-4">
     <h6>{{i.occupation}}</h6>
     <div>{{i.name}}</div>
-    <p><i class="fa-solid fa-phone"></i>{{i.contact}}<br><i class="fa-regular fa-envelope"></i>{{i.email}}</p>
+    <span>{{i.contact}}<br>{{i.email}}</span>
   </div>
   {% endif %}
   {% endfor %}
-    
   </div>
-  
+  </div>
+  <br />
+  <div class="contact">
+  <span class="contact-heading"><b>Central Dining Committee:</b></span>
+  <ul class="px-3 py-2">
+
+<li>Dining Warden - Dr. Pravarthana Dhanpal</li>
+
+<li>Associate Dining Warden - Dr. Nisheeth Kumar Prasad</li>
+
+
+<li>Committee Member - Dr. Abhijeet Joshi</li>
+
+<li>Committee Member - Dr. Sunil Kumar</li>
+  </ul>
+  <div class="contact">
+    <b>Want to know more about Mess Website's working?  </b><br>
+  <span class="contact-heading">
+    <b>Developer:</b></span>
+    <div class="desc">
+        <div>Ishaan Mittal</div>
+      <p>
+        <i class="fa-solid fa-phone"></i> 9971260556<br>
+        <i class="fa-regular fa-envelope"></i>me210003039@iiti.ac.in
+      </div>
+  </div>
 </div>
 </main>
 {% endblock %}

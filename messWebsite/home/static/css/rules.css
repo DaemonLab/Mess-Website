@@ -3,9 +3,20 @@
 }
 
 body {
-    font-size: 1.1rem;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 600;
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: 400;
+}
+pre {
+    white-space: pre-wrap;
+}
+pre .p{
+    padding: 0px;
+}
+.rules{
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: 400;
 }
 
 .section {
@@ -25,7 +36,6 @@ body {
 
 h1 {
     color: rgb(18, 37, 106);
-    font-weight: bolder;
     letter-spacing: 1px;
     font-size: 2rem;
     padding: 20px 10px;
@@ -36,10 +46,9 @@ h4,
 h5,
 h6 {
     font-weight: bolder;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 .section b {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
+    font-family: 'Arial', sans-serif;
 }
