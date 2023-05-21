@@ -11,7 +11,7 @@ class Contact(models.Model):
     hostel_sec = models.BooleanField(_("Dining Secretary"))
     name = models.CharField(_("Name"), max_length=30, null=True, blank=True,
                             help_text="This contains the name of the contact to be added")
-    contact = models.CharField(_("Phone Number"), max_length=10, null=True, blank=True,
+    contact = models.CharField(_("Phone Number"), max_length=12, null=True, blank=True,
                                help_text="This contains phone number of the contact to be added")
     email = models.EmailField(_("Email"), 
                               help_text="This contains email of the contact to be added")

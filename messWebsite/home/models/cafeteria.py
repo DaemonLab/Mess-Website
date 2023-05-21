@@ -13,7 +13,7 @@ class Cafeteria(models.Model):
     contact = models.CharField(_("Phone Number"), max_length=10, null=True,
                                blank=True, help_text="This contains the contact(phone number) of the POC")
     image = models.ImageField(_("Image of Cafeteria"),
-                              upload_to="static/images")
+                              upload_to="static/images", null=True, blank=True,)
 
     def __str__(self):
         return "Cafeteria " + self.name

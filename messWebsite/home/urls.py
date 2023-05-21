@@ -33,6 +33,7 @@ urlpatterns = [
     path("cafeteria/", views.cafeteria, name="cafeteria"),
     path("contact/", views.contact, name="contact"),
     path("rebateForm/", views.rebate, name="rebate"),
-    path("addAllocation/", views.addAllocation, name="addAllocation"),
+    # path("addAllocation/", views.addAllocation, name="addAllocation"),
     url('allocation/', views.allocation, name='allocation'),
+    url('longRebate/', views.addLongRebateBill, name='addLongRebateBill'),
 ]

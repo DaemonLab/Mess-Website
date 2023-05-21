@@ -4,27 +4,36 @@
 
 {% endblock %} {% block body %}
 <main>
-<h1 class="m-0 pb-2">Rebate Form</h1>
+<h1 class="m-0 pb-2">Short Term Rebate Form</h1>
+<div class="px-3">
+  <div class="px-5 mx-5">
+    <ul>
+      <li>Rebate can be availed for a minimum of 2 days, upto 7 days at a stretch.</li>
+      <li>Maximum of 8 days rebate per month will be provided through the short term rebate forms. </li>
+      <li>Fill the form atleast 2 days prior the comencement of leave, else the application will not be accepted.</li>
+    <ul>
+    </div> 
+  </div>
   <div class="text-center">
     {% if user.is_authenticated %}
+    <br>
       <p class="m-0">Hello {{ user.first_name }}!</p>
       <div>{% trans 'The following e-mail address will be noted while submitting this form:' %}
       {{ user.email}}</div>
-      <a class="btn btn-danger text-end mt-2" href="{% url 'account_logout' %}">Sign Out</a>
     {% endif %}
   </div>
-  <div class="text-center">{{text}}</div>
   <form action="" method="post" class="px-5 mx-md-5">
     {% csrf_token %} {% if text == "" %}
     <div class="form-group p-2">
-      <label for="allocation_id">Allocation ID</label>
+      <!-- <label for="allocation_id">Allocation ID</label>
       <input
         type="string"
         id="allocation_id"
         name="allocation_id"
         class="form-control"
         placeholder="{{key}}"
-      />
+      /> -->
+      Allocation ID: {{key}}
     </div>
     <div class="form-group p-2">
       <label for="exampleFormControlInput4">Start Date</label>
@@ -52,14 +61,7 @@
       Submit
     </button>
     {% else %}
-    <div class="my-5 pb-5 text-center">
-    You have applied rebate from <br>
-      {% for dates in list%}
-      <span>{{dates.0}} to</span>
-      <span>{{dates.1}}</span>
-      <br>
-      {%endfor%}
-    </div>
+    <div class="text-center my-5 pb-5 fst-italic display-6">{{text}}</div>
     {% endif %}
   </form>
 </main>
