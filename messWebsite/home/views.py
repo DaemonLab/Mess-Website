@@ -160,6 +160,7 @@ def rebate(request):
     text = ""
     list = []
     try:
+        print(request.user.email)
         allocation_id = AllocationSpring23.objects.get(roll_no__email=str(request.user.email))
         key = str(allocation_id.student_id)
     except AllocationSpring23.DoesNotExist:

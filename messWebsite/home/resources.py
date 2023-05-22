@@ -401,7 +401,7 @@ class RebateBillsResource(resources.ModelResource):
             "period6_bill",
         )
 
-    obj = RebateAutumn22.objects.all()
+    obj = RebateSpring23.objects.all()
     def dehydrate_empty(self, obj):
         return ""
         
@@ -511,6 +511,7 @@ class RebateBillsResource(resources.ModelResource):
     def dehydrate_total(self,obj):
         return 0
 
+
 class UnregisteredStudentResource(resources.ModelResource):
     class Meta:
         model = UnregisteredStudent
@@ -521,4 +522,3 @@ class UnregisteredStudentResource(resources.ModelResource):
         fields = (
             "email",
         )
-

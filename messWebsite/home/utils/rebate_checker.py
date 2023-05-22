@@ -1,9 +1,20 @@
-from home.models import RebateAutumn23, RebateSpring23
+from home.models import RebateAutumn23, RebateSpring23,Rebate, LongRebate
 def count(start, end):
     """Counts the number of days of rebate applied"""
     sum = ((end - start).days) + 1
     return sum
 
+def is_not_duplicate(s,start,end,period):
+    """Checks if these dates are already applied for rebate"""
+    try:
+        short = Rebate.objects.filter(email=str(s.email)).last()
+        long = LongRebate.objects.filter(email=str(s.email)).last()
+        if short.end_date> start+2 and long.end_date> start+2:
+            return False
+        else:
+            return True
+    except:
+        return True
 
 def is_present_autumn(s):
     """
@@ -17,7 +28,6 @@ def is_present_autumn(s):
         student = RebateAutumn23(email=str(s.email))
         student.save()
     return student
-
 
 def is_present_spring(s):
     """

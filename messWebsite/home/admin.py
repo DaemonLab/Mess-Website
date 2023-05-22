@@ -18,7 +18,6 @@ from home.models import (
     Cafeteria,
     Contact,
     Student,
-    Allocation,
     Scan,
     Rebate,
     LongRebate,
@@ -300,44 +299,44 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-@admin.register(Allocation)
-class about_Admin(ImportExportMixin, admin.ModelAdmin):
-    resource_class = AllocationResource
-    model = Allocation
-    search_fields = ("student_id", "month", "caterer_name", "high_tea")
-    list_filter = ("month", "caterer_name", "high_tea")
-    list_display = ("student_id", "month", "caterer_name", "high_tea")
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "roll_no",
-                    "month",
-                    "student_id",
-                    "caterer_name",
-                    "high_tea",
-                    "first_pref",
-                    "second_pref",
-                    "third_pref",
-                ),
-                "description": "%s" % ALLOCATION_DESC_TEXT,
-            },
-        ),
-    )
-    actions = ["export_as_csv"]
+# @admin.register(Allocation)
+# class about_Admin(ImportExportMixin, admin.ModelAdmin):
+    # resource_class = AllocationResource
+    # model = Allocation
+    # search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    # list_filter = ("month", "caterer_name", "high_tea")
+    # list_display = ("student_id", "month", "caterer_name", "high_tea")
+    # fieldsets = (
+    #     (
+    #         None,
+    #         {
+    #             "fields": (
+    #                 "roll_no",
+    #                 "month",
+    #                 "student_id",
+    #                 "caterer_name",
+    #                 "high_tea",
+    #                 "first_pref",
+    #                 "second_pref",
+    #                 "third_pref",
+    #             ),
+    #             "description": "%s" % ALLOCATION_DESC_TEXT,
+    #         },
+    #     ),
+    # )
+    # actions = ["export_as_csv"]
 
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = AllocationResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
-        return response
+    # def export_as_csv(self, request, queryset):
+    #     """
+    #     Export action available in the admin page
+    #     """
+    #     resource = AllocationResource()
+    #     dataset = resource.export(queryset)
+    #     response = HttpResponse(dataset.csv, content_type="text/csv")
+    #     response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
+    #     return response
 
-    export_as_csv.short_description = "Export Allocation details to CSV"
+    # export_as_csv.short_description = "Export Allocation details to CSV"
 
 
 #  # Define the import action
@@ -614,7 +613,7 @@ def unregister_student(obj):
         student_id += str(gauri.student_limit)
         gauri.student_limit -= 1
         gauri.save(update_fields=["student_limit"])
-    a = Allocation(
+    a = AllocationSpring23(
         roll_no=student,
         student_id=student_id,
         month=month,

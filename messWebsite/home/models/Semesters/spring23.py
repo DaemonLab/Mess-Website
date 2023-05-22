@@ -10,7 +10,7 @@ class PeriodSpring23(models.Model):
     end_date = models.DateField(help_text="This contains the end date of this Period of this semester",null=True,blank=True)
     
     def __str__(self):
-        return "Period :" + str(self.period) + str(self.Sno)
+        return "Period :" + str(self.Sno)
 
     class Meta:
         verbose_name = "Period Details for Spring 2023"
