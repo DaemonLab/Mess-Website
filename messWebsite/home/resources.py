@@ -16,6 +16,7 @@ from .models import (
     AllocationSpring23,
     AllocationAutumn23,
 )
+from .utils.rebate_checker import count
 
 """
 File-name: resources.py
@@ -258,7 +259,7 @@ class LongRebateResource(resources.ModelResource):
         ]
 
 
-class RebateBillsResource(resources.ModelResource): 
+class RebateBillsResource(resources.ModelResource):
     email__email = fields.Field(
         column_name='Email',
         attribute='email__email',
@@ -278,43 +279,57 @@ class RebateBillsResource(resources.ModelResource):
         attribute="email__room_no", column_name="Room No."
     )
     allocation1 = fields.Field(attribute="allocation1", column_name="Allocation for period 1")
-    period1_short = fields.Field(attribute="period1_short", column_name="Short Rebate")
-    period1_long = fields.Field(attribute="period1_long", column_name="Long Rebate")
-    period1_high_tea = fields.Field(attribute="period1_high_tea", column_name="High Tea")
-    period1_bill = fields.Field(attribute="period1_bill", column_name="Bill")
+    period1_short = fields.Field(attribute="period1_short", column_name="Short Rebate 1")
+    period1_long = fields.Field(attribute="period1_long", column_name="Long Rebate 1")
+    period1_high_tea = fields.Field(attribute="period1_high_tea", column_name="High Tea 1")
+    period1_bill = fields.Field(attribute="period1_bill", column_name="Bill 1")
     allocation2 = fields.Field(attribute="allocation2", column_name="Allocation for period 2")
-    period2_short = fields.Field(attribute="period2_short", column_name="Short Rebate")
-    period2_long = fields.Field(attribute="period2_long", column_name="Long Rebate")
-    period2_high_tea = fields.Field(attribute="period2_high_tea", column_name="High Tea")
-    period2_bill = fields.Field(attribute="period2_bill", column_name="Bill")
+    period2_short = fields.Field(attribute="period2_short", column_name="Short Rebate 2")
+    period2_long = fields.Field(attribute="period2_long", column_name="Long Rebate 2")
+    period2_high_tea = fields.Field(attribute="period2_high_tea", column_name="High Tea 2")
+    period2_bill = fields.Field(attribute="period2_bill", column_name="Bill 2")
     allocation3 = fields.Field(attribute="allocation3", column_name="Allocation for period 3")
-    period3_short = fields.Field(attribute="period3_short", column_name="Short Rebate")
-    period3_long = fields.Field(attribute="period3_long", column_name="Long Rebate")
-    period3_high_tea = fields.Field(attribute="period3_high_tea", column_name="High Tea")
-    period3_bill = fields.Field(attribute="period3_bill", column_name="Bill")
+    period3_short = fields.Field(attribute="period3_short", column_name="Short Rebate 3")
+    period3_long = fields.Field(attribute="period3_long", column_name="Long Rebate 3")
+    period3_high_tea = fields.Field(attribute="period3_high_tea", column_name="High Tea 3")
+    period3_bill = fields.Field(attribute="period3_bill", column_name="Bill 3")
     allocation4 = fields.Field(attribute="allocation4", column_name="Allocation for period 4")
-    period4_short = fields.Field(attribute="period4_short", column_name="Short Rebate")
-    period4_long = fields.Field(attribute="period4_long", column_name="Long Rebate")
-    period4_high_tea = fields.Field(attribute="period4_high_tea", column_name="High Tea")
-    period4_bill = fields.Field(attribute="period4_bill", column_name="Bill")
+    period4_short = fields.Field(attribute="period4_short", column_name="Short Rebate 4")
+    period4_long = fields.Field(attribute="period4_long", column_name="Long Rebate 4")
+    period4_high_tea = fields.Field(attribute="period4_high_tea", column_name="High Tea 4")
+    period4_bill = fields.Field(attribute="period4_bill", column_name="Bill 4")
     allocation5 = fields.Field(attribute="allocation5", column_name="Allocation for period 5")
-    period5_short = fields.Field(attribute="period5_short", column_name="Short Rebate")
-    period5_long = fields.Field(attribute="period5_long", column_name="Long Rebate")
-    period5_high_tea = fields.Field(attribute="period5_high_tea", column_name="High Tea")
-    period5_bill = fields.Field(attribute="period5_bill", column_name="Bill")
+    period5_short = fields.Field(attribute="period5_short", column_name="Short Rebate 5")
+    period5_long = fields.Field(attribute="period5_long", column_name="Long Rebate 5")
+    period5_high_tea = fields.Field(attribute="period5_high_tea", column_name="High Tea 5")
+    period5_bill = fields.Field(attribute="period5_bill", column_name="Bill 5")
     allocation6 = fields.Field(attribute="allocation6", column_name="Allocation for period 6")
-    period6_short = fields.Field(attribute="period6_short", column_name="Short Rebate")
-    period6_long = fields.Field(attribute="period6_long", column_name="Long Rebate")
-    period6_high_tea = fields.Field(attribute="period6_high_tea", column_name="High Tea")
-    period6_bill = fields.Field(attribute="period6_bill", column_name="Bill")
+    period6_short = fields.Field(attribute="period6_short", column_name="Short Rebate 6")
+    period6_long = fields.Field(attribute="period6_long", column_name="Long Rebate 6")
+    period6_high_tea = fields.Field(attribute="period6_high_tea", column_name="High Tea 6")
+    period6_bill = fields.Field(attribute="period6_bill", column_name="Bill 6")
     empty = fields.Field(attribute="empty", column_name="")
     
+    def before_import_row(self, row, **kwargs):
+    # Convert "TRUE" to True for boolean fields
+        for field_name, field_object in self.fields.items():
+            if field_object.column_name and field_object.column_name.lower() == "true" or field_object.column_name == 1:
+                row[field_name] = True
+        
+
+
+    def skip_row(self, instance, original, row,import_validation_errors):
+        if not instance.email.name and not instance.email.email :
+            return True  # Skip the row
+        
+        return super().skip_row(instance, original, row,import_validation_errors)
+
     class Meta:
         model = RebateAutumn22
         model = RebateAutumn23
         model = RebateSpring23
         exclude = "id"
-        import_id_fields = ["email_email"]
+        import_id_fields = ["email__email"]
         fields = (
             "email__email",
             "email__roll_no",
@@ -401,63 +416,101 @@ class RebateBillsResource(resources.ModelResource):
             "period6_bill",
         )
 
-    obj = RebateSpring23.objects.all()
-    def dehydrate_empty(self, obj):
-        return ""
+    # obj = RebateSpring23.objects.all()
+    # global obj2 
+    # obj2 = PeriodSpring23.objects.all()
+    # def dehydrate_empty(self, obj):
+    #     return ""
         
-    def dehydrate_period1_bill(self, obj):
-        amount=130
-        period1_bill=0
-        if(obj.period1_high_tea == False):
-            amount=amount-15
-            period1_bill = 31*15
-        period1_bill += (int(obj.period1_short)+int(obj.period1_long))*int(amount)
-        return period1_bill
+    # def dehydrate_period1_bill(self, obj):
+    #     amount=130
+    #     days=0
+    #     if(obj2.count()>0): days = count(obj2[0].start_date,obj2[0].end_date)
+    #     period1_bill=130*days
+    #     if obj.period1_short == None:
+    #         obj.period1_short = 0
+    #     if obj.period1_long == None:
+    #         obj.period1_long = 0
+    #     if(obj.period1_high_tea == False):
+    #         amount=amount-15
+    #         period1_bill -= days*15
+    #     period1_bill -= (int(obj.period1_short)+int(obj.period1_long))*int(amount)
+    #     return period1_bill
     
-    def dehydrate_period2_bill(self, obj):
-        amount=130
-        period2_bill=0
-        if(obj.period2_high_tea == False):
-            amount=amount-15
-            period2_bill = 31*15
-        period2_bill += (int(obj.period2_short)+int(obj.period2_long))*int(amount)
-        return period2_bill
+    # def dehydrate_period2_bill(self, obj):
+    #     amount=130
+    #     days=0
+    #     if(obj2.count()>1): days = count(obj2[1].start_date,obj2[1].end_date)
+    #     period2_bill=130*days
+    #     if obj.period2_short == None:
+    #         obj.period2_short = 0
+    #     if obj.period2_long == None:
+    #         obj.period2_long = 0
+    #     if(obj.period2_high_tea == False):
+    #         amount=amount-15
+    #         period2_bill -= days*15
+    #     period2_bill -= (int(obj.period2_short)+int(obj.period2_long))*int(amount)
+    #     return period2_bill
     
-    def dehydrate_period3_bill(self, obj):
-        amount=130
-        period3_bill=0
-        if(obj.period3_high_tea == False):
-            amount=amount-15
-            period3_bill = 31*15
-        period3_bill += (int(obj.period3_short)+int(obj.period3_long))*int(amount)
-        return period3_bill
+    # def dehydrate_period3_bill(self, obj):
+    #     amount=130
+    #     days=0
+    #     if(obj2.count()>2): days = count(obj2[2].start_date,obj2[2].end_date)
+    #     period3_bill=130*days
+    #     if obj.period3_short == None:
+    #         obj.period3_short = 0
+    #     if obj.period3_long == None:
+    #         obj.period3_long = 0
+    #     if(obj.period3_high_tea == False):
+    #         amount=amount-15
+    #         period3_bill -= days*15
+    #     period3_bill -= (int(obj.period3_short)+int(obj.period3_long))*int(amount)
+    #     return period3_bill
     
-    def dehydrate_period4_bill(self, obj):
-        amount=130
-        period4_bill=0
-        if(obj.period4_high_tea == False):
-            amount=amount-15
-            period4_bill = 31*15
-        period4_bill += (int(obj.period4_short)+int(obj.period4_long))*int(amount)
-        return period4_bill
+    # def dehydrate_period4_bill(self, obj):
+    #     amount=130
+    #     days=0
+    #     if(obj2.count()>3): days = count(obj2[3].start_date,obj2[3].end_date)
+    #     period4_bill=130*days
+    #     if obj.period4_short == None:
+    #         obj.period4_short = 0
+    #     if obj.period4_long == None:
+    #         obj.period4_long = 0
+    #     if(obj.period4_high_tea == False):
+    #         amount=amount-15
+    #         period4_bill -= days*15
+    #     period4_bill -= (int(obj.period4_short)+int(obj.period4_long))*int(amount)
+    #     return period4_bill
     
-    def dehydrate_period5_bill(self, obj):
-        amount=130
-        period5_bill=0
-        if(obj.period5_high_tea == False):
-            amount=amount-15
-            period5_bill = 31*15
-        period5_bill += (int(obj.period5_short)+int(obj.period5_long))*int(amount)
-        return period5_bill
+    # def dehydrate_period5_bill(self, obj):
+    #     amount=130
+    #     days=0
+    #     if(obj2.count()>4): days = count(obj2[4].start_date,obj2[4].end_date)
+    #     period5_bill=130*days
+    #     if obj.period5_short == None:
+    #         obj.period5_short = 0
+    #     if obj.period5_long == None:
+    #         obj.period5_long = 0
+    #     if(obj.period5_high_tea == False):
+    #         amount=amount-15
+    #         period5_bill -= days*15
+    #     period5_bill -= (int(obj.period5_short)+int(obj.period5_long))*int(amount)
+    #     return period5_bill
     
-    def dehydrate_period6_bill(self, obj):
-        amount=130
-        period6_bill=0
-        if(obj.period6_high_tea == False):
-            amount=amount-15
-            period6_bill = 31*15
-        period6_bill += (int(obj.period6_short)+int(obj.period6_long))*int(amount)
-        return period6_bill
+    # def dehydrate_period6_bill(self, obj):
+    #     amount=130
+    #     days=0
+    #     if(obj2.count()>5): days = count(obj2[5].start_date,obj2[5].end_date)
+    #     period6_bill=130*days
+    #     if obj.period6_short == None:
+    #         obj.period6_short = 0
+    #     if obj.period6_long == None:
+    #         obj.period6_long = 0
+    #     if(obj.period6_high_tea == False):
+    #         amount=amount-15
+    #         period6_bill -= days*15
+    #     period6_bill -= (int(obj.period6_short)+int(obj.period6_long))*int(amount)
+    #     return period6_bill
     
     def dehydrate_allocation1(self,obj):
         try:
