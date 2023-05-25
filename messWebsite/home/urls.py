@@ -34,6 +34,9 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("rebateForm/", views.rebate, name="rebate"),
     # path("addAllocation/", views.addAllocation, name="addAllocation"),
-    url('allocation/', views.allocation, name='allocation'),
-    url('longRebate/', views.addLongRebateBill, name='addLongRebateBill'),
+    path('allocation/', views.allocation, name='allocation'),
+    path('longRebate/', views.addLongRebateBill, name='addLongRebateBill'),
+    path( 'profile/', views.profile, name='profile'),
+    path('period_data/', views.period_data, name='period_data'),
+    path('rebate_data/', views.rebate_data, name='rebate_data'),
 ]

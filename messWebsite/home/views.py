@@ -4,6 +4,7 @@ from django.core.files import File
 from django.core.files.storage import default_storage
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from allauth.socialaccount.models import SocialAccount
 from home.models import (
     About,
     Update,
@@ -29,12 +30,13 @@ from home.models import (
     AllocationAutumn23,
     RebateAutumn23,
 )
+from .utils.get_rebate_bills import get_rebate_bills
 from .utils.rebate_checker import (
     count,
     is_present_autumn,
     is_present_spring,
     check_rebate_autumn,
-    check_rebate_spring
+    check_rebate_spring,
 )
 import pandas as pd
 import datetime
@@ -42,6 +44,7 @@ import io
 from django.utils.dateparse import parse_date
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -444,3 +447,75 @@ def addLongRebateBill(request):
             text = "Email ID does not exist in the database. Please eneter the correct email ID"
     context = {"text": text, "key": key}
     return render(request, "longRebate.html", context)
+
+@login_required
+def profile(request):
+    """
+    Display the Profile Page :model:`home.models.students`.
+
+    **Template:**
+
+    :template:`home/profile.html`
+
+    Gets the data from the profile form , and updates the student's profile
+    This form can only be accessed by the Institute's admin
+    """
+    text = ""
+    student = Student.objects.filter(email=str(request.user.email)).last()
+    socialaccount_obj = SocialAccount.objects.filter(provider='google', user_id=request.user.id)
+    picture = "not available"
+    if len(socialaccount_obj):
+            picture = socialaccount_obj[0].extra_data['picture']
+    if request.method == "POST" and request.user.is_authenticated:
+        try:
+            student = Student.objects.get(email=str(request.user.email))
+            student.name = request.POST["name"]
+            student.room_no = request.POST["room_no"]
+            student.save()
+            text = "Profile Updated Successfully"
+        except:
+            text = "Email ID does not exist in the database. Please eneter the correct email ID"
+    context = {"text": text,"student":student,"picture":picture}
+    return render(request, "profile.html", context)
+
+@login_required
+def period_data(request):
+    print("period_data")
+    semester = request.GET.get('semester')
+    if(semester=="autumn22"):
+        period = PeriodAutumn22.objects.all()
+    elif(semester=="spring23"):
+        period = PeriodSpring23.objects.all()
+    elif(semester=="autumn23"):
+        period = PeriodAutumn23.objects.all()
+    period_data = {
+        'semester': semester,
+        'data': list(period.values('start_date', 'end_date')),
+    }
+    # print(period_data['semester'])
+    # print(period_data['data'])
+    return JsonResponse(period_data)
+
+@login_required
+def rebate_data(request):
+    print("rebate_data")
+    user = request.user
+    student = Student.objects.get(email=user.email)
+    sno = request.GET.get('period')
+    semester = request.GET.get('semester')
+    if(semester=="autumn22"):
+        rebate = RebateAutumn22.objects.filter(email=student).last()
+        rebate_bills = get_rebate_bills(rebate,sno)
+    elif(semester=="spring23"):
+        rebate = RebateSpring23.objects.filter(email=student).last()
+        print(rebate)
+        rebate_bills = get_rebate_bills(rebate,sno)
+    elif(semester=="autumn23"):
+        rebate = RebateAutumn23.objects.filter(email=student).last()
+        rebate_bills = get_rebate_bills(rebate,sno)
+    rebate_data = {
+        'semester': semester,
+        'period': sno,
+        'data':rebate_bills
+    }
+    return JsonResponse(rebate_data)

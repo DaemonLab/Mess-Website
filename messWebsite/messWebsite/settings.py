@@ -83,6 +83,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+DATABASE_OPTIONS = {'timeout': 30}
 
 # DATABASES = {
 #     'default': {
