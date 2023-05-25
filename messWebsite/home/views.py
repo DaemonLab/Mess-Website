@@ -262,8 +262,8 @@ def allocation(request):
                 period = str(record["period"]).capitalize()
                 period_obj = PeriodSpring23.objects.get(Sno=period)
                 high_tea = record["high_tea"]
-                r = Student.objects.filter(email=record["email"]).first()
-                print(r)
+                student = Student.objects.filter(email=record["email"]).first()
+                print(student)
                 for pref in [first_pref, second_pref, third_pref]:
                     kanaka = Caterer.objects.get(name="Kanaka")
                     ajay = Caterer.objects.get(name="Ajay")
@@ -296,7 +296,7 @@ def allocation(request):
                         gauri.save(update_fields=["student_limit"])
                         break
                 a = AllocationSpring23(
-                    roll_no=r,
+                    roll_no=student,
                     student_id=student_id,
                     month=period_obj,
                     caterer_name=caterer_name,
@@ -306,7 +306,7 @@ def allocation(request):
                     third_pref=third_pref,
                 )
                 a.save()
-                UnregisteredStudent.objects.filter(email=r.email).delete()
+                UnregisteredStudent.objects.filter(email=student.email).delete()
             except Exception as e:
                 print(e)
         messages = "Form submitted. Please check the admin page."
