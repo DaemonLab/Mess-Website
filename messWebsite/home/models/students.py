@@ -209,9 +209,11 @@ class UnregisteredStudent(models.Model):
     """
     Stores the long rebate details of every student
     """
-
+    from .Semesters.spring23 import PeriodSpring23
+    from .Semesters.autumn23 import PeriodAutumn23
+    from .Semesters.autumn22 import PeriodAutumn22
     email = models.CharField(_("email"), max_length=30, default="")
-    month = models.CharField(_("month"), max_length=30, default="")
+    period = models.ForeignKey(PeriodSpring23, default=0, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.email)

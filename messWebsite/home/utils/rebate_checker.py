@@ -22,10 +22,10 @@ def is_present_autumn(s):
     if not the function registers it with that email ID
     """
     try:
-        student = RebateAutumn23.objects.get(email=str(s.email))
+        student = RebateAutumn23.objects.get(email=s)
     except:
         print(Exception)
-        student = RebateAutumn23(email=str(s.email))
+        student = RebateAutumn23(email=s)
         student.save()
     return student
 
@@ -35,11 +35,11 @@ def is_present_spring(s):
     if not the function registers it with that email ID
     """
     try:
-        student = RebateSpring23.objects.get(email=str(s.email))
+        student = RebateSpring23.objects.get(email=s)
     except:
         print(Exception)
         print(2)
-        student = RebateSpring23(email=str(s.email))
+        student = RebateSpring23(email=s)
         student.save()
     return student
 

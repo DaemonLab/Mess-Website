@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Student, Rebate, LongRebate, TodayRebate, CatererBillsAutumn, CatererBillsSpring, Caterer, RebateAutumn22, RebateAutumn23, RebateSpring23
-from .utils.rebate_checker import count
+from .models import Student, Rebate, LongRebate, TodayRebate, AllocationSpring23,PeriodAutumn23,PeriodSpring23, RebateAutumn23, RebateSpring23
+from .utils.rebate_checker import count, is_present_autumn, is_present_spring
 from .utils.django_email_server import rebate_mail
 from .utils.month import fill_periods
 from .utils.rebate_bills_saver import save_short_bill, save_long_bill
@@ -58,4 +58,29 @@ def update_long_bill(sender, instance, **kwargs):
     except Exception as e:
         print(e)
 
-        
+@receiver(post_save, sender=AllocationSpring23)
+def update_spring_bill(sender, instance, created, **kwargs):
+    print("Signal called for Spring Period")
+    try:
+        if created:
+            sno = instance.month.Sno
+            days = instance.month.end_date - instance.month.start_date + 1
+            high_tea = instance.high_tea
+            rebate_bill = is_present_spring(instance.roll_no)
+            amount=115
+            if(high_tea):
+                amount=130
+            if sno == 1:
+                rebate_bill.period1_bill = amount*days
+            elif sno == 2:
+                rebate_bill.period2_bill = amount*days
+            elif sno == 3:
+                rebate_bill.period3_bill = amount*days
+            elif sno == 4:
+                rebate_bill.period4_bill = amount*days
+            elif sno == 5:
+                rebate_bill.period5_bill = amount*days
+            elif sno == 6:
+                rebate_bill.period6_bill = amount*days
+    except Exception as e:
+        print(e)
