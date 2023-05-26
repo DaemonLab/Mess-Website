@@ -4,7 +4,7 @@ The `__init__.py` file is used to mark a directory as a Python package, making i
 
 
 from .cafeteria import Cafeteria
-from .caterer import Caterer, CatererBillsAutumn, CatererBillsSpring
+from .caterer import Caterer
 from .contacts import Contact
 from .home import About, Carousel, Update
 from .links import Form

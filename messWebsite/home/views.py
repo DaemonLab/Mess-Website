@@ -178,50 +178,46 @@ def rebate(request):
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
-            if start_date.month == end_date.month:
-                diff = ((end_date - start_date).days) + 1
-                diff2 = (start_date - datetime.date.today()).days
-                try:
-                    student = Student.objects.filter(
-                        email=str(request.user.email)
-                    ).first()
-                    period = allocation_id.month.Sno
-                    period_start = allocation_id.month.start_date
-                    period_end = allocation_id.month.end_date
-                    print(period)
-                    ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
-                    if period_start<=start_date<=period_end and period_start<=end_date<=period_end:
-                        text = "Please fill the rebate of this period only"
-                    elif ch >= 0:
-                        text = (
-                            "You can only apply for max 8 days in a period. Days left for this period: "
-                            + str(ch)
+            diff = ((end_date - start_date).days) + 1
+            diff2 = (start_date - datetime.date.today()).days
+            try:
+                student = Student.objects.filter(
+                    email=str(request.user.email)
+                ).first()
+                period = allocation_id.month.Sno
+                period_start = allocation_id.month.start_date
+                period_end = allocation_id.month.end_date
+                ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
+                if not (period_start<=start_date<=period_end and period_start<=end_date<=period_end):
+                    text = "Please fill the rebate of this period only"
+                elif ch >= 0:
+                    text = (
+                        "You can only apply for max 8 days in a period. Days left for this period: "
+                        + str(ch)
+                    )
+                else:
+                    if (diff) <= 7 and diff >= 2 and diff2 >= 2:
+                        r = Rebate(
+                            email=request.user.email,
+                            allocation_id=allocation_id,
+                            start_date=request.POST["start_date"],
+                            end_date=request.POST["end_date"],
+                            approved=False,
                         )
+                        r.save()
+                        text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
+                    elif 0 < diff < 2:
+                        text = "Min no of days for rebate is 2"
+                    elif diff2 < 2:
+                        text = "Form needs to be filled atleast 2 days prior the comencement of leave."
+                    elif diff > 7:
+                        text = "Max no of days for rebate is 7"
+                    elif diff < 0:
+                        text = "Please enter the correct dates"
                     else:
-                        if (diff) <= 7 and diff >= 2 and diff2 >= 2:
-                            r = Rebate(
-                                email=request.user.email,
-                                allocation_id=allocation_id,
-                                start_date=request.POST["start_date"],
-                                end_date=request.POST["end_date"],
-                                approved=False,
-                            )
-                            r.save()
-                            text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
-                        elif 0 < diff < 2:
-                            text = "Min no of days for rebate is 2"
-                        elif diff2 < 2:
-                            text = "Form needs to be filled atleast 2 days prior the comencement of leave."
-                        elif diff > 7:
-                            text = "Max no of days for rebate is 7"
-                        elif diff < 0:
-                            text = "Please enter the correct dates"
-                        else:
-                            text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-                except Allocation.DoesNotExist:
-                    text = "Email ID does not match with the allocation ID"
-            else:
-                text = "Please enter the rebate dates within this month only"
+                        text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
+            except Allocation.DoesNotExist:
+                text = "Email ID does not match with the allocation ID"
         except Exception as e:
             print(e)
             text = "Invalid Dates filled"

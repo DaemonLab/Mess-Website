@@ -123,7 +123,7 @@ class CatererBillsSpring23(models.Model):
     """
     Storing the Bills of the Caterers for the Spring Semester
     """
-    Caterer = models.ForeignKey(Caterer,max_length=30, default="", on_delete=models.SET_NULL, null=True)
+    caterer = models.ForeignKey(Caterer, on_delete=models.SET_NULL, null=True)
 
     period1_bills = models.IntegerField(_("January Bill"),default=0, null=True)
     period2_bills = models.IntegerField(_("Feburary Bill"),default=0, null=True)
@@ -133,7 +133,7 @@ class CatererBillsSpring23(models.Model):
     period6_bills = models.IntegerField(_("June Bill"),default=0, null=True)
 
     def __str__(self):
-        return str(self.Caterer.name)
+        return str(self.caterer.name)
 
     class Meta:
         verbose_name = "Caterer Bill Spring 2023"
