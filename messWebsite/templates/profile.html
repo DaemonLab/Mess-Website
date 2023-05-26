@@ -33,7 +33,7 @@
                             <option value="autumn23">Autumn Semester 2023</option>
                         </select>
                         <h6 id="period-instuctions" class="mt-2">Please select a semester first</h6>
-                        <h6 id="new-instructions" class="mt-2"></h6>
+                        <h6 id="new-instructions" class="mt-2" style="display: none;">Select a period to view rebate bills</h6>
                         <select class="form-control" id="period-select">
                             <option value="default">Period Range</option>
                         </select>
@@ -55,11 +55,13 @@
         $(document).ready(function() {
             $('#semester-select').on('change', function() {
                 var semester = $(this).val();
+                $('#short').html('');
+                $('#long').html('');
+                $('#high_tea').html('');
+                $('#bills').html('');
                 if(semester=="default") {
                     $('#period-instuctions').show();
-                    $('#new-instructions').html('');
-                    $('#period-select').html('');
-                    $('#rebate-data').html('');
+                    $('#new-instructions').hide();
                     return;
                 }
                 else{
@@ -74,7 +76,6 @@
                             console.log(response);
                             var data = response.data;
                             var select = document.getElementById('period-select');
-                            //delete all previous options if any
                             select.innerHTML = "<option value='default'>Period Range</option>";
                             for (var i = 0; i < data.length; i++) {
                                 var startDate = data[i].start_date;
@@ -85,7 +86,7 @@
                                 select.appendChild(opt);
                             }
                             $('#period-instuctions').hide();
-                            $('#new-instructions').html('Select a period to view rebate bills');
+                            $('#new-instructions').show();
                         },
                         error: function(xhr, status, error) {
                             console.error(error);
@@ -96,7 +97,10 @@
             $('#period-select').on('change', function() {
                 var period = $(this).val();
                 if(period=="default") {
-                    $('#rebate-data').html('');
+                    $('#short').html('');
+                    $('#long').html('');
+                    $('#high_tea').html('');
+                    $('#bills').html('');
                     return;
                 }
                 var semester = $('#semester-select').val();
