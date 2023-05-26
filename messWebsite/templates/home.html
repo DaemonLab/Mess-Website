@@ -19,7 +19,7 @@
       <div class="carousel-inner">
         <div class="carousel-item active"> -->
         <div>
-          <img src="/media/{{carousel.3.image}}" style="height:400px;" class="d-block w-100" alt="...">
+          <img src="/media/{{carousel.4.image}}" style="height:400px;" class="d-block w-100" alt="...">
         </div>
         <!-- {% for i in carousel %}
         <div class="carousel-item">
@@ -57,12 +57,12 @@
               aria-expanded="false">Know Your Menu</a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 {% for caterer in all_caterer%}
-                  <li><a class="dropdown-item" href="/caterer/{{ caterer.name }}" style=" font-weight: bold; ">{{caterer.name}} Caterers</a></li>
+                  <li><a class="dropdown-item" href="{{ caterer.sheet_url }}" target="_blank"style=" font-weight: bold; ">{{caterer.name}} Caterers</a></li>
                 {% endfor %}
               </ul>
             </li>
             <li>
-              <a class="text-decoration-none text-black" href="#" role="button" >Know Your Bill</a>
+              <a class="text-decoration-none text-black" href="/profile/" role="button" >Know Your Bill</a>
             </li>
             <li>
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
