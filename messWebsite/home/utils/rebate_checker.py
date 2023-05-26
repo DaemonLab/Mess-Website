@@ -49,10 +49,10 @@ def check_rebate_spring(a, s, start, end, period):
     if the rebate doesnot exceeds 8 days for that month approves the rebate and
     adds the rebate to rebate bills
     """
+    student = is_present_spring(s)
+    sum = count(start, end)
     match period:
         case 1:
-            student = is_present_spring(s)
-            sum = count(start, end)
             if student.period1_short + sum <= 8:
                 # student.january+=sum
                 # student.highTeaJanuary = a.high_tea
@@ -61,8 +61,6 @@ def check_rebate_spring(a, s, start, end, period):
             else:
                 return 8 - student.period1_short
         case 2:
-            student = is_present_spring(s)
-            sum = count(start, end)
             if student.period2_short + sum <= 8:
                 # student.february+=sum
                 # student.highTeaFebruary = a.high_tea
@@ -71,8 +69,6 @@ def check_rebate_spring(a, s, start, end, period):
             else:
                 return 8 - student.period2_short
         case 3:
-            student = is_present_spring(s)
-            sum = count(start, end)
             if student.period3_short + sum <= 8:
                 # student.march+=sum
                 # student.highTeaMarch = a.high_tea
@@ -81,8 +77,6 @@ def check_rebate_spring(a, s, start, end, period):
             else:
                 return 8 - student.period3_short
         case 4:
-            student = is_present_spring(s)
-            sum = count(start, end)
             if student.period4_short + sum <= 8:
                 # student.april+=sum
                 # student.highTeaApril = a.high_tea
@@ -91,8 +85,6 @@ def check_rebate_spring(a, s, start, end, period):
             else:
                 return 8 - student.period4_short
         case 5:
-            student = is_present_spring(s)
-            sum = count(start, end)
             if student.period5_short + sum <= 8:
                 # student.may+=sum
                 # student.highTeaMay = a.high_tea
@@ -101,8 +93,6 @@ def check_rebate_spring(a, s, start, end, period):
             else:
                 return 8 - student.period5_short
         case 6:
-            student = is_present_spring(s)
-            sum = count(start, end)
             if student.period6_short + sum <= 8:
                 # student.june+=sum
                 # student.highTeaJune = a.high_tea

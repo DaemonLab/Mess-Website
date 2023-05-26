@@ -22,8 +22,6 @@ from home.models import (
     Rebate,
     LongRebate,
     UnregisteredStudent,
-    CatererBillsAutumn,
-    CatererBillsSpring,
     TodayRebate,
     AllocationAutumn22,
     AllocationSpring23,
@@ -46,6 +44,7 @@ from .resources import (
     RebateBillsResource,
     UnregisteredStudentResource,
     LongRebateResource,
+    CatererBillsResource,
 )
 
 # Customising the heading and title of the admin page
@@ -122,29 +121,6 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-# @admin.register(Photos)
-# class about_Admin(admin.ModelAdmin):
-#     model = Photos
-#     search_fields = (
-#         "poc",
-#         "occupation",
-#     )
-#     list_display = ("poc", "occupation")
-#     list_filter = (
-#         "poc",
-#         "occupation",
-#     )
-#     fieldsets = (
-#         (
-#             None,
-#             {
-#                 "fields": ("image", "poc", "occupation"),
-#                 "description": "%s" % PHOTOS_DESC_TEXT,
-#             },
-#         ),
-#     )
-
-
 @admin.register(Rule)
 class about_Admin(admin.ModelAdmin):
     model = Rule
@@ -163,24 +139,6 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-# @admin.register(Penalty)
-# class about_Admin(admin.ModelAdmin):
-#     model = Penalty
-#     ordering = ("penalty",)
-#     search_fields = ("penalty",)
-#     list_display = ("penalty",)
-#     list_filter = ("penalty",)
-#     fieldsets = (
-#         (
-#             None,
-#             {
-#                 "fields": ("penalty",),
-#                 "description": "%s" % PENALTY_DESC_TEXT,
-#             },
-#         ),
-#     )
-
-
 @admin.register(ShortRebate)
 class about_Admin(admin.ModelAdmin):
     model = ShortRebate
@@ -195,24 +153,6 @@ class about_Admin(admin.ModelAdmin):
             },
         ),
     )
-
-
-# @admin.register(LongRebateData)
-# class about_Admin(admin.ModelAdmin):
-#     model = LongRebateData
-#     ordering = ("rule",)
-#     search_fields = ("rule",)
-#     list_display = ("rule",)
-#     list_filter = ("rule",)
-#     fieldsets = (
-#         (
-#             None,
-#             {
-#                 "fields": ("rule",),
-#                 "description": "%s" % LONG_REBATE_DESC_TEXT,
-#             },
-#         ),
-#     )
 
 
 @admin.register(Caterer)
@@ -712,52 +652,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             unregister_student(obj)
 
-@admin.register(CatererBillsAutumn)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateBillsResource
-    model = CatererBillsAutumn
-    search_fields = ("Caterer__name",)
-    list_filter = ("Caterer__name",)
-    fieldsets = (  
-        (
-            None,
-            {
-                "fields": (
-                    "Caterer",
-                    "julyBill",
-                    "augustBill",
-                    "septemberBill",
-                    "octoberBill",
-                    "novemberBill",
-                    "decemberBill",
-                )
-            },
-        ),
-    )
-
-@admin.register(CatererBillsSpring)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateBillsResource
-    model = CatererBillsSpring
-    search_fields = ("Caterer__name",)
-    list_filter = ("Caterer__name",)
-    fieldsets = (  
-        (
-            None,
-            {
-                "fields": (
-                    "Caterer",
-                    "januaryBill",
-                    "feburaryBill",
-                    "marchBill",
-                    "aprilBill",
-                    "mayBill",
-                    "juneBill",
-                )
-            },
-        ),
-    )
-
 @admin.register(TodayRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateBillsResource
@@ -974,7 +868,7 @@ allocation_fields = {
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationResource
     model = AllocationAutumn22
-    search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
     list_filter = ("month", "caterer_name", "high_tea")
     list_display = ("student_id", "month", "caterer_name", "high_tea")
     fieldsets = ((None,allocation_fields,),)
@@ -996,7 +890,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationResource
     model = AllocationSpring23
-    search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
     list_filter = ("month", "caterer_name", "high_tea")
     list_display = ("student_id", "month", "caterer_name", "high_tea")
     fieldsets = ((None,allocation_fields,),)
@@ -1018,7 +912,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationResource
     model = AllocationAutumn23
-    search_fields = ("student_id", "month", "caterer_name", "high_tea")
+    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
     list_filter = ("month", "caterer_name", "high_tea")
     list_display = ("student_id", "month", "caterer_name", "high_tea")
     fieldsets = ((None,allocation_fields,),)
@@ -1055,3 +949,78 @@ class about_Admin(admin.ModelAdmin):
     fieldsets = (
         (None,{"fields": ("Sno", "start_date", "end_date")},),)
     
+caterer_bill_fields = { 
+                "fields": (
+                    "caterer",
+                    "period1_bills",
+                    "period2_bills",
+                    "period3_bills",
+                    "period4_bills",
+                    "period5_bills",
+                    "period6_bills",
+                ),
+                # "description": "%s" % CATERER_BILL_DESC_TEXT,
+            }
+
+@admin.register(CatererBillsAutumn22)
+class about_Admin(admin.ModelAdmin):
+    resource_class = CatererBillsResource
+    model = CatererBillsAutumn22
+    fieldsets = ((None,caterer_bill_fields,),)
+    list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
+    search_fields = ("caterer__name",)
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = CatererBillsResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Caterer Bills details to CSV"
+
+@admin.register(CatererBillsSpring23)
+class about_Admin(admin.ModelAdmin):
+    resource_class = CatererBillsResource
+    model = CatererBillsSpring23
+    fieldsets = ((None,caterer_bill_fields,),)
+    list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
+    search_fields = ("caterer__name",)
+    actions = ["export_as_csv"]
+    
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = CatererBillsResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
+        return response
+    
+    export_as_csv.short_description = "Export Caterer Bills details to CSV"
+
+@admin.register(CatererBillsAutumn23)
+class about_Admin(admin.ModelAdmin):
+    resource_class = CatererBillsResource
+    model = CatererBillsAutumn23
+    fieldsets = ((None,caterer_bill_fields,),)
+    list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
+    search_fields = ("caterer__name",)
+    actions = ["export_as_csv"]
+    
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = CatererBillsResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Caterer Bills details to CSV"

@@ -22,11 +22,11 @@ def update_short_bill(sender, instance, **kwargs):
     print("Signal called for Short Rebate")
     try:
         old_instance = Rebate.objects.get(pk=instance.pk)
-        print(old_instance.approved,instance.approved)
         if old_instance.approved != instance.approved:
             days = count(instance.start_date, instance.end_date)
             email = instance.email
             allocation = instance.allocation_id
+            print(old_instance.approved,instance.approved)
             if instance.approved == True:
                 save_short_bill(email,allocation.month,days,allocation.high_tea, allocation.caterer_name)
                 new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer_name,allocation_id = allocation.student_id,start_date=instance.start_date,end_date=instance.end_date)
@@ -60,11 +60,10 @@ def update_long_bill(sender, instance, **kwargs):
 
 @receiver(post_save, sender=AllocationSpring23)
 def update_spring_bill(sender, instance, created, **kwargs):
-    print("Signal called for Spring Period")
     try:
         if created:
             sno = instance.month.Sno
-            days = instance.month.end_date - instance.month.start_date + 1
+            days = (instance.month.end_date - instance.month.start_date).days + 1
             high_tea = instance.high_tea
             rebate_bill = is_present_spring(instance.roll_no)
             amount=115
@@ -82,5 +81,6 @@ def update_spring_bill(sender, instance, created, **kwargs):
                 rebate_bill.period5_bill = amount*days
             elif sno == 6:
                 rebate_bill.period6_bill = amount*days
+            rebate_bill.save()
     except Exception as e:
         print(e)

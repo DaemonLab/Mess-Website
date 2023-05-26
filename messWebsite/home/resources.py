@@ -15,6 +15,9 @@ from .models import (
     AllocationAutumn22,
     AllocationSpring23,
     AllocationAutumn23,
+    CatererBillsAutumn22,
+    CatererBillsSpring23,  
+    CatererBillsAutumn23,
 )
 from .utils.rebate_checker import count
 
@@ -574,4 +577,24 @@ class UnregisteredStudentResource(resources.ModelResource):
         ]
         fields = (
             "email",
+        )
+
+
+class CatererBillsResource(resources.ModelResource):
+    class Meta:
+        model = CatererBillsAutumn22
+        model = CatererBillsSpring23
+        model = CatererBillsAutumn23
+        exclude = "id"
+        import_id_fields = [
+            "caterer__name",
+        ]
+        fields = (
+            "caterer__name",
+            "period1_bill",
+            "period2_bill",
+            "period3_bill",
+            "period4_bill",
+            "period5_bill",
+            "period6_bill",
         )
