@@ -7,6 +7,8 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from .utils.django_email_server import rebate_mail,caterer_mail
+from .utils.rebate_bills_saver import save_short_bill, save_long_bill
+from .utils.month import fill_periods
 from home.models import (
     About,
     Update,
@@ -801,7 +803,19 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     def room_number(self, obj):
         return obj.email.room_no
 
-    actions = ["export_as_csv"]
+    actions = ["export_as_csv","clean"]
+
+    @admin.action(description="Clean testing period data")
+    def clean(self, request, queryset):
+        """
+        Clean testing period data
+        """
+        for obj in queryset:
+            obj.period5_short = 0
+            obj.period5_long = 0
+            obj.period5_high_tea = 1
+            obj.period5_bill = 0
+            obj.save()
 
     def export_as_csv(self, request, queryset):
         """
@@ -1032,3 +1046,15 @@ class about_Admin(admin.ModelAdmin):
     search_fields = ("email",)
     fieldsets = (
         (None,{"fields": ("email", "start_date", "end_date")},),)
+    
+    actions = ["Add"]
+
+    @admin.action(description="Add left long rebate to Bills")
+    def Add(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        for obj in queryset:
+            email = obj.email
+            days_per_period = fill_periods(obj.start_date, obj.end_date)
+            save_long_bill(email, days_per_period,1)
