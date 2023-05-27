@@ -179,14 +179,7 @@ class LongRebate(models.Model):
     Stores the long rebate details of every student
     """
 
-    email = models.CharField(_("email"), max_length=30, default="")
-    # allocation_id_id = models.ForeignKey(
-    #     Allocation,
-    #     related_name="allocation_id_long",
-    #     default=0,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    # )
+    email = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
     start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
     end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)   
     days = models.IntegerField(_("days"), default=0)

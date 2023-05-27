@@ -198,66 +198,47 @@ class RebateResource(resources.ModelResource):
 
 
 class LongRebateResource(resources.ModelResource):
-    email = fields.Field(attribute="email", column_name="Email")
-    allocation_id_id__roll_no__name = fields.Field(
-        attribute="allocation_id_id__roll_no__name", column_name="Name"
-    )
-    allocation_id_id__roll_no__roll_no = fields.Field(
-        attribute="allocation_id_id__roll_no__roll_no", column_name="Roll No."
-    )
-    allocation_id_id__roll_no__department = fields.Field(
-        attribute="allocation_id_id__roll_no__department", column_name="Department"
-    )
-    allocation_id_id__roll_no__degree = fields.Field(
-        attribute="allocation_id_id__roll_no__degree", column_name="Degree"
-    )
-    allocation_id_id__roll_no__hostel = fields.Field(
-        attribute="allocation_id_id__roll_no__hostel", column_name="Hostel"
-    )
-    allocation_id_id__roll_no__room_no = fields.Field(
-        attribute="allocation_id_id__roll_no__room_no", column_name="Room No."
-    )
-    allocation_id_id__caterer_name = fields.Field(
-        attribute="allocation_id_id__caterer_name", column_name="Caterer Alloted"
-    )
-    allocation_id_id__high_tea = fields.Field(
-        attribute="allocation_id_id__high_tea", column_name="High Tea"
-    )
+    email__email = fields.Field(attribute="email__email", column_name="Email")
+    email__roll_no = fields.Field(attribute="email__roll_no", column_name="Roll No.")
+    email__name = fields.Field(attribute="email__name", column_name="Name")
+    email__department = fields.Field(attribute="email__department", column_name="Department")
+    email__degree = fields.Field(attribute="email__degree", column_name="Degree")
+    email__hostel = fields.Field(attribute="email__hostel", column_name="Hostel")
+    email__room_no = fields.Field(attribute="email__room_no", column_name="Room No.")
     date_applied = fields.Field(attribute="date_applied", column_name="date_applied")
     days = fields.Field(attribute="days", column_name="days")
-    month = fields.Field(attribute="month", column_name="month")
+    start_date = fields.Field(attribute="start_date", column_name="Start Date")
+    end_date = fields.Field(attribute="end_date", column_name="End Date")
     approved = fields.Field(attribute="approved", column_name="Approved")
 
     class Meta:
         model = LongRebate
         fields = (
-            "email",
-            "allocation_id_id__roll_no__name",
-            "allocation_id_id__roll_no__roll_no",
-            "allocation_id_id__roll_no__department",
-            "allocation_id_id__roll_no__degree",
-            "allocation_id_id__roll_no__hostel",
-            "allocation_id_id__roll_no__room_no",
-            "allocation_id_id__high_tea",
-            "allocation_id_id__caterer_name",
+            "email__email",
+            "email__roll_no",
+            "email__name",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
             "date_applied",
+            "start_date",
+            "end_date",
             "days",
-            "month",
             "approved",
         )
         export_order = [
-            "email",
-            "allocation_id_id__roll_no__name",
-            "allocation_id_id__roll_no__roll_no",
-            "allocation_id_id__roll_no__department",
-            "allocation_id_id__roll_no__degree",
-            "allocation_id_id__roll_no__hostel",
-            "allocation_id_id__roll_no__room_no",
-            "allocation_id_id__high_tea",
-            "allocation_id_id__caterer_name",
+            "email__email",
+            "email__roll_no",
+            "email__name",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
             "date_applied",
+            "start_date",
+            "end_date",
             "days",
-            "month",
             "approved",
         ]
 

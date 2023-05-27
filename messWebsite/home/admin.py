@@ -425,7 +425,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Export action available in the admin page
         """
-        resource = RebateResource()
+        resource = LongRebateResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="LongRebate.csv"'

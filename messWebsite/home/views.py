@@ -423,11 +423,12 @@ def addLongRebateBill(request):
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
             days = (end_date - start_date).days + 1
+            student = Student.objects.get(email=request.user.email)
             try:
                 file=request.FILES["pdf"]
                 print(file)
                 long = LongRebate(
-                    email=request.user.email,
+                    email=student,
                     start_date=start_date,
                     end_date=end_date,
                     days=days,
