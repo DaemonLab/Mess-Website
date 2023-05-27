@@ -114,13 +114,13 @@ def save_long_bill(email,days_per_period,j):
                 catererBill.save()
             case 7:
                 if(j==1):
-                    left,created = LeftLongRebate.objects.get_or_create(email=email)
+                    left,created = LeftLongRebate.objects.get_or_create(email=str(student.email))
                     left.start_date = days
                     left.save()
                     print("left",left.start_date)
                 else:
                     LeftLongRebate.objects.get(email=email,start_date=days).delete()
             case 8:
-                left,created = LeftLongRebate.objects.get_or_create(email=email)
+                left,created = LeftLongRebate.objects.get_or_create(email=str(student.email))
                 left.end_date = days
                 left.save()

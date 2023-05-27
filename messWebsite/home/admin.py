@@ -35,6 +35,7 @@ from home.models import (
     PeriodAutumn22,
     PeriodSpring23,
     PeriodAutumn23,
+    LeftLongRebate,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 from .resources import (
@@ -139,20 +140,20 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-@admin.register(ShortRebate)
-class about_Admin(admin.ModelAdmin):
-    model = ShortRebate
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "desc",
-                ),
-                "description": "%s" % SHORT_REBATE_DESC_TEXT,
-            },
-        ),
-    )
+# @admin.register(ShortRebate)
+# class about_Admin(admin.ModelAdmin):
+#     model = ShortRebate
+#     fieldsets = (
+#         (
+#             None,
+#             {
+#                 "fields": (
+#                     "desc",
+#                 ),
+#                 "description": "%s" % SHORT_REBATE_DESC_TEXT,
+#             },
+#         ),
+#     )
 
 
 @admin.register(Caterer)
@@ -1024,3 +1025,10 @@ class about_Admin(admin.ModelAdmin):
         return response
 
     export_as_csv.short_description = "Export Caterer Bills details to CSV"
+
+@admin.register(LeftLongRebate)
+class about_Admin(admin.ModelAdmin):
+    model = LeftLongRebate
+    search_fields = ("email",)
+    fieldsets = (
+        (None,{"fields": ("email", "start_date", "end_date")},),)
