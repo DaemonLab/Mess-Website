@@ -57,14 +57,14 @@ def save_short_bill(email,period,days,high_tea,caterer):
 
 def save_long_bill(email,days_per_period,j):
     print (email,days_per_period,j)
-    student = Student.objects.get(email=email)
+    student = email
     rebate = RebateSpring23.objects.get(email=student)
     for period_no,days in days_per_period:
         if(period_no <7):
             period = PeriodSpring23.objects.get(Sno=period_no)
-            allocation = AllocationSpring23.objects.get(email=email,period=period)
+            allocation = AllocationSpring23.objects.get(roll_no=student,month=period)
             caterer = Caterer.objects.get(name=allocation.caterer_name)
-            catererBill = CatererBillsSpring23.objects.get(Caterer=caterer) 
+            catererBill = CatererBillsSpring23.objects.get(caterer=caterer) 
             days*=j
             amount = days*115
             if(allocation.high_tea):
