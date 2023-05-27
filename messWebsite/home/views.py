@@ -249,66 +249,74 @@ def allocation(request):
         and request.user.is_authenticated
         and request.user.is_staff
     ):
-        csv = request.FILES["csv"]
-        csv_data = pd.read_csv(io.StringIO(csv.read().decode("utf-8")))
-        print(csv_data.head())
+        try:
+            file = request.FILES["csv"]
+            file_extension = file.name.split('.')[-1].lower()
+            if file_extension == 'csv':
+                csv_data = pd.read_csv(io.StringIO(file.read().decode('utf-8')))
+            elif file_extension == 'xlsx':
+                csv_data = pd.read_excel(file, engine='openpyxl')
+            print(csv_data.head())
 
-        for record in csv_data.to_dict(orient="records"):
-            try:
-                first_pref = str(record["first_pref"]).capitalize()
-                second_pref = str(record["second_pref"]).capitalize()
-                third_pref = str(record["third_pref"]).capitalize()
-                period = str(record["period"]).capitalize()
-                period_obj = PeriodSpring23.objects.get(Sno=period)
-                high_tea = record["high_tea"]
-                student = Student.objects.filter(email=record["email"]).first()
-                print(student)
-                for pref in [first_pref, second_pref, third_pref]:
-                    kanaka = Caterer.objects.get(name="Kanaka")
-                    ajay = Caterer.objects.get(name="Ajay")
-                    gauri = Caterer.objects.get(name="Gauri")
-                    if pref == kanaka.name and kanaka.student_limit > 0:
-                        student_id = str(kanaka.name[0])
-                        if high_tea == True:
-                            student_id += "H"
-                        student_id += str(kanaka.student_limit)
-                        caterer_name = kanaka.name
-                        kanaka.student_limit -= 1
-                        kanaka.save(update_fields=["student_limit"])
-                        break
-                    elif pref == ajay.name and ajay.student_limit > 0:
-                        student_id = str(ajay.name[0])
-                        if high_tea == True:
-                            student_id += "H"
-                        student_id += str(ajay.student_limit)
-                        caterer_name = ajay.name
-                        ajay.student_limit -= 1
-                        ajay.save(update_fields=["student_limit"])
-                        break
-                    elif pref == gauri.name and gauri.student_limit > 0:
-                        student_id = str(gauri.name[0])
-                        if high_tea == True:
-                            student_id += "H"
-                        student_id += str(gauri.student_limit)
-                        caterer_name = gauri.name
-                        gauri.student_limit -= 1
-                        gauri.save(update_fields=["student_limit"])
-                        break
-                a = AllocationSpring23(
-                    roll_no=student,
-                    student_id=student_id,
-                    month=period_obj,
-                    caterer_name=caterer_name,
-                    high_tea=high_tea,
-                    first_pref=first_pref,
-                    second_pref=second_pref,
-                    third_pref=third_pref,
-                )
-                a.save()
-                UnregisteredStudent.objects.filter(email=student.email).delete()
-            except Exception as e:
-                print(e)
-        messages = "Form submitted. Please check the admin page."
+            for record in csv_data.to_dict(orient="records"):
+                try:
+                    first_pref = str(record["first_pref"]).capitalize()
+                    second_pref = str(record["second_pref"]).capitalize()
+                    third_pref = str(record["third_pref"]).capitalize()
+                    period = str(record["period"]).capitalize()
+                    period_obj = PeriodSpring23.objects.get(Sno=period)
+                    high_tea = record["high_tea"]
+                    student = Student.objects.filter(email=record["email"]).first()
+                    print(student)
+                    for pref in [first_pref, second_pref, third_pref]:
+                        kanaka = Caterer.objects.get(name="Kanaka")
+                        ajay = Caterer.objects.get(name="Ajay")
+                        gauri = Caterer.objects.get(name="Gauri")
+                        if pref == kanaka.name and kanaka.student_limit > 0:
+                            student_id = str(kanaka.name[0])
+                            if high_tea == True:
+                                student_id += "H"
+                            student_id += str(kanaka.student_limit)
+                            caterer_name = kanaka.name
+                            kanaka.student_limit -= 1
+                            kanaka.save(update_fields=["student_limit"])
+                            break
+                        elif pref == ajay.name and ajay.student_limit > 0:
+                            student_id = str(ajay.name[0])
+                            if high_tea == True:
+                                student_id += "H"
+                            student_id += str(ajay.student_limit)
+                            caterer_name = ajay.name
+                            ajay.student_limit -= 1
+                            ajay.save(update_fields=["student_limit"])
+                            break
+                        elif pref == gauri.name and gauri.student_limit > 0:
+                            student_id = str(gauri.name[0])
+                            if high_tea == True:
+                                student_id += "H"
+                            student_id += str(gauri.student_limit)
+                            caterer_name = gauri.name
+                            gauri.student_limit -= 1
+                            gauri.save(update_fields=["student_limit"])
+                            break
+                    a = AllocationSpring23(
+                        roll_no=student,
+                        student_id=student_id,
+                        month=period_obj,
+                        caterer_name=caterer_name,
+                        high_tea=high_tea,
+                        first_pref=first_pref,
+                        second_pref=second_pref,
+                        third_pref=third_pref,
+                    )
+                    a.save()
+                    UnregisteredStudent.objects.filter(email=student.email).delete()
+                except Exception as e:
+                    print(e)
+            messages = "Form submitted. Please check the admin page."
+        except Exception as e:
+            print(e)
+            messages = "Invalid CSV file"
     period_obj = PeriodSpring23.objects.filter().last()
     Ajay_high_tea = AllocationSpring23.objects.filter(caterer_name="Ajay", high_tea=True,month=period_obj).count()
     Gauri_high_tea = AllocationSpring23.objects.filter(caterer_name="Gauri", high_tea=True,month=period_obj).count()
