@@ -10,7 +10,7 @@ def fill_periods(start_date, end_date):
         if period.start_date <= current_date <= period.end_date and period.start_date <= end_date:
             days_in_period = min((period.end_date - current_date).days + 1, (end_date - current_date).days + 1)
             days_per_period.append((period.Sno, days_in_period))
-            current_date = current_date + timedelta(days_in_period)
+            current_date = current_date + timedelta(days=days_in_period)
     
     if(current_date <= end_date and (end_date - current_date).days + 1 >0):
         days_per_period.append((7, start_date))

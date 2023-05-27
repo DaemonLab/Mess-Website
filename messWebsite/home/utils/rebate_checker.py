@@ -1,20 +1,25 @@
 from home.models import RebateAutumn23, RebateSpring23,Rebate, LongRebate
+from datetime import timedelta
 def count(start, end):
     """Counts the number of days of rebate applied"""
     sum = ((end - start).days) + 1
     return sum
 
-def is_not_duplicate(s,start,end,period):
+def is_not_duplicate(s,start,end):
     """Checks if these dates are already applied for rebate"""
     try:
         short = Rebate.objects.filter(email=str(s.email)).last()
-        long = LongRebate.objects.filter(email=str(s.email)).last()
-        if short.end_date> start+2 and long.end_date> start+2:
-            return False
-        else:
+        long = LongRebate.objects.filter(email=s).last()
+        print("is_not_duplicate")
+        print(short)
+        print(long)
+        if (short==None or short.end_date< start-timedelta(days=2) or short.start_date>end+timedelta(days=2)) and (long==None or long.end_date< start-timedelta(days=2) or long.start_date>end+timedelta(days=2)):
             return True
-    except:
-        return True
+        else:
+            return False
+    except Exception as e:
+        print(e)
+        return False
 
 def is_present_autumn(s):
     """

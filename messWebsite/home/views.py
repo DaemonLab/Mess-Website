@@ -37,6 +37,7 @@ from .utils.rebate_checker import (
     is_present_spring,
     check_rebate_autumn,
     check_rebate_spring,
+    is_not_duplicate,
 )
 import pandas as pd
 import datetime
@@ -190,6 +191,8 @@ def rebate(request):
                 ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
                 if not (period_start<=start_date<=period_end and period_start<=end_date<=period_end):
                     text = "Please fill the rebate of this period only"
+                elif not is_not_duplicate(student, start_date, end_date):
+                    text = "You have already applied for rebate for these dates"
                 elif ch >= 0:
                     text = (
                         "You can only apply for max 8 days in a period. Days left for this period: "
@@ -424,22 +427,25 @@ def addLongRebateBill(request):
             end_date = parse_date(request.POST["end_date"])
             days = (end_date - start_date).days + 1
             student = Student.objects.get(email=request.user.email)
-            try:
-                file=request.FILES["pdf"]
-                print(file)
-                long = LongRebate(
-                    email=student,
-                    start_date=start_date,
-                    end_date=end_date,
-                    days=days,
-                    approved=False,
-                    file=file,
-                )
-                long.save()
-                text = "Long Term rebate added Successfully"
-            except Exception as e:
-                text = "Allocation ID for the entered email does not exist"
-                print(e)
+            if not is_not_duplicate(student, start_date, end_date):
+                text = "You have already applied for rebate for these dates"
+            else:
+                try:
+                    file=request.FILES["pdf"]
+                    print(file)
+                    long = LongRebate(
+                        email=student,
+                        start_date=start_date,
+                        end_date=end_date,
+                        days=days,
+                        approved=False,
+                        file=file,
+                    )
+                    long.save()
+                    text = "Long Term rebate added Successfully"
+                except Exception as e:
+                    text = "Allocation ID for the entered email does not exist"
+                    print(e)
         except:
             text = "Email ID does not exist in the database. Please eneter the correct email ID"
     context = {"text": text, "key": key}
