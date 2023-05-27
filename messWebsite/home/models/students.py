@@ -42,7 +42,7 @@ class Student(models.Model):
     )
 
     def __str__(self):
-        return "Student :" + str(self.roll_no)
+        return str(self.email)
 
     class Meta:
         verbose_name = "Student Details"
