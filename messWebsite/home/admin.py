@@ -978,7 +978,7 @@ caterer_bill_fields = {
             }
 
 @admin.register(CatererBillsAutumn22)
-class about_Admin(admin.ModelAdmin):
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = CatererBillsResource
     model = CatererBillsAutumn22
     fieldsets = ((None,caterer_bill_fields,),)
@@ -999,7 +999,7 @@ class about_Admin(admin.ModelAdmin):
     export_as_csv.short_description = "Export Caterer Bills details to CSV"
 
 @admin.register(CatererBillsSpring23)
-class about_Admin(admin.ModelAdmin):
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = CatererBillsResource
     model = CatererBillsSpring23
     fieldsets = ((None,caterer_bill_fields,),)
@@ -1020,7 +1020,7 @@ class about_Admin(admin.ModelAdmin):
     export_as_csv.short_description = "Export Caterer Bills details to CSV"
 
 @admin.register(CatererBillsAutumn23)
-class about_Admin(admin.ModelAdmin):
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = CatererBillsResource
     model = CatererBillsAutumn23
     fieldsets = ((None,caterer_bill_fields,),)
