@@ -70,16 +70,22 @@ def update_spring_bill(sender, instance, created, **kwargs):
             if(high_tea):
                 amount=130
             if sno == 1:
+                rebate_bill.period1_high_tea = high_tea
                 rebate_bill.period1_bill = amount*days
             elif sno == 2:
+                rebate_bill.period2_high_tea = high_tea
                 rebate_bill.period2_bill = amount*days
             elif sno == 3:
+                rebate_bill.period3_high_tea = high_tea
                 rebate_bill.period3_bill = amount*days
             elif sno == 4:
+                rebate_bill.period4_high_tea = high_tea
                 rebate_bill.period4_bill = amount*days
             elif sno == 5:
+                rebate_bill.period5_high_tea = high_tea
                 rebate_bill.period5_bill = amount*days
             elif sno == 6:
+                rebate_bill.period6_high_tea = high_tea
                 rebate_bill.period6_bill = amount*days
             rebate_bill.save()
     except Exception as e:

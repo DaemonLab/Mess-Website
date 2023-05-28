@@ -178,7 +178,7 @@ class about_Admin(admin.ModelAdmin):
             },
         ),
     )
-
+    # In future can create an admin action to directly generate the table for caterer v=bills for a semester.
 
 @admin.register(Form)
 class about_Admin(admin.ModelAdmin):

@@ -39,7 +39,7 @@ from .utils.rebate_checker import (
     is_not_duplicate,
 )
 import pandas as pd
-import datetime
+from datetime import date, timedelta
 import io
 from django.utils.dateparse import parse_date
 from django.core.exceptions import MultipleObjectsReturned
@@ -166,20 +166,34 @@ def rebate(request):
         print(request.user.email)
         allocation_id = AllocationSpring23.objects.get(roll_no__email=str(request.user.email))
         key = str(allocation_id.student_id)
-    except AllocationSpring23.DoesNotExist:
-        key = "Signed in account does not does not have any allocation ID"
-    # Instead of last use period model to get the allocation id for that period
+        # Instead of last use period model to get the allocation id for that period
     except AllocationSpring23.MultipleObjectsReturned:
-        allocation_id = AllocationSpring23.objects.filter(
-            roll_no__email=str(request.user.email)
-        ).last()
-        key = str(allocation_id.student_id)
+        try:
+            for period in PeriodSpring23.objects.all():
+                if period.end_date>date.today()+timedelta(2):
+                    period_obj=period
+                    break
+            allocation_id = AllocationSpring23.objects.get(
+                roll_no__email=str(request.user.email),
+                month = period_obj
+            )
+            key = str(allocation_id.student_id) 
+        except:
+            try:
+                allocation_id = AllocationSpring23.objects.filter(
+                    roll_no__email=str(request.user.email),
+                ).last()
+                key = str(allocation_id.student_id)   
+            except:
+                key="You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
+    except AllocationSpring23.DoesNotExist:
+        key = "Signed in account does not does not have any allocation ID"     
     if request.method == "POST" and request.user.is_authenticated:
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
             diff = ((end_date - start_date).days) + 1
-            diff2 = (start_date - datetime.date.today()).days
+            diff2 = (start_date - date.today()).days
             try:
                 student = Student.objects.filter(
                     email=str(request.user.email)
