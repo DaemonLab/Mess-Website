@@ -2,7 +2,6 @@ from import_export import resources, fields
 from import_export.widgets import ForeignKeyWidget
 from .models import (
     Student,
-    Allocation,
     Rebate,
     LongRebate,
     UnregisteredStudent,
@@ -91,7 +90,9 @@ class AllocationResource(resources.ModelResource):
     third_pref = fields.Field(attribute="third_pref", column_name="Third Preferences")
 
     class Meta:
-        model = Allocation
+        model = AllocationSpring23
+        model = AllocationAutumn22
+        model = AllocationAutumn23
         fields = (
             "roll_no__roll_no",
             "roll_no__email",
@@ -499,48 +500,72 @@ class RebateBillsResource(resources.ModelResource):
     def dehydrate_allocation1(self,obj):
         try:
             period = PeriodSpring23.objects.get(Sno=1)
-            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
-            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
+            if(allocation.high_tea): 
+                high_tea = "High Tea"
+            else:
+                high_tea ="No High Tea"
+            return str(allocation.caterer_name)+" "+high_tea
         except Exception as e:
             return "Not yet allocated"
     
     def dehydrate_allocation2(self,obj):
         try:
             period = PeriodSpring23.objects.get(Sno=2)
-            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
-            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
+            if(allocation.high_tea): 
+                high_tea = "High Tea"
+            else:
+                high_tea ="No High Tea"
+            return str(allocation.caterer_name)+" "+high_tea
         except:
             return "Not yet allocated"
     
     def dehydrate_allocation3(self, obj):
         try:
             period = PeriodSpring23.objects.get(Sno=3)
-            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
-            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
+            if(allocation.high_tea): 
+                high_tea = "High Tea"
+            else:
+                high_tea ="No High Tea"
+            return str(allocation.caterer_name)+" "+high_tea
         except:
             return "Not yet allocated"
         
     def dehydrate_allocation4(self,obj):
         try:
             period = PeriodSpring23.objects.get(Sno=4)
-            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
-            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
+            if(allocation.high_tea): 
+                high_tea = "High Tea"
+            else:
+                high_tea ="No High Tea"
+            return str(allocation.caterer_name)+" "+high_tea
         except:
             return "Not yet allocated"
         
     def dehydrate_allocation5(self,obj):
         try:
             period = PeriodSpring23.objects.get(Sno=5)
-            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
-            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
+            if(allocation.high_tea): 
+                high_tea = "High Tea"
+            else:
+                high_tea ="No High Tea"
+            return str(allocation.caterer_name)+" "+high_tea
         except:
             return "Not yet allocated"
         
     def dehydrate_allocation6(self,obj):
         try:
             period = PeriodSpring23.objects.get(Sno=6)
-            allocation = AllocationSpring23.objects.get(email=obj.email.email, month=period)
-            return str(allocation.caterer_name)+" "+str(allocation.high_tea)
+            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
+            if(allocation.high_tea): 
+                high_tea = "High Tea"
+            else:
+                high_tea ="No High Tea"
+            return str(allocation.caterer_name)+" "+high_tea
         except:
             return "Not yet allocated"
 
@@ -562,6 +587,13 @@ class UnregisteredStudentResource(resources.ModelResource):
 
 
 class CatererBillsResource(resources.ModelResource):
+    caterer__name = fields.Field(attribute="caterer__name", column_name="Caterer")
+    period1_bills = fields.Field(attribute="period1_bills", column_name="Period 1 Bills")
+    period2_bills = fields.Field(attribute="period2_bills", column_name="Period 2 Bills")
+    period3_bills = fields.Field(attribute="period3_bills", column_name="Period 3 Bills")
+    period4_bills = fields.Field(attribute="period4_bills", column_name="Period 4 Bills")
+    period5_bills = fields.Field(attribute="period5_bills", column_name="Period 5 Bills")
+    period6_bills = fields.Field(attribute="period6_bills", column_name="Period 6 Bills")
     class Meta:
         model = CatererBillsAutumn22
         model = CatererBillsSpring23
@@ -572,10 +604,10 @@ class CatererBillsResource(resources.ModelResource):
         ]
         fields = (
             "caterer__name",
-            "period1_bill",
-            "period2_bill",
-            "period3_bill",
-            "period4_bill",
-            "period5_bill",
-            "period6_bill",
+            "period1_bills",
+            "period2_bills",
+            "period3_bills",
+            "period4_bills",
+            "period5_bills",
+            "period6_bills",
         )

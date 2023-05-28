@@ -49,76 +49,14 @@ class Student(models.Model):
         verbose_name_plural = "Student Details"
 
 
-class Allocation(models.Model):
-    """
-    Stores the Allocation details
-    """
-
-    roll_no = models.ForeignKey(
-        Student, default=0, on_delete=models.SET_NULL, null=True
-    )
-    student_id = models.CharField(
-        _("Allocation Id"),
-        default=None,
-        max_length=30,
-        help_text="This contains the Allocation Id",
-        null=True,
-        blank=True,
-    )
-    month = models.CharField(
-        _("Month"),
-        max_length=10,
-        help_text="This contains for which month the allocation id is alloted",
-        default="",null=True,blank=True
-    )
-    caterer_name = models.CharField(
-        _("Caterer Name"),
-        max_length=50,
-        help_text="The text in this text field contains the caterer name.",
-        default="",null=True,blank=True
-    )
-    high_tea = models.BooleanField(
-        _("High Tea"), help_text="This contains the info if high tea is taken or not",
-        default=False,null=True,blank=True
-    )
-    first_pref = models.CharField(
-        _("First Preference"),
-        default=None,
-        max_length=10,
-        help_text="This contians the first preference caterer of the student",
-        null=True,blank=True
-    )
-    second_pref = models.CharField(
-        _("Second Preference"),
-        default=None,
-        max_length=10,
-        help_text="This contians the first preference caterer of the student",
-        null=True,blank=True
-    )
-    third_pref = models.CharField(
-        _("Third Preference"),
-        default=None,
-        max_length=10,
-        help_text="This contians the first preference caterer of the student",
-        null=True,blank=True
-    )
-
-    def __str__(self):
-        return self.student_id
-
-    class Meta:
-        verbose_name = "Allocation Details"
-        verbose_name_plural = "Allocation Details"
-
-
 class Scan(models.Model):
     """ "
     Stores the Scan details of each allocation id
     Note: this is not implemented yet
     """
-
+    from .Semesters.spring23 import AllocationSpring23
     student_id = models.ForeignKey(
-        Allocation, default=0, on_delete=models.SET_NULL, null=True
+        AllocationSpring23, default=0, on_delete=models.SET_NULL, null=True
     )
     date = models.DateField(help_text="Date of the scan details")
     breakfast = models.BooleanField(
