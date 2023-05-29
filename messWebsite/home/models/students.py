@@ -154,10 +154,10 @@ class UnregisteredStudent(models.Model):
         verbose_name_plural = "Unregistered Students"
 
 class TodayRebate(models.Model):
+    from .Semesters.spring23 import AllocationSpring23
     date = models.DateField(help_text="Date of the rebate",default=now)
     Caterer = models.CharField(max_length=30, default="")
-    #make it a foreign key so that caterer mail has names of students
-    allocation_id = models.CharField(max_length=30, default="")
+    allocation_id = models.ForeignKey(AllocationSpring23, on_delete=models.SET_NULL,null=True,blank=True)
     start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
     end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)
 

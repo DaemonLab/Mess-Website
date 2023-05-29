@@ -29,12 +29,12 @@ def update_short_bill(sender, instance, **kwargs):
             print(old_instance.approved,instance.approved)
             if instance.approved == True:
                 save_short_bill(email,allocation.month,days,allocation.high_tea, allocation.caterer_name)
-                new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer_name,allocation_id = allocation.student_id,start_date=instance.start_date,end_date=instance.end_date)
+                new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer_name,allocation_id = allocation,start_date=instance.start_date,end_date=instance.end_date)
                 new_rebate.save()
                 print("Saved")
             else:
                 save_short_bill(email,allocation.month,-days,allocation.high_tea, allocation.caterer_name)
-                new_rebate = TodayRebate.objects.filter(allocation_id=allocation.student_id).last().delete()
+                new_rebate = TodayRebate.objects.filter(allocation_id=allocation).last().delete()
                 print("Deleted")
             rebate_mail(instance.start_date,instance.end_date,instance.approved,email)
     except Exception as e:
