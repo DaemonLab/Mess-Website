@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from .models import Student, Rebate, LongRebate, TodayRebate, AllocationSpring23,PeriodAutumn23,PeriodSpring23, RebateAutumn23, RebateSpring23
 from .utils.rebate_checker import count, is_present_autumn, is_present_spring
-from .utils.django_email_server import rebate_mail
+from .utils.django_email_server import rebate_mail,long_rebate_mail
 from .utils.month import fill_periods
 from .utils.rebate_bills_saver import save_short_bill, save_long_bill
 
@@ -51,10 +51,13 @@ def update_long_bill(sender, instance, **kwargs):
         if old_instance.approved != instance.approved:
             email = instance.email
             days_per_period = fill_periods(email,instance.start_date, instance.end_date)
+            left_start_date,left_end_date = [days for period,days in days_per_period if period==7 or period==8]
             if instance.approved == True:
                 save_long_bill(email,days_per_period,1)
+                long_rebate_mail(instance.start_date,instance.end_date,instance.approved,email.email,left_start_date,left_end_date)
             else:
                 save_long_bill(email,days_per_period,-1)
+                long_rebate_mail(instance.start_date,instance.end_date,instance.approved,email.email,left_start_date,left_end_date)
     except Exception as e:
         print(e)
 
