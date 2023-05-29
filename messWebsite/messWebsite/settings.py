@@ -16,7 +16,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -48,7 +48,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "messWebsite.middleware.LoginRequiredMiddleware"
+    "messWebsite.middleware.LoginRequiredMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = "messWebsite.urls"
@@ -165,7 +167,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # managing media
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL= '/media/'
