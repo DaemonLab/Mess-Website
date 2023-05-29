@@ -31,6 +31,7 @@ message_rebate ="""
 Dear Student, 
 Your short term rebate application from {start_date} to {end_date} has been {approved}.
 """
+
 htmlUp = """\
 <html>
   <body>
@@ -43,6 +44,15 @@ htmlBottom = """\
     </p>
   </body>
 </html>"""
+
+message_long_rebate = """
+Dear Student,
+Your long term rebate application from {start_date} to {end_date} has been {approved}.
+Bills for them have been {added} your account.
+"""
+left_message = """Note: Bills for {left_start_date} to {left_end_date} will be removed as an when you are allotcated a caterer during this period.
+"""
+
 def rebate_mail(start_date, end_date, approved, recipient):
     subject = subject_rebate
     if(approved): message = message_rebate.format(start_date=start_date, end_date=end_date, approved = "approved")
@@ -54,4 +64,12 @@ def caterer_mail(message,name,recipient,date_applied):
     message = htmlUp.format(name=name,date=date_applied) +message + htmlBottom
     send_html(subject, message, recipient)
 
-
+def long_rebate_mail(start_date, end_date, approved, recipient, left_start_date, left_end_date):
+    subject = "Long Term Rebate Application"
+    if(approved): 
+        message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "approved",added="removed from")
+        if(left_start_date != None):
+            message += left_message.format(left_start_date=left_start_date, left_end_date=left_end_date)
+    else: 
+        message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "rejected",added="added to")
+    send(subject, message, recipient)
