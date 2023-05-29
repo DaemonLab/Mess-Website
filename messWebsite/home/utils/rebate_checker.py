@@ -13,7 +13,7 @@ def is_not_duplicate(s,start,end):
         print("is_not_duplicate")
         print(short)
         print(long)
-        if (short==None or short.end_date< start-timedelta(days=2) or short.start_date>end+timedelta(days=2)) and (long==None or long.end_date< start-timedelta(days=2) or long.start_date>end+timedelta(days=2)):
+        if (short==None or short.end_date<= start-timedelta(days=2) or short.start_date>=end+timedelta(days=2)) and (long==None or long.end_date<= start-timedelta(days=2) or long.start_date>=end+timedelta(days=2)):
             return True
         else:
             return False
