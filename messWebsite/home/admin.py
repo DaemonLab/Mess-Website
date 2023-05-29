@@ -1047,6 +1047,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(admin.ModelAdmin):
     model = LeftLongRebate
     search_fields = ("email",)
+    list_display = ("email", "start_date", "end_date")
     fieldsets = (
         (None,{"fields": ("email", "start_date", "end_date")},),)
     
