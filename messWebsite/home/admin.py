@@ -786,7 +786,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateBillsResource
     model=RebateSpring23
     search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
-    list_filter = ("email__hostel","email__department","email__degree")
+    list_filter = ("email__hostel","email__degree","email__department")
     list_display = ("__str__","roll_number","name","hostel")
     fieldsets = ((None,rebate_fields,),)
 
@@ -948,18 +948,21 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(PeriodAutumn22)
 class about_Admin(admin.ModelAdmin):
+    list_display = ("Sno", "start_date", "end_date")
     model = PeriodAutumn22
     fieldsets = (
         (None,{"fields": ("Sno", "start_date", "end_date")},),)
     
 @admin.register(PeriodSpring23)
 class about_Admin(admin.ModelAdmin):
+    list_display = ("Sno", "start_date", "end_date")
     model = PeriodSpring23
     fieldsets = (
         (None,{"fields": ("Sno", "start_date", "end_date")},),)
     
 @admin.register(PeriodAutumn23)
 class about_Admin(admin.ModelAdmin):
+    list_display = ("Sno", "start_date", "end_date")
     model = PeriodAutumn23
     fieldsets = (
         (None,{"fields": ("Sno", "start_date", "end_date")},),)
@@ -1056,5 +1059,6 @@ class about_Admin(admin.ModelAdmin):
         """
         for obj in queryset:
             email = obj.email
-            days_per_period = fill_periods(obj.start_date, obj.end_date)
-            save_long_bill(email, days_per_period,1)
+            student = Student.objects.filter(email=email).last()
+            days_per_period = fill_periods(student,obj.start_date, obj.end_date)
+            save_long_bill(student, days_per_period,1)

@@ -119,8 +119,11 @@ def save_long_bill(email,days_per_period,j):
                     left.save()
                     print("left",left.start_date)
                 else:
-                    LeftLongRebate.objects.get(email=email,start_date=days).delete()
+                    LeftLongRebate.objects.filter(email=str(student.email),start_date=days).delete()    
+                    print("deleted")
+                    break
             case 8:
-                left,created = LeftLongRebate.objects.get_or_create(email=str(student.email))
-                left.end_date = days
-                left.save()
+                if(j==1):
+                    left,created = LeftLongRebate.objects.get_or_create(email=str(student.email))
+                    left.end_date = days
+                    left.save()

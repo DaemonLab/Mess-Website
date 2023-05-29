@@ -330,7 +330,7 @@ def allocation(request):
         except Exception as e:
             print(e)
             messages = "Invalid CSV file"
-    period_obj = PeriodSpring23.objects.filter().last()
+    period_obj = PeriodSpring23.objects.get(Sno=5)
     Ajay_high_tea = AllocationSpring23.objects.filter(caterer_name="Ajay", high_tea=True,month=period_obj).count()
     Gauri_high_tea = AllocationSpring23.objects.filter(caterer_name="Gauri", high_tea=True,month=period_obj).count()
     Kanaka_high_tea = AllocationSpring23.objects.filter(caterer_name="Kanaka", high_tea=True,month=period_obj).count()
