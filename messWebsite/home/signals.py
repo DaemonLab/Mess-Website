@@ -50,7 +50,7 @@ def update_long_bill(sender, instance, **kwargs):
         print(old_instance.approved,instance.approved)
         if old_instance.approved != instance.approved:
             email = instance.email
-            days_per_period = fill_periods(instance.start_date, instance.end_date)
+            days_per_period = fill_periods(email,instance.start_date, instance.end_date)
             if instance.approved == True:
                 save_long_bill(email,days_per_period,1)
             else:

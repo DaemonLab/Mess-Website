@@ -81,7 +81,7 @@ class AllocationResource(resources.ModelResource):
     )
     month = fields.Field(attribute="month", column_name="Month")
     student_id = fields.Field(attribute="student_id", column_name="Student ID")
-    caterer_name = fields.Field(attribute="caterer_name", column_name="Caterer Alloted")
+    caterer_name = fields.Field(attribute="caterer_name", column_name="Caterer Allocated")
     high_tea = fields.Field(attribute="high_tea", column_name="High Tea")
     first_pref = fields.Field(attribute="first_pref", column_name="First Preferences")
     second_pref = fields.Field(
