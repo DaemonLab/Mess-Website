@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Student, Rebate, LongRebate, TodayRebate, AllocationSpring23,PeriodAutumn23,PeriodSpring23, RebateAutumn23, RebateSpring23
+from .models import Student, Rebate, LongRebate, TodayRebate, AllocationSpring23,PeriodAutumn23,PeriodSpring23, RebateAutumn23, RebateSpring23, UnregisteredStudent
 from .utils.rebate_checker import count, is_present_autumn, is_present_spring
 from .utils.django_email_server import rebate_mail,long_rebate_mail
 from .utils.month import fill_periods
@@ -93,3 +93,11 @@ def update_spring_bill(sender, instance, created, **kwargs):
             rebate_bill.save()
     except Exception as e:
         print(e)
+
+@receiver(post_save, sender=PeriodSpring23)
+def create_unregistered(sender, instance,created, **kwargs):
+    if created:
+        for student in Student.objects.all():
+            unregistered,_ = UnregisteredStudent.objects.get_or_create(email=str(student.email))
+            unregistered.period = instance
+            unregistered.save()
