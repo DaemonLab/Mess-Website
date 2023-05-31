@@ -886,10 +886,15 @@ allocation_fields = {
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationResource
     model = AllocationAutumn22
-    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
-    list_filter = ("month", "caterer_name", "high_tea")
-    list_display = ("student_id", "month", "caterer_name", "high_tea")
+    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea","month")
+    list_filter = ("month", "caterer_name", "high_tea","roll_no__hostel","roll_no__degree","roll_no__department",)
+    list_display = ("student_id","email", "month", "caterer_name", "high_tea")
     fieldsets = ((None,allocation_fields,),)
+
+    @admin.display(description="email")
+    def email(self, obj):
+        return obj.roll_no.email
+    
     actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
@@ -908,10 +913,15 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationResource
     model = AllocationSpring23
-    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
-    list_filter = ("month", "caterer_name", "high_tea")
-    list_display = ("student_id", "month", "caterer_name", "high_tea")
+    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea","month")
+    list_filter = ("month", "caterer_name", "high_tea","roll_no__hostel","roll_no__degree","roll_no__department",)
+    list_display = ("student_id","email", "month", "caterer_name", "high_tea")
     fieldsets = ((None,allocation_fields,),)
+
+    @admin.display(description="email")
+    def email(self, obj):
+        return obj.roll_no.email
+    
     actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
@@ -930,10 +940,15 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationResource
     model = AllocationAutumn23
-    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
-    list_filter = ("month", "caterer_name", "high_tea")
-    list_display = ("student_id", "month", "caterer_name", "high_tea")
+    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea","month")
+    list_filter = ("month", "caterer_name", "high_tea","roll_no__hostel","roll_no__degree","roll_no__department",)
+    list_display = ("student_id","email", "month", "caterer_name", "high_tea")
     fieldsets = ((None,allocation_fields,),)
+
+    @admin.display(description="email")
+    def email(self, obj):
+        return obj.roll_no.email
+    
     actions = ["export_as_csv"]
 
     def export_as_csv(self, request, queryset):
