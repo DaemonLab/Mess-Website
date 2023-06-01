@@ -273,12 +273,28 @@ def allocation(request):
 
             for record in csv_data.to_dict(orient="records"):
                 try:
-                    first_pref = str(record["First Preference"]).capitalize()
-                    second_pref = str(record["Second Preference"]).capitalize()
-                    third_pref = str(record["Third Preference"]).capitalize()
-                    period = str(record["Period"]).capitalize()
-                    period_obj = PeriodSpring23.objects.get(Sno=period)
+                    if 'First Preference' in csv_data.columns:
+                        first_pref = str(record["First Preference"]).capitalize()
+                    else:
+                        first_pref =None
+                    if 'Second Preference' in csv_data.columns:
+                        second_pref = str(record["Second Preference"]).capitalize()
+                    else:
+                        second_pref=None
+                    if 'Third Preference' in csv_data.columns:
+                        third_pref = str(record["Third Preference"]).capitalize()
+                    else:
+                        third_pref=None
+                    if 'Period' in csv_data.columns:
+                        period = str(record["Period"]).capitalize()
+                        period_obj = PeriodSpring23.objects.get(Sno=period)
+                    else:
+                        period_obj = PeriodSpring23.objects.filter().last()
                     high_tea = record["High Tea"]
+                    if(high_tea=="Yes" or high_tea=="True"):
+                        high_tea=True
+                    else:
+                        high_tea=False
                     student = Student.objects.filter(email=record["Email"]).first()
                     print(student)
                     for pref in [first_pref, second_pref, third_pref]:
