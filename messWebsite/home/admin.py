@@ -814,10 +814,28 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         Clean testing period data
         """
         for obj in queryset:
-            obj.period5_short = 0
-            obj.period5_long = 0
-            obj.period5_high_tea = 1
-            obj.period5_bill = 0
+            if(obj.period1_short==None):
+                obj.period1_short = 0
+            if(obj.period1_long==None):
+                obj.period1_long = 0
+            if(obj.period2_short==None):
+                obj.period2_short = 0
+            if(obj.period2_long==None):
+                obj.period2_long = 0
+            if(obj.period3_short==None):
+                obj.period3_short = 0
+            if(obj.period3_long==None):
+                obj.period3_long = 0
+            if(obj.period4_short==None):
+                obj.period4_short = 0
+            if(obj.period4_long==None):
+                obj.period4_long = 0
+            if(obj.period5_short==None):
+                obj.period5_short = 0
+            if(obj.period5_long==None):
+                obj.period5_long = 0
+            if(obj.period6_short==None):
+                obj.period6_short = 0
             obj.save()
 
     def export_as_csv(self, request, queryset):
