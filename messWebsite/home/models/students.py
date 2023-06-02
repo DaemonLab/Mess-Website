@@ -23,6 +23,7 @@ class Student(models.Model):
         _("Department of Student"),
         max_length=30,
         help_text="This contains the department of the Student",
+        null=True,
     )
     degree = models.CharField(
         _("Academic Program"),
@@ -38,77 +39,14 @@ class Student(models.Model):
         _("Room Number of Student"),
         max_length=5,
         help_text="This contains the room number of the Student",
-        null=True,
     )
 
     def __str__(self):
-        return "Student :" + str(self.roll_no)
+        return str(self.email)
 
     class Meta:
         verbose_name = "Student Details"
         verbose_name_plural = "Student Details"
-
-
-class Allocation(models.Model):
-    """
-    Stores the Allocation details
-    """
-
-    roll_no = models.ForeignKey(
-        Student, default=0, on_delete=models.SET_NULL, null=True
-    )
-    student_id = models.CharField(
-        _("Allocation Id"),
-        default=None,
-        max_length=30,
-        help_text="This contains the Allocation Id",
-        null=True,
-        blank=True,
-    )
-    month = models.CharField(
-        _("Month"),
-        max_length=10,
-        help_text="This contains for which month the allocation id is alloted",
-        default="",null=True,blank=True
-    )
-    caterer_name = models.CharField(
-        _("Caterer Name"),
-        max_length=50,
-        help_text="The text in this text field contains the caterer name.",
-        default="",null=True,blank=True
-    )
-    high_tea = models.BooleanField(
-        _("High Tea"), help_text="This contains the info if high tea is taken or not",
-        default=False,null=True,blank=True
-    )
-    first_pref = models.CharField(
-        _("First Preference"),
-        default=None,
-        max_length=10,
-        help_text="This contians the first preference caterer of the student",
-        null=True,blank=True
-    )
-    second_pref = models.CharField(
-        _("Second Preference"),
-        default=None,
-        max_length=10,
-        help_text="This contians the first preference caterer of the student",
-        null=True,blank=True
-    )
-    third_pref = models.CharField(
-        _("Third Preference"),
-        default=None,
-        max_length=10,
-        help_text="This contians the first preference caterer of the student",
-        null=True,blank=True
-    )
-
-    def __str__(self):
-        return self.student_id
-
-    class Meta:
-        verbose_name = "Allocation Details"
-        verbose_name_plural = "Allocation Details"
 
 
 class Scan(models.Model):
@@ -116,9 +54,9 @@ class Scan(models.Model):
     Stores the Scan details of each allocation id
     Note: this is not implemented yet
     """
-
+    from .Semesters.spring23 import AllocationSpring23
     student_id = models.ForeignKey(
-        Allocation, default=0, on_delete=models.SET_NULL, null=True
+        AllocationSpring23, default=0, on_delete=models.SET_NULL, null=True
     )
     date = models.DateField(help_text="Date of the scan details")
     breakfast = models.BooleanField(
@@ -148,10 +86,10 @@ class Rebate(models.Model):
     """
     Stores the rebate details of every student
     """
-
+    from .Semesters.spring23 import AllocationSpring23
     email = models.CharField(max_length=30, default=0)
     allocation_id = models.ForeignKey(
-        Allocation,
+        AllocationSpring23,
         related_name="allocation_id",
         default=0,
         on_delete=models.SET_NULL,
@@ -179,14 +117,7 @@ class LongRebate(models.Model):
     Stores the long rebate details of every student
     """
 
-    email = models.CharField(_("email"), max_length=30, default="")
-    # allocation_id_id = models.ForeignKey(
-    #     Allocation,
-    #     related_name="allocation_id_long",
-    #     default=0,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    # )
+    email = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
     start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
     end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)   
     days = models.IntegerField(_("days"), default=0)
@@ -199,20 +130,21 @@ class LongRebate(models.Model):
     )
 
     def __str__(self):
-        return str(self.date_applied)
+        return str(self.date_applied) +" "+ str(self.email)
 
     class Meta:
         verbose_name = "Long Rebate Details"
         verbose_name_plural = "Long Rebate Details"
 
-
 class UnregisteredStudent(models.Model):
     """
     Stores the long rebate details of every student
     """
-
+    from .Semesters.spring23 import PeriodSpring23
+    from .Semesters.autumn23 import PeriodAutumn23
+    from .Semesters.autumn22 import PeriodAutumn22
     email = models.CharField(_("email"), max_length=30, default="")
-    month = models.CharField(_("month"), max_length=30, default="")
+    period = models.ForeignKey(PeriodSpring23, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.email)
@@ -222,15 +154,28 @@ class UnregisteredStudent(models.Model):
         verbose_name_plural = "Unregistered Students"
 
 class TodayRebate(models.Model):
+    from .Semesters.spring23 import AllocationSpring23
     date = models.DateField(help_text="Date of the rebate",default=now)
     Caterer = models.CharField(max_length=30, default="")
-    allocation_id = models.CharField(max_length=30, default="")
+    allocation_id = models.ForeignKey(AllocationSpring23, on_delete=models.SET_NULL,null=True,blank=True)
     start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
     end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)
 
     def __str__(self):
-        return str(self.date)
+        return str(self.date) +" "+ str(self.allocation_id)
     
     class Meta:
         verbose_name = "Today's Rebate"
         verbose_name_plural = "Today's Rebate"
+
+class LeftLongRebate(models.Model):
+    email = models.CharField(_("email"), max_length=30, default="")
+    start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
+    end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)
+
+    def __str__(self):
+        return str(self.email)
+    
+    class Meta:
+        verbose_name = "Left Long Rebate"
+        verbose_name_plural = "Left Long Rebate"

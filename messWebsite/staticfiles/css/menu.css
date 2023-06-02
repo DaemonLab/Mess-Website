@@ -1,0 +1,27 @@
+h1{
+    font-family: 'Arial', sans-serif;
+    color: rgb(18, 37, 106);
+    letter-spacing: 1px;
+    font-size: 2rem;
+    padding: 20px 10px;
+}
+.section{
+    max-width: 1258px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: auto;
+    margin-left: auto;
+    height: 90vh; 
+}
+
+.information{
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+    background: #F5F5F5;
+    border-radius: 30px;
+    padding: 20px 20px 10px 20px;
+    font-family: 'Arial', sans-serif;
+    color: black;
+    font-weight: 600;
+}
