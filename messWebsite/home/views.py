@@ -204,7 +204,7 @@ def rebate(request):
                 ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
                 if not (period_start<=start_date<=period_end and period_start<=end_date<=period_end):
                     text = "Please fill the rebate of this period only"
-                elif not is_not_duplicate(student, start_date, end_date):
+                elif not is_not_duplicate(student, start_date, end_date,period):
                     text = "You have already applied for rebate for these dates"
                 elif ch >= 0:
                     text = (
@@ -390,7 +390,7 @@ def addLongRebateBill(request):
             end_date = parse_date(request.POST["end_date"])
             days = (end_date - start_date).days + 1
             student = Student.objects.get(email=request.user.email)
-            if not is_not_duplicate(student, start_date, end_date):
+            if not is_not_duplicate(student, start_date, end_date,0):
                 text = "You have already applied for rebate for these dates"
             else:
                 try:
