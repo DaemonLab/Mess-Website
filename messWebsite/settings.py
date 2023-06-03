@@ -20,7 +20,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -128,8 +127,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
-CSRF_TRUSTED_ORIGINS = ["https://*"]
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
