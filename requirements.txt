@@ -1,4 +1,0 @@
-Django==4.1.7
-django_allauth==0.54.0
-django_import_export==3.1.0
-pandas==1.5.3
