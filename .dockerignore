@@ -1,4 +1,6 @@
+.env
+.vscode
+
 __pycache__
 migrations
 db.sqlite3
-.env
