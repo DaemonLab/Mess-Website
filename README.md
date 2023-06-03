@@ -12,3 +12,7 @@ Finally run cmd - python manage.py runserver <br>
 
 SQLite is as the default database during development. <br>
 Read the Documentaions on index.html present in /docs/_build/html/index.html
+
+
+### Run on Docker
+- Install Docker and Docker Compose from [here](https://www.docker.com/products/docker-desktop/).
