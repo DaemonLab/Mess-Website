@@ -1,0 +1,6 @@
+__pycache__
+migrations
+
+.env
+.vscode
+db.sqlite3
