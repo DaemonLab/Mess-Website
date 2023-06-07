@@ -394,7 +394,7 @@ def addLongRebateBill(request):
                 text = "You have already applied for rebate for these dates"
             else:
                 try:
-                    file=request.FILES["pdf"]
+                    file=request.FILES["img"]
                     print(file)
                     long = LongRebate(
                         email=student,
@@ -456,7 +456,7 @@ def period_data(request):
         period = PeriodAutumn23.objects.all()
     period_data = {
         'semester': semester,
-        'data': list(period.values('start_date', 'end_date')),
+        'data': list(period.values('Sno','start_date', 'end_date')),
     }
     # print(period_data['semester'])
     # print(period_data['data'])
