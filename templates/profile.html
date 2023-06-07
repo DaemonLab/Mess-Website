@@ -78,10 +78,11 @@
                             var select = document.getElementById('period-select');
                             select.innerHTML = "<option value='default'>Period Range</option>";
                             for (var i = 0; i < data.length; i++) {
+                                var Sno = data[i].Sno;
                                 var startDate = data[i].start_date;
                                 var endDate = data[i].end_date;
                                 var opt = document.createElement('option');
-                                opt.value = i+1
+                                opt.value = Sno
                                 opt.innerHTML = startDate + ' to ' + endDate;
                                 select.appendChild(opt);
                             }
