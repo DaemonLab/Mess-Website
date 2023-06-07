@@ -1,0 +1,140 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{%block externalCss%} 
+{% load i18n%}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+
+{% endblock %} 
+{% block body %}
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">User Profile</h5>
+                        <img class="img-fluid rounded-4" src="{{ picture }}" alt="User Image">
+                        <h6 class="card-subtitle mt-2">{{ student.name }}</h6>
+                        <span class="card-text">Roll Number: {{ student.roll_no }}</span><br>
+                        <span class="card-text">Email: {{ user.email }}</span><br>
+                        <span class="card-text">Department: {{ student.department }}</span><br>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h6 class="card-subtitle">Select Semester:</h6>
+                        <select class="form-control" id="semester-select">
+                            <option value="default">Semesters</option>
+                            <option value="autumn22">Autumn Semester 2022</option>
+                            <option value="spring23">Spring Semester 2023</option>
+                            <option value="autumn23">Autumn Semester 2023</option>
+                        </select>
+                        <h6 id="period-instuctions" class="mt-2">Please select a semester first</h6>
+                        <h6 id="new-instructions" class="mt-2" style="display: none;">Select a period to view rebate bills</h6>
+                        <select class="form-control" id="period-select">
+                            <option value="default">Period Range</option>
+                        </select>
+                        <hr>
+                        <h5 class="card-title">Rebate Bills</h5>
+                        <div id="rebate-data" class="d-block">
+                            <div id="short"></div>
+                            <div id="long"></div>
+                            <div id="high_tea"></div>
+                            <div id="bills"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#semester-select').on('change', function() {
+                var semester = $(this).val();
+                $('#short').html('');
+                $('#long').html('');
+                $('#high_tea').html('');
+                $('#bills').html('');
+                if(semester=="default") {
+                    $('#period-instuctions').show();
+                    $('#new-instructions').hide();
+                    return;
+                }
+                else{
+                    console.log(semester);
+                    $.ajax({
+                        url: "{% url 'period_data' %}",
+                        type: "GET",
+                        data: {
+                            'semester': semester
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            var data = response.data;
+                            var select = document.getElementById('period-select');
+                            select.innerHTML = "<option value='default'>Period Range</option>";
+                            for (var i = 0; i < data.length; i++) {
+                                var Sno = data[i].Sno;
+                                var startDate = data[i].start_date;
+                                var endDate = data[i].end_date;
+                                var opt = document.createElement('option');
+                                opt.value = Sno
+                                opt.innerHTML = startDate + ' to ' + endDate;
+                                select.appendChild(opt);
+                            }
+                            $('#period-instuctions').hide();
+                            $('#new-instructions').show();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+            $('#period-select').on('change', function() {
+                var period = $(this).val();
+                if(period=="default") {
+                    $('#short').html('');
+                    $('#long').html('');
+                    $('#high_tea').html('');
+                    $('#bills').html('');
+                    return;
+                }
+                var semester = $('#semester-select').val();
+                console.log(period);
+                $.ajax({
+                    url: "{% url 'rebate_data' %}",
+                    type: "GET",
+                    data: {
+                        'semester': semester,
+                        'period': period
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        var data = response.data;
+                        var short = document.getElementById('short');
+                        var long = document.getElementById('long');
+                        var high_tea = document.getElementById('high_tea');
+                        var bills = document.getElementById('bills');
+                        if(data[0] == null) data[0] = 0;
+                        if(data[1] == null) data[1] = 0;
+                        if(data[2]==false) data[2] = "No";
+                        else data[2] = "Yes";
+                        short.innerHTML = "Number of Short Rebate: " + data[0]
+                        long.innerHTML = "Number of Long Rebates: " + data[1]
+                        high_tea.innerHTML = "High Tea taken: " + data[2]
+                        bills.innerHTML = "Total Bills: " + data[3]
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+{% endblock%}
