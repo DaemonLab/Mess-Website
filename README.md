@@ -1,14 +1,36 @@
-# Mess-Website
+# Mess Website - Website for Dining Facility at IIT Indore
+A Django-based software project that simplifies the process of applying for rebates by students.
 
-Website for Dining Facility at IIT Indore
+## Features
+- Automated rebate rule checks
+- Student information access
+- Admin allocation
+- Email notifications
+- Billing automation
 
-Note to Developers <br>
-Clone the repository using git clone https://github.com/DaemonLab/Mess-Website.git <br>
-Install Python 3.7 Or Higher <br>
-Install Django cmd - pip install django <br>
-Install all dependencies cmd - pip install –-user -r requirements.txt <br>
-Finally run cmd - python manage.py runserver <br>
+Ongoing development of additional features ...
 
+## Note to Developers
 
-SQLite is as the default database during development. <br>
-Read the Documentaions on index.html present in /docs/_build/html/index.html
+### Setup
+- Clone the repository
+    ```shell
+    $ git clone https://github.com/DaemonLab/Mess-Website.git
+    ```
+- Install Python 3.7 Or Higher
+- Install Django 
+    ```shell
+    $ pip install django
+    ```
+- Install all dependencies
+    ```shell
+    $ pip install –-user -r requirements.txt
+    ```
+- Finally run
+    ```shell
+    $ python manage.py runserver
+    ```
+_Note:_ SQLite is as the default database during development
+
+### Documentation
+Read the Documentaions on `/docs/_build/html/index.html`
