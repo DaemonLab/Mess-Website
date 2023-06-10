@@ -153,10 +153,23 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-
+ACCOUNT_ADAPTER = 'home.adapters.account_adapter.CustomAccountAdapter'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 8000
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_FORMS = {
+'signup': 'home.forms.CustomSignupForm',
+}
+# SOCIALACCOUNT_FORMS = {
+#     "signup": "home.forms.CustomSocialSignupForm",
+# }
 
 SITE_ID = 3
-LOGIN_URL = "/accounts/google/login/"
+LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/home/"
 LOGIN_EXEMPT_URLS = ["/admin/*"]
 
