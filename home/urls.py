@@ -36,6 +36,7 @@ urlpatterns = [
     path('allocation/', views.allocation, name='allocation'),
     path('longRebate/', views.addLongRebateBill, name='addLongRebateBill'),
     path('profile/', views.profile, name='profile'),
+    path('allocationForm/', views.allocationForm, name='allocationForm'),
     path('period_data/', views.period_data, name='period_data'),
     path('rebate_data/', views.rebate_data, name='rebate_data'),
 ]

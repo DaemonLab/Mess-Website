@@ -179,3 +179,19 @@ class LeftLongRebate(models.Model):
     class Meta:
         verbose_name = "Left Long Rebate"
         verbose_name_plural = "Left Long Rebate"
+
+class AllocationForm(models.Model):
+    from .Semesters.spring23 import PeriodSpring23
+    heading = models.CharField(_("heading"), max_length=100, default="",null=True, blank=True)
+    description = models.TextField(_("description"), default="",null=True, blank=True)
+    period = models.ForeignKey(PeriodSpring23, on_delete=models.SET_NULL, null=True, blank=True)
+    active = models.BooleanField(_("active"), default=False,null=True, blank=True)
+    start_time = models.DateTimeField(_("Start Time"), default=now,null=True,blank=True)
+    end_time= models.DateTimeField(_("End Time"), null=True, blank=True)
+
+    def __str__(self):
+        return str(self.heading)
+    
+    class Meta:
+        verbose_name = "Allocation Form"
+        verbose_name_plural = "Allocation Form"

@@ -4,6 +4,7 @@ from django.core.files import File
 from django.core.files.storage import default_storage
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 from allauth.socialaccount.models import SocialAccount
 from home.models import (
     About,
@@ -28,6 +29,7 @@ from home.models import (
     PeriodAutumn23,
     AllocationAutumn23,
     RebateAutumn23,
+    AllocationForm,
 )
 from .utils.get_rebate_bills import get_rebate_bills
 from .utils.rebate_checker import (
@@ -413,6 +415,102 @@ def addLongRebateBill(request):
             text = "Email ID does not exist in the database. Please eneter the correct email ID"
     context = {"text": text, "key": key}
     return render(request, "longRebate.html", context)
+
+@login_required
+def allocationForm(request):
+    """
+    Display the Allocation Form Page :model:`home.models.students`.
+
+    **Template:**
+
+    :template:`home/allocationForm.html`
+
+    Gets the data from the allocation form , and adds it to the coresponding allocation model
+    """
+    caterer_list = Caterer.objects.filter(visible=True).all()
+    alloc_form = AllocationForm.objects.filter(active=True).last()
+    try:
+        student = Student.objects.filter(email=str(request.user.email)).last()
+        key=student.email
+        text = ""
+        if alloc_form.start_time and alloc_form.start_time>now() and alloc_form.end_time and alloc_form.end_time<now():
+            text = "Form is closed for now."
+        if AllocationSpring23.objects.filter(roll_no=student,month=alloc_form.period).exists():
+            allocation_id = AllocationSpring23.objects.filter(roll_no=student,month=alloc_form.period).last()
+            text = "You have already filled the form for this period. with first preference:" + allocation_id.first_pref + " second preference:" + allocation_id.second_pref
+        if request.method == "POST" and request.user.is_authenticated :
+            try:
+                period_obj = alloc_form.period
+                high_tea = request.POST["high_tea"]
+                if caterer_list.count()<1:
+                    first_pref = None
+                else:
+                    first_pref = request.POST["first_pref"]
+                if caterer_list.count()<2:
+                    second_pref = None
+                else:
+                    second_pref = request.POST["second_pref"]
+                if caterer_list.count()<3:
+                    third_pref = None
+                else:
+                    third_pref = request.POST["third_pref"]
+                for pref in [first_pref, second_pref, third_pref]:
+                    caterer1 = caterer_list[0]
+                    caterer2 = caterer_list[1]
+                    if(caterer_list.count()==3):
+                        caterer3 = caterer_list[2]
+                    else:
+                        caterer3=None
+                    if pref == caterer1.name and caterer1.student_limit > 0:
+                        student_id = str(caterer1.name[0])
+                        if high_tea == "True":
+                            student_id += "H"
+                        student_id += str(caterer1.student_limit)
+                        caterer_name = caterer1.name
+                        caterer1.student_limit -= 1
+                        caterer1.save(update_fields=["student_limit"])
+                        break
+                    elif pref == caterer2.name and caterer2.student_limit > 0:
+                        student_id = str(caterer2.name[0])
+                        if high_tea == "True":
+                            student_id += "H"
+                        student_id += str(caterer2.student_limit)
+                        caterer_name = caterer2.name
+                        caterer2.student_limit -= 1
+                        caterer2.save(update_fields=["student_limit"])
+                        break
+                    elif caterer3 and pref == caterer3.name and caterer3.student_limit > 0:
+                        student_id = str(caterer3.name[0])
+                        if high_tea == "True":
+                            student_id += "H"
+                        student_id += str(caterer3.student_limit)
+                        caterer_name = caterer3.name
+                        caterer3.student_limit -= 1
+                        caterer3.save(update_fields=["student_limit"])
+                        break
+                a = AllocationSpring23(
+                    roll_no=student,
+                    student_id=student_id,
+                    month=period_obj,
+                    caterer_name=caterer_name,
+                    high_tea=high_tea,
+                    first_pref=first_pref,
+                    second_pref=second_pref,
+                    third_pref=third_pref,
+                )
+                a.save()
+                text = "Allocation Form filled Successfully"
+            except Exception as e:
+                text = "The Form is closed for now"
+                print(e)
+        # else:
+        #     text="The Form is closed for now"
+        #     print("The Form is closed for now")
+    except Exception as e:
+        print(e)
+        text = "Signed in account can not fill the allocation form"
+    context = {"text": text, "caterer_list": caterer_list, "allocation_form_details": alloc_form}
+    return render(request, "allocationForm.html", context)
 
 @login_required
 def profile(request):

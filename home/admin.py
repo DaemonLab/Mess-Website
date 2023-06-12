@@ -38,6 +38,7 @@ from home.models import (
     PeriodSpring23,
     PeriodAutumn23,
     LeftLongRebate,
+    AllocationForm,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 from .resources import (
@@ -173,6 +174,7 @@ class about_Admin(admin.ModelAdmin):
                     "sheet_url",
                     "lower_description",
                     "student_limit",
+                    "visible",
                 ),
                 "description": "%s" % CATERER_DESC_TEXT,
             },
@@ -1086,6 +1088,41 @@ class about_Admin(admin.ModelAdmin):
     list_display = ("email", "start_date", "end_date")
     fieldsets = (
         (None,{"fields": ("email", "start_date", "end_date")},),)
+    
+    actions = ["Add"]
+
+    @admin.action(description="Add left long rebate to Bills")
+    def Add(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        for obj in queryset:
+            email = obj.email
+            student = Student.objects.filter(email=email).last()
+            days_per_period = fill_periods(student,obj.start_date, obj.end_date)
+            save_long_bill(student, days_per_period,1)
+
+@admin.register(AllocationForm)
+class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
+    # resource_class = AllocationFormResource
+    model = AllocationForm
+    search_fields = ("start_time","end_time","heading","period__Sno")
+    list_filter = ("start_time","end_time","heading","period__Sno")
+    list_display = ("__str__", "start_time", "end_time","active")
+    fieldsets = (
+        (None,
+            {"fields": 
+                (
+                    "heading", 
+                    "description", 
+                    "period",
+                    "start_time",
+                    "end_time",
+                    "active",
+                )
+            },
+        ),
+    )
     
     actions = ["Add"]
 
