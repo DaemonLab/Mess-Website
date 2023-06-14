@@ -38,6 +38,7 @@ from home.models import (
     PeriodSpring23,
     PeriodAutumn23,
     LeftLongRebate,
+    LeftShortRebate,
     AllocationForm,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
@@ -72,9 +73,7 @@ CAFETERIA_DESC_TEXT = "This contains the content that will show up in the Additi
 CONTACT_DESC_TEXT = "This contains the content that will show up in the contact page. Add new field for each new contact."
 ALLOCATION_DESC_TEXT = "This contains the Allocation details of the students. First import data through /allocation/ url then export"
 STUDENT_DESC_TEXT = "This contains the Basic details of each students."
-REBATE_DESC_TEXT = (
-    "This contains the rebate details of each rebate applied by the students."
-)
+REBATE_DESC_TEXT = "This contains the rebate details of each rebate applied by the students."
 REBATE_BILLS_DESC_TEXT = "This contains the rebate bills of each students."
 
 # Register your models here
@@ -1102,6 +1101,45 @@ class about_Admin(admin.ModelAdmin):
             days_per_period = fill_periods(student,obj.start_date, obj.end_date)
             save_long_bill(student, days_per_period,1)
 
+@admin.register(LeftShortRebate)
+class about_Admin(admin.ModelAdmin):
+    model = LeftShortRebate
+    search_fields = ("email",)
+    list_display = ("email", "start_date", "end_date")
+    fieldsets = (
+        (None,{"fields": ("email", "start_date", "end_date","date_applied")},),)
+    
+    actions = ["Add"]
+
+    @admin.action(description="Add left short rebate to Bills")
+    def Add(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        for obj in queryset:
+            email = obj.email
+            for period in PeriodSpring23.objects.all():
+                if(period.start_date <= obj.start_date and period.end_date >= obj.end_date):
+                    days = (obj.end_date - obj.start_date).days + 1
+                    allocation=AllocationSpring23.objects.filter(roll_no__email=email,month=period).last()
+                    if allocation:
+                        save_short_bill(email,period,days,allocation.caterer_name,allocation.high_tea,1)
+                        new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer_name,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)
+                        new_rebate.save()
+                        print("Saved")
+                        rebate_mail(obj.start_date,obj.end_date,obj.approved,email)
+                        short_rebate = Rebate(
+                            email=email,
+                            allocation_id=allocation,
+                            start_date=obj.start_date,
+                            end_date=obj.end_date,
+                            date_applied=obj.date_applied,
+                            approved=True,
+                        )
+                        short_rebate.save()
+                        LeftShortRebate.objects.filter(email=email, date_applied = obj.date_applied).delete()
+                    
+
 @admin.register(AllocationForm)
 class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
     # resource_class = AllocationFormResource
@@ -1123,16 +1161,3 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             },
         ),
     )
-    
-    actions = ["Add"]
-
-    @admin.action(description="Add left long rebate to Bills")
-    def Add(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        for obj in queryset:
-            email = obj.email
-            student = Student.objects.filter(email=email).last()
-            days_per_period = fill_periods(student,obj.start_date, obj.end_date)
-            save_long_bill(student, days_per_period,1)

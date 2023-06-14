@@ -62,7 +62,7 @@ def update_long_bill(sender, instance, **kwargs):
         print(e)
 
 @receiver(post_save, sender=AllocationSpring23)
-def update_spring_bill(sender, instance, created, **kwargs):
+def update_rebate_bill(sender, instance, created, **kwargs):
     try:
         if created:
             sno = instance.month.Sno
