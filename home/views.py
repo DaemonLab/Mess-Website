@@ -30,6 +30,7 @@ from home.models import (
     AllocationAutumn23,
     RebateAutumn23,
     AllocationForm,
+    LeftShortRebate,
 )
 from .utils.get_rebate_bills import get_rebate_bills
 from .utils.rebate_checker import (
@@ -167,27 +168,19 @@ def rebate(request):
     try:
         print(request.user.email)
         allocation_id = AllocationSpring23.objects.get(roll_no__email=str(request.user.email))
-        key = str(allocation_id.student_id)
-        # Instead of last use period model to get the allocation id for that period
-    except AllocationSpring23.MultipleObjectsReturned:
         try:
             for period in PeriodSpring23.objects.all():
-                if period.end_date>date.today()+timedelta(2):
+                if period.end_date>date.today()+timedelta(1):
                     period_obj=period
                     break
+            print(period_obj)
             allocation_id = AllocationSpring23.objects.get(
                 roll_no__email=str(request.user.email),
                 month = period_obj
             )
             key = str(allocation_id.student_id) 
         except:
-            try:
-                allocation_id = AllocationSpring23.objects.filter(
-                    roll_no__email=str(request.user.email),
-                ).last()
-                key = str(allocation_id.student_id)   
-            except:
-                key="You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
+            key="You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
     except AllocationSpring23.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"     
     if request.method == "POST" and request.user.is_authenticated:
@@ -203,18 +196,28 @@ def rebate(request):
                 period = allocation_id.month.Sno
                 period_start = allocation_id.month.start_date
                 period_end = allocation_id.month.end_date
-                ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
-                if not (period_start<=start_date<=period_end and period_start<=end_date<=period_end):
-                    text = "Please fill the rebate of this period only"
-                elif not is_not_duplicate(student, start_date, end_date,period):
+                if(diff>7):
+                    text="Max no of days for rebate is 7"
+                elif not period_start<=start_date<=period_end:
+                    text = "Please fill the rebate of this period only"    
+                elif not is_not_duplicate(student, start_date, end_date):
                     text = "You have already applied for rebate for these dates"
-                elif ch >= 0:
-                    text = (
-                        "You can only apply for max 8 days in a period. Days left for this period: "
-                        + str(ch)
-                    )
                 else:
-                    if (diff) <= 7 and diff >= 2 and diff2 >= 2:
+                    if not period_start<=end_date<=period_end:
+                        short_left = LeftShortRebate(
+                            email=str(request.user.email),
+                            start_date=period_end+timedelta(days=1),
+                            end_date=end_date,
+                            date_applied=date.today(),
+                        )
+                        end_date = period_end
+                    ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
+                    if ch >= 0:
+                        text = (
+                            "You can only apply for max 8 days in a period. Days left for this period: "
+                            + str(ch)
+                        )
+                    elif (diff) <= 7 and diff >= 2 and diff2 >= 2:
                         r = Rebate(
                             email=request.user.email,
                             allocation_id=allocation_id,
@@ -222,6 +225,7 @@ def rebate(request):
                             end_date=request.POST["end_date"],
                             approved=False,
                         )
+                        short_left.save()
                         r.save()
                         text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
                     elif 0 < diff < 2:
@@ -375,17 +379,6 @@ def addLongRebateBill(request):
     This form can only be accessed by the Institute's admin
     """
     text = ""
-    try:
-        allocation_id = AllocationSpring23.objects.get(roll_no__email=str(request.user.email))
-        key = str(allocation_id.student_id)
-    except AllocationSpring23.DoesNotExist:
-        key = "Signed in account does not does not have any allocation ID"
-    # Instead of last use period model to get the allocation id for that period
-    except AllocationSpring23.MultipleObjectsReturned:
-        allocation_id = AllocationSpring23.objects.filter(
-            roll_no__email=str(request.user.email)
-        ).last()
-        key = str(allocation_id.student_id)
     if request.method == "POST" and request.user.is_authenticated:
         try:
             start_date = parse_date(request.POST["start_date"])
@@ -413,7 +406,7 @@ def addLongRebateBill(request):
                     print(e)
         except:
             text = "Email ID does not exist in the database. Please eneter the correct email ID"
-    context = {"text": text, "key": key}
+    context = {"text": text}
     return render(request, "longRebate.html", context)
 
 @login_required

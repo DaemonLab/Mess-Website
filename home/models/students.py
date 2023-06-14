@@ -180,6 +180,19 @@ class LeftLongRebate(models.Model):
         verbose_name = "Left Long Rebate"
         verbose_name_plural = "Left Long Rebate"
 
+class LeftShortRebate(models.Model):
+    email = models.CharField(_("email"), max_length=30, default="")
+    start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
+    end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)
+    date_applied = models.DateField(help_text="Date on which the rebate was applied",default=now)
+    
+    def __str__(self):
+        return str(self.email)
+    
+    class Meta:
+        verbose_name = "Left Short Rebate"
+        verbose_name_plural = "Left Short Rebate"
+
 class AllocationForm(models.Model):
     from .Semesters.spring23 import PeriodSpring23
     heading = models.CharField(_("heading"), max_length=100, default="",null=True, blank=True)
