@@ -1,0 +1,187 @@
+{% extends 'base.html' %} {% load static %} {%block externalCss%}
+{% load i18n %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+
+{% endblock %} {% block body %}
+<main>
+<h1 class="m-0 pb-2">Allocation Form</h1>
+<div class="px-3">
+  <h4 class="px-5 mx-5">
+    {{ allocation_form_details.heading }}
+  </h4> 
+    <p class="px-5 mx-5">
+        {{ allocation_form_details.description }}
+    </p>
+  </div>
+  <div class="text-center">
+    {% if user.is_authenticated %}
+    <br>
+      <p class="m-0">Hello {{ user.first_name }}!</p>
+      <div>{% trans 'The following e-mail address will be noted while submitting this form:' %}
+      {{ user.email}}</div>
+    {% endif %}
+  </div>
+  <form action="" method="post" class="px-5 mx-md-5" id="preference">
+    {% csrf_token %} {% if text == "" %}
+    <div class="form-group p-2">
+      <b>Period of Allocation: {{ allocation_form_details.period.start_date }} to {{ allocation_form_details.period.end_date }}</b>
+    </div>
+    <div class="form-group p-2">
+        <label for="high_tea">High Tea: </label>
+        <select class="form-control-sm" id="high_tea" name="high_tea">
+          <option value="True">Yes</option>
+          <option value="False">No</option>
+        </select>
+    </div>
+    {%if caterer_list.count > 0%}
+      <div class="form-group p-2">
+        <label for="Preference1">First Preference: </label>
+        {%for caterer in caterer_list%}
+        <div class="form-check form-check-inline">
+          <label class="form-check-label" for="{{caterer.name}}1">
+            <input class="form-check-input {{caterer.name}}" type="radio" name="first_pref" id="{{caterer.name}}1" value="{{caterer.name}}">
+            {{caterer.name}}
+          </label>
+        </div>
+        {%endfor%}
+      </div>  
+    {%endif%}
+    {%if caterer_list|length > 1%}
+    <div class="form-group p-2">
+      <label for="preference2">Second Preference:</label> 
+      {%for caterer in caterer_list%}
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="{{caterer.name}}2">
+          <input class="form-check-input {{caterer.name}}" type="radio" name="second_pref" id="{{caterer.name}}2" value="{{caterer.name}}">
+          {{caterer.name}}
+        </label>
+      </div>
+      {%endfor%}
+    </div>    
+    {%endif%}
+    {%if caterer_list|length > 2%}
+    <div class="form-group p-2">
+      <label for="preference3">Third Preference: 
+      {%for caterer in caterer_list%}
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="{{caterer.name}}3">
+          <input class="form-check-input {{caterer.name}}" type="radio" name="third_pref" id="{{caterer.name}}3" value="{{caterer.name}}">
+          {{caterer.name}}
+        </label>
+      </div>
+      {%endfor%}
+    </div>   
+    {%endif%}
+    <p id="warning-response"></p>
+    <button
+      id="submit"
+      type="submit"
+      class="btn btn-primary p-2 mb-3"
+      style="background-color: rgb(30, 55, 146)"
+    >
+      Submit
+    </button>
+    {% else %}
+    <div class="text-center my-5 pb-5 fst-italic display-6">{{text}}</div>
+    {% endif %}
+  </form>
+</main>
+<script>
+  document.getElementById("preference").addEventListener("click", function(event){
+    var first_pref = document.getElementsByName("first_pref")
+    var second_pref = document.getElementsByName("second_pref")
+    var third_pref = document.getElementsByName("third_pref")
+    var cat_list=[0,0,0]
+    for(var i=0;i<first_pref.length;i++){
+      if(first_pref[i].checked){
+        cat_list[i]++;
+      }
+      if(second_pref[i].checked){
+        cat_list[i]++;
+      }
+      if(third_pref.length==first_pref.length && [i].checked){
+        cat_list[i]++;
+      }
+    }
+    if(cat_list[0]>1 || cat_list[1]>1 || cat_list[2]>1){
+    document.getElementById("submit").disabled = true;
+    document.getElementById("warning-response").innerHTML = "Please select different preferences";
+  }
+  else{
+    document.getElementById("submit").disabled = false;
+    document.getElementById("warning-response").innerHTML = "";
+  }
+  });
+  // document.getElementById('preference').addEventListener("change",function(event){
+  //   if(event.target.name=='first_pref'){
+  //     caterer = event.target.value;
+  //     if(document.getElementById(caterer+'1').checked){
+  //       document.getElementById(caterer+'2').disabled = true;
+  //       if (document.getElementById(caterer+'3')!=null) {document.getElementById(caterer+'3').disabled = true;}
+  //       for (ind in cat_list){
+  //         if(cat_list[ind]!=caterer){
+  //           cat=cat_list[ind];
+  //           document.getElementById(cat+'1').disabled = true;
+  //         }
+  //       }
+  //     } 
+  //     else{
+  //       document.getElementById(caterer+'2').disabled = false;
+  //       if (document.getElementById(caterer+'3')!=null) {document.getElementById(caterer+'3').disabled = false;}
+  //       for (ind in cat_list){
+  //           cat=cat_list[ind];
+  //           document.getElementById(cat+'1').disabled = false;
+  //       }
+  //     }
+  //   }
+  //   else if (event.target.name=='second_pref') {
+  //     caterer = event.target.value;
+  //     if(document.getElementById(caterer+'2').checked){
+  //       document.getElementById(caterer+'1').disabled = true;
+  //       if (document.getElementById(caterer+'3')!=null) {document.getElementById(caterer+'3').disabled = true;}
+  //       for (ind in cat_list){
+  //         if(cat_list[ind]!=caterer){
+  //           cat=cat_list[ind];
+  //           document.getElementById(cat+'2').disabled = true;
+  //         }
+  //       }
+  //     } 
+  //     else{
+  //       document.getElementById(caterer+'1').disabled = false;
+  //       if (document.getElementById(caterer+'3')!=null) {document.getElementById(caterer+'3').disabled = false;}
+  //       for (ind in cat_list){
+  //           cat=cat_list[ind];
+  //           document.getElementById(cat+'2').disabled = false;
+  //       }
+  //     }
+  //   }
+  //   else if (event.target.name=='third_pref') {
+  //     caterer = event.target.value;
+  //     document.getElementById(caterer+'1').disabled = true;
+  //     document.getElementById(caterer+'2').disabled = true;
+  //     for (ind in cat_list){
+  //       if(cat_list[ind]!=caterer){
+  //         cat=cat_list[ind];
+  //         document.getElementById(cat+'3').disabled = true;
+  //         document.getElementById(cat+'1').disabled = false;
+  //         document.getElementById(cat+'2').disabled = false;
+  //       }
+  //     }
+  //   }
+  // });
+  // $(".first_pref").change(function(e) {
+  //  var status = $(this).prop("checked");
+  //  caterer = e.target.value
+  //   $(".first_pref").prop('checked', false);
+  //   $(this).prop('checked', true);
+  //    if (status === false) {
+  //     $(this).prop('checked', false);
+  //     for (ind in cat_list){
+  //       if(cat_list[ind]!=caterer){
+  //         $("#"+cat_list[ind]+'2').prop.disabled=false;
+  //         $("#"+cat_list[ind]+'3').prop.disabled=false;
+  //     }
+  //   }
+  //   }});
+</script>
+{% endblock %}

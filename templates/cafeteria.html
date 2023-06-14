@@ -12,10 +12,10 @@
 <Main class="parent">
   <h1>Additional Services</h1>
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-around">
       {% for i in cafeteria %}
-      <div class="col box">
-        <div class="card" style="width: 20rem;">
+      <div class="col-12 col-md-6 col-lg-4 box" style="width: 20rem;">
+        <div class="card" >
           {% if i.image %}
           <img
             src="{{i.image.url}}"
