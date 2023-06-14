@@ -16,6 +16,7 @@ class Caterer(models.Model):
         _("Lower Discription"), default="", help_text="This contains the description of the respective caterer that will show on the lower side.")
     student_limit = models.IntegerField(
         _("Caterers Student Limit"), default=0, help_text="The limit on number of students it can have")
+    visible = models.BooleanField(_("Visible"), default=False,null=True, help_text="If the caterer is visible or not to the students")
 
     def __str__(self):
         return "Caterer " + self.name
