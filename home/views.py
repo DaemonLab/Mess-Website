@@ -63,14 +63,14 @@ def home(request):
     """
     aboutInfo = About.objects.all()
     update = Update.objects.all()
-    caterer = Caterer.objects.all()
+    caterer = Caterer.objects.filter(visible=True).all()
     carousel = Carousel.objects.all()
     context = {
         "about": aboutInfo,
         "updates": update,
         "caterer": caterer,
         "carousel": carousel,
-        'all_caterer' : Caterer.objects.all()
+        'all_caterer' : caterer
     }
     return render(request, "home.html", context)
 
@@ -103,7 +103,7 @@ def caterer(request, name):
     :template:`home/caterer.html`
 
     """
-    caterer = Caterer.objects.get(name=name)
+    caterer = Caterer.objects.get(name=name,visible=True)
     context = {"caterer": caterer}
     return render(request, "caterer.html", context)
 
@@ -211,6 +211,8 @@ def rebate(request):
                             date_applied=date.today(),
                         )
                         end_date = period_end
+                    else:
+                        short_left=None 
                     ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
                     if ch >= 0:
                         text = (
@@ -225,7 +227,8 @@ def rebate(request):
                             end_date=request.POST["end_date"],
                             approved=False,
                         )
-                        short_left.save()
+                        if short_left:
+                            short_left.save()
                         r.save()
                         text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
                     elif 0 < diff < 2:
@@ -297,42 +300,46 @@ def allocation(request):
                     else:
                         period_obj = PeriodSpring23.objects.filter().last()
                     high_tea = record["High Tea"]
-                    if(high_tea=="Yes" or high_tea=="True"):
+                    if(high_tea=="Yes" or high_tea==True):
                         high_tea=True
                     else:
                         high_tea=False
                     student = Student.objects.filter(email=record["Email"]).first()
+                    caterer_list = Caterer.objects.filter(visible=True).all()
                     print(student)
                     for pref in [first_pref, second_pref, third_pref]:
-                        kanaka = Caterer.objects.get(name="Kanaka")
-                        ajay = Caterer.objects.get(name="Ajay")
-                        gauri = Caterer.objects.get(name="Gauri")
-                        if pref == kanaka.name and kanaka.student_limit > 0:
-                            student_id = str(kanaka.name[0])
+                        caterer1 = caterer_list[0]
+                        caterer2 = caterer_list[1]
+                        if(caterer_list.count()==3):
+                            caterer3 = caterer_list[2]
+                        else:
+                            caterer3=None
+                        if pref == caterer1.name and caterer1.student_limit > 0:
+                            student_id = str(caterer1.name[0])
                             if high_tea == True:
                                 student_id += "H"
-                            student_id += str(kanaka.student_limit)
-                            caterer_name = kanaka.name
-                            kanaka.student_limit -= 1
-                            kanaka.save(update_fields=["student_limit"])
+                            student_id += str(caterer1.student_limit)
+                            caterer_name = caterer1.name
+                            caterer1.student_limit -= 1
+                            caterer1.save(update_fields=["student_limit"])
                             break
-                        elif pref == ajay.name and ajay.student_limit > 0:
-                            student_id = str(ajay.name[0])
+                        elif pref == caterer2.name and caterer2.student_limit > 0:
+                            student_id = str(caterer2.name[0])
                             if high_tea == True:
                                 student_id += "H"
-                            student_id += str(ajay.student_limit)
-                            caterer_name = ajay.name
-                            ajay.student_limit -= 1
-                            ajay.save(update_fields=["student_limit"])
+                            student_id += str(caterer2.student_limit)
+                            caterer_name = caterer2.name
+                            caterer2.student_limit -= 1
+                            caterer2.save(update_fields=["student_limit"])
                             break
-                        elif pref == gauri.name and gauri.student_limit > 0:
-                            student_id = str(gauri.name[0])
+                        elif caterer3 and pref == caterer3.name and caterer3.student_limit > 0:
+                            student_id = str(caterer3.name[0])
                             if high_tea == True:
                                 student_id += "H"
-                            student_id += str(gauri.student_limit)
-                            caterer_name = gauri.name
-                            gauri.student_limit -= 1
-                            gauri.save(update_fields=["student_limit"])
+                            student_id += str(caterer3.student_limit)
+                            caterer_name = caterer3.name
+                            caterer3.student_limit -= 1
+                            caterer3.save(update_fields=["student_limit"])
                             break
                     a = AllocationSpring23(
                         roll_no=student,
