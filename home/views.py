@@ -62,7 +62,7 @@ def home(request):
 
     """
     aboutInfo = About.objects.all()
-    update = Update.objects.all()
+    update = Update.objects.filter().order_by("time_stamp")
     caterer = Caterer.objects.filter(visible=True).all()
     carousel = Carousel.objects.all()
     context = {
