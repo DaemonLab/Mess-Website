@@ -14,7 +14,6 @@ class LoginRequiredMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        print("Middleware Called")
         response = self.get_response(request)
         return response
 
