@@ -5,4 +5,5 @@ Functions: base
 Used to send All Caterers Information as context in the base template
 '''
 def base(request):
-    return {'all_caterer' : Caterer.objects.all()}
+    caterer = Caterer.objects.filter(visible=True).all()
+    return {'all_caterer' : caterer}

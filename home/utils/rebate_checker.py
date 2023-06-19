@@ -5,19 +5,15 @@ def count(start, end):
     sum = ((end - start).days) + 1
     return sum
 
-def is_not_duplicate(s,start,end,period):
+def is_not_duplicate(s,start,end):
     """Checks if these dates are already applied for rebate"""
     try:
         short = Rebate.objects.filter(email=str(s.email)).last()
         long = LongRebate.objects.filter(email=s).last()
-        if(short==None or short.allocation_id==None):
-            prev_period = 0
-        else:
-            prev_period = short.allocation_id.month.Sno
         print("is_not_duplicate")
         print(short)
         print(long)
-        if (short==None or short.end_date<= start-timedelta(days=2) or short.start_date>=end+timedelta(days=2) or period!=prev_period) and (long==None or long.end_date<= start-timedelta(days=2) or long.start_date>=end+timedelta(days=2)):
+        if (short==None or short.end_date<= start-timedelta(days=2) or short.start_date>=end+timedelta(days=2)) and (long==None or long.end_date<= start-timedelta(days=2) or long.start_date>=end+timedelta(days=2)):
             return True
         else:
             return False
