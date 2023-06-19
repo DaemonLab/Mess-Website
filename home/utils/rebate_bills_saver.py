@@ -50,7 +50,7 @@ def save_short_bill(email,period,days,high_tea,caterer):
             rebate.period6_high_tea = high_tea
             rebate.period6_short = rebate.period6_short + days
             rebate.period6_bill = rebate.period6_bill - amount
-            catererBill.period6_bills = catererBill.period5_bills + amount
+            catererBill.period6_bills = catererBill.period6_bills + amount
             rebate.save()
             catererBill.save()
 
@@ -109,7 +109,7 @@ def save_long_bill(email,days_per_period,j):
                 rebate.period6_high_tea = allocation.high_tea
                 rebate.period6_long = rebate.period6_long + days
                 rebate.period6_bill = rebate.period6_bill - amount
-                catererBill.period6_bills = catererBill.period5_bills + amount
+                catererBill.period6_bills = catererBill.period6_bills + amount
                 rebate.save()
                 catererBill.save()
             case 7:
