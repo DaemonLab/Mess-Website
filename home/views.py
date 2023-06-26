@@ -237,7 +237,7 @@ def rebate(request):
                 text = "Email ID does not match with the allocation ID"
         except Exception as e:
             print(e)
-            text = "Invalid Dates filled"
+            text = "Ohh No! an unknown ERROR occured, Please imform about it immediatly to the Dining Wadern."
     context = {"text": text, "key": key, "list": list}
     return render(request, "rebateForm.html", context)
 
@@ -254,7 +254,6 @@ def allocation(request):
     parses each row and allocates each student an allocation ID and caterer for that month.
     Which can be then exported in the admin page.
     CSV should be imported from /allocation/ url only
-    Allocation data should only be filled 2 days prior to the next month
     This form can only be accessed by the Institute's admin
     """
     messages = ""
@@ -286,11 +285,12 @@ def allocation(request):
                         third_pref = str(record["Third Preference"]).capitalize()
                     else:
                         third_pref=None
-                    if 'Period' in csv_data.columns:
+                    if 'Period' in csv_data.columns and 'Semester' in csv_data.columns:
                         period = str(record["Period"]).capitalize()
-                        period_obj = PeriodSpring23.objects.get(Sno=period)
+                        semester = str(record["Semester"]).capitalize()
+                        period_obj = Period.objects.get(Sno=period, semester=Semester.objects.get(name=semester))
                     else:
-                        period_obj = PeriodSpring23.objects.filter().last()
+                        period_obj = Period.objects.filter().last()
                     high_tea = record["High Tea"]
                     print(high_tea)
                     if(high_tea=="Yes" or high_tea==True or high_tea=="TRUE"):
@@ -298,30 +298,39 @@ def allocation(request):
                     else:
                         high_tea=False
                     student = Student.objects.filter(email=record["Email"]).first()
+                    if(student==None):
+                        messages+=str(record["Email"])
                     caterer_list = Caterer.objects.filter(visible=True).all()
                     print(student)
-                    for pref in [first_pref, second_pref, third_pref]:
-                        caterer1 = caterer_list[0]
+                    caterer1 = caterer_list[0]
+                    if(caterer_list.count()>1):
                         caterer2 = caterer_list[1]
-                        if(caterer_list.count()==3):
-                            caterer3 = caterer_list[2]
-                        else:
-                            caterer3=None
+                    else:
+                        caterer2=None
+                    if(caterer_list.count()>2):
+                        caterer3 = caterer_list[2]
+                    else:
+                        caterer3=None
+                    for pref in [first_pref, second_pref, third_pref]:
                         if pref == caterer1.name and caterer1.student_limit > 0:
                             student_id = str(caterer1.name[0])
                             if high_tea == True:
                                 student_id += "H"
+                            else:
+                                student_id+="NH"
                             student_id += str(caterer1.student_limit)
-                            caterer_name = caterer1.name
+                            caterer = caterer1
                             caterer1.student_limit -= 1
                             caterer1.save(update_fields=["student_limit"])
                             break
-                        elif pref == caterer2.name and caterer2.student_limit > 0:
+                        elif caterer2 and pref == caterer2.name and caterer2.student_limit > 0:
                             student_id = str(caterer2.name[0])
                             if high_tea == True:
                                 student_id += "H"
+                            else:
+                                student_id+="NH"
                             student_id += str(caterer2.student_limit)
-                            caterer_name = caterer2.name
+                            caterer = caterer2
                             caterer2.student_limit -= 1
                             caterer2.save(update_fields=["student_limit"])
                             break
@@ -329,36 +338,40 @@ def allocation(request):
                             student_id = str(caterer3.name[0])
                             if high_tea == True:
                                 student_id += "H"
+                            else:
+                                student_id+="NH"
                             student_id += str(caterer3.student_limit)
-                            caterer_name = caterer3.name
+                            caterer = caterer3
                             caterer3.student_limit -= 1
                             caterer3.save(update_fields=["student_limit"])
                             break
-                    a = AllocationSpring23(
-                        roll_no=student,
+                    a = Allocation(
+                        email=student,
                         student_id=student_id,
-                        month=period_obj,
-                        caterer_name=caterer_name,
+                        period=period_obj,
+                        caterer=caterer,
                         high_tea=high_tea,
                         first_pref=first_pref,
                         second_pref=second_pref,
                         third_pref=third_pref,
                     )
                     a.save()
+                    student_bill = StudentBills.objects.get_or_create(email=student, semester=period.semester)
                     UnregisteredStudent.objects.filter(email=student.email).delete()
                 except Exception as e:
                     print(e)
-            messages = "Form submitted. Please check the admin page."
+            messages += "Form submitted. Please check the admin page."
         except Exception as e:
             print(e)
             messages = "Invalid CSV file"
-    period_obj = PeriodSpring23.objects.get(Sno=6)
-    Ajay_high_tea = AllocationSpring23.objects.filter(caterer_name="Ajay", high_tea=True,month=period_obj).count()
-    Gauri_high_tea = AllocationSpring23.objects.filter(caterer_name="Gauri", high_tea=True,month=period_obj).count()
-    Kanaka_high_tea = AllocationSpring23.objects.filter(caterer_name="Kanaka", high_tea=True,month=period_obj).count()
-    Ajay_total = AllocationSpring23.objects.filter(caterer_name="Ajay",month=period_obj).count()
-    Gauri_total = AllocationSpring23.objects.filter(caterer_name="Gauri",month=period_obj).count()
-    Kanaka_total = AllocationSpring23.objects.filter(caterer_name="Kanaka",month=period_obj).count()
+    period_obj = period.objects.filter().last()
+    # for caterer in Caterer.objects.filter(visible=True).all():
+    Ajay_high_tea = Allocation.objects.filter(caterer_name="Ajay", high_tea=True,month=period_obj).count()
+    Gauri_high_tea = Allocation.objects.filter(caterer_name="Gauri", high_tea=True,month=period_obj).count()
+    Kanaka_high_tea = Allocation.objects.filter(caterer_name="Kanaka", high_tea=True,month=period_obj).count()
+    Ajay_total = Allocation.objects.filter(caterer_name="Ajay",month=period_obj).count()
+    Gauri_total = Allocation.objects.filter(caterer_name="Gauri",month=period_obj).count()
+    Kanaka_total = Allocation.objects.filter(caterer_name="Kanaka",month=period_obj).count()
     Ajay_left = Caterer.objects.get(name="Ajay").student_limit
     Gauri_left = Caterer.objects.get(name="Gauri").student_limit
     Kanaka_left = Caterer.objects.get(name="Kanaka").student_limit
