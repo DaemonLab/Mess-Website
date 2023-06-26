@@ -13,3 +13,5 @@ from .students import Student, Scan, Rebate, LongRebate, UnregisteredStudent, To
 from .Semesters.autumn22 import PeriodAutumn22, AllocationAutumn22, RebateAutumn22, CatererBillsAutumn22
 from .Semesters.spring23 import PeriodSpring23, AllocationSpring23, RebateSpring23, CatererBillsSpring23
 from .Semesters.autumn23 import PeriodAutumn23, AllocationAutumn23, RebateAutumn23, CatererBillsAutumn23
+from .allocation import Semester, Period, Allocation
+from .bills import StudentBills, CatererBills
