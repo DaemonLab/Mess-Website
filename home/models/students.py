@@ -87,7 +87,13 @@ class Rebate(models.Model):
     Stores the rebate details of every student
     """
     from .Semesters.spring23 import AllocationSpring23
-    email = models.CharField(max_length=30, default=0)
+    email = models.ForeignKey(
+        Student, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        default=None,
+        verbose_name="Student Email"
+    )
     allocation_id = models.ForeignKey(
         AllocationSpring23,
         related_name="allocation_id",
