@@ -21,18 +21,18 @@ def is_not_duplicate(student,new_rebate_start,new_rebate_end):
         return False
 
 
-def is_present_rebate_bills(student, semester):
-    """
-    Checks if student is registered in the rebate bills,
-    if not the function registers it with that email ID
-    """
-    try:
-        student = StudentBills.objects.get(email=student,semester=semester)
-    except:
-        print(Exception)
-        student = StudentBills(email=student,semester=semester)
-        student.save()
-    return student
+# def is_present_rebate_bills(student, semester):
+#     """
+#     Checks if student is registered in the rebate bills,
+#     if not the function registers it with that email ID
+#     """
+#     try:
+#         student_bill = StudentBills.objects.get(email=student,semester=semester)
+#     except:
+#         print(Exception)
+#         student_bill = StudentBills(email=student,semester=semester)
+#         student_bill.save()
+#     return student_bill
 
 def max_days_rebate(student, start, end, period):
     """
@@ -40,7 +40,7 @@ def max_days_rebate(student, start, end, period):
     if the rebate does not exceeds 8 days for that period approves the rebate and
     adds the rebate to student bills(Commented out this feature for now, as administration wants to approve it from its side before adding to student bills)
     """
-    student_bill = is_present_rebate_bills(student, period.semester)
+    student_bill = StudentBills.objects.get_or_create(email=student, semester=period.semester)
     sum = count(start, end)
     match period:
         case 1:
