@@ -2,14 +2,14 @@ from django.db import models
 from django.utils.translation import gettext as _
 from .students import Student
 from .caterer import Caterer
-from .allocation import Period
+from .allocation import Semester
 
 class StudentBills(models.Model):
     """
-    Storing the Rebate Bills of the Students for the Autumn Semester
+    Storing the Rebate Bills of the Students for the Semesters
     """
     email = models.ForeignKey(Student, on_delete=models.SET_NULL, default="", null=True)
-    period = models.ForeignKey(Period, verbose_name=_("Period"), on_delete=models.CASCADE,null=True, default=None)
+    semester = models.ForeignKey(Semester, verbose_name=_("Semester"), on_delete=models.CASCADE,null=True, default=None)
     
     period1_short = models.IntegerField(_("Period 1 Short"),default=0, null=True)
     period1_long = models.IntegerField(_("Period 1 Long"),default=0,null=True)
@@ -50,10 +50,10 @@ class StudentBills(models.Model):
 
 class CatererBills(models.Model):
     """
-    Storing the Bills of the Caterers for the Autumn Semester
+    Storing the Bills of the Caterers for the Semesters
     """
     caterer = models.ForeignKey(Caterer,on_delete=models.SET_NULL, null=True)
-    period = models.ForeignKey(Period, verbose_name=_("Period"), on_delete=models.CASCADE,null=True, default=None)
+    semester = models.ForeignKey(Semester, verbose_name=_("Semester"), on_delete=models.CASCADE,null=True, default=None)
 
     period1_bills = models.IntegerField(_("Period 1 Bill"),default=0, null=True)
     period2_bills = models.IntegerField(_("Period 2 Bill"),default=0, null=True)

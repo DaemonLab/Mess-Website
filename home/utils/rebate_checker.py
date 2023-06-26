@@ -1,5 +1,6 @@
-from home.models import RebateAutumn23, RebateSpring23,Rebate, LongRebate
+from home.models import Rebate, LongRebate, StudentBills
 from datetime import timedelta
+
 def count(start, end):
     """Counts the number of days of rebate applied"""
     sum = ((end - start).days) + 1
@@ -19,160 +20,71 @@ def is_not_duplicate(student,new_rebate_start,new_rebate_end):
         print(e)
         return False
 
-def is_present_autumn(s):
+
+def is_present_rebate_bills(student, semester):
     """
-    Checks if student is registered in the rebate bills of autumn semester,
+    Checks if student is registered in the rebate bills,
     if not the function registers it with that email ID
     """
     try:
-        student = RebateAutumn23.objects.get(email=s)
+        student = StudentBills.objects.get(email=student,semester=semester)
     except:
         print(Exception)
-        student = RebateAutumn23(email=s)
+        student = StudentBills(email=student,semester=semester)
         student.save()
     return student
 
-def is_present_spring(s):
+def max_days_rebate(student, start, end, period):
     """
-    Checks if student is registered in the rebate bills of spring semester,
-    if not the function registers it with that email ID
+    Checks what period rebate is being applied,
+    if the rebate does not exceeds 8 days for that period approves the rebate and
+    adds the rebate to student bills(Commented out this feature for now, as administration wants to approve it from its side before adding to student bills)
     """
-    try:
-        student = RebateSpring23.objects.get(email=s)
-    except:
-        print(Exception)
-        print(2)
-        student = RebateSpring23(email=s)
-        student.save()
-    return student
-
-def check_rebate_spring(a, s, start, end, period):
-    """
-    Checks what month rebate is being applied,
-    if the rebate doesnot exceeds 8 days for that month approves the rebate and
-    adds the rebate to rebate bills
-    """
-    student = is_present_spring(s)
+    student_bill = is_present_rebate_bills(student, period.semester)
     sum = count(start, end)
     match period:
         case 1:
-            if student.period1_short + sum <= 8:
-                # student.january+=sum
-                # student.highTeaJanuary = a.high_tea
-                # student.save(update_fields=["january", "highTeaJanuary"])
+            if student_bill.period1_short + sum <= 8:
+                student_bill.period1_short+=sum
+                student_bill.save(update_fields=["period1_short"])
                 return -1
             else:
-                return 8 - student.period1_short
+                return 8 - student_bill.period1_short
         case 2:
-            if student.period2_short + sum <= 8:
-                # student.february+=sum
-                # student.highTeaFebruary = a.high_tea
-                # student.save(update_fields=["february", "highTeaFebruary"])
+            if student_bill.period2_short + sum <= 8:
+                student_bill.period2_short+=sum
+                student_bill.save(update_fields=["period2_short"])
                 return -1
             else:
-                return 8 - student.period2_short
+                return 8 - student_bill.period2_short
         case 3:
-            if student.period3_short + sum <= 8:
-                # student.march+=sum
-                # student.highTeaMarch = a.high_tea
-                # student.save(update_fields=["march", "highTeaMarch"])
+            if student_bill.period3_short + sum <= 8:
+                student_bill.period3_short+=sum
+                student_bill.save(update_fields=["period3_short"])
                 return -1
             else:
-                return 8 - student.period3_short
+                return 8 - student_bill.period3_short
         case 4:
-            if student.period4_short + sum <= 8:
-                # student.april+=sum
-                # student.highTeaApril = a.high_tea
-                # student.save(update_fields=["april", "highTeaApril"])
+            if student_bill.period4_short + sum <= 8:
+                student_bill.period4_short+=sum
+                student_bill.save(update_fields=["period4_short"])
                 return -1
             else:
-                return 8 - student.period4_short
+                return 8 - student_bill.period4_short
         case 5:
-            if student.period5_short + sum <= 8:
-                # student.may+=sum
-                # student.highTeaMay = a.high_tea
-                # student.save(update_fields=["may", "highTeaMay"])
+            if student_bill.period5_short + sum <= 8:
+                student_bill.period5_short+=sum
+                student_bill.save(update_fields=["period5_short"])
                 return -1
             else:
-                return 8 - student.period5_short
+                return 8 - student_bill.period5_short
         case 6:
-            if student.period6_short + sum <= 8:
-                # student.june+=sum
-                # student.highTeaJune = a.high_tea
-                # student.save(update_fields=["june", "highTeaJune"])
+            if student_bill.period6_short + sum <= 8:
+                student_bill.period6_short+=sum
+                student_bill.save(update_fields=["period6_short"])
                 return -1
             else:
-                return 8 - student.period6_short
+                return 8 - student_bill.period6_short
         # case default:
         #     return -1
         
-
-def check_rebate_autumn(a,s,start,end,period):
-    """
-    Checks what month rebate is being applied,
-    if the rebate doesnot exceeds 8 days for that month approves the rebate and
-    adds the rebate to rebate bills
-    """
-    match period:
-        case 1:
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.period1_short + sum <= 8:
-                # student.july+=sum
-                # student.highTeaJuly = a.high_tea
-                # student.save(update_fields=["july", "highTeaJuly"])
-                return -1
-            else:
-                return 8 - student.period1_short
-        case 2:
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.period2_short + sum <= 8:
-                # student.august+=sum
-                # student.highTeaAugust = a.high_tea
-                # student.save(update_fields=["august", "highTeaAugust"])
-                return -1
-            else:
-                return 8 - student.period1_short
-        case 3:
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.period3_short + sum <= 8:
-                # student.september+=sum
-                # student.highTeaSeptember = a.high_tea
-                # student.save(update_fields=["september", "highTeaSeptember"])
-                return -1
-            else:
-                return 8 - student.period3_short
-        case 4:
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.period4_short + sum <= 8:
-                # student.october+=sum
-                # student.highTeaOctober = a.high_tea
-                # student.save(update_fields=["october", "highTeaOctober"])
-                return -1
-            else:
-                return 8 - student.period4_short
-        case 5:
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.period5_short + sum <= 8:
-                # student.november+=sum
-                # student.highTeaNovember = a.high_tea
-                # student.save(update_fields=["november", "highTeaNovember"])
-                return -1
-            else:
-                return 8 - student.period5_short
-        case 6:
-            student = is_present_autumn(s)
-            sum = count(start, end)
-            if student.period6_short + sum <= 8:
-                # student.december+=sum
-                # student.highTeaDecember = a.high_tea
-                # student.save(update_fields=["december", "highTeaDecember"])
-                return -1
-            else:
-                return 8 - student.period6_short
-        # case default:
-        #     return "something"

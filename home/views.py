@@ -30,11 +30,7 @@ from home.models import (
 )
 from .utils.get_rebate_bills import get_rebate_bills
 from .utils.rebate_checker import (
-    count,
-    is_present_autumn,
-    is_present_spring,
-    check_rebate_autumn,
-    check_rebate_spring,
+    max_days_rebate,
     is_not_duplicate,
 )
 import pandas as pd
@@ -209,31 +205,31 @@ def rebate(request):
                         end_date = period_end
                     else:
                         short_left_rebate=None 
-                    ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
-                    if ch >= 0:
+                    upper_cap_check = max_days_rebate(student, start_date, end_date, period)
+                    if upper_cap_check >= 0:
                         text = (
                             "You can only apply for max 8 days in a period. Days left for this period: "
-                            + str(ch)
+                            + str(upper_cap_check)
                         )
-                    elif (diff) <= 7 and diff >= 2 and diff2 >= 2:
+                    elif (rebate_days) <= 7 and rebate_days >= 2 and before_rebate_days >= 2:
                         r = Rebate(
-                            email=request.user.email,
+                            email=student,
                             allocation_id=allocation_id,
                             start_date=request.POST["start_date"],
                             end_date=request.POST["end_date"],
                             approved=False,
                         )
-                        if short_left:
-                            short_left.save()
+                        if short_left_rebate:
+                            short_left_rebate.save()
                         r.save()
                         text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
-                    elif 0 < diff < 2:
+                    elif 0 < rebate_days < 2:
                         text = "Min no of days for rebate is 2"
-                    elif diff2 < 2:
+                    elif before_rebate_days < 2:
                         text = "Form needs to be filled atleast 2 days prior the comencement of leave."
-                    elif diff > 7:
+                    elif rebate_days > 7:
                         text = "Max no of days for rebate is 7"
-                    elif diff < 0:
+                    elif before_rebate_days < 0:
                         text = "Please enter the correct dates"
                     else:
                         text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
