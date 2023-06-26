@@ -20,17 +20,13 @@ from home.models import (
     Student,
     LongRebate,
     UnregisteredStudent,
-    PeriodAutumn22,
-    AllocationAutumn22,
-    RebateAutumn22,
-    PeriodSpring23,
-    AllocationSpring23,
-    RebateSpring23,
-    PeriodAutumn23,
-    AllocationAutumn23,
-    RebateAutumn23,
     AllocationForm,
     LeftShortRebate,
+    Semester,
+    Period,
+    Allocation,
+    StudentBills,
+    CatererBills,
 )
 from .utils.get_rebate_bills import get_rebate_bills
 from .utils.rebate_checker import (
@@ -167,36 +163,36 @@ def rebate(request):
     list = []
     try:
         print(request.user.email)
-        allocation_id = AllocationSpring23.objects.get(roll_no__email=str(request.user.email))
+        allocation_id = Allocation.objects.get(email__email=str(request.user.email))
         try:
-            for period in PeriodSpring23.objects.all():
+            for period in Period.objects.all():
                 if period.end_date>date.today()+timedelta(1):
                     period_obj=period
                     break
             print(period_obj)
-            allocation_id = AllocationSpring23.objects.get(
-                roll_no__email=str(request.user.email),
-                month = period_obj
+            allocation_id = Allocation.objects.get(
+                email__email=str(request.user.email),
+                period = period_obj
             )
             key = str(allocation_id.student_id) 
         except:
             key="You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
-    except AllocationSpring23.DoesNotExist:
+    except Allocation.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"     
     if request.method == "POST" and request.user.is_authenticated:
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
-            diff = ((end_date - start_date).days) + 1
-            diff2 = (start_date - date.today()).days
+            rebate_days = ((end_date - start_date).days) + 1
+            before_rebate_days = (start_date - date.today()).days
             try:
                 student = Student.objects.filter(
                     email=str(request.user.email)
                 ).first()
-                period = allocation_id.month.Sno
-                period_start = allocation_id.month.start_date
-                period_end = allocation_id.month.end_date
-                if(diff>7):
+                period = allocation_id.period.Sno
+                period_start = allocation_id.period.start_date
+                period_end = allocation_id.period.end_date
+                if(rebate_days>7):
                     text="Max no of days for rebate is 7"
                 elif not period_start<=start_date<=period_end:
                     text = "Please fill the rebate of this period only"    
@@ -204,7 +200,7 @@ def rebate(request):
                     text = "You have already applied for rebate for these dates"
                 else:
                     if not period_start<=end_date<=period_end:
-                        short_left = LeftShortRebate(
+                        short_left_rebate = LeftShortRebate(
                             email=str(request.user.email),
                             start_date=period_end+timedelta(days=1),
                             end_date=end_date,
@@ -212,7 +208,7 @@ def rebate(request):
                         )
                         end_date = period_end
                     else:
-                        short_left=None 
+                        short_left_rebate=None 
                     ch = check_rebate_spring(allocation_id, student, start_date, end_date, period)
                     if ch >= 0:
                         text = (
@@ -241,7 +237,7 @@ def rebate(request):
                         text = "Please enter the correct dates"
                     else:
                         text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-            except AllocationSpring23.DoesNotExist:
+            except Allocation.DoesNotExist:
                 text = "Email ID does not match with the allocation ID"
         except Exception as e:
             print(e)
@@ -520,9 +516,6 @@ def profile(request):
     **Template:**
 
     :template:`home/profile.html`
-
-    Gets the data from the profile form , and updates the student's profile
-    This form can only be accessed by the Institute's admin
     """
     text = ""
     student = Student.objects.filter(email=str(request.user.email)).last()
