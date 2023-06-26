@@ -292,7 +292,8 @@ def allocation(request):
                     else:
                         period_obj = PeriodSpring23.objects.filter().last()
                     high_tea = record["High Tea"]
-                    if(high_tea=="Yes" or high_tea==True):
+                    print(high_tea)
+                    if(high_tea=="Yes" or high_tea==True or high_tea=="TRUE"):
                         high_tea=True
                     else:
                         high_tea=False
@@ -351,7 +352,7 @@ def allocation(request):
         except Exception as e:
             print(e)
             messages = "Invalid CSV file"
-    period_obj = PeriodSpring23.objects.get(Sno=5)
+    period_obj = PeriodSpring23.objects.get(Sno=6)
     Ajay_high_tea = AllocationSpring23.objects.filter(caterer_name="Ajay", high_tea=True,month=period_obj).count()
     Gauri_high_tea = AllocationSpring23.objects.filter(caterer_name="Gauri", high_tea=True,month=period_obj).count()
     Kanaka_high_tea = AllocationSpring23.objects.filter(caterer_name="Kanaka", high_tea=True,month=period_obj).count()
@@ -517,6 +518,12 @@ def profile(request):
     student = Student.objects.filter(email=str(request.user.email)).last()
     socialaccount_obj = SocialAccount.objects.filter(provider='google', user_id=request.user.id)
     picture = "not available"
+    allocation = AllocationSpring23.objects.filter(roll_no=student).last()
+    #improve this alignment of text to be shown on the profile section
+    if allocation:
+        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer_name + " High Tea: " + str(allocation.high_tea)
+    else:
+        allocation_info = "Not allocated for this period"
     if len(socialaccount_obj):
             picture = socialaccount_obj[0].extra_data['picture']
     if request.method == "POST" and request.user.is_authenticated:
@@ -528,7 +535,7 @@ def profile(request):
             text = "Profile Updated Successfully"
         except:
             text = "Email ID does not exist in the database. Please eneter the correct email ID"
-    context = {"text": text,"student":student,"picture":picture}
+    context = {"text": text,"student":student,"picture":picture,"allocation_info":allocation_info}
     return render(request, "profile.html", context)
 
 @login_required
