@@ -365,17 +365,12 @@ def allocation(request):
             print(e)
             messages = "Invalid CSV file"
     period_obj = period.objects.filter().last()
-    # for caterer in Caterer.objects.filter(visible=True).all():
-    Ajay_high_tea = Allocation.objects.filter(caterer_name="Ajay", high_tea=True,month=period_obj).count()
-    Gauri_high_tea = Allocation.objects.filter(caterer_name="Gauri", high_tea=True,month=period_obj).count()
-    Kanaka_high_tea = Allocation.objects.filter(caterer_name="Kanaka", high_tea=True,month=period_obj).count()
-    Ajay_total = Allocation.objects.filter(caterer_name="Ajay",month=period_obj).count()
-    Gauri_total = Allocation.objects.filter(caterer_name="Gauri",month=period_obj).count()
-    Kanaka_total = Allocation.objects.filter(caterer_name="Kanaka",month=period_obj).count()
-    Ajay_left = Caterer.objects.get(name="Ajay").student_limit
-    Gauri_left = Caterer.objects.get(name="Gauri").student_limit
-    Kanaka_left = Caterer.objects.get(name="Kanaka").student_limit
-    caterer_list = [["Ajay",Ajay_high_tea,Ajay_total,Ajay_left], ["Gauri",Gauri_high_tea,Gauri_total,Gauri_left], ["Kanaka", Kanaka_high_tea,Kanaka_total,Kanaka_left]]
+    caterer_list = []
+    for caterer in Caterer.objects.filter(visible=True).all():
+        caterer_high_tea = Allocation.objects.filter(caterer=caterer, high_tea=True,month=period_obj).count()
+        caterer_total = Allocation.objects.filter(caterer=caterer,month=period_obj).count()
+        caterer_left = caterer.student_limit
+        caterer_list.append([caterer.name,caterer_high_tea,caterer_total,caterer_high_tea])
     context = {"messages": messages,"list": caterer_list}
     return render(request, "admin/allocation.html", context)
 
