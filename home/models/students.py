@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.utils.timezone import now
 import datetime
+from .allocation import Period, Allocation
 
 class Student(models.Model):
     """
@@ -86,7 +87,6 @@ class Rebate(models.Model):
     """
     Stores the rebate details of every student
     """
-    from .Semesters.spring23 import AllocationSpring23
     email = models.ForeignKey(
         Student, 
         on_delete=models.SET_NULL, 
@@ -95,7 +95,7 @@ class Rebate(models.Model):
         verbose_name="Student Email"
     )
     allocation_id = models.ForeignKey(
-        AllocationSpring23,
+        Allocation,
         related_name="allocation_id",
         default=0,
         on_delete=models.SET_NULL,
@@ -146,11 +146,8 @@ class UnregisteredStudent(models.Model):
     """
     Stores the long rebate details of every student
     """
-    from .Semesters.spring23 import PeriodSpring23
-    from .Semesters.autumn23 import PeriodAutumn23
-    from .Semesters.autumn22 import PeriodAutumn22
     email = models.CharField(_("email"), max_length=30, default="")
-    period = models.ForeignKey(PeriodSpring23, on_delete=models.SET_NULL, null=True, blank=True)
+    period = models.ForeignKey(Period, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.email)
@@ -160,10 +157,9 @@ class UnregisteredStudent(models.Model):
         verbose_name_plural = "Unregistered Students"
 
 class TodayRebate(models.Model):
-    from .Semesters.spring23 import AllocationSpring23
     date = models.DateField(help_text="Date of the rebate",default=now)
     Caterer = models.CharField(max_length=30, default="")
-    allocation_id = models.ForeignKey(AllocationSpring23, on_delete=models.SET_NULL,null=True,blank=True)
+    allocation_id = models.ForeignKey(Allocation, on_delete=models.SET_NULL,null=True,blank=True)
     start_date = models.DateField(help_text="start date of the rebate",null=True, blank=True)
     end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)
 
@@ -200,10 +196,9 @@ class LeftShortRebate(models.Model):
         verbose_name_plural = "Left Short Rebate"
 
 class AllocationForm(models.Model):
-    from .Semesters.spring23 import PeriodSpring23
     heading = models.CharField(_("heading"), max_length=100, default="",null=True, blank=True)
     description = models.TextField(_("description"), default="",null=True, blank=True)
-    period = models.ForeignKey(PeriodSpring23, on_delete=models.SET_NULL, null=True, blank=True)
+    period = models.ForeignKey(Period, on_delete=models.SET_NULL, null=True, blank=True)
     active = models.BooleanField(_("active"), default=False,null=True, blank=True)
     start_time = models.DateTimeField(_("Start Time"), default=now,null=True,blank=True)
     end_time= models.DateTimeField(_("End Time"), null=True, blank=True)
