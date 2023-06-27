@@ -345,7 +345,7 @@ def allocation(request):
                             caterer3.student_limit -= 1
                             caterer3.save(update_fields=["student_limit"])
                             break
-                    a = Allocation(
+                    allocation = Allocation(
                         email=student,
                         student_id=student_id,
                         period=period_obj,
@@ -355,8 +355,8 @@ def allocation(request):
                         second_pref=second_pref,
                         third_pref=third_pref,
                     )
-                    a.save()
-                    student_bill = StudentBills.objects.get_or_create(email=student, semester=period.semester)
+                    allocation.save()
+                    student_bill = StudentBills.objects.get_or_create(email=student, semester=period_obj.semester)
                     UnregisteredStudent.objects.filter(email=student.email).delete()
                 except Exception as e:
                     print(e)
@@ -370,7 +370,7 @@ def allocation(request):
         caterer_high_tea = Allocation.objects.filter(caterer=caterer, high_tea=True,month=period_obj).count()
         caterer_total = Allocation.objects.filter(caterer=caterer,month=period_obj).count()
         caterer_left = caterer.student_limit
-        caterer_list.append([caterer.name,caterer_high_tea,caterer_total,caterer_high_tea])
+        caterer_list.append([caterer.name,caterer_high_tea,caterer_total,caterer_left])
     context = {"messages": messages,"list": caterer_list}
     return render(request, "admin/allocation.html", context)
 
@@ -393,7 +393,7 @@ def addLongRebateBill(request):
             end_date = parse_date(request.POST["end_date"])
             days = (end_date - start_date).days + 1
             student = Student.objects.get(email=request.user.email)
-            if not is_not_duplicate(student, start_date, end_date,0):
+            if not is_not_duplicate(student, start_date, end_date):
                 text = "You have already applied for rebate for these dates"
             else:
                 try:
@@ -436,8 +436,8 @@ def allocationForm(request):
         text = ""
         if alloc_form.start_time and alloc_form.start_time>now() and alloc_form.end_time and alloc_form.end_time<now():
             text = "Form is closed for now."
-        if AllocationSpring23.objects.filter(roll_no=student,month=alloc_form.period).exists():
-            allocation_id = AllocationSpring23.objects.filter(roll_no=student,month=alloc_form.period).last()
+        if Allocation.objects.filter(roll_no=student,month=alloc_form.period).exists():
+            allocation_id = Allocation.objects.filter(roll_no=student,month=alloc_form.period).last()
             text = "You have already filled the form for this period. with first preference:" + allocation_id.first_pref + " second preference:" + allocation_id.second_pref
         if request.method == "POST" and request.user.is_authenticated :
             try:
@@ -455,28 +455,34 @@ def allocationForm(request):
                     third_pref = None
                 else:
                     third_pref = request.POST["third_pref"]
-                for pref in [first_pref, second_pref, third_pref]:
+                if caterer_list.count()>0:
                     caterer1 = caterer_list[0]
+                else:
+                    caterer1=None
+                if caterer_list.count()>1:
                     caterer2 = caterer_list[1]
-                    if(caterer_list.count()==3):
-                        caterer3 = caterer_list[2]
-                    else:
-                        caterer3=None
-                    if pref == caterer1.name and caterer1.student_limit > 0:
+                else:
+                    caterer2=None
+                if caterer_list.count()>2:
+                    caterer3 = caterer_list[2]
+                else:
+                    caterer3=None
+                for pref in [first_pref, second_pref, third_pref]:
+                    if caterer and pref == caterer1.name and caterer1.student_limit > 0:
                         student_id = str(caterer1.name[0])
                         if high_tea == "True":
                             student_id += "H"
                         student_id += str(caterer1.student_limit)
-                        caterer_name = caterer1.name
+                        caterer = caterer1
                         caterer1.student_limit -= 1
                         caterer1.save(update_fields=["student_limit"])
                         break
-                    elif pref == caterer2.name and caterer2.student_limit > 0:
+                    elif caterer2 and pref == caterer2.name and caterer2.student_limit > 0:
                         student_id = str(caterer2.name[0])
                         if high_tea == "True":
                             student_id += "H"
                         student_id += str(caterer2.student_limit)
-                        caterer_name = caterer2.name
+                        caterer = caterer2
                         caterer2.student_limit -= 1
                         caterer2.save(update_fields=["student_limit"])
                         break
@@ -485,21 +491,23 @@ def allocationForm(request):
                         if high_tea == "True":
                             student_id += "H"
                         student_id += str(caterer3.student_limit)
-                        caterer_name = caterer3.name
+                        caterer = caterer3
                         caterer3.student_limit -= 1
                         caterer3.save(update_fields=["student_limit"])
                         break
-                a = AllocationSpring23(
-                    roll_no=student,
+                allocation = Allocation(
+                    email=student,
                     student_id=student_id,
                     month=period_obj,
-                    caterer_name=caterer_name,
+                    caterer=caterer,
                     high_tea=high_tea,
                     first_pref=first_pref,
                     second_pref=second_pref,
                     third_pref=third_pref,
                 )
-                a.save()
+                allocation.save()
+                student_bill = StudentBills.objects.get_or_create(email=student, semester=period_obj.semester)
+                UnregisteredStudent.objects.filter(email=student.email).delete()
                 text = "Allocation Form filled Successfully"
             except Exception as e:
                 text = "The Form is closed for now"
@@ -526,36 +534,32 @@ def profile(request):
     student = Student.objects.filter(email=str(request.user.email)).last()
     socialaccount_obj = SocialAccount.objects.filter(provider='google', user_id=request.user.id)
     picture = "not available"
-    allocation = AllocationSpring23.objects.filter(roll_no=student).last()
+    allocation = Allocation.objects.filter(roll_no=student).last()
     #improve this alignment of text to be shown on the profile section
     if allocation:
-        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer_name + " High Tea: " + str(allocation.high_tea)
+        allocation_info_list = [allocation.student_id, allocation.caterer, str(allocation.high_tea)]
+        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer + " High Tea: " + str(allocation.high_tea)
     else:
         allocation_info = "Not allocated for this period"
     if len(socialaccount_obj):
             picture = socialaccount_obj[0].extra_data['picture']
-    if request.method == "POST" and request.user.is_authenticated:
-        try:
-            student = Student.objects.get(email=str(request.user.email))
-            student.name = request.POST["name"]
-            student.room_no = request.POST["room_no"]
-            student.save()
-            text = "Profile Updated Successfully"
-        except:
-            text = "Email ID does not exist in the database. Please eneter the correct email ID"
-    context = {"text": text,"student":student,"picture":picture,"allocation_info":allocation_info}
+    # if request.method == "POST" and request.user.is_authenticated:
+    #     try:
+    #         student = Student.objects.get(email=str(request.user.email))
+    #         student.name = request.POST["name"]
+    #         student.room_no = request.POST["room_no"]
+    #         student.save()
+    #         text = "Profile Updated Successfully"
+    #     except:
+    #         text = "Email ID does not exist in the database. Please eneter the correct email ID"
+    context = {"text": text,"student":student,"picture":picture,"allocation_info":allocation_info,"allocation_info_list":allocation_info_list}
     return render(request, "profile.html", context)
 
 @login_required
 def period_data(request):
     print("period_data")
     semester = request.GET.get('semester')
-    if(semester=="autumn22"):
-        period = PeriodAutumn22.objects.all()
-    elif(semester=="spring23"):
-        period = PeriodSpring23.objects.all()
-    elif(semester=="autumn23"):
-        period = PeriodAutumn23.objects.all()
+    period = Period.objects.filter(semester=semester)
     period_data = {
         'semester': semester,
         'data': list(period.values('Sno','start_date', 'end_date')),
@@ -571,16 +575,9 @@ def rebate_data(request):
     student = Student.objects.get(email=user.email)
     sno = request.GET.get('period')
     semester = request.GET.get('semester')
-    if(semester=="autumn22"):
-        rebate = RebateAutumn22.objects.filter(email=student).last()
-        rebate_bills = get_rebate_bills(rebate,sno)
-    elif(semester=="spring23"):
-        rebate = RebateSpring23.objects.filter(email=student).last()
-        print(rebate)
-        rebate_bills = get_rebate_bills(rebate,sno)
-    elif(semester=="autumn23"):
-        rebate = RebateAutumn23.objects.filter(email=student).last()
-        rebate_bills = get_rebate_bills(rebate,sno)
+    semester_obj = Semester.objects.get(name=semester)
+    rebate_bills = StudentBills.objects.filter(email=student,semester=semester_obj).last()
+    rebate_bills = get_rebate_bills(rebate,sno)
     rebate_data = {
         'semester': semester,
         'period': sno,
