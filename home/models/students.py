@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.utils.timezone import now
 import datetime
-from .allocation import Period, Allocation
 
 class Student(models.Model):
     """
@@ -82,6 +81,7 @@ class Scan(models.Model):
         verbose_name = "Scan Details"
         verbose_name_plural = "Scan Details"
 
+from .allocation import Period, Allocation
 
 class Rebate(models.Model):
     """
