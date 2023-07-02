@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext as _
-from .students import Student
 from .caterer import Caterer
 
 class Semester(models.Model):
@@ -30,7 +29,7 @@ class Allocation(models.Model):
     """
     Stores the Allocation details
     """
-
+    from .students import Student
     email = models.ForeignKey(
         Student, default=0, on_delete=models.SET_NULL, null=True
     )

@@ -88,6 +88,7 @@ DATABASES = {
 }
 DATABASE_OPTIONS = {'timeout': 30}
 
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',

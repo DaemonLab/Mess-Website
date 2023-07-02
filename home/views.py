@@ -472,6 +472,8 @@ def allocationForm(request):
                         student_id = str(caterer1.name[0])
                         if high_tea == "True":
                             student_id += "H"
+                        else:
+                            student_id+="NH"
                         student_id += str(caterer1.student_limit)
                         caterer = caterer1
                         caterer1.student_limit -= 1
@@ -481,6 +483,8 @@ def allocationForm(request):
                         student_id = str(caterer2.name[0])
                         if high_tea == "True":
                             student_id += "H"
+                        else:
+                            student_id+="NH"
                         student_id += str(caterer2.student_limit)
                         caterer = caterer2
                         caterer2.student_limit -= 1
@@ -490,6 +494,8 @@ def allocationForm(request):
                         student_id = str(caterer3.name[0])
                         if high_tea == "True":
                             student_id += "H"
+                        else:
+                            student_id+="NH"
                         student_id += str(caterer3.student_limit)
                         caterer = caterer3
                         caterer3.student_limit -= 1
