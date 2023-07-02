@@ -275,76 +275,59 @@ def allocation(request):
                 try:
                     if 'First Preference' in csv_data.columns:
                         first_pref = str(record["First Preference"]).capitalize()
+                        caterer1 = Caterer.objects.get(name=first_pref)
                     else:
                         first_pref =None
                     if 'Second Preference' in csv_data.columns:
                         second_pref = str(record["Second Preference"]).capitalize()
+                        caterer2 = Caterer.objects.get(name=second_pref)
                     else:
                         second_pref=None
                     if 'Third Preference' in csv_data.columns:
                         third_pref = str(record["Third Preference"]).capitalize()
+                        caterer3 = Caterer.objects.get(name=third_pref)
                     else:
                         third_pref=None
+
+                    #  getting period object
                     if 'Period' in csv_data.columns and 'Semester' in csv_data.columns:
                         period = str(record["Period"]).capitalize()
                         semester = str(record["Semester"]).capitalize()
                         period_obj = Period.objects.get(Sno=period, semester=Semester.objects.get(name=semester))
                     else:
                         period_obj = Period.objects.filter().last()
+
+                    # getting high tea
                     high_tea = record["High Tea"]
                     print(high_tea)
                     if(high_tea=="Yes" or high_tea==True or high_tea=="TRUE"):
                         high_tea=True
                     else:
                         high_tea=False
+                    
                     student = Student.objects.filter(email=record["Email"]).first()
                     if(student==None):
                         messages+=str(record["Email"])
-                    caterer_list = Caterer.objects.filter(visible=True).all()
                     print(student)
-                    caterer1 = caterer_list[0]
-                    if(caterer_list.count()>1):
-                        caterer2 = caterer_list[1]
+
+                    if caterer1.student_limit>=0:
+                        caterer1.student_limit-=1
+                        caterer1.save(update_fields=["student_limit"])
+                        caterer=caterer1
+                    elif caterer2 and caterer2.student_limit>=0:
+                        caterer2.student_limit-=1
+                        caterer2.save(update_fields=["student_limit"])
+                        caterer=caterer2
+                    elif caterer3 and caterer3.student_limit>=0:
+                        caterer3.student_limit-=1
+                        caterer3.save(update_fields=["student_limit"])
+                        caterer=caterer3
+                    student_id = str(caterer.name[0])
+                    if high_tea == True:
+                        student_id += "H"
                     else:
-                        caterer2=None
-                    if(caterer_list.count()>2):
-                        caterer3 = caterer_list[2]
-                    else:
-                        caterer3=None
-                    for pref in [first_pref, second_pref, third_pref]:
-                        if pref == caterer1.name and caterer1.student_limit > 0:
-                            student_id = str(caterer1.name[0])
-                            if high_tea == True:
-                                student_id += "H"
-                            else:
-                                student_id+="NH"
-                            student_id += str(caterer1.student_limit)
-                            caterer = caterer1
-                            caterer1.student_limit -= 1
-                            caterer1.save(update_fields=["student_limit"])
-                            break
-                        elif caterer2 and pref == caterer2.name and caterer2.student_limit > 0:
-                            student_id = str(caterer2.name[0])
-                            if high_tea == True:
-                                student_id += "H"
-                            else:
-                                student_id+="NH"
-                            student_id += str(caterer2.student_limit)
-                            caterer = caterer2
-                            caterer2.student_limit -= 1
-                            caterer2.save(update_fields=["student_limit"])
-                            break
-                        elif caterer3 and pref == caterer3.name and caterer3.student_limit > 0:
-                            student_id = str(caterer3.name[0])
-                            if high_tea == True:
-                                student_id += "H"
-                            else:
-                                student_id+="NH"
-                            student_id += str(caterer3.student_limit)
-                            caterer = caterer3
-                            caterer3.student_limit -= 1
-                            caterer3.save(update_fields=["student_limit"])
-                            break
+                        student_id+="NH"
+                    student_id += str(caterer.student_limit)
                     allocation = Allocation(
                         email=student,
                         student_id=student_id,
@@ -447,64 +430,40 @@ def allocationForm(request):
                     first_pref = None
                 else:
                     first_pref = request.POST["first_pref"]
+                    caterer1 = Caterer.objects.get(name=first_pref)
                 if caterer_list.count()<2:
                     second_pref = None
                 else:
                     second_pref = request.POST["second_pref"]
+                    caterer2 = Caterer.objects.get(name=second_pref)
                 if caterer_list.count()<3:
                     third_pref = None
                 else:
                     third_pref = request.POST["third_pref"]
-                if caterer_list.count()>0:
-                    caterer1 = caterer_list[0]
+                    caterer3 = Caterer.objects.get(name=third_pref)
+
+                if caterer1.student_limit>=0:
+                    caterer1.student_limit-=1
+                    caterer1.save(update_fields=["student_limit"])
+                    caterer=caterer1
+                elif caterer2 and caterer2.student_limit>=0:
+                    caterer2.student_limit-=1
+                    caterer2.save(update_fields=["student_limit"])
+                    caterer=caterer2
+                elif caterer3 and caterer3.student_limit>=0:
+                    caterer3.student_limit-=1
+                    caterer3.save(update_fields=["student_limit"])
+                    caterer=caterer3
+                student_id = str(caterer.name[0])
+                if high_tea == True:
+                    student_id += "H"
                 else:
-                    caterer1=None
-                if caterer_list.count()>1:
-                    caterer2 = caterer_list[1]
-                else:
-                    caterer2=None
-                if caterer_list.count()>2:
-                    caterer3 = caterer_list[2]
-                else:
-                    caterer3=None
-                for pref in [first_pref, second_pref, third_pref]:
-                    if caterer and pref == caterer1.name and caterer1.student_limit > 0:
-                        student_id = str(caterer1.name[0])
-                        if high_tea == "True":
-                            student_id += "H"
-                        else:
-                            student_id+="NH"
-                        student_id += str(caterer1.student_limit)
-                        caterer = caterer1
-                        caterer1.student_limit -= 1
-                        caterer1.save(update_fields=["student_limit"])
-                        break
-                    elif caterer2 and pref == caterer2.name and caterer2.student_limit > 0:
-                        student_id = str(caterer2.name[0])
-                        if high_tea == "True":
-                            student_id += "H"
-                        else:
-                            student_id+="NH"
-                        student_id += str(caterer2.student_limit)
-                        caterer = caterer2
-                        caterer2.student_limit -= 1
-                        caterer2.save(update_fields=["student_limit"])
-                        break
-                    elif caterer3 and pref == caterer3.name and caterer3.student_limit > 0:
-                        student_id = str(caterer3.name[0])
-                        if high_tea == "True":
-                            student_id += "H"
-                        else:
-                            student_id+="NH"
-                        student_id += str(caterer3.student_limit)
-                        caterer = caterer3
-                        caterer3.student_limit -= 1
-                        caterer3.save(update_fields=["student_limit"])
-                        break
+                    student_id+="NH"
+                student_id += str(caterer.student_limit)
                 allocation = Allocation(
                     email=student,
                     student_id=student_id,
-                    month=period_obj,
+                    period=period_obj,
                     caterer=caterer,
                     high_tea=high_tea,
                     first_pref=first_pref,
