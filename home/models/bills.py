@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext as _
-from .students import Student
-from .caterer import Caterer
+
 from .allocation import Semester
+from .caterer import Caterer
+from .students import Student
+
 
 class StudentBills(models.Model):
     """
