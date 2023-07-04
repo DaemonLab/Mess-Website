@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext as _
+
 from .caterer import Caterer
+
 
 class Semester(models.Model):
     name = models.CharField(_("Semester Name"), max_length=30, default=None, null=True, blank=True, help_text="Name of the semester")

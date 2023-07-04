@@ -1,49 +1,26 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.core.files import File
-from django.core.files.storage import default_storage
+import io
+from datetime import date, timedelta
+
+import pandas as pd
+from allauth.socialaccount.models import SocialAccount
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.utils.timezone import now
-from allauth.socialaccount.models import SocialAccount
-from home.models import (
-    About,
-    Update,
-    Carousel,
-    Rule,
-    ShortRebate,
-    Caterer,
-    Form,
-    Cafeteria,
-    Contact,
-    Rebate,
-    Student,
-    LongRebate,
-    UnregisteredStudent,
-    AllocationForm,
-    LeftShortRebate,
-    Semester,
-    Period,
-    Allocation,
-    StudentBills,
-    CatererBills,
-    PeriodAutumn22,
-    PeriodSpring23,
-    RebateAutumn22,
-    RebateSpring23,
-)
-from .utils.get_rebate_bills import get_rebate_bills
-from .utils.rebate_checker import (
-    max_days_rebate,
-    is_not_duplicate,
-)
-import pandas as pd
-from datetime import date, timedelta
-import io
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+from django.core.files import File
+from django.core.files.storage import default_storage
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
 from django.utils.dateparse import parse_date
-from django.core.exceptions import MultipleObjectsReturned
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
+from django.utils.timezone import now
+from home.models import (About, Allocation, AllocationForm, Cafeteria,
+                         Carousel, Caterer, CatererBills, Contact, Form,
+                         LeftShortRebate, LongRebate, Period, PeriodAutumn22,
+                         PeriodSpring23, Rebate, RebateAutumn22,
+                         RebateSpring23, Rule, Semester, ShortRebate, Student,
+                         StudentBills, UnregisteredStudent, Update)
+
+from .utils.get_rebate_bills import get_rebate_bills
+from .utils.rebate_checker import is_not_duplicate, max_days_rebate
 
 # Create your views here.
 
@@ -163,7 +140,7 @@ def rebate(request):
     list = []
     try:
         print(request.user.email)
-        allocation_id = Allocation.objects.get(email__email=str(request.user.email))
+        allocation_id = Allocation.objects.filter(email__email=str(request.user.email))
         try:
             for period in Period.objects.all():
                 if period.end_date>date.today()+timedelta(1):
@@ -194,12 +171,21 @@ def rebate(request):
                 period_end = allocation_id.period.end_date
                 if(rebate_days>7):
                     text="Max no of days for rebate is 7"
-                elif not period_start<=start_date<=period_end:
+                elif not period_start<=start_date:
                     text = "Please fill the rebate of this period only"    
                 elif not is_not_duplicate(student, start_date, end_date):
                     text = "You have already applied for rebate for these dates"
                 else:
-                    if not period_start<=end_date<=period_end:
+                    if not period_start<=start_date<=period_end:
+                        short_left_rebate = LeftShortRebate(
+                            email=str(request.user.email),
+                            start_date=start_date,
+                            end_date=end_date,
+                            date_applied=date.today(),
+                        )
+                        short_left_rebate.save()
+                        text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
+                    elif not period_start<=end_date<=period_end:
                         short_left_rebate = LeftShortRebate(
                             email=str(request.user.email),
                             start_date=period_end+timedelta(days=1),
@@ -207,24 +193,21 @@ def rebate(request):
                             date_applied=date.today(),
                         )
                         end_date = period_end
-                    else:
-                        short_left_rebate=None 
-                    upper_cap_check = max_days_rebate(student, start_date, end_date, period)
+                        short_left_rebate.save()
+                    upper_cap_check = max_days_rebate(student, start_date, end_date, period_obj)
                     if upper_cap_check >= 0:
                         text = (
                             "You can only apply for max 8 days in a period. Days left for this period: "
                             + str(upper_cap_check)
                         )
-                    elif (rebate_days) <= 7 and rebate_days >= 2 and before_rebate_days >= 2:
+                    elif text=="" and (rebate_days) <= 7 and rebate_days >= 2 and before_rebate_days >= 2:
                         r = Rebate(
                             email=student,
                             allocation_id=allocation_id,
-                            start_date=request.POST["start_date"],
-                            end_date=request.POST["end_date"],
+                            start_date=start_date,
+                            end_date=end_date,
                             approved=False,
                         )
-                        if short_left_rebate:
-                            short_left_rebate.save()
                         r.save()
                         text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
                     elif 0 < rebate_days < 2:
@@ -235,13 +218,13 @@ def rebate(request):
                         text = "Max no of days for rebate is 7"
                     elif before_rebate_days < 0:
                         text = "Please enter the correct dates"
-                    else:
+                    elif text=="":
                         text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
             except Allocation.DoesNotExist:
                 text = "Email ID does not match with the allocation ID"
         except Exception as e:
             print(e)
-            text = "Ohh No! an unknown ERROR occured, Please imform about it immediatly to the Dining Wadern."
+            text = "Ohh No! an unknown ERROR occured, Please inform about it immediatly to the Dining Wadern."
     context = {"text": text, "key": key, "list": list}
     return render(request, "rebateForm.html", context)
 
@@ -555,7 +538,6 @@ def rebate_data(request):
         rebate_bills = get_rebate_bills(rebate,sno)
     elif(semester=="spring23"):
         rebate = RebateSpring23.objects.filter(email=student).last()
-        print(rebate)
         rebate_bills = get_rebate_bills(rebate,sno)
     else:
         semester_obj= Semester.objects.get(name=semester)
