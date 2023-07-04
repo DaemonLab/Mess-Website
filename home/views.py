@@ -27,6 +27,10 @@ from home.models import (
     Allocation,
     StudentBills,
     CatererBills,
+    PeriodAutumn22,
+    PeriodSpring23,
+    RebateAutumn22,
+    RebateSpring23,
 )
 from .utils.get_rebate_bills import get_rebate_bills
 from .utils.rebate_checker import (
@@ -347,11 +351,11 @@ def allocation(request):
         except Exception as e:
             print(e)
             messages = "Invalid CSV file"
-    period_obj = period.objects.filter().last()
+    period_obj = Period.objects.filter().last()
     caterer_list = []
     for caterer in Caterer.objects.filter(visible=True).all():
-        caterer_high_tea = Allocation.objects.filter(caterer=caterer, high_tea=True,month=period_obj).count()
-        caterer_total = Allocation.objects.filter(caterer=caterer,month=period_obj).count()
+        caterer_high_tea = Allocation.objects.filter(caterer=caterer, high_tea=True,period=period_obj).count()
+        caterer_total = Allocation.objects.filter(caterer=caterer,period=period_obj).count()
         caterer_left = caterer.student_limit
         caterer_list.append([caterer.name,caterer_high_tea,caterer_total,caterer_left])
     context = {"messages": messages,"list": caterer_list}
@@ -419,8 +423,8 @@ def allocationForm(request):
         text = ""
         if alloc_form.start_time and alloc_form.start_time>now() and alloc_form.end_time and alloc_form.end_time<now():
             text = "Form is closed for now."
-        if Allocation.objects.filter(roll_no=student,month=alloc_form.period).exists():
-            allocation_id = Allocation.objects.filter(roll_no=student,month=alloc_form.period).last()
+        if Allocation.objects.filter(email=student,period=alloc_form.period).exists():
+            allocation_id = Allocation.objects.filter(email=student,period=alloc_form.period).last()
             text = "You have already filled the form for this period. with first preference:" + allocation_id.first_pref + " second preference:" + allocation_id.second_pref
         if request.method == "POST" and request.user.is_authenticated :
             try:
@@ -499,11 +503,11 @@ def profile(request):
     student = Student.objects.filter(email=str(request.user.email)).last()
     socialaccount_obj = SocialAccount.objects.filter(provider='google', user_id=request.user.id)
     picture = "not available"
-    allocation = Allocation.objects.filter(roll_no=student).last()
+    allocation = Allocation.objects.filter(email=student).last()
     #improve this alignment of text to be shown on the profile section
     if allocation:
-        allocation_info_list = [allocation.student_id, allocation.caterer, str(allocation.high_tea)]
-        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer + " High Tea: " + str(allocation.high_tea)
+        allocation_info_list = [allocation.student_id, allocation.caterer.name, str(allocation.high_tea)]
+        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer.name + " High Tea: " + str(allocation.high_tea)
     else:
         allocation_info = "Not allocated for this period"
     if len(socialaccount_obj):
@@ -523,10 +527,16 @@ def profile(request):
 @login_required
 def period_data(request):
     print("period_data")
-    semester = request.GET.get('semester')
-    period = Period.objects.filter(semester=semester)
+    name = request.GET.get('semester')
+    if(name=="autumn22"):
+        period = PeriodAutumn22.objects.all()
+    elif(name=="spring23"):
+        period = PeriodSpring23.objects.all()
+    else:
+        semester = Semester.objects.get(name=name)
+        period = Period.objects.filter(semester=semester)
     period_data = {
-        'semester': semester,
+        'semester': name,
         'data': list(period.values('Sno','start_date', 'end_date')),
     }
     # print(period_data['semester'])
@@ -540,9 +550,17 @@ def rebate_data(request):
     student = Student.objects.get(email=user.email)
     sno = request.GET.get('period')
     semester = request.GET.get('semester')
-    semester_obj = Semester.objects.get(name=semester)
-    rebate_bills = StudentBills.objects.filter(email=student,semester=semester_obj).last()
-    rebate_bills = get_rebate_bills(rebate,sno)
+    if(semester=="autumn22"):
+        rebate = RebateAutumn22.objects.filter(email=student).last()
+        rebate_bills = get_rebate_bills(rebate,sno)
+    elif(semester=="spring23"):
+        rebate = RebateSpring23.objects.filter(email=student).last()
+        print(rebate)
+        rebate_bills = get_rebate_bills(rebate,sno)
+    else:
+        semester_obj= Semester.objects.get(name=semester)
+        rebate = StudentBills.objects.filter(email=student, semester = semester_obj).last()
+        rebate_bills = get_rebate_bills(rebate,sno)
     rebate_data = {
         'semester': semester,
         'period': sno,
