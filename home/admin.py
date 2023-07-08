@@ -40,6 +40,7 @@ from home.models import (
     LeftLongRebate,
     LeftShortRebate,
     AllocationForm,
+    Fee,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 from .resources import (
@@ -809,7 +810,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     actions = ["export_as_csv","clean"]
 
-    @admin.action(description="Clean testing period data")
+    @admin.action(description="Clean Null period data")
     def clean(self, request, queryset):
         """
         Clean testing period data
@@ -837,6 +838,32 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 obj.period5_long = 0
             if(obj.period6_short==None):
                 obj.period6_short = 0
+            if(obj.period6_long==None):
+                obj.period6_long = 0
+            if(obj.period1_high_tea==None):
+                obj.period1_high_tea = True
+            if(obj.period2_high_tea==None):
+                obj.period2_high_tea = True
+            if(obj.period3_high_tea==None):
+                obj.period3_high_tea = True
+            if(obj.period4_high_tea==None):
+                obj.period4_high_tea = True
+            if(obj.period5_high_tea==None):
+                obj.period5_high_tea = True
+            if(obj.period6_high_tea==None):
+                obj.period6_high_tea = True
+            if(obj.period1_bill==None):
+                obj.period1_bill = 0
+            if(obj.period2_bill==None):
+                obj.period2_bill = 0
+            if(obj.period3_bill==None):
+                obj.period3_bill = 0
+            if(obj.period4_bill==None):
+                obj.period4_bill = 0
+            if(obj.period5_bill==None):
+                obj.period5_bill = 0
+            if(obj.period6_bill==None):
+                obj.period6_bill = 0
             obj.save()
 
     def export_as_csv(self, request, queryset):
@@ -1161,3 +1188,21 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             },
         ),
     )
+
+@admin.register(Fee)
+class about_Admin(admin.ModelAdmin):
+    model = Fee
+    search_fields = ("program",)
+    list_display = ("program", "prev_sem_fee", "upcoming_sem_fee")
+    fieldsets = (
+        (None,
+         {"fields": 
+          (
+            "program", 
+            "prev_sem_fee",
+            "upcoming_sem_fee",
+           )
+         },
+        ),
+    )
+    

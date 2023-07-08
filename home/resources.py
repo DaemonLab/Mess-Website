@@ -17,6 +17,7 @@ from .models import (
     CatererBillsAutumn22,
     CatererBillsSpring23,  
     CatererBillsAutumn23,
+    Fee,
 )
 from .utils.rebate_checker import count
 
@@ -288,13 +289,16 @@ class RebateBillsResource(resources.ModelResource):
     period6_high_tea = fields.Field(attribute="period6_high_tea", column_name="High Tea 6")
     period6_bill = fields.Field(attribute="period6_bill", column_name="Bill 6")
     empty = fields.Field(attribute="empty", column_name="")
+    last_sem_fee = fields.Field(attribute="last_sem_fee", column_name="Last Semester Fee")
+    total = fields.Field(attribute="total", column_name="Total")
+    upcoming_sem_fee = fields.Field(attribute="upcoming_sem_fee", column_name="Upcoming Semester Fee")
+    upcoming_sem_due = fields.Field(attribute="upcoming_sem_due", column_name="Upcoming Semester Dues")
     
     def before_import_row(self, row, **kwargs):
     # Convert "TRUE" to True for boolean fields
         for field_name, field_object in self.fields.items():
             if field_object.column_name and field_object.column_name.lower() == "true" or field_object.column_name == 1:
                 row[field_name] = True
-        
 
 
     def skip_row(self, instance, original, row,import_validation_errors):
@@ -348,6 +352,10 @@ class RebateBillsResource(resources.ModelResource):
             "allocation4",
             "allocation5",
             "allocation6",
+            "last_sem_fee",
+            "total",
+            "upcoming_sem_fee",
+            "upcoming_sem_due",
         )
         export_order = (
             "email__email",
@@ -393,104 +401,44 @@ class RebateBillsResource(resources.ModelResource):
             "period6_long",
             "period6_high_tea",
             "period6_bill",
+            "empty",
+            "last_sem_fee",
+            "total",
+            "upcoming_sem_fee",
+            "upcoming_sem_due",
         )
 
-    # obj = RebateSpring23.objects.all()
-    # global obj2 
-    # obj2 = PeriodSpring23.objects.all()
-    # def dehydrate_empty(self, obj):
-    #     return ""
+    def dehydrate_last_sem_fee(self,obj):
+        try:
+            fee = Fee.objects.get(program=obj.email.degree)
+            return fee.prev_sem_fee
+        except Exception as e:
+            print(e)
+            return 0
         
-    # def dehydrate_period1_bill(self, obj):
-    #     amount=130
-    #     days=0
-    #     if(obj2.count()>0): days = count(obj2[0].start_date,obj2[0].end_date)
-    #     period1_bill=130*days
-    #     if obj.period1_short == None:
-    #         obj.period1_short = 0
-    #     if obj.period1_long == None:
-    #         obj.period1_long = 0
-    #     if(obj.period1_high_tea == False):
-    #         amount=amount-15
-    #         period1_bill -= days*15
-    #     period1_bill -= (int(obj.period1_short)+int(obj.period1_long))*int(amount)
-    #     return period1_bill
+    def dehydrate_upcoming_sem_fee(self,obj):
+        try:
+            fee = Fee.objects.get(program=obj.email.degree)
+            return fee.upcoming_sem_fee
+        except Exception as e:
+            print(e)
+            return 0
     
-    # def dehydrate_period2_bill(self, obj):
-    #     amount=130
-    #     days=0
-    #     if(obj2.count()>1): days = count(obj2[1].start_date,obj2[1].end_date)
-    #     period2_bill=130*days
-    #     if obj.period2_short == None:
-    #         obj.period2_short = 0
-    #     if obj.period2_long == None:
-    #         obj.period2_long = 0
-    #     if(obj.period2_high_tea == False):
-    #         amount=amount-15
-    #         period2_bill -= days*15
-    #     period2_bill -= (int(obj.period2_short)+int(obj.period2_long))*int(amount)
-    #     return period2_bill
-    
-    # def dehydrate_period3_bill(self, obj):
-    #     amount=130
-    #     days=0
-    #     if(obj2.count()>2): days = count(obj2[2].start_date,obj2[2].end_date)
-    #     period3_bill=130*days
-    #     if obj.period3_short == None:
-    #         obj.period3_short = 0
-    #     if obj.period3_long == None:
-    #         obj.period3_long = 0
-    #     if(obj.period3_high_tea == False):
-    #         amount=amount-15
-    #         period3_bill -= days*15
-    #     period3_bill -= (int(obj.period3_short)+int(obj.period3_long))*int(amount)
-    #     return period3_bill
-    
-    # def dehydrate_period4_bill(self, obj):
-    #     amount=130
-    #     days=0
-    #     if(obj2.count()>3): days = count(obj2[3].start_date,obj2[3].end_date)
-    #     period4_bill=130*days
-    #     if obj.period4_short == None:
-    #         obj.period4_short = 0
-    #     if obj.period4_long == None:
-    #         obj.period4_long = 0
-    #     if(obj.period4_high_tea == False):
-    #         amount=amount-15
-    #         period4_bill -= days*15
-    #     period4_bill -= (int(obj.period4_short)+int(obj.period4_long))*int(amount)
-    #     return period4_bill
-    
-    # def dehydrate_period5_bill(self, obj):
-    #     amount=130
-    #     days=0
-    #     if(obj2.count()>4): days = count(obj2[4].start_date,obj2[4].end_date)
-    #     period5_bill=130*days
-    #     if obj.period5_short == None:
-    #         obj.period5_short = 0
-    #     if obj.period5_long == None:
-    #         obj.period5_long = 0
-    #     if(obj.period5_high_tea == False):
-    #         amount=amount-15
-    #         period5_bill -= days*15
-    #     period5_bill -= (int(obj.period5_short)+int(obj.period5_long))*int(amount)
-    #     return period5_bill
-    
-    # def dehydrate_period6_bill(self, obj):
-    #     amount=130
-    #     days=0
-    #     if(obj2.count()>5): days = count(obj2[5].start_date,obj2[5].end_date)
-    #     period6_bill=130*days
-    #     if obj.period6_short == None:
-    #         obj.period6_short = 0
-    #     if obj.period6_long == None:
-    #         obj.period6_long = 0
-    #     if(obj.period6_high_tea == False):
-    #         amount=amount-15
-    #         period6_bill -= days*15
-    #     period6_bill -= (int(obj.period6_short)+int(obj.period6_long))*int(amount)
-    #     return period6_bill
-    
+    def dehydrate_total(self,obj):
+        try:
+            return obj.period1_bill + obj.period2_bill + obj.period3_bill + obj.period4_bill + obj.period5_bill + obj.period6_bill
+        except Exception as e:
+            print(e)
+            return 0
+        
+    def dehydrate_upcoming_sem_due(self,obj):
+        try:
+            fee = Fee.objects.get(program=obj.email.degree)
+            return fee.upcoming_sem_fee -(fee.prev_sem_fee - obj.period1_bill - obj.period2_bill - obj.period3_bill - obj.period4_bill - obj.period5_bill - obj.period6_bill)
+        except Exception as e:
+            print(e)
+            return 0
+   
     def dehydrate_allocation1(self,obj):
         try:
             period = PeriodSpring23.objects.get(Sno=1)
@@ -563,9 +511,7 @@ class RebateBillsResource(resources.ModelResource):
         except:
             return "Not yet allocated"
 
-   #Try implementing dehydrate_total function later    
-    def dehydrate_total(self,obj):
-        return 0
+
 
 
 class UnregisteredStudentResource(resources.ModelResource):
