@@ -15,3 +15,4 @@ from .Semesters.spring23 import PeriodSpring23, AllocationSpring23, RebateSpring
 from .Semesters.autumn23 import PeriodAutumn23, AllocationAutumn23, RebateAutumn23, CatererBillsAutumn23
 from .allocation import Semester, Period, Allocation
 from .bills import StudentBills, CatererBills
+from .fees import Fee
