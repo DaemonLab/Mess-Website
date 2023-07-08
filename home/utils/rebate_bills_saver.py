@@ -3,8 +3,8 @@ from django.db.models.query import QuerySet
 
 def save_short_bill(student,period,days,high_tea,caterer):
     rebate = StudentBills.objects.get(email=student,semester=period.semester)
-    print(caterer,caterer,student)
-    catererBill = CatererBills.objects.get(caterer=caterer)
+    print(caterer,student)
+    catererBill = CatererBills.objects.get(caterer=caterer,semester=period.semester)
     amount = days*115
     if(high_tea):
         amount = amount + days*15
