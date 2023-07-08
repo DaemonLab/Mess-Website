@@ -184,7 +184,8 @@ def rebate(request):
                             date_applied=date.today(),
                         )
                         short_left_rebate.save()
-                        text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
+                        text = "You have successfully submitted the rebate, it will get addedd to your bills in the next period."
+                        upper_cap_check=-1
                     elif not period_start<=end_date<=period_end:
                         short_left_rebate = LeftShortRebate(
                             email=str(request.user.email),
@@ -192,9 +193,11 @@ def rebate(request):
                             end_date=end_date,
                             date_applied=date.today(),
                         )
-                        end_date = period_end
                         short_left_rebate.save()
-                    upper_cap_check = max_days_rebate(student, start_date, end_date, period_obj)
+                        end_date=period_end
+                        upper_cap_check = max_days_rebate(student, start_date, period_end, period_obj)
+                    else:
+                        upper_cap_check = max_days_rebate(student, start_date, end_date, period_obj)
                     if upper_cap_check >= 0:
                         text = (
                             "You can only apply for max 8 days in a period. Days left for this period: "
@@ -209,7 +212,7 @@ def rebate(request):
                             approved=False,
                         )
                         r.save()
-                        text = "You have successfully submitted the form, subject to approval of Office of Dining Warden. Thank You!"
+                        text = "You have successfully submitted the rebate, subject to approval of Office of Dining Warden. Thank You!"
                     elif 0 < rebate_days < 2:
                         text = "Min no of days for rebate is 2"
                     elif before_rebate_days < 2:

@@ -1,9 +1,14 @@
+from datetime import timedelta
+
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Student, Rebate, LongRebate, TodayRebate, UnregisteredStudent, StudentBills, Allocation,Period,CatererBills, Semester
-from .utils.django_email_server import rebate_mail,long_rebate_mail
+
+from .models import (Allocation, CatererBills, LongRebate, Period, Rebate,
+                     Semester, Student, StudentBills, TodayRebate,
+                     UnregisteredStudent)
+from .utils.django_email_server import long_rebate_mail, rebate_mail
 from .utils.month import fill_periods
-from .utils.rebate_bills_saver import save_short_bill, save_long_bill
+from .utils.rebate_bills_saver import save_long_bill, save_short_bill
 from .utils.rebate_checker import count
 
 __doc__="This file contains the signals for the home app"
@@ -22,18 +27,20 @@ def update_short_bill(sender, instance, **kwargs):
     try:
         old_instance = Rebate.objects.get(pk=instance.pk)
         if old_instance.approved != instance.approved:
-            days = count(instance.start_date, instance.end_date)
             email = instance.email
             allocation = instance.allocation_id
+            start_date= instance.start_date
+            end_date = instance.end_date
+            days = count(start_date, end_date)
             print(old_instance.approved,instance.approved)
-            if instance.approved == True:
+            if instance.approved == True and days>0:
                 save_short_bill(email,allocation.period,days,allocation.high_tea, allocation.caterer)
-                new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer.name,allocation_id = allocation,start_date=instance.start_date,end_date=instance.end_date)
+                new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer.name,allocation_id = allocation,start_date=start_date,end_date=end_date)
                 new_rebate.save()
                 print("Saved")
             else:
                 save_short_bill(email,allocation.period,-days,allocation.high_tea, allocation.caterer)
-                new_rebate = TodayRebate.objects.filter(allocation_id=allocation).last().delete()
+                new_rebate = TodayRebate.objects.filter(allocation_id=allocation, start_date = start_date).last().delete()
                 print("Deleted")
             rebate_mail(instance.start_date,instance.end_date,instance.approved,email)
     except Exception as e:
@@ -65,7 +72,7 @@ def update_rebate_bill(sender, instance, created, **kwargs):
     try:
         if created:
             sno = instance.period.Sno
-            days = (instance.month.end_date - instance.month.start_date).days + 1
+            days = (instance.period.end_date - instance.period.start_date).days + 1
             high_tea = instance.high_tea
             rebate_bill = StudentBills.objects.get_or_create(instance.email,instance.period.semester)
             amount=115
