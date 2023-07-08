@@ -598,7 +598,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(TodayRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateBillsResource
     model = TodayRebate
     search_fields = ("Caterer","allocation_id__roll_no__email")
     list_display =("allocation_id", "date","start_date","end_date")
@@ -1155,18 +1154,19 @@ class about_Admin(admin.ModelAdmin):
         """
         for obj in queryset:
             email = obj.email
-            for period in PeriodSpring23.objects.all():
+            student_obj = Student.objects.filter(email=email).last()
+            for period in Period.objects.all():
                 if(period.start_date <= obj.start_date and period.end_date >= obj.end_date):
                     days = (obj.end_date - obj.start_date).days + 1
-                    allocation=AllocationSpring23.objects.filter(roll_no__email=email,month=period).last()
+                    allocation=Allocation.objects.filter(email__email=email,period=period).last()
                     if allocation:
-                        save_short_bill(email,period,days,allocation.caterer_name,allocation.high_tea,1)
-                        new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer_name,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)
+                        save_short_bill(student_obj,period,days,allocation.high_tea,allocation.caterer)
+                        new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)
                         new_rebate.save()
                         print("Saved")
-                        rebate_mail(obj.start_date,obj.end_date,obj.approved,email)
+                        rebate_mail(obj.start_date,obj.end_date,True,email)
                         short_rebate = Rebate(
-                            email=email,
+                            email=student_obj,
                             allocation_id=allocation,
                             start_date=obj.start_date,
                             end_date=obj.end_date,

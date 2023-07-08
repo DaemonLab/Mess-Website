@@ -74,7 +74,7 @@ def update_rebate_bill(sender, instance, created, **kwargs):
             sno = instance.period.Sno
             days = (instance.period.end_date - instance.period.start_date).days + 1
             high_tea = instance.high_tea
-            rebate_bill = StudentBills.objects.get_or_create(instance.email,instance.period.semester)
+            rebate_bill,_ = StudentBills.objects.get_or_create(email = instance.email,semester = instance.period.semester)
             amount=115
             if(high_tea):
                 amount=130
