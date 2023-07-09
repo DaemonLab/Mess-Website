@@ -228,6 +228,11 @@ def rebate(request):
         except Exception as e:
             print(e)
             text = "Ohh No! an unknown ERROR occured, Please inform about it immediatly to the Dining Wadern."
+        request.session["text"] = text
+        return redirect(request.path)
+    text = request.session.get("text", "")
+    if(text!=""): 
+        del request.session["text"]
     context = {"text": text, "key": key, "list": list}
     return render(request, "rebateForm.html", context)
 
@@ -337,6 +342,11 @@ def allocation(request):
         except Exception as e:
             print(e)
             messages = "Invalid CSV file"
+        request.session["messages"] = messages
+        return redirect(request.path)
+    messages = request.session.get("messages", "")
+    if(messages!=""): 
+        del request.session["messages"]
     period_obj = Period.objects.filter().last()
     caterer_list = []
     for caterer in Caterer.objects.filter(visible=True).all():
@@ -387,6 +397,11 @@ def addLongRebateBill(request):
                     print(e)
         except:
             text = "Email ID does not exist in the database. Please eneter the correct email ID"
+        request.session["text"] = text
+        return redirect(request.path)
+    text = request.session.get("text", "")
+    if(text!=""): 
+        del request.session["text"]
     context = {"text": text}
     return render(request, "longRebate.html", context)
 
@@ -407,11 +422,12 @@ def allocationForm(request):
         student = Student.objects.filter(email=str(request.user.email)).last()
         key=student.email
         text = ""
+        message = ""
         if alloc_form.start_time and alloc_form.start_time>now() and alloc_form.end_time and alloc_form.end_time<now():
-            text = "Form is closed for now."
+            message = "Form is closed for now."
         if Allocation.objects.filter(email=student,period=alloc_form.period).exists():
             allocation_id = Allocation.objects.filter(email=student,period=alloc_form.period).last()
-            text = "You have already filled the form for this period. with first preference:" + allocation_id.first_pref + " second preference:" + allocation_id.second_pref
+            message = "You have already filled the form for this period. with first preference:" + allocation_id.first_pref + " second preference:" + allocation_id.second_pref
         if request.method == "POST" and request.user.is_authenticated :
             try:
                 period_obj = alloc_form.period
@@ -467,13 +483,15 @@ def allocationForm(request):
             except Exception as e:
                 text = "The Form is closed for now"
                 print(e)
-        # else:
-        #     text="The Form is closed for now"
-        #     print("The Form is closed for now")
+            request.session["text"] = text
+            return redirect(request.path)
+        text = request.session.get("text", "")
+        if(text!=""): 
+            del request.session["text"]
     except Exception as e:
         print(e)
-        text = "Signed in account can not fill the allocation form"
-    context = {"text": text, "caterer_list": caterer_list, "allocation_form_details": alloc_form}
+        message = "Signed in account can not fill the allocation form"
+    context = {"text": text, "caterer_list": caterer_list, "allocation_form_details": alloc_form,"message":message}
     return render(request, "allocationForm.html", context)
 
 @login_required

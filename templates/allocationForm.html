@@ -22,7 +22,7 @@
     {% endif %}
   </div>
   <form action="" method="post" class="px-5 mx-md-5" id="preference">
-    {% csrf_token %} {% if text == "" %}
+    {% csrf_token %} {% if text == "" and message == "" %}
     <div class="form-group p-2">
       <b>Period of Allocation: {{ allocation_form_details.period.start_date }} to {{ allocation_form_details.period.end_date }}</b>
     </div>
@@ -81,8 +81,11 @@
     >
       Submit
     </button>
-    {% else %}
+    {% elif text != "" %}
     <div class="text-center my-5 pb-5 fst-italic display-6">{{text}}</div>
+    {{endif}}
+    {% else %}
+    <div class="text-center my-5 pb-5 fst-italic display-6">{{message}}</div>
     {% endif %}
   </form>
 </main>
