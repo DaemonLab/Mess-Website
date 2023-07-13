@@ -12,10 +12,10 @@ def is_not_duplicate(student,new_rebate_start,new_rebate_end):
     """Checks if these dates are already applied for rebate"""
     try:
         for short_rebate in Rebate.objects.filter(email=student).all():
-            if short_rebate.end_date> new_rebate_start-timedelta(days=2) or short_rebate.start_date<new_rebate_end+timedelta(days=2):
+            if (short_rebate.start_date< new_rebate_start+timedelta(days=2) <short_rebate.end_date) or (short_rebate.start_date<new_rebate_end+timedelta(days=2)<short_rebate.end_date):
                 return False
         for long_rebate in LongRebate.objects.filter(email=student).all():
-            if long_rebate.end_date> new_rebate_start-timedelta(days=2) or long_rebate.start_date<new_rebate_end+timedelta(days=2):
+            if (long_rebate.end_date> new_rebate_start+timedelta(days=2)>long_rebate.start_date) or (long_rebate.start_date<new_rebate_end+timedelta(days=2)<long_rebate.end_date):
                 return False
         return True
     except Exception as e:
