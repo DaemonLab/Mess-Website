@@ -967,7 +967,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationNewResource
     model = Allocation
-    search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer", "high_tea",)
+    search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name", "high_tea",)
     list_filter = ("period", "caterer", "high_tea","email__hostel","email__degree","email__department",)
     list_display = ("student_id","email", "period", "caterer", "high_tea")
     fieldsets = ((None,
@@ -1158,7 +1158,7 @@ class about_Admin(admin.ModelAdmin):
             for period in Period.objects.all():
                 if(period.start_date <= obj.start_date and period.end_date >= obj.end_date):
                     days = (obj.end_date - obj.start_date).days + 1
-                    allocation=Allocation.objects.filter(email__email=email,period=period).last()
+                    allocation=Allocation.objects.filter(email=student_obj,period=period).last()
                     if allocation:
                         save_short_bill(student_obj,period,days,allocation.high_tea,allocation.caterer)
                         new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)

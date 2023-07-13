@@ -139,14 +139,12 @@ def rebate(request):
     text = ""
     list = []
     try:
-        print(request.user.email)
-        allocation_id = Allocation.objects.filter(email__email=str(request.user.email))
+        student = Student.objects.filter(email=str(request.user.email))
         try:
             for period in Period.objects.all():
                 if period.end_date>date.today()+timedelta(1):
                     period_obj=period
                     break
-            print(period_obj)
             allocation_id = Allocation.objects.get(
                 email__email=str(request.user.email),
                 period = period_obj
@@ -154,7 +152,7 @@ def rebate(request):
             key = str(allocation_id.student_id) 
         except:
             key="You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
-    except Allocation.DoesNotExist:
+    except Student.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"     
     if request.method == "POST" and request.user.is_authenticated:
         try:
@@ -166,9 +164,9 @@ def rebate(request):
                 student = Student.objects.filter(
                     email=str(request.user.email)
                 ).first()
-                period = allocation_id.period.Sno
-                period_start = allocation_id.period.start_date
-                period_end = allocation_id.period.end_date
+                period = period_obj.Sno
+                period_start = period_obj.start_date
+                period_end = period_obj.end_date
                 if(rebate_days>7):
                     text="Max no of days for rebate is 7"
                 elif not period_start<=start_date:
@@ -184,7 +182,7 @@ def rebate(request):
                             date_applied=date.today(),
                         )
                         short_left_rebate.save()
-                        text = "You have successfully submitted the rebate, it will get addedd to your bills in the next period."
+                        text = "You have successfully submitted the rebate, it will get added to your bills in the next period."
                         upper_cap_check=-1
                     elif not period_start<=end_date<=period_end:
                         short_left_rebate = LeftShortRebate(
@@ -305,15 +303,15 @@ def allocation(request):
                         messages+=str(record["Email"])
                     print(student)
 
-                    if caterer1.student_limit>=0:
+                    if caterer1.student_limit>0:
                         caterer1.student_limit-=1
                         caterer1.save(update_fields=["student_limit"])
                         caterer=caterer1
-                    elif caterer2 and caterer2.student_limit>=0:
+                    elif caterer2 and caterer2.student_limit>0:
                         caterer2.student_limit-=1
                         caterer2.save(update_fields=["student_limit"])
                         caterer=caterer2
-                    elif caterer3 and caterer3.student_limit>=0:
+                    elif caterer3 and caterer3.student_limit>0:
                         caterer3.student_limit-=1
                         caterer3.save(update_fields=["student_limit"])
                         caterer=caterer3
@@ -448,20 +446,20 @@ def allocationForm(request):
                     third_pref = request.POST["third_pref"]
                     caterer3 = Caterer.objects.get(name=third_pref)
 
-                if caterer1.student_limit>=0:
+                if caterer1.student_limit>0:
                     caterer1.student_limit-=1
                     caterer1.save(update_fields=["student_limit"])
                     caterer=caterer1
-                elif caterer2 and caterer2.student_limit>=0:
+                elif caterer2 and caterer2.student_limit>0:
                     caterer2.student_limit-=1
                     caterer2.save(update_fields=["student_limit"])
                     caterer=caterer2
-                elif caterer3 and caterer3.student_limit>=0:
+                elif caterer3 and caterer3.student_limit>0:
                     caterer3.student_limit-=1
                     caterer3.save(update_fields=["student_limit"])
                     caterer=caterer3
                 student_id = str(caterer.name[0])
-                if high_tea == True:
+                if high_tea == "True":
                     student_id += "H"
                 else:
                     student_id+="NH"

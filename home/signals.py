@@ -49,15 +49,14 @@ def update_short_bill(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=LongRebate)
 def update_long_bill(sender, instance, **kwargs):
-    print("Signals called for long rebate")
     try:
         old_instance = LongRebate.objects.get(pk=instance.pk)
-        print("inside try")
         print(old_instance.approved,instance.approved)
         if old_instance.approved != instance.approved:
             email = instance.email
             days_per_period = fill_periods(email,instance.start_date, instance.end_date)
-            left_start_date,left_end_date = [days for period,days in days_per_period if period==7 or period==8]
+            left_start_date = [period for period,days in days_per_period if type(period) == type(days)]
+            left_end_date = [days for period,days in days_per_period if type(period) == type(days)]
             if instance.approved == True:
                 save_long_bill(email,days_per_period,1)
                 long_rebate_mail(instance.start_date,instance.end_date,instance.approved,email.email,left_start_date,left_end_date)
