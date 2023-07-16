@@ -1,6 +1,8 @@
-from datetime import date,timedelta
-from ..models.allocation import Period,Allocation
+from datetime import timedelta
+
+from ..models.allocation import Allocation, Period
 from ..models.students import Student
+
 
 def fill_periods(email,start_date, end_date):
     print(f"Start date: {start_date}, End date: {end_date}")

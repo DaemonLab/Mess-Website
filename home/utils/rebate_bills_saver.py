@@ -1,5 +1,8 @@
-from ..models import Caterer,LongRebate, LeftLongRebate,Student, StudentBills,CatererBills, Period,Semester, Allocation
 from django.db.models.query import QuerySet
+
+from ..models import (Allocation, Caterer, CatererBills, LeftLongRebate,
+                      LongRebate, Period, Semester, Student, StudentBills)
+
 
 def save_short_bill(student,period,days,high_tea,caterer):
     rebate = StudentBills.objects.get(email=student,semester=period.semester)

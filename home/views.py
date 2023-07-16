@@ -225,7 +225,7 @@ def rebate(request):
                 text = "Email ID does not match with the allocation ID"
         except Exception as e:
             print(e)
-            text = "Ohh No! an unknown ERROR occured, Please inform about it immediatly to the Dining Wadern."
+            text = "Ohh No! an unknown ERROR occured, Please inform about it immediatly to the Dining Wadern. Possible Error: "+ key
         request.session["text"] = text
         return redirect(request.path)
     text = request.session.get("text", "")

@@ -42,7 +42,7 @@ def update_short_bill(sender, instance, **kwargs):
                 save_short_bill(email,allocation.period,-days,allocation.high_tea, allocation.caterer)
                 new_rebate = TodayRebate.objects.filter(allocation_id=allocation, start_date = start_date).last().delete()
                 print("Deleted")
-            rebate_mail(instance.start_date,instance.end_date,instance.approved,email)
+            rebate_mail(instance.start_date,instance.end_date,instance.approved,email.email)
     except Exception as e:
         print(e)
 
