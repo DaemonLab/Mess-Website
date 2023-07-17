@@ -172,7 +172,7 @@ def rebate(request):
                 elif not period_start<=start_date:
                     text = "Please fill the rebate of this period only"    
                 elif not is_not_duplicate(student, start_date, end_date):
-                    text = "You have already applied for rebate for these dates"
+                    text = "You have already applied for rebate during this duration"
                 else:
                     if not period_start<=start_date<=period_end:
                         short_left_rebate = LeftShortRebate(
@@ -207,10 +207,10 @@ def rebate(request):
                             allocation_id=allocation_id,
                             start_date=start_date,
                             end_date=end_date,
-                            approved=False,
+                            approved=True,
                         )
                         r.save()
-                        text = "You have successfully submitted the rebate, subject to approval of Office of Dining Warden. Thank You!"
+                        text = "You have successfully submitted the rebate. Thank You! You shall recieve a confirmation mail, If not please contact the Dining Warden."
                     elif 0 < rebate_days < 2:
                         text = "Min no of days for rebate is 2"
                     elif before_rebate_days < 2:
@@ -219,7 +219,7 @@ def rebate(request):
                         text = "Max no of days for rebate is 7"
                     elif before_rebate_days < 0:
                         text = "Please enter the correct dates"
-                    elif text=="":
+                    elif not text:
                         text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
             except Allocation.DoesNotExist:
                 text = "Email ID does not match with the allocation ID"

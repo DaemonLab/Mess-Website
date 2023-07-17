@@ -1164,7 +1164,6 @@ class about_Admin(admin.ModelAdmin):
                         new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)
                         new_rebate.save()
                         print("Saved")
-                        rebate_mail(obj.start_date,obj.end_date,True,email)
                         short_rebate = Rebate(
                             email=student_obj,
                             allocation_id=allocation,

@@ -21,6 +21,24 @@ def create_bill(sender, instance, created, **kwargs):
         rebate_bill.save()
 
 
+@receiver(post_save, sender=Rebate)
+def update_bill(sender, instance, created, **kwargs):
+    try:
+        if created:
+            email = instance.email
+            allocation = instance.allocation_id
+            start_date= instance.start_date
+            end_date = instance.end_date
+            days = count(start_date, end_date)
+            print("Signal called for Short Rebate")
+            save_short_bill(email,allocation.period,days,allocation.high_tea, allocation.caterer)
+            new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer.name,allocation_id = allocation,start_date=start_date,end_date=end_date)
+            new_rebate.save()
+            rebate_mail(instance.start_date,instance.end_date,instance.approved,email.email)
+            print("Saved")
+    except Exception as e:
+        print(e)
+
 @receiver(pre_save, sender=Rebate)
 def update_short_bill(sender, instance, **kwargs):
     print("Signal called for Short Rebate")
