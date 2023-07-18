@@ -1,7 +1,7 @@
 '''
 File-name: fields.py
 Class: ForeignKeyField
-This file is now redundant as now resource.py doesn't use it anymorehe
+This file is now redundant as now resource.py doesn't use it anymore
 '''
 
 from import_export.fields import Field

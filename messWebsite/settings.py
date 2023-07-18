@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'import_export',
+    'django_admin_logs',
     'home.apps.HomeConfig',
     "django.contrib.sites",
     "allauth",
@@ -75,7 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "messWebsite.wsgi.application"
-
+DJANGO_ADMIN_LOGS_DELETABLE = True
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -87,6 +88,7 @@ DATABASES = {
     }
 }
 DATABASE_OPTIONS = {'timeout': 30}
+
 
 # DATABASES = {
 #     'default': {

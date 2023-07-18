@@ -27,19 +27,21 @@ from home.models import (
     TodayRebate,
     AllocationAutumn22,
     AllocationSpring23,
-    AllocationAutumn23,
     RebateAutumn22,
     RebateSpring23,
-    RebateAutumn23,
     CatererBillsAutumn22,
     CatererBillsSpring23,
-    CatererBillsAutumn23,
     PeriodAutumn22,
     PeriodSpring23,
-    PeriodAutumn23,
     LeftLongRebate,
     LeftShortRebate,
     AllocationForm,
+    Period,
+    Semester,
+    StudentBills,
+    CatererBills,
+    Allocation,
+    Fee,
 )
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 from .resources import (
@@ -50,6 +52,9 @@ from .resources import (
     UnregisteredStudentResource,
     LongRebateResource,
     CatererBillsResource,
+    StudentBillsResource,
+    CatererBillsNewResource,
+    AllocationNewResource,
 )
 
 # Customising the heading and title of the admin page
@@ -529,39 +534,23 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 def unregister_student(obj):
-    all_caterers = Caterer.objects.all()
-    available_caterer = []
-    for caterer in all_caterers:
-        current = Caterer.objects.get(name=caterer.name)
-        if current.student_limit > 0:
-            available_caterer.append(current.name)
+    for caterer in Caterer.objects.all():
+        if caterer.student_limit > 0:
+            available_caterer=caterer
+            break
     student= Student.objects.filter(email=obj.email).last()
     high_tea=False
-    caterer = available_caterer[0]
     period = obj.period
-    if(caterer=="Kanaka"):
-        kanaka = Caterer.objects.get(name="Kanaka")
-        student_id = str(kanaka.name[0])
-        student_id += str(kanaka.student_limit)
-        kanaka.student_limit -= 1
-        kanaka.save(update_fields=["student_limit"])
-    elif(caterer=="Ajay"):
-        ajay = Caterer.objects.get(name="Ajay")
-        student_id = str(ajay.name[0])
-        student_id += str(ajay.student_limit)
-        ajay.student_limit -= 1
-        ajay.save(update_fields=["student_limit"])
-    elif(caterer=="Gauri"):
-        gauri = Caterer.objects.get(name="Gauri")
-        student_id = str(gauri.name[0])
-        student_id += str(gauri.student_limit)
-        gauri.student_limit -= 1
-        gauri.save(update_fields=["student_limit"])
-    a = AllocationSpring23(
-        roll_no=student,
+    student_id = str(available_caterer.name[0])
+    student_id += "NH"
+    student_id += str(available_caterer.student_limit)
+    available_caterer.student_limit -= 1
+    available_caterer.save(update_fields=["student_limit"])
+    a = Allocation(
+        email=student,
         student_id=student_id,
-        month=period,
-        caterer_name=caterer,
+        period=period,
+        caterer=caterer,
         high_tea=high_tea,
         first_pref=caterer,
         second_pref=caterer,
@@ -585,68 +574,19 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
-
-    actions = ["allocate","january","feburary","march","april","may","june"]
-
-    @admin.action(description="Add Allocation for Period 1")
-    def january(self, request, queryset):
-        """
-        Allocation Month action available in the admin page
-        """
-        period = PeriodSpring23.objects.get(Sno=1)
-        for obj in queryset:
-            obj.period = period
-            obj.save(update_fields=["period"])
-
-    @admin.action(description="Add Allocation for Period 2")
-    def feburary(self, request, queryset):
-        """
-        Allocation Month action available in the admin page
-        """
-        period = PeriodSpring23.objects.get(Sno=2)
-        for obj in queryset:
-            obj.period = period
-            obj.save(update_fields=["period"])
-
-    @admin.action(description="Add Allocation for Period 3")
-    def march(self, request, queryset):
-        """
-        Allocation Month action available in the admin page
-        """
-        period = PeriodSpring23.objects.get(Sno=3)
-        for obj in queryset:
-            obj.period = period
-            obj.save(update_fields=["period"])
     
-    @admin.action(description="Add Allocation for Period 4")
-    def april(self, request, queryset):
-        """
-        Allocation Month action available in the admin page
-        """
-        period = PeriodSpring23.objects.get(Sno=4)
-        for obj in queryset:
-            obj.period = period
-            obj.save(update_fields=["period"])
+    actions = ["allocate",]
 
-    @admin.action(description="Add Allocation for Period 5")
-    def may(self, request, queryset):
-        """
-        Allocation Month action available in the admin page
-        """
-        period = PeriodSpring23.objects.get(Sno=5)
-        for obj in queryset:
-            obj.period = period
-            obj.save(update_fields=["period"])
+    def set_period_action(semester_name, period_sno):
+        @admin.action(description=f'Add Period as Semester: {semester_name} Period No.: {period_sno}')
+        def set_period(modeladmin, request, queryset):
+            queryset.update(period=Period.objects.get(semester=Semester.objects.get(name=semester_name), Sno=period_sno))
+        set_period.__name__ = f'set_period_{semester_name}_{period_sno}'
+        return set_period
+    
+    for period in Period.objects.all():
+        actions.append(set_period_action(period.semester.name, period.Sno))
 
-    @admin.action(description="Add Allocation for Period 6")
-    def june(self, request, queryset):
-        """
-        Allocation Month action available in the admin page
-        """
-        period = PeriodSpring23.objects.get(Sno=6)
-        for obj in queryset:
-            obj.period = period
-            obj.save(update_fields=["period"])
 
     @admin.action(description="Allocate the unregistered students")
     def allocate(self, request, queryset):
@@ -658,7 +598,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(TodayRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateBillsResource
     model = TodayRebate
     search_fields = ("Caterer","allocation_id__roll_no__email")
     list_display =("allocation_id", "date","start_date","end_date")
@@ -809,7 +748,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     actions = ["export_as_csv","clean"]
 
-    @admin.action(description="Clean testing period data")
+    @admin.action(description="Clean Null period data")
     def clean(self, request, queryset):
         """
         Clean testing period data
@@ -837,6 +776,32 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 obj.period5_long = 0
             if(obj.period6_short==None):
                 obj.period6_short = 0
+            if(obj.period6_long==None):
+                obj.period6_long = 0
+            if(obj.period1_high_tea==None):
+                obj.period1_high_tea = True
+            if(obj.period2_high_tea==None):
+                obj.period2_high_tea = True
+            if(obj.period3_high_tea==None):
+                obj.period3_high_tea = True
+            if(obj.period4_high_tea==None):
+                obj.period4_high_tea = True
+            if(obj.period5_high_tea==None):
+                obj.period5_high_tea = True
+            if(obj.period6_high_tea==None):
+                obj.period6_high_tea = True
+            if(obj.period1_bill==None):
+                obj.period1_bill = 0
+            if(obj.period2_bill==None):
+                obj.period2_bill = 0
+            if(obj.period3_bill==None):
+                obj.period3_bill = 0
+            if(obj.period4_bill==None):
+                obj.period4_bill = 0
+            if(obj.period5_bill==None):
+                obj.period5_bill = 0
+            if(obj.period6_bill==None):
+                obj.period6_bill = 0
             obj.save()
 
     def export_as_csv(self, request, queryset):
@@ -851,14 +816,57 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
-@admin.register(RebateAutumn23)
+@admin.register(StudentBills)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateBillsResource
-    model=RebateAutumn23
+    resource_class = StudentBillsResource
+    model=StudentBills
     search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
     list_filter = ("email__hostel","email__department","email__degree")
     list_display = ("__str__","roll_number","name","hostel")
-    fieldsets = ((None,rebate_fields,),)
+    fieldsets = ((None,
+                  {"fields": (
+                    "email",
+                    "semester",
+                    (
+                        "period1_short",
+                        "period1_long",
+                        "period1_high_tea",
+                    ),
+                    "period1_bill",
+                    (
+                        "period2_short",
+                        "period2_long",
+                        "period2_high_tea",
+                    ),
+                    "period2_bill",
+                    (
+                        "period3_short",
+                        "period3_long",
+                        "period3_high_tea",
+                    ),
+                    "period3_bill",
+                    (
+                        "period4_short",
+                        "period4_long",
+                        "period4_high_tea",
+                    ),
+                    "period4_bill",
+                    (
+                        "period5_short",
+                        "period5_long",
+                        "period5_high_tea",
+                    ),
+                    "period5_bill",
+                    (
+                        "period6_short",
+                        "period6_long",
+                        "period6_high_tea",
+                    ),
+                    "period6_bill",
+                    ),
+                    "description": "%s" % REBATE_BILLS_DESC_TEXT,
+                   }        
+                ,),)
 
     @admin.display(description="roll number")
     def roll_number(self, obj):
@@ -955,14 +963,28 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Allocation details to CSV"
 
-@admin.register(AllocationAutumn23)
+@admin.register(Allocation)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = AllocationResource
-    model = AllocationAutumn23
-    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
-    list_filter = ("month", "caterer_name", "high_tea","roll_no__hostel","roll_no__degree","roll_no__department",)
-    list_display = ("student_id","email", "month", "caterer_name", "high_tea")
-    fieldsets = ((None,allocation_fields,),)
+    resource_class = AllocationNewResource
+    model = Allocation
+    search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name", "high_tea",)
+    list_filter = ("period", "caterer", "high_tea","email__hostel","email__degree","email__department",)
+    list_display = ("student_id","email", "period", "caterer", "high_tea")
+    fieldsets = ((None,
+                  {
+                    "fields": (
+                        "email",
+                        "period",
+                        "student_id",
+                        "caterer",
+                        "high_tea",
+                        "first_pref",
+                        "second_pref",
+                        "third_pref",
+                    ),
+                    "description": "%s" % ALLOCATION_DESC_TEXT,
+                  }
+                ,),)
 
     @admin.display(description="email")
     def email(self, obj):
@@ -997,12 +1019,12 @@ class about_Admin(admin.ModelAdmin):
     fieldsets = (
         (None,{"fields": ("Sno", "start_date", "end_date")},),)
     
-@admin.register(PeriodAutumn23)
+@admin.register(Period)
 class about_Admin(admin.ModelAdmin):
-    list_display = ("Sno", "start_date", "end_date")
-    model = PeriodAutumn23
+    list_display = ("Sno", "start_date", "end_date", "semester")
+    model = Period
     fieldsets = (
-        (None,{"fields": ("Sno", "start_date", "end_date")},),)
+        (None,{"fields": ("Sno", "start_date", "end_date","semester")},),)
     
 caterer_bill_fields = { 
                 "fields": (
@@ -1059,11 +1081,25 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     
     export_as_csv.short_description = "Export Caterer Bills details to CSV"
 
-@admin.register(CatererBillsAutumn23)
+@admin.register(CatererBills)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = CatererBillsResource
-    model = CatererBillsAutumn23
-    fieldsets = ((None,caterer_bill_fields,),)
+    resource_class = CatererBillsNewResource
+    model = CatererBills
+    fieldsets = ((None,
+                  { 
+                "fields": (
+                    "caterer",
+                    "semester",
+                    "period1_bills",
+                    "period2_bills",
+                    "period3_bills",
+                    "period4_bills",
+                    "period5_bills",
+                    "period6_bills",
+                ),
+                # "description": "%s" % CATERER_BILL_DESC_TEXT,
+            }
+                  ,),)
     list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
     search_fields = ("caterer__name",)
     actions = ["export_as_csv"]
@@ -1118,18 +1154,18 @@ class about_Admin(admin.ModelAdmin):
         """
         for obj in queryset:
             email = obj.email
-            for period in PeriodSpring23.objects.all():
+            student_obj = Student.objects.filter(email=email).last()
+            for period in Period.objects.all():
                 if(period.start_date <= obj.start_date and period.end_date >= obj.end_date):
                     days = (obj.end_date - obj.start_date).days + 1
-                    allocation=AllocationSpring23.objects.filter(roll_no__email=email,month=period).last()
+                    allocation=Allocation.objects.filter(email=student_obj,period=period).last()
                     if allocation:
-                        save_short_bill(email,period,days,allocation.caterer_name,allocation.high_tea,1)
-                        new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer_name,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)
+                        save_short_bill(student_obj,period,days,allocation.high_tea,allocation.caterer)
+                        new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)
                         new_rebate.save()
                         print("Saved")
-                        rebate_mail(obj.start_date,obj.end_date,obj.approved,email)
                         short_rebate = Rebate(
-                            email=email,
+                            email=student_obj,
                             allocation_id=allocation,
                             start_date=obj.start_date,
                             end_date=obj.end_date,
@@ -1161,3 +1197,31 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
             },
         ),
     )
+
+@admin.register(Semester)
+class about_admin(admin.ModelAdmin):
+    model = Semester
+    search_fields = ("name",)
+    list_display = ("name",)
+    fieldsets = (
+        (None,{"fields": ("name",)},),)
+    
+
+
+@admin.register(Fee)
+class about_Admin(admin.ModelAdmin):
+    model = Fee
+    search_fields = ("program",)
+    list_display = ("program", "prev_sem_fee", "upcoming_sem_fee")
+    fieldsets = (
+        (None,
+         {"fields": 
+          (
+            "program", 
+            "prev_sem_fee",
+            "upcoming_sem_fee",
+           )
+         },
+        ),
+    )
+    
