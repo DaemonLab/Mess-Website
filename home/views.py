@@ -523,7 +523,7 @@ def profile(request):
     #         text = "Profile Updated Successfully"
     #     except:
     #         text = "Email ID does not exist in the database. Please eneter the correct email ID"
-    context = {"text": text,"student":student,"picture":picture,"allocation_info":allocation_info,"allocation_info_list":allocation_info_list}
+    context = {"text": text,"student":student,"picture":picture,"allocation_info":allocation_info}
     return render(request, "profile.html", context)
 
 @login_required

@@ -9,3 +9,12 @@ services:
       - ./db/db.sqlite3:/app/db.sqlite3
     env_file:
       - ./.env
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./db/db.sqlite3:/app/db.sqlite3
+    depends_on:
+      - web
