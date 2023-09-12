@@ -283,12 +283,13 @@ def allocation(request):
                         third_pref=None
 
                     #  getting period object
-                    if 'Period' in csv_data.columns and 'Semester' in csv_data.columns:
-                        period = str(record["Period"]).capitalize()
-                        semester = str(record["Semester"]).capitalize()
-                        period_obj = Period.objects.get(Sno=period, semester=Semester.objects.get(name=semester))
-                    else:
-                        period_obj = Period.objects.filter().last()
+                    # if 'Period' in csv_data.columns and 'Semester' in csv_data.columns:
+                    #     period = str(record["Period"]).capitalize()
+                    #     semester = str(record["Semester"]).capitalize()
+                    #     period_obj = Period.objects.get(Sno=period, semester=Semester.objects.get(name=semester))
+                    # else:
+                    #     period_obj = Period.objects.filter().last()
+                    period_obj = Period.objects.filter().last()
 
                     # getting high tea
                     high_tea = record["High Tea"]
@@ -298,7 +299,7 @@ def allocation(request):
                     else:
                         high_tea=False
                     
-                    student = Student.objects.filter(email=record["Email"]).first()
+                    student = Student.objects.filter(name=record["Name"], hostel=record["Hostel"]).first()
                     if(student==None):
                         messages+=str(record["Email"])
                     print(student)

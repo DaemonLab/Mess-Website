@@ -147,6 +147,8 @@ class AllocationNewResource(resources.ModelResource):
 
     class Meta:
         model = Allocation
+        exclude="id"
+        import_id_fields = ["email__name","email_hostel"]
         fields = (
             "email__roll_no",
             "email__email",
