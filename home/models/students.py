@@ -10,7 +10,7 @@ class Student(models.Model):
 
     name = models.CharField(
         _("Name of Student"),
-        max_length=30,
+        max_length=50,
         help_text="This contains the name of the Student",
     )
     email = models.CharField(max_length=30, default="")
@@ -21,7 +21,7 @@ class Student(models.Model):
     )
     department = models.CharField(
         _("Department of Student"),
-        max_length=30,
+        max_length=50,
         help_text="This contains the department of the Student",
         null=True,
     )
