@@ -167,7 +167,7 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(admin.ModelAdmin):
     model = Caterer
     search_fields = ("name",)
-    list_filter = ("name",)
+    list_filter = ("id","name",)
     fieldsets = (
         (
             None,

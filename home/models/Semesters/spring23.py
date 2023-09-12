@@ -133,7 +133,7 @@ class CatererBillsSpring23(models.Model):
     period6_bills = models.IntegerField(_("Period 6 Bill"),default=0, null=True)
 
     def __str__(self):
-        return str(self.caterer.name)
+        return str(self.caterer.pk)
 
     class Meta:
         verbose_name = "Caterer Bill Spring 2023"
