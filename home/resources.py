@@ -76,6 +76,7 @@ class AllocationResource(resources.ModelResource):
     student_id = fields.Field(attribute="student_id", column_name="Student ID")
     caterer_name = fields.Field(attribute="caterer_name", column_name="Caterer Allocated")
     high_tea = fields.Field(attribute="high_tea", column_name="High Tea")
+    jain=fields.Field(attribute="jain", column_name="Jain")
     first_pref = fields.Field(attribute="first_pref", column_name="First Preferences")
     second_pref = fields.Field(
         attribute="second_pref", column_name="Second Preferences"
@@ -97,6 +98,7 @@ class AllocationResource(resources.ModelResource):
             "student_id",
             "caterer_name",
             "high_tea",
+            "jain",
             "first_pref",
             "second_pref",
             "third_pref",
@@ -114,6 +116,7 @@ class AllocationResource(resources.ModelResource):
             "student_id",
             "caterer_name",
             "high_tea",
+            "jain",
             "first_pref",
             "second_pref",
             "third_pref",
@@ -147,6 +150,8 @@ class AllocationNewResource(resources.ModelResource):
 
     class Meta:
         model = Allocation
+        exclude="id"
+        import_id_fields = ["email__name","email_hostel"]
         fields = (
             "email__roll_no",
             "email__email",

@@ -288,29 +288,6 @@ class about_Admin(admin.ModelAdmin):
     # export_as_csv.short_description = "Export Allocation details to CSV"
 
 
-#  # Define the import action
-#     def import_csv(self, request, queryset):
-#         # Get the selected file from the request
-#         file = request.FILES['file']
-
-#         # Read the CSV file
-#         reader = csv.DictReader(file)
-
-#         # Loop over each row in the CSV file
-#         for row in reader:
-#             # Create a new Book object and save it
-#             a = Allocatio(
-#               )
-#             book.save()
-
-#         # Return a success message
-#         self.message_user(request, 'CSV file imported successfully.')
-
-#     import_csv.short_description = 'Import CSV'
-
-#     # Override the default actions to include the import action
-#     actions = [import_csv] + ModelAdmin.actions
-
 
 @admin.register(Student)
 class about_Admin(ImportExportMixin, admin.ModelAdmin):
@@ -552,6 +529,7 @@ def unregister_student(obj):
         period=period,
         caterer=caterer,
         high_tea=high_tea,
+        jain=False,
         first_pref=caterer,
         second_pref=caterer,
         third_pref=caterer,
@@ -895,81 +873,14 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
-allocation_fields = {
-                "fields": (
-                    "roll_no",
-                    "month",
-                    "student_id",
-                    "caterer_name",
-                    "high_tea",
-                    "first_pref",
-                    "second_pref",
-                    "third_pref",
-                ),
-                "description": "%s" % ALLOCATION_DESC_TEXT,
-            }
-
-@admin.register(AllocationAutumn22)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = AllocationResource
-    model = AllocationAutumn22
-    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea")
-    list_filter = ("month", "caterer_name", "high_tea","roll_no__hostel","roll_no__degree","roll_no__department",)
-    list_display = ("student_id","email", "month", "caterer_name", "high_tea")
-    fieldsets = ((None,allocation_fields,),)
-
-    @admin.display(description="email")
-    def email(self, obj):
-        return obj.roll_no.email
-    
-    actions = ["export_as_csv"]
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = AllocationResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Allocation details to CSV"
-
-@admin.register(AllocationSpring23)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = AllocationResource
-    model = AllocationSpring23
-    search_fields = ("roll_no__name","roll_no__roll_no","roll_no__hostel","roll_no__email","student_id", "caterer_name", "high_tea",)
-    list_filter = ("month", "caterer_name", "high_tea","roll_no__hostel","roll_no__degree","roll_no__department",)
-    list_display = ("student_id","email", "month", "caterer_name", "high_tea")
-    fieldsets = ((None,allocation_fields,),)
-
-    @admin.display(description="email")
-    def email(self, obj):
-        return obj.roll_no.email
-    
-    actions = ["export_as_csv"]
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = AllocationResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Allocation details to CSV"
 
 @admin.register(Allocation)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationNewResource
     model = Allocation
     search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name", "high_tea",)
-    list_filter = ("period", "caterer", "high_tea","email__hostel","email__degree","email__department",)
-    list_display = ("student_id","email", "period", "caterer", "high_tea")
+    list_filter = ("period", "caterer", "high_tea","jain","email__hostel","email__degree","email__department",)
+    list_display = ("student_id","email", "period", "caterer", "high_tea","jain")
     fieldsets = ((None,
                   {
                     "fields": (
@@ -978,6 +889,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                         "student_id",
                         "caterer",
                         "high_tea",
+                        "jain",
                         "first_pref",
                         "second_pref",
                         "third_pref",
@@ -1005,19 +917,19 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     export_as_csv.short_description = "Export Allocation details to CSV"
 
 
-@admin.register(PeriodAutumn22)
-class about_Admin(admin.ModelAdmin):
-    list_display = ("Sno", "start_date", "end_date")
-    model = PeriodAutumn22
-    fieldsets = (
-        (None,{"fields": ("Sno", "start_date", "end_date")},),)
+# @admin.register(PeriodAutumn22)
+# class about_Admin(admin.ModelAdmin):
+#     list_display = ("Sno", "start_date", "end_date")
+#     model = PeriodAutumn22
+#     fieldsets = (
+#         (None,{"fields": ("Sno", "start_date", "end_date")},),)
     
-@admin.register(PeriodSpring23)
-class about_Admin(admin.ModelAdmin):
-    list_display = ("Sno", "start_date", "end_date")
-    model = PeriodSpring23
-    fieldsets = (
-        (None,{"fields": ("Sno", "start_date", "end_date")},),)
+# @admin.register(PeriodSpring23)
+# class about_Admin(admin.ModelAdmin):
+#     list_display = ("Sno", "start_date", "end_date")
+#     model = PeriodSpring23
+#     fieldsets = (
+#         (None,{"fields": ("Sno", "start_date", "end_date")},),)
     
 @admin.register(Period)
 class about_Admin(admin.ModelAdmin):
@@ -1039,47 +951,47 @@ caterer_bill_fields = {
                 # "description": "%s" % CATERER_BILL_DESC_TEXT,
             }
 
-@admin.register(CatererBillsAutumn22)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = CatererBillsResource
-    model = CatererBillsAutumn22
-    fieldsets = ((None,caterer_bill_fields,),)
-    list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
-    search_fields = ("caterer__name",)
-    actions = ["export_as_csv"]
+# @admin.register(CatererBillsAutumn22)
+# class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+#     resource_class = CatererBillsResource
+#     model = CatererBillsAutumn22
+#     fieldsets = ((None,caterer_bill_fields,),)
+#     list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
+#     search_fields = ("caterer__name",)
+#     actions = ["export_as_csv"]
 
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = CatererBillsResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
-        return response
+#     def export_as_csv(self, request, queryset):
+#         """
+#         Export action available in the admin page
+#         """
+#         resource = CatererBillsResource()
+#         dataset = resource.export(queryset)
+#         response = HttpResponse(dataset.csv, content_type="text/csv")
+#         response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
+#         return response
 
-    export_as_csv.short_description = "Export Caterer Bills details to CSV"
+#     export_as_csv.short_description = "Export Caterer Bills details to CSV"
 
-@admin.register(CatererBillsSpring23)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = CatererBillsResource
-    model = CatererBillsSpring23
-    fieldsets = ((None,caterer_bill_fields,),)
-    list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
-    search_fields = ("caterer__name",)
-    actions = ["export_as_csv"]
+# @admin.register(CatererBillsSpring23)
+# class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+#     resource_class = CatererBillsResource
+#     model = CatererBillsSpring23
+#     fieldsets = ((None,caterer_bill_fields,),)
+#     list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
+#     search_fields = ("caterer__name",)
+#     actions = ["export_as_csv"]
     
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = CatererBillsResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
-        return response
+#     def export_as_csv(self, request, queryset):
+#         """
+#         Export action available in the admin page
+#         """
+#         resource = CatererBillsResource()
+#         dataset = resource.export(queryset)
+#         response = HttpResponse(dataset.csv, content_type="text/csv")
+#         response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
+#         return response
     
-    export_as_csv.short_description = "Export Caterer Bills details to CSV"
+#     export_as_csv.short_description = "Export Caterer Bills details to CSV"
 
 @admin.register(CatererBills)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):

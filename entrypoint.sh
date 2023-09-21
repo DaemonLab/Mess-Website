@@ -8,4 +8,4 @@ python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
 # Start server
-gunicorn messWebsite.wsgi:application --bind 0.0.0.0:80
+gunicorn messWebsite.wsgi:application --bind 0.0.0.0:8000
