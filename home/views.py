@@ -293,6 +293,7 @@ def allocation(request):
 
                     # getting high tea
                     high_tea = record["High Tea"]
+                    jain = record["Jain"]
                     print(high_tea)
                     if(high_tea=="Yes" or high_tea==True or high_tea=="TRUE"):
                         high_tea=True
@@ -328,6 +329,7 @@ def allocation(request):
                         period=period_obj,
                         caterer=caterer,
                         high_tea=high_tea,
+                        jain=jain,
                         first_pref=first_pref,
                         second_pref=second_pref,
                         third_pref=third_pref,
@@ -431,6 +433,7 @@ def allocationForm(request):
             try:
                 period_obj = alloc_form.period
                 high_tea = request.POST["high_tea"]
+                jain = request.POST["jain"]
                 if caterer_list.count()<1:
                     first_pref = None
                 else:
@@ -464,6 +467,8 @@ def allocationForm(request):
                     student_id += "H"
                 else:
                     student_id+="NH"
+                if jain == "True":
+                    student_id += "J"
                 student_id += str(caterer.student_limit)
                 allocation = Allocation(
                     email=student,
@@ -471,6 +476,7 @@ def allocationForm(request):
                     period=period_obj,
                     caterer=caterer,
                     high_tea=high_tea,
+                    jain=jain,
                     first_pref=first_pref,
                     second_pref=second_pref,
                     third_pref=third_pref,
@@ -510,7 +516,7 @@ def profile(request):
     #improve this alignment of text to be shown on the profile section
     if allocation:
         allocation_info_list = [allocation.student_id, allocation.caterer.name, str(allocation.high_tea)]
-        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer.name + " High Tea: " + str(allocation.high_tea)
+        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer.name + " High Tea: " + str(allocation.high_tea) + " Jain: " + str(allocation.jain)
     else:
         allocation_info = "Not allocated for this period"
     if len(socialaccount_obj):
