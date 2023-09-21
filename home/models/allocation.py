@@ -55,6 +55,10 @@ class Allocation(models.Model):
         _("High Tea"), help_text="This contains the info if high tea is taken or not",
         default=False,null=True,blank=True
     )
+    jain = models.BooleanField(
+        _("Jain"), help_text="This contains the info if jain food is taken or not",
+        default=False,null=True,blank=True
+    )
     first_pref = models.CharField(
         _("First Preference"),
         default=None,

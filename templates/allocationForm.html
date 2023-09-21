@@ -33,13 +33,20 @@
           <option value="False">No</option>
         </select>
     </div>
+    <div class="form-group p-2">
+        <label for="high_tea">Jain: </label>
+        <select class="form-control-sm" id="jain" name="jain">
+          <option value="True">Yes</option>
+          <option value="False">No</option>
+        </select>
+    </div>
     {%if caterer_list.count > 0%}
       <div class="form-group p-2">
         <label for="Preference1">First Preference: </label>
         {%for caterer in caterer_list%}
         <div class="form-check form-check-inline">
           <label class="form-check-label" for="{{caterer.name}}1">
-            <input class="form-check-input {{caterer.name}}" type="radio" name="first_pref" id="{{caterer.name}}1" value="{{caterer.name}}">
+            <input class="form-check-input" type="radio" name="first_pref" id="{{caterer.name}}1" value="{{caterer.name}}">
             {{caterer.name}}
           </label>
         </div>
@@ -52,7 +59,7 @@
       {%for caterer in caterer_list%}
       <div class="form-check form-check-inline">
         <label class="form-check-label" for="{{caterer.name}}2">
-          <input class="form-check-input {{caterer.name}}" type="radio" name="second_pref" id="{{caterer.name}}2" value="{{caterer.name}}">
+          <input class="form-check-input" type="radio" name="second_pref" id="{{caterer.name}}2" value="{{caterer.name}}">
           {{caterer.name}}
         </label>
       </div>
@@ -65,7 +72,7 @@
       {%for caterer in caterer_list%}
       <div class="form-check form-check-inline">
         <label class="form-check-label" for="{{caterer.name}}3">
-          <input class="form-check-input {{caterer.name}}" type="radio" name="third_pref" id="{{caterer.name}}3" value="{{caterer.name}}">
+          <input class="form-check-input" type="radio" name="third_pref" id="{{caterer.name}}3" value="{{caterer.name}}">
           {{caterer.name}}
         </label>
       </div>
@@ -102,7 +109,7 @@
       if(second_pref[i].checked){
         cat_list[i]++;
       }
-      if(third_pref.length==first_pref.length && third_pref[i].checked){
+      if(third_pref.length==3 && third_pref[i].checked){
         cat_list[i]++;
       }
     }
