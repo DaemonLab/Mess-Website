@@ -139,14 +139,14 @@ def rebate(request):
     text = ""
     list = []
     try:
-        student = Student.objects.filter(email=str(request.user.email))
+        student = Student.objects.filter(email__iexact=str(request.user.email))
         try:
             for period in Period.objects.all():
                 if period.end_date>date.today()+timedelta(1):
                     period_obj=period
                     break
             allocation_id = Allocation.objects.get(
-                email__email=str(request.user.email),
+                email__email__iexact=str(request.user.email),
                 period = period_obj
             )
             key = str(allocation_id.student_id) 
@@ -162,7 +162,7 @@ def rebate(request):
             before_rebate_days = (start_date - date.today()).days
             try:
                 student = Student.objects.filter(
-                    email=str(request.user.email)
+                    email__iexact=str(request.user.email)
                 ).first()
                 period = period_obj.Sno
                 period_start = period_obj.start_date
@@ -176,7 +176,7 @@ def rebate(request):
                 else:
                     if not period_start<=start_date<=period_end:
                         short_left_rebate = LeftShortRebate(
-                            email=str(request.user.email),
+                            email__iexact=str(request.user.email),
                             start_date=start_date,
                             end_date=end_date,
                             date_applied=date.today(),
@@ -186,7 +186,7 @@ def rebate(request):
                         upper_cap_check=-1
                     elif not period_start<=end_date<=period_end:
                         short_left_rebate = LeftShortRebate(
-                            email=str(request.user.email),
+                            email__iexact=str(request.user.email),
                             start_date=period_end+timedelta(days=1),
                             end_date=end_date,
                             date_applied=date.today(),
@@ -336,7 +336,7 @@ def allocation(request):
                     )
                     allocation.save()
                     student_bill = StudentBills.objects.get_or_create(email=student, semester=period_obj.semester)
-                    UnregisteredStudent.objects.filter(email=student.email).delete()
+                    UnregisteredStudent.objects.filter(email__iexact=student.email).delete()
                 except Exception as e:
                     print(e)
             messages += "Form submitted. Please check the admin page."
@@ -376,7 +376,7 @@ def addLongRebateBill(request):
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
             days = (end_date - start_date).days + 1
-            student = Student.objects.get(email=request.user.email)
+            student = Student.objects.get(email__iexact=request.user.email)
             if not is_not_duplicate(student, start_date, end_date):
                 text = "You have already applied for rebate for these dates"
             else:
@@ -420,7 +420,7 @@ def allocationForm(request):
     caterer_list = Caterer.objects.filter(visible=True).all()
     alloc_form = AllocationForm.objects.filter(active=True).last()
     try:
-        student = Student.objects.filter(email=str(request.user.email)).last()
+        student = Student.objects.filter(email__iexact=str(request.user.email)).last()
         key=student.email
         text = ""
         message = ""
@@ -485,7 +485,7 @@ def allocationForm(request):
                 )
                 allocation.save()
                 student_bill = StudentBills.objects.get_or_create(email=student, semester=period_obj.semester)
-                UnregisteredStudent.objects.filter(email=student.email).delete()
+                UnregisteredStudent.objects.filter(email__iexact=student.email).delete()
                 text = "Allocation Form filled Successfully"
             except Exception as e:
                 message = "The Form is closed for now"
@@ -512,7 +512,7 @@ def profile(request):
     :template:`home/profile.html`
     """
     text = ""
-    student = Student.objects.filter(email=str(request.user.email)).last()
+    student = Student.objects.filter(email__iexact=str(request.user.email)).last()
     socialaccount_obj = SocialAccount.objects.filter(provider='google', user_id=request.user.id)
     picture = "not available"
     allocation = Allocation.objects.filter(email=student).last()
@@ -559,7 +559,7 @@ def period_data(request):
 def rebate_data(request):
     print("rebate_data")
     user = request.user
-    student = Student.objects.get(email=user.email)
+    student = Student.objects.get(email__iexact=user.email)
     sno = request.GET.get('period')
     semester = request.GET.get('semester')
     if(semester=="autumn22"):
