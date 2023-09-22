@@ -26,6 +26,10 @@
     <div class="form-group p-2">
       <b>Period of Allocation: {{ allocation_form_details.period.start_date }} to {{ allocation_form_details.period.end_date }}</b>
     </div>
+    <br>
+    <div id = "notice">
+      <strong>NOTE: </strong>High-Tea is <strong>NOT</strong> available for students registering for Jain food.
+    </div>
     <div class="form-group p-2">
         <label for="high_tea">High Tea: </label>
         <select class="form-control-sm" id="high_tea" name="high_tea">
@@ -36,10 +40,12 @@
     <div class="form-group p-2">
         <label for="high_tea">Jain: </label>
         <select class="form-control-sm" id="jain" name="jain">
-          <option value="True">Yes</option>
           <option value="False">No</option>
+          <option value="True">Yes</option>
         </select>
     </div>
+
+
     {%if caterer_list.count > 0%}
       <div class="form-group p-2">
         <label for="Preference1">First Preference: </label>
@@ -122,6 +128,29 @@
     document.getElementById("warning-response").innerHTML = "";
   }
   });
+
+  const jainChoice = document.getElementById('jain');
+  const highTeaChoice = document.getElementById('high_tea');
+  const notice = document.getElementById('notice');
+
+  jainChoice.addEventListener('change', function () {
+    const selectedOption = jainChoice.value;
+    console.log(selectedOption);
+
+    if(selectedOption === "True")
+    {
+      highTeaChoice.value = "False";
+    }
+  })
+
+  highTeaChoice.addEventListener('change', function () {
+    const selectedOption = highTeaChoice.value;
+
+    if(selectedOption === "True")
+    {
+      jainChoice.value = "False";
+    }
+  })
   // document.getElementById('preference').addEventListener("change",function(event){
   //   if(event.target.name=='first_pref'){
   //     caterer = event.target.value;
