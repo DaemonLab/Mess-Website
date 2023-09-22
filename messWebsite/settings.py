@@ -18,8 +18,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS = ["diningfee.iiti.ac.in","127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ['diningfee.iiti.ac.in',"localhost"]
 # Application definition
 
 INSTALLED_APPS = [
