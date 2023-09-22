@@ -434,6 +434,8 @@ def allocationForm(request):
                 period_obj = alloc_form.period
                 high_tea = request.POST["high_tea"]
                 jain = request.POST["jain"]
+                if jain=="True":
+                    high_tea=False
                 if caterer_list.count()<1:
                     first_pref = None
                 else:
@@ -486,7 +488,7 @@ def allocationForm(request):
                 UnregisteredStudent.objects.filter(email=student.email).delete()
                 text = "Allocation Form filled Successfully"
             except Exception as e:
-                text = "The Form is closed for now"
+                message = "The Form is closed for now"
                 print(e)
             request.session["text"] = text
             return redirect(request.path)
