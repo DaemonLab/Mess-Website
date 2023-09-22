@@ -19,7 +19,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ["diningfee.iiti.ac.in","127.0.0.1"]
-CSRF_TRUSTED_ORIGINS = ['http://diningfee.iiti.ac.in',"localhost"]
+CSRF_TRUSTED_ORIGINS = ['http://diningfee.iiti.ac.in']
 # Application definition
 
 INSTALLED_APPS = [
