@@ -29,7 +29,7 @@ def home(request):
     """
     Display the Home Page :model:`home.models.home`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/home.html`
 
@@ -52,7 +52,7 @@ def rules(request):
     """
     Display the Rules Page :model:`home.models.rules`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/rules.html`
 
@@ -71,7 +71,7 @@ def caterer(request, name):
     """
     Display the Caterer Page :model:`home.models.caterer`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/caterer.html`
 
@@ -85,7 +85,7 @@ def links(request):
     """
     Display the Forms Page :model:`home.models.links`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/links.html`
 
@@ -99,7 +99,7 @@ def cafeteria(request):
     """
     Display the Cafeteria Page :model:`home.models.cafeteria`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/cafeteria.html`
 
@@ -113,7 +113,7 @@ def contact(request):
     """
     Display the Contact Page :model:`home.models.contacts`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/contact.html`
 
@@ -132,7 +132,7 @@ def rebate(request):
     adds the rebte to the rebate model and rebate bills of that semester.
     This form can only be accessed by the Institute community
 
-    **Template:**
+    *Template:*
 
     :template:`rebateForm.html`
     """
@@ -239,7 +239,7 @@ def allocation(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/allocation.html`
 
@@ -363,7 +363,7 @@ def addLongRebateBill(request):
     """
     Display the Rebate Form Page :model:`home.models.students`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/longRebate.html`
 
@@ -411,7 +411,7 @@ def allocationForm(request):
     """
     Display the Allocation Form Page :model:`home.models.students`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/allocationForm.html`
 
@@ -424,7 +424,7 @@ def allocationForm(request):
         key=student.email
         text = ""
         message = ""
-        if alloc_form.start_time and alloc_form.start_time>now() and alloc_form.end_time and alloc_form.end_time<now():
+        if (alloc_form.start_time and alloc_form.start_time > now()) or (alloc_form.end_time and alloc_form.end_time < now()):
             message = "Form is closed for now."
         elif Allocation.objects.filter(email=student,period=alloc_form.period).exists():
             allocation_id = Allocation.objects.filter(email=student,period=alloc_form.period).last()
@@ -498,6 +498,7 @@ def allocationForm(request):
     except Exception as e:
         print(e)
         message = "Signed in account can not fill the allocation form"
+        text = ""
     context = {"text": text, "caterer_list": caterer_list, "allocation_form_details": alloc_form,"message":message}
     return render(request, "allocationForm.html", context)
 
@@ -506,7 +507,7 @@ def profile(request):
     """
     Display the Profile Page :model:`home.models.students`.
 
-    **Template:**
+    *Template:*
 
     :template:`home/profile.html`
     """
