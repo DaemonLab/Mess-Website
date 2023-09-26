@@ -185,6 +185,16 @@ class about_Admin(admin.ModelAdmin):
         ),
     )
     # In future can create an admin action to directly generate the table for caterer v=bills for a semester.
+    actions = ["generate_table"]
+
+    @admin.action(description="Generate the table for caterer Bills")
+    def generate_table(self,request,queryset):
+        semester = Semester.objects.filter().last()
+        for caterer in queryset:
+            caterer_bill,_ = CatererBills.objects.get_or_create(caterer=caterer,semester=semester)
+            caterer_bill.save()
+    
+
 
 @admin.register(Form)
 class about_Admin(admin.ModelAdmin):
@@ -1118,7 +1128,6 @@ class about_admin(admin.ModelAdmin):
     fieldsets = (
         (None,{"fields": ("name",)},),)
     
-
 
 @admin.register(Fee)
 class about_Admin(admin.ModelAdmin):

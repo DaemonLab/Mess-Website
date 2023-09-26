@@ -150,7 +150,7 @@ def rebate(request):
                 period = period_obj
             )
             key = str(allocation_id.student_id) 
-        except:
+        except Exception as e:
             key="You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
     except Student.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"     
