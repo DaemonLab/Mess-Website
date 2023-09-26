@@ -30,7 +30,6 @@ def update_bill(sender, instance, created, **kwargs):
             start_date= instance.start_date
             end_date = instance.end_date
             days = count(start_date, end_date)
-            print("Signal called for Short Rebate")
             save_short_bill(email,allocation.period,days,allocation.high_tea, allocation.caterer)
             new_rebate = TodayRebate(date=instance.date_applied,Caterer=allocation.caterer.name,allocation_id = allocation,start_date=start_date,end_date=end_date)
             new_rebate.save()
@@ -124,3 +123,11 @@ def create_unregistered(sender, instance,created, **kwargs):
             unregistered,_ = UnregisteredStudent.objects.get_or_create(email=str(student.email))
             unregistered.period = instance
             unregistered.save()
+
+@receiver(post_save, sender=Semester)
+def create_catererBills(sender, instance, created, **kwargs):
+    if created:
+        caterer = instance.name
+        semester = Semester.objects.filter().last()
+        caterer_bill,_ = CatererBills.objects.get_or_create(caterer=caterer,semester=semester)
+        caterer_bill.save()
