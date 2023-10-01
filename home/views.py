@@ -522,8 +522,11 @@ def profile(request):
         allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer.name + " High Tea: " + str(allocation.high_tea) + " Jain: " + str(allocation.jain)
     else:
         allocation_info = "Not allocated for this period"
-    if len(socialaccount_obj):
+    try:
+        if len(socialaccount_obj ):
             picture = socialaccount_obj[0].extra_data['picture']
+    except:
+        picture = "not available"
     # if request.method == "POST" and request.user.is_authenticated:
     #     try:
     #         student = Student.objects.get(email=str(request.user.email))
