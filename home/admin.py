@@ -587,7 +587,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(TodayRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     model = TodayRebate
-    search_fields = ("Caterer","allocation_id__roll_no__email")
+    search_fields = ("Caterer","allocation_id","date")
     list_display =("allocation_id", "date","start_date","end_date")
     # list_filter = ()
     fieldsets = (  
@@ -620,18 +620,18 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             allocation=obj.allocation_id
             if(obj.Caterer == "Kanaka"):
-                messageKanaka +=(text.format(allocation_id=allocation.student_id,name=allocation.roll_no.name, start_date=obj.start_date, end_date=obj.end_date))
+                messageKanaka +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
             elif(obj.Caterer == "Gauri"):
-                messageGauri +=(text.format(allocation_id=allocation.student_id,name=allocation.roll_no.name, start_date=obj.start_date, end_date=obj.end_date))
+                messageGauri +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
             elif(obj.Caterer == "Ajay"):
-                messageAjay +=(text.format(allocation_id=allocation.student_id,name=allocation.roll_no.name, start_date=obj.start_date, end_date=obj.end_date))
+                messageAjay +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
             obj.delete()
         print(messageKanaka)
         print(messageGauri)
         print(messageAjay)
-        if(messageAjay): caterer_mail(messageAjay, "Ajay","me210003039@iiti.ac.in", date)
-        if(messageKanaka): caterer_mail(messageKanaka, "Kanaka","me210003039@iiti.ac.in",date)
-        if(messageGauri): caterer_mail(messageGauri, "Gauri","me210003039@iiti.ac.in",date)
+        if(messageAjay): caterer_mail(messageAjay, "Ajay","mems220005054@iiti.ac.in", date)
+        if(messageKanaka): caterer_mail(messageKanaka, "Kanaka","mems220005054@iiti.ac.in",date)
+        if(messageGauri): caterer_mail(messageGauri, "Gauri","mems220005054@iiti.ac.in",date)
         
 
 rebate_fields={"fields": (
