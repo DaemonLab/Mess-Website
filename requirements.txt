@@ -8,4 +8,5 @@ whitenoise==6.4.0
 django-cloudinary-storage==0.3.0
 django-admin-logs==1.0.2
 Pillow
+django-apscheduler
 # django-cloudinary-storage==0.3.0
