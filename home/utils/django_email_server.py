@@ -1,5 +1,6 @@
 # django-email-server.py
 from ..models.students import TodayRebate
+from ..models.caterer import Caterer
 from django.core.mail import send_mail
 from django.core import mail
 from django.conf import settings
@@ -79,24 +80,17 @@ def __send__rebate__email__():
     today = date.today()
     queryset = TodayRebate.objects.filter(date=today)
     text = "<li> {name} with {allocation_id} has applied from {start_date} to {end_date}</li>"
-    messageKanaka=""
-    messageGauri=""
-    messageAjay=""
-    date = today
-    for obj in queryset:
-        allocation=obj.allocation_id
-        if(obj.Caterer == "Kanaka"):
-            messageKanaka +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
-        elif(obj.Caterer == "Gauri"):
-            messageGauri +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
-        elif(obj.Caterer == "Ajay"):
-            messageAjay +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
-        obj.delete()
-    print(messageKanaka)
-    print(messageGauri)
-    print(messageAjay)
-    if(messageAjay): caterer_mail(messageAjay, "Ajay","mems220005054@iiti.ac.in", date)
-    if(messageKanaka): caterer_mail(messageKanaka, "Kanaka","mems220005054@iiti.ac.in",date)
-    if(messageGauri): caterer_mail(messageGauri, "Gauri","mems220005054@iiti.ac.in",date)
+    for caterer in Caterer.objects.all():
+        message_caterer = ""
+        date = today
+        print(caterer.name)
+        print(queryset)
+        for obj in queryset:
+            if(obj.Caterer != caterer.name): continue
+            allocation=obj.allocation_id
+            message_caterer +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
+            obj.delete()
+        print(message_caterer)
+        if(message_caterer): caterer_mail(message_caterer, caterer.name,caterer.email, date)
     return
 

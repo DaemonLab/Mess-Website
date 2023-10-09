@@ -174,6 +174,7 @@ class about_Admin(admin.ModelAdmin):
             {
                 "fields": (
                     "name",
+                    "email",
                     "upper_description",
                     "sheet_url",
                     "lower_description",
@@ -609,29 +610,21 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     @admin.action(description="Send mail to the caterer")
     def send_mail(self, request, queryset):
-        """
-        Send mail action available in the admin page
-        """
+        from datetime import date
+        today = date.today()
         text = "<li> {name} with {allocation_id} has applied from {start_date} to {end_date}</li>"
-        messageKanaka=""
-        messageGauri=""
-        messageAjay=""
-        date = queryset[0].date
-        for obj in queryset:
-            allocation=obj.allocation_id
-            if(obj.Caterer == "Kanaka"):
-                messageKanaka +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
-            elif(obj.Caterer == "Gauri"):
-                messageGauri +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
-            elif(obj.Caterer == "Ajay"):
-                messageAjay +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
-            obj.delete()
-        print(messageKanaka)
-        print(messageGauri)
-        print(messageAjay)
-        if(messageAjay): caterer_mail(messageAjay, "Ajay","mems220005054@iiti.ac.in", date)
-        if(messageKanaka): caterer_mail(messageKanaka, "Kanaka","mems220005054@iiti.ac.in",date)
-        if(messageGauri): caterer_mail(messageGauri, "Gauri","mems220005054@iiti.ac.in",date)
+        for caterer in Caterer.objects.all():
+            print(caterer.name)
+            message_caterer = ""
+            date = today
+            for obj in queryset:
+                print(obj.Caterer)
+                if(obj.Caterer != caterer.name): continue
+                allocation=obj.allocation_id
+                message_caterer +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
+                obj.delete()
+            print(message_caterer)
+            if(message_caterer): caterer_mail(message_caterer, caterer.name,caterer.email, date)
         
 
 rebate_fields={"fields": (
