@@ -610,13 +610,10 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     @admin.action(description="Send mail to the caterer")
     def send_mail(self, request, queryset):
-        from datetime import date
-        today = date.today()
         text = "<li> {name} with {allocation_id} has applied from {start_date} to {end_date}</li>"
         for caterer in Caterer.objects.all():
             print(caterer.name)
             message_caterer = ""
-            date = today
             for obj in queryset:
                 print(obj.Caterer)
                 if(obj.Caterer != caterer.name): continue
@@ -624,7 +621,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 message_caterer +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
                 obj.delete()
             print(message_caterer)
-            if(message_caterer): caterer_mail(message_caterer, caterer.name,caterer.email, date)
+            if(message_caterer): caterer_mail(message_caterer, caterer.name,caterer.email, obj.date)
         
 
 rebate_fields={"fields": (
