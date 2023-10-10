@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.admindocs",
     'cloudinary_storage',
     'cloudinary',
+    'apscheduler',
+    'django_apscheduler'
 ]
 
 MIDDLEWARE = [
