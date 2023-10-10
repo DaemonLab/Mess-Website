@@ -17,7 +17,8 @@ class Caterer(models.Model):
     student_limit = models.IntegerField(
         _("Caterers Student Limit"), default=0, help_text="The limit on number of students it can have")
     visible = models.BooleanField(_("Visible"), default=False,null=True, help_text="If the caterer is visible or not to the students")
-
+    email = models.EmailField(_("Caterer Email"), max_length=254,
+                              help_text="The email of the caterer", default="")
     def __str__(self):
         return "Caterer " + self.name
 

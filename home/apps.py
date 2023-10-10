@@ -11,4 +11,6 @@ class HomeConfig(AppConfig):
 
     def ready(self):
         import home.signals
+        from .schedulers import start
+        start()
 

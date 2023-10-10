@@ -1,5 +1,6 @@
 # django-email-server.py
-
+from ..models.students import TodayRebate
+from ..models.caterer import Caterer
 from django.core.mail import send_mail
 from django.core import mail
 from django.conf import settings
@@ -73,3 +74,23 @@ def long_rebate_mail(start_date, end_date, approved, recipient, left_start_date,
     else: 
         message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "rejected",added="added to")
     send(subject, message, recipient)
+
+def __send__rebate__email__():
+    from datetime import date
+    today = date.today()
+    queryset = TodayRebate.objects.filter(date=today)
+    text = "<li> {name} with {allocation_id} has applied from {start_date} to {end_date}</li>"
+    for caterer in Caterer.objects.all():
+        message_caterer = ""
+        date = today
+        print(caterer.name)
+        print(queryset)
+        for obj in queryset:
+            if(obj.Caterer != caterer.name): continue
+            allocation=obj.allocation_id
+            message_caterer +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
+            obj.delete()
+        print(message_caterer)
+        if(message_caterer): caterer_mail(message_caterer, caterer.name,caterer.email, date)
+    return
+
