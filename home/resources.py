@@ -14,6 +14,7 @@ from .models import (
     CatererBillsSpring23,  
     Allocation,
     CatererBills,
+    StudentBills,
     Period,
     Fee,
 )
@@ -645,8 +646,7 @@ class StudentBillsResource(resources.ModelResource):
         return super().skip_row(instance, original, row,import_validation_errors)
 
     class Meta:
-        model = RebateAutumn22
-        model = RebateSpring23
+        model = StudentBills
         exclude = "id"
         import_id_fields = ["email__email"]
         fields = (
