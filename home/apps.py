@@ -11,6 +11,13 @@ class HomeConfig(AppConfig):
 
     def ready(self):
         import home.signals
-        from .schedulers import start
-        start()
+        import socket, sys
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.bind(("127.0.0.1", 47200))
+        except socket.error:
+            print, "!!!scheduler already started, DO NOTHING"
+        else:
+            from .schedulers import start
+            start()
 
