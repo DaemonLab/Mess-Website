@@ -374,6 +374,7 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = LongRebateResource
     model = LongRebate
+    autocomplete_fields = ['email']
     search_fields = ("email__email","approved", "date_applied", )
     list_filter = ("approved", "date_applied", "days")
     list_display = (
