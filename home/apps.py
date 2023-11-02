@@ -12,6 +12,7 @@ class HomeConfig(AppConfig):
     def ready(self):
         import home.signals
         import socket, sys
+        # bind to port 47200, then check for it for every worker
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.bind(("127.0.0.1", 47200))
