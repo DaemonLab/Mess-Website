@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from .utils.django_email_server import rebate_mail,caterer_mail
-from .utils.rebate_bills_saver import save_short_bill, save_long_bill
+from .utils.rebate_bills_saver import save_short_bill, save_long_bill, update_bills
 from .utils.month import fill_periods
 from home.models import (
     About,
@@ -880,7 +880,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     model = Allocation
     search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name", "high_tea",)
     list_filter = ("period", "caterer", "high_tea","jain","email__hostel","email__degree","email__department",)
-    list_display = ("student_id","email", "period", "caterer", "high_tea","jain")
+    list_display = ("student_id","name","email","period", "caterer", "high_tea","jain")
     fieldsets = ((None,
                   {
                     "fields": (
@@ -900,9 +900,14 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     @admin.display(description="email")
     def email(self, obj):
-        return obj.roll_no.email
+        return obj.email.email
     
-    actions = ["export_as_csv"]
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+
+    
+    actions = ["export_as_csv","correct_bills", "correct_bills4"]
 
     def export_as_csv(self, request, queryset):
         """
@@ -913,6 +918,17 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
         return response
+    
+
+    def correct_bills(self,request,queryset):
+        for obj in queryset:
+                if(obj.period==Period.objects.get(Sno=5, semester=Semester.objects.get(name="Autumn 2023"))):
+                    update_bills(obj.email,obj)
+                    obj.save()
+                if(obj.period==Period.objects.get(Sno=4, semester=Semester.objects.get(name="Autumn 2023"))):
+                    update_bills(obj.email,obj)
+                    obj.save()
+    
 
     export_as_csv.short_description = "Export Allocation details to CSV"
 

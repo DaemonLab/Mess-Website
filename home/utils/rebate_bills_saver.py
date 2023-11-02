@@ -121,3 +121,38 @@ def save_long_bill(email,days_per_period,j):
                 LeftLongRebate.objects.filter(email=str(student.email),start_date=period).delete()    
                 print("deleted")
                 break
+
+
+def update_bills(student,allocation):
+    try:
+        email = student.email
+        period = allocation.period
+        rebate_bill = StudentBills.objects.get(email=student,semester=period.semester)
+        sno = period.Sno
+        days = (period.end_date - period.start_date).days + 1
+        high_tea = allocation.high_tea
+        amount=115
+        if(high_tea):
+            amount=130
+        if sno == 1:
+            rebate_bill.period1_high_tea = high_tea
+            rebate_bill.period1_bill = amount*days
+        elif sno == 2:
+            rebate_bill.period2_high_tea = high_tea
+            rebate_bill.period2_bill = amount*days
+        elif sno == 3:
+            rebate_bill.period3_high_tea = high_tea
+            rebate_bill.period3_bill = amount*days
+        elif sno == 4:
+            rebate_bill.period4_high_tea = high_tea
+            rebate_bill.period4_bill = amount*days
+        elif sno == 5:
+            rebate_bill.period5_high_tea = high_tea
+            rebate_bill.period5_bill = amount*days
+        elif sno == 6:
+            rebate_bill.period6_high_tea = high_tea
+            rebate_bill.period6_bill = amount*days
+        rebate_bill.save()
+    except Exception as e:
+        print(e)
+
