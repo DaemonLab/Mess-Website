@@ -276,6 +276,10 @@ class LongRebateResource(resources.ModelResource):
 
     class Meta:
         model = LongRebate
+        exclude = "id"
+        import_id_fields = [
+            "email__email",
+        ]
         fields = (
             "email__email",
             "email__roll_no",
