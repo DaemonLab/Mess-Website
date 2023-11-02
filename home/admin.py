@@ -859,8 +859,20 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     def room_number(self, obj):
         return obj.email.room_no
 
-    actions = ["export_as_csv"]
+    actions = ["export_as_csv", "update_bill"]
 
+    @admin.action(description="Update the bills")
+    def update_bill(self, request, queryset):
+        """
+        Update action available in the admin page
+        """
+        for obj in queryset:
+            days = obj.period4_short + obj.period4_long
+            if(obj.period4_high_tea):
+                continue
+            days = 31 - days
+            obj.period4_bill = days * 115
+            obj.save()
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page

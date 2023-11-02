@@ -54,7 +54,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "messWebsite.middleware.LoginRequiredMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = "messWebsite.urls"
