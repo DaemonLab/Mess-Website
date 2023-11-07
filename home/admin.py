@@ -6,7 +6,7 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
-from .utils.django_email_server import rebate_mail,caterer_mail
+from .utils.django_email_server import rebate_mail,caterer_mail, long_rebate_query_mail
 from .utils.rebate_bills_saver import save_short_bill, save_long_bill, update_bills
 from .utils.month import fill_periods
 from home.models import (
@@ -399,7 +399,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ["export_as_csv", "disapprove", "approve"]
+    actions = ["export_as_csv", "disapprove", "approve","send_mail"]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -431,17 +431,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
-    # def save_model(self, request, obj, form, change):
-    #     super().save_model(request, obj, form, change)
-    #     update_bill(instance=obj, sender=obj.__class__, created=change)
-
-    # def save_related(self, request, form, formsets, change):
-    #     super().save_related(request, form, formsets, change)
-    #     print("save related")
-    #     update_bill(
-    #         sender=form.instance.__class__, instance=form.instance, created=change
-    #     )
-
+    @admin.action(description="Send query mail to the students")
+    def send_mail(self, request, queryset):
+        """
+        Send mail action available in the admin page
+        """
+        for obj in queryset:
+            long_rebate_query_mail(obj.start_date, obj.end_date, obj.email.email)
 
 @admin.register(Rebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
@@ -459,6 +455,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
         "date_applied",
         "email",
+        "name",
         "start_date",
         "end_date",
         "approved",
@@ -479,6 +476,11 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
+    
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+    
     actions = ["export_as_csv", "disapprove", "approve"]
 
     @admin.action(description="Disapprove the students")
