@@ -54,6 +54,13 @@ Bills for them have been {added} your account.
 left_message = """Note: Bills for {left_start_date} to {left_end_date} will be removed as an when you are allotcated a caterer during this period.
 """
 
+message_long_rebate_query = """
+Dear Student,
+Your long term rebate application from {start_date} to {end_date} has been recieved but contains some issues.
+Kindly send your long rebate application photograph as a reply to this mail itself itself.
+"""
+
+
 def rebate_mail(start_date, end_date, approved, recipient):
     subject = subject_rebate
     if(approved): message = message_rebate.format(start_date=start_date, end_date=end_date, approved = "approved")
@@ -73,6 +80,11 @@ def long_rebate_mail(start_date, end_date, approved, recipient, left_start_date,
             message += left_message.format(left_start_date=left_start_date, left_end_date=left_end_date)
     else: 
         message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "rejected",added="added to")
+    send(subject, message, recipient)
+
+def long_rebate_query_mail(start_date, end_date, recipient):
+    subject = "Long Term Rebate Application Query"
+    message = message_long_rebate_query.format(start_date=start_date, end_date=end_date)
     send(subject, message, recipient)
 
 def __send__rebate__email__():
