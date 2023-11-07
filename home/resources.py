@@ -129,7 +129,7 @@ class AllocationNewResource(resources.ModelResource):
         attribute="email__roll_no", column_name="Roll No."
     )
     email__email = fields.Field(attribute="email__email", column_name="Email")
-    email__name = fields.Field(attribute="roll_no__name", column_name="Name")
+    email__name = fields.Field(attribute="email__name", column_name="Name")
     email__department = fields.Field(
         attribute="email__department", column_name="Department"
     )
