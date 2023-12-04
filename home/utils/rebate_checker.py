@@ -12,13 +12,13 @@ def is_not_duplicate(student,new_rebate_start,new_rebate_end):
     """Checks if these dates are already applied for rebate"""
     try:
         for short_rebate in Rebate.objects.filter(email=student).all():
-            if (short_rebate.start_date-timedelta(days=2) < new_rebate_start<short_rebate.end_date+timedelta(days=2)) or (short_rebate.start_date-timedelta(days=2)<new_rebate_end<short_rebate.end_date+timedelta(days=2)):
+            if (short_rebate.start_date-timedelta(days=2) < new_rebate_start<short_rebate.end_date+timedelta(days=1)) or (short_rebate.start_date-timedelta(days=2)<new_rebate_end<short_rebate.end_date+timedelta(days=1)):
                 return False
         for short_rebate in LeftShortRebate.objects.filter(email=student).all():
-            if (short_rebate.start_date-timedelta(days=2) < new_rebate_start<short_rebate.end_date+timedelta(days=2)) or (short_rebate.start_date-timedelta(days=2)<new_rebate_end<short_rebate.end_date+timedelta(days=2)):
+            if (short_rebate.start_date-timedelta(days=2) < new_rebate_start<short_rebate.end_date+timedelta(days=1)) or (short_rebate.start_date-timedelta(days=2)<new_rebate_end<short_rebate.end_date+timedelta(days=1)):
                 return False
         for long_rebate in LongRebate.objects.filter(email=student).all():
-            if (long_rebate.end_date+timedelta(days=2)> new_rebate_start>long_rebate.start_date-timedelta(days=2)) or (long_rebate.start_date-timedelta(days=2)<new_rebate_end<long_rebate.end_date+timedelta(days=2)):
+            if (long_rebate.end_date+timedelta(days=2)> new_rebate_start>long_rebate.start_date-timedelta(days=2)) or (long_rebate.start_date-timedelta(days=2)<new_rebate_end<long_rebate.end_date+timedelta(days=1)):
                 return False
         return True
     except Exception as e:

@@ -59,7 +59,7 @@ def save_short_bill(student,period,days,high_tea,caterer):
 def save_long_bill(email,days_per_period,j):
     student = Student.objects.filter(email=email).last()
     for period,days in days_per_period:
-        if not isinstance(period, QuerySet):
+        if isinstance(period, Period):
             rebate = StudentBills.objects.get(email=student,semester=period.semester)
             allocation = Allocation.objects.get(email=student,period=period)
             catererBill = CatererBills.objects.get(caterer=allocation.caterer,semester=period.semester) 
