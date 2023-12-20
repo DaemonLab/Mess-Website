@@ -5,6 +5,7 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 """
 from django.contrib import admin
 from django.http import HttpResponse
+import datetime
 from django.utils.translation import gettext_lazy as _
 from .utils.django_email_server import rebate_mail,caterer_mail, long_rebate_query_mail
 from .utils.rebate_bills_saver import save_short_bill, save_long_bill, update_bills
@@ -147,22 +148,6 @@ class about_Admin(admin.ModelAdmin):
     )
 
 
-# @admin.register(ShortRebate)
-# class about_Admin(admin.ModelAdmin):
-#     model = ShortRebate
-#     fieldsets = (
-#         (
-#             None,
-#             {
-#                 "fields": (
-#                     "desc",
-#                 ),
-#                 "description": "%s" % SHORT_REBATE_DESC_TEXT,
-#             },
-#         ),
-#     )
-
-
 @admin.register(Caterer)
 class about_Admin(admin.ModelAdmin):
     model = Caterer
@@ -257,47 +242,6 @@ class about_Admin(admin.ModelAdmin):
             },
         ),
     )
-
-
-# @admin.register(Allocation)
-# class about_Admin(ImportExportMixin, admin.ModelAdmin):
-    # resource_class = AllocationResource
-    # model = Allocation
-    # search_fields = ("student_id", "month", "caterer_name", "high_tea")
-    # list_filter = ("month", "caterer_name", "high_tea")
-    # list_display = ("student_id", "month", "caterer_name", "high_tea")
-    # fieldsets = (
-    #     (
-    #         None,
-    #         {
-    #             "fields": (
-    #                 "roll_no",
-    #                 "month",
-    #                 "student_id",
-    #                 "caterer_name",
-    #                 "high_tea",
-    #                 "first_pref",
-    #                 "second_pref",
-    #                 "third_pref",
-    #             ),
-    #             "description": "%s" % ALLOCATION_DESC_TEXT,
-    #         },
-    #     ),
-    # )
-    # actions = ["export_as_csv"]
-
-    # def export_as_csv(self, request, queryset):
-    #     """
-    #     Export action available in the admin page
-    #     """
-    #     resource = AllocationResource()
-    #     dataset = resource.export(queryset)
-    #     response = HttpResponse(dataset.csv, content_type="text/csv")
-    #     response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
-    #     return response
-
-    # export_as_csv.short_description = "Export Allocation details to CSV"
-
 
 
 @admin.register(Student)
@@ -399,7 +343,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ["export_as_csv", "disapprove", "approve","send_mail"]
+    actions = ["export_as_csv", "disapprove", "approve","send_mail","clean"]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -438,6 +382,21 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         for obj in queryset:
             long_rebate_query_mail(obj.start_date, obj.end_date, obj.email.email)
+
+    # @admin.action(description="Clean left long rebate data")
+    # def clean(self, request, queryset):
+    #     """
+    #     Clean left long rebate data
+    #     """
+    #     for obj in queryset:
+    #         if(obj.approved==True):
+    #             if(obj.end_date>datetime.date(2023,12,7)):
+    #                 print(obj.end_date)
+    #                 obj.approved=False
+    #                 obj.save()
+    #                 print(obj.approved)
+    #                 obj.approved=True
+    #                 obj.save()
 
 @admin.register(Rebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
@@ -523,7 +482,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     #     update_bill(
     #         sender=form.instance.__class__, instance=form.instance, created=change
     #     )
-
 
 def unregister_student(obj):
     for caterer in Caterer.objects.all():
@@ -949,20 +907,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     export_as_csv.short_description = "Export Allocation details to CSV"
 
 
-# @admin.register(PeriodAutumn22)
-# class about_Admin(admin.ModelAdmin):
-#     list_display = ("Sno", "start_date", "end_date")
-#     model = PeriodAutumn22
-#     fieldsets = (
-#         (None,{"fields": ("Sno", "start_date", "end_date")},),)
-    
-# @admin.register(PeriodSpring23)
-# class about_Admin(admin.ModelAdmin):
-#     list_display = ("Sno", "start_date", "end_date")
-#     model = PeriodSpring23
-#     fieldsets = (
-#         (None,{"fields": ("Sno", "start_date", "end_date")},),)
-    
+   
 @admin.register(Period)
 class about_Admin(admin.ModelAdmin):
     list_display = ("Sno", "start_date", "end_date", "semester")
@@ -983,26 +928,6 @@ caterer_bill_fields = {
                 # "description": "%s" % CATERER_BILL_DESC_TEXT,
             }
 
-# @admin.register(CatererBillsAutumn22)
-# class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-#     resource_class = CatererBillsResource
-#     model = CatererBillsAutumn22
-#     fieldsets = ((None,caterer_bill_fields,),)
-#     list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
-#     search_fields = ("caterer__name",)
-#     actions = ["export_as_csv"]
-
-#     def export_as_csv(self, request, queryset):
-#         """
-#         Export action available in the admin page
-#         """
-#         resource = CatererBillsResource()
-#         dataset = resource.export(queryset)
-#         response = HttpResponse(dataset.csv, content_type="text/csv")
-#         response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
-#         return response
-
-#     export_as_csv.short_description = "Export Caterer Bills details to CSV"
 
 # @admin.register(CatererBillsSpring23)
 # class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):

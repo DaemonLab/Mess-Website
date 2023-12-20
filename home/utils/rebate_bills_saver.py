@@ -155,4 +155,3 @@ def update_bills(student,allocation):
         rebate_bill.save()
     except Exception as e:
         print(e)
-
