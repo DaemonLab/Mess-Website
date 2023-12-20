@@ -17,7 +17,7 @@ Ongoing development of additional features ...
     ```shell
     $ git clone https://github.com/DaemonLab/Mess-Website.git
     ```
-- Install Python 3.7 Or Higher
+- Install Python 3.10 Or Higher
 - Install Django 
     ```shell
     $ pip install django
@@ -26,11 +26,21 @@ Ongoing development of additional features ...
     ```shell
     $ pip install –-user -r requirements.txt
     ```
+- Create a superuser
+    ```shell
+    $ python manage.py createsuperuser
+    ```
+- Migrate the database
+    ```shell
+    $ python manage.py migrate
+    ```
+- Copy the environment
+    ```shell
+    $ cp .env.example .env
+    ```
+- Edit the environment variables in `.env` file
 - Finally run
     ```shell
     $ python manage.py runserver
     ```
-_Note:_ SQLite is as the default database during development
-
-### Documentation
-Read the Documentaions on `/docs/_build/html/index.html`
+_Note:_ SQLite is as the default database
