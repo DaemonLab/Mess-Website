@@ -57,73 +57,6 @@ class StudentResource(resources.ModelResource):
         )
 
 
-class AllocationResource(resources.ModelResource):
-    roll_no__roll_no = fields.Field(
-        attribute="roll_no__roll_no", column_name="Roll No."
-    )
-    roll_no__email = fields.Field(attribute="roll_no__email", column_name="Email")
-    roll_no__name = fields.Field(attribute="roll_no__name", column_name="Name")
-    roll_no__department = fields.Field(
-        attribute="roll_no__department", column_name="Department"
-    )
-    roll_no__degree = fields.Field(
-        attribute="roll_no__degree", column_name="Academic Program"
-    )
-    roll_no__hostel = fields.Field(attribute="roll_no__hostel", column_name="Hostel")
-    roll_no__room_no = fields.Field(
-        attribute="roll_no__room_no", column_name="Room No."
-    )
-    month = fields.Field(attribute="month", column_name="Month")
-    student_id = fields.Field(attribute="student_id", column_name="Student ID")
-    caterer_name = fields.Field(attribute="caterer_name", column_name="Caterer Allocated")
-    high_tea = fields.Field(attribute="high_tea", column_name="High Tea")
-    jain = fields.Field(attribute="jain", column_name="Jain")
-    jain=fields.Field(attribute="jain", column_name="Jain")
-    first_pref = fields.Field(attribute="first_pref", column_name="First Preferences")
-    second_pref = fields.Field(
-        attribute="second_pref", column_name="Second Preferences"
-    )
-    third_pref = fields.Field(attribute="third_pref", column_name="Third Preferences")
-
-    class Meta:
-        model = AllocationSpring23
-        model = AllocationAutumn22
-        fields = (
-            "roll_no__roll_no",
-            "roll_no__email",
-            "roll_no__name",
-            "roll_no__department",
-            "roll_no__degree",
-            "roll_no__hostel",
-            "roll_no__room_no",
-            "month",
-            "student_id",
-            "caterer_name",
-            "high_tea",
-            "jain",
-            "first_pref",
-            "second_pref",
-            "third_pref",
-        )
-
-        export_order = [
-            "roll_no__roll_no",
-            "roll_no__email",
-            "roll_no__name",
-            "roll_no__department",
-            "roll_no__degree",
-            "roll_no__hostel",
-            "roll_no__room_no",
-            "month",
-            "student_id",
-            "caterer_name",
-            "high_tea",
-            "jain",
-            "first_pref",
-            "second_pref",
-            "third_pref",
-        ]
-
 class AllocationNewResource(resources.ModelResource):
     email__roll_no = fields.Field(
         attribute="email__roll_no", column_name="Roll No."
@@ -831,31 +764,6 @@ class UnregisteredStudentResource(resources.ModelResource):
             "email",
         )
 
-
-class CatererBillsResource(resources.ModelResource):
-    caterer__name = fields.Field(attribute="caterer__name", column_name="Caterer")
-    period1_bills = fields.Field(attribute="period1_bills", column_name="Period 1 Bills")
-    period2_bills = fields.Field(attribute="period2_bills", column_name="Period 2 Bills")
-    period3_bills = fields.Field(attribute="period3_bills", column_name="Period 3 Bills")
-    period4_bills = fields.Field(attribute="period4_bills", column_name="Period 4 Bills")
-    period5_bills = fields.Field(attribute="period5_bills", column_name="Period 5 Bills")
-    period6_bills = fields.Field(attribute="period6_bills", column_name="Period 6 Bills")
-    class Meta:
-        model = CatererBillsAutumn22
-        model = CatererBillsSpring23
-        exclude = "id"
-        import_id_fields = [
-            "caterer__name",
-        ]
-        fields = (
-            "caterer__name",
-            "period1_bills",
-            "period2_bills",
-            "period3_bills",
-            "period4_bills",
-            "period5_bills",
-            "period6_bills",
-        )
 
 class CatererBillsNewResource(resources.ModelResource):
     caterer__name = fields.Field(attribute="caterer__name", column_name="Caterer")

@@ -22,7 +22,7 @@ def create_bill(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Rebate)
-def update_bill(sender, instance, created, **kwargs):
+def direct_update_bill(sender, instance, created, **kwargs):
     try:
         if created:
             email = instance.email
@@ -63,7 +63,6 @@ def update_short_bill(sender, instance, **kwargs):
     except Exception as e:
         print(e)
 
-
 @receiver(pre_save, sender=LongRebate)
 def update_long_bill(sender, instance, **kwargs):
     try:
@@ -92,8 +91,8 @@ def update_rebate_bill(sender, instance, created, **kwargs):
             high_tea = instance.high_tea
             rebate_bill,_ = StudentBills.objects.get_or_create(email = instance.email,semester = instance.period.semester)
             amount=115
-            if(high_tea):
-                amount=130
+            # if(high_tea):
+            #     amount=130
             if sno == 1:
                 rebate_bill.period1_high_tea = high_tea
                 rebate_bill.period1_bill = amount*days
