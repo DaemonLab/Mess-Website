@@ -76,7 +76,7 @@ class AllocationNewResource(resources.ModelResource):
     period = fields.Field(attribute="period", column_name="Period")
     student_id = fields.Field(attribute="student_id", column_name="Student ID")
     caterer__name = fields.Field(attribute="caterer__name", column_name="Caterer Allocated")
-    high_tea = fields.Field(attribute="high_tea", column_name="High Tea")
+    # high_tea = fields.Field(attribute="high_tea", column_name="High Tea")
     jain = fields.Field(attribute="jain", column_name="Jain")
     first_pref = fields.Field(attribute="first_pref", column_name="First Preferences")
     second_pref = fields.Field(
@@ -99,7 +99,7 @@ class AllocationNewResource(resources.ModelResource):
             "period",
             "student_id",
             "caterer__name",
-            "high_tea",
+            # "high_tea",
             "jain",
             "first_pref",
             "second_pref",
@@ -116,7 +116,7 @@ class AllocationNewResource(resources.ModelResource):
             "email__room_no",
             "student_id",
             "caterer__name",
-            "high_tea",
+            # "high_tea",
             "jain",
             "first_pref",
             "second_pref",
