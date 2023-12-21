@@ -70,7 +70,7 @@ Before you begin, ensure you have the following installed:
 2. Navigate to the project directory:
 
     ```shell
-    cd team_22
+    cd Mess-Website
     ```
 3. Install all dependencies
 
