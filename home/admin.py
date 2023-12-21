@@ -47,12 +47,12 @@ from home.models import (
 from import_export.admin import ImportExportModelAdmin, ImportExportMixin
 from .resources import (
     StudentResource,
-    AllocationResource,
+    # AllocationResource,
     RebateResource,
     RebateBillsResource,
     UnregisteredStudentResource,
     LongRebateResource,
-    CatererBillsResource,
+    # CatererBillsResource,
     StudentBillsResource,
     CatererBillsNewResource,
     AllocationNewResource,
@@ -862,7 +862,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                         "period",
                         "student_id",
                         "caterer",
-                        "high_tea",
+                        # "high_tea",
                         "jain",
                         "first_pref",
                         "second_pref",
