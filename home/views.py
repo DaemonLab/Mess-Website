@@ -411,12 +411,19 @@ def profile(request):
     socialaccount_obj = SocialAccount.objects.filter(provider='google', user_id=request.user.id)
     picture = "not available"
     allocation = Allocation.objects.filter(email=student).last()
+    allocation_info = {}
     #improve this alignment of text to be shown on the profile section
     if allocation:
         allocation_info_list = [allocation.student_id, allocation.caterer.name, str(allocation.high_tea)]
-        allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer.name + " High Tea: " + str(allocation.high_tea) + " Jain: " + str(allocation.jain)
-    else:
-        allocation_info = "Not allocated for this period"
+        allocation_info = {
+            "Allocation ID": allocation.student_id,
+            "Caterer": allocation.caterer.name,
+            "High Tea": "Yes" if allocation.high_tea else "No",
+            "Jain": "Yes" if allocation.jain else "No",
+        }
+        # allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer.name + " High Tea: " + str(allocation.high_tea) + " Jain: " + str(allocation.jain)
+    # else:
+        # allocation_info = "Not allocated for this period"
     try:
         if len(socialaccount_obj ):
             picture = socialaccount_obj[0].extra_data['picture']
