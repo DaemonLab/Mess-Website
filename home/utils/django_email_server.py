@@ -57,7 +57,7 @@ left_message = """Note: Bills for {left_start_date} to {left_end_date} will be r
 message_long_rebate_query = """
 Dear Student,
 Your long term rebate application from {start_date} to {end_date} has been recieved but contains some issues.
-Kindly send your long rebate application photograph as a reply to this mail itself itself.
+Kindly send your long rebate application photograph as a reply to this mail itself.
 """
 
 
