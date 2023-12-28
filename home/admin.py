@@ -887,7 +887,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Export action available in the admin page
         """
-        resource = AllocationResource()
+        resource = AllocationNewResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
@@ -969,7 +969,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 # "description": "%s" % CATERER_BILL_DESC_TEXT,
             }
                   ,),)
-    list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
+    list_display = ("__str__", "semester","period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
     search_fields = ("caterer__name",)
     actions = ["export_as_csv"]
     
@@ -977,7 +977,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Export action available in the admin page
         """
-        resource = CatererBillsResource()
+        resource = CatererBillsNewResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
