@@ -7,7 +7,6 @@ services:
       - 8000:8000
     volumes:
       - ./db/db.sqlite3:/app/db.sqlite3
-      # - ./media:/app/
     env_file:
       - ./.env
 
@@ -17,6 +16,5 @@ services:
       - 80:80
     volumes:
       - ./db/db.sqlite3:/app/db.sqlite3
-      # - ./media:/app/
     depends_on:
       - web
