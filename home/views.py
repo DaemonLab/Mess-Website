@@ -298,7 +298,7 @@ def addLongRebateBill(request):
                     text = "Allocation ID for the entered email does not exist"
                     print(e)
         except:
-            text = "Email ID does not exist in the database. Please eneter the correct email ID"
+            text = "Email ID does not exist in the database. Please login using the correct email ID"
         request.session["text"] = text
         return redirect(request.path)
     text = request.session.get("text", "")
