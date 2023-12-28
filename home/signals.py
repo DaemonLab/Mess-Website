@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 from .models import (Allocation, CatererBills, LongRebate, Period, Rebate,
                      Semester, Student, StudentBills, TodayRebate,
-                     UnregisteredStudent)
+                     UnregisteredStudent, Caterer)
 from .utils.django_email_server import long_rebate_mail, rebate_mail
 from .utils.month import fill_periods
 from .utils.rebate_bills_saver import save_long_bill, save_short_bill
@@ -126,7 +126,6 @@ def create_unregistered(sender, instance,created, **kwargs):
 @receiver(post_save, sender=Semester)
 def create_catererBills(sender, instance, created, **kwargs):
     if created:
-        caterer = instance.name
-        semester = Semester.objects.filter().last()
-        caterer_bill,_ = CatererBills.objects.get_or_create(caterer=caterer,semester=semester)
-        caterer_bill.save()
+        for caterer in Caterer.objects.filter(visible=True).all():
+            caterer_bill,_ = CatererBills.objects.get_or_create(caterer=caterer,semester=instance)
+            caterer_bill.save()
