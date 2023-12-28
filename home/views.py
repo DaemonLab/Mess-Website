@@ -144,13 +144,17 @@ def rebate(request):
             for period in Period.objects.all():
                 if period.end_date>date.today()+timedelta(1):
                     period_obj=period
-                    break
-            allocation_id = Allocation.objects.get(
-                email__email__iexact=str(request.user.email),
-                period = period_obj
-            )
+                    try:
+                        allocation_id = Allocation.objects.get(
+                            email__email__iexact=str(request.user.email),
+                            period = period
+                        )
+                        break
+                    except:
+                        continue
             key = str(allocation_id.student_id) 
         except Exception as e:
+            print(e)
             key="You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
     except Student.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"     
@@ -176,7 +180,7 @@ def rebate(request):
                 else:
                     if not period_start<=start_date<=period_end:
                         short_left_rebate = LeftShortRebate(
-                            email__iexact=str(request.user.email),
+                            email=str(request.user.email),
                             start_date=start_date,
                             end_date=end_date,
                             date_applied=date.today(),
@@ -186,7 +190,7 @@ def rebate(request):
                         upper_cap_check=-1
                     elif not period_start<=end_date<=period_end:
                         short_left_rebate = LeftShortRebate(
-                            email__iexact=str(request.user.email),
+                            email=str(request.user.email),
                             start_date=period_end+timedelta(days=1),
                             end_date=end_date,
                             date_applied=date.today(),
