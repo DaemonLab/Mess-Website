@@ -862,7 +862,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                         "period",
                         "student_id",
                         "caterer",
-                        "high_tea",
+                        # "high_tea",
                         "jain",
                         "first_pref",
                         "second_pref",

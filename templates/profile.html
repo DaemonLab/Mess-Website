@@ -11,14 +11,31 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card mt-4">
-                    <div class="card-body">
-                        <h5 class="card-title">User Profile</h5>
+                    <div class="card-body" style="padding-left: 5%;">
+                        <h5 class="card-title">Your Profile</h5>
                         <img class="img-fluid rounded-4" src="{{ picture }}" alt="User Image">
                         <h6 class="card-subtitle mt-2">{{ student.name }}</h6>
                         <span class="card-text">Roll Number: {{ student.roll_no }}</span><br>
                         <span class="card-text">Email: {{ user.email }}</span><br>
                         <span class="card-text">Department: {{ student.department }}</span><br>
-                        <span class="card-text">{{allocation_info}}</span>
+                        <hr>
+                        {% if allocation_info|length > 0 %}
+                            <h5>Your Allocation Details:</h5>
+                            {% for key, value in allocation_info.items %}
+                                <div style="display: flex; width: 50%; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 10px;">
+                                    <div style="flex: 1; background-color: #b4c4fa; padding-left: 7%; padding-top: 1%">
+                                        <!-- Content for the first div -->
+                                        <h6>{{ key }}</h6>
+                                    </div>
+                                    <div style="flex: 1; padding-top: 1%; padding-bottom: 1px; padding-left: 7%">
+                                        <!-- Content for the second div -->
+                                        {{ value }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h6>You have not been allotted a caterer for this period yet.</h6>
+                        {% endif %}
                         <hr>
                     </div>
                 </div>
