@@ -5,3 +5,4 @@ db1.sqlite3
 __pycache__
 migrations
 venv
+media
