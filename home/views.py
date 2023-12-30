@@ -281,6 +281,7 @@ def addLongRebateBill(request):
             if not is_not_duplicate(student, start_date, end_date):
                 text = "You have already applied for rebate for these dates"
             else:
+                # CHANGE THIS TO "FILE NOT UPLOADED".
                 try:
                     file=request.FILES["img"]
                     print(file)
