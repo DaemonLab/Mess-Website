@@ -22,12 +22,12 @@
                         {% if allocation_info|length > 0 %}
                             <h5>Your Allocation Details:</h5>
                             {% for key, value in allocation_info.items %}
-                                <div style="display: flex; width: 50%; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 10px;">
-                                    <div style="flex: 1; background-color: #b4c4fa; padding-left: 7%; padding-top: 1%">
+                                <div class='allocation-data-div' style="display: flex; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 10px;">
+                                    <div style="flex: 1; white-space: nowrap; background-color: #b4c4fa; padding-left: 7%; padding-top: 1%">
                                         <!-- Content for the first div -->
                                         <h6>{{ key }}</h6>
                                     </div>
-                                    <div style="flex: 1; padding-top: 1%; padding-bottom: 1px; padding-left: 7%">
+                                    <div style="flex: 1; white-space: nowrap; padding-top: 1%; padding-bottom: 1px; padding-left: 7%">
                                         <!-- Content for the second div -->
                                         {{ value }}
                                     </div>
