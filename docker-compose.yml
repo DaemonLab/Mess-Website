@@ -7,7 +7,6 @@ services:
       - 8000:8000
     volumes:
       - ./db/db.sqlite3:/app/db.sqlite3
-      # - ./media:/app/
     env_file:
       - ./.env
 
@@ -15,8 +14,8 @@ services:
     build: ./nginx
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./db/db.sqlite3:/app/db.sqlite3
-      # - ./media:/app/
     depends_on:
       - web
