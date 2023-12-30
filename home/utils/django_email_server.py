@@ -51,7 +51,7 @@ Dear Student,
 Your long term rebate application from {start_date} to {end_date} has been {approved}.
 Bills for them have been {added} your account.
 """
-left_message = """Note: Bills for {left_start_date} to {left_end_date} will be removed as an when you are allotcated a caterer during this period.
+left_message = """Note: Bills for {left_start_date} to {left_end_date} will be removed as an when you are allocated a caterer during this period.
 """
 
 message_long_rebate_query = """
