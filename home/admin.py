@@ -278,6 +278,8 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
             Unregistered_instance = UnregisteredStudent(email=obj.email)
             Unregistered_instance.save()
 
+      
+
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
@@ -488,13 +490,13 @@ def unregister_student(obj):
         if caterer.student_limit > 0:
             available_caterer=caterer
             break
-    student= Student.objects.filter(email=obj.email).last()
+    student= Student.objects.filter(email__iexact=obj.email).last()
     high_tea=False
     period = obj.period
     student_id = str(available_caterer.name[0])
     student_id += "NH"
-    student_id += str(available_caterer.student_limit)
     available_caterer.student_limit -= 1
+    student_id += str(available_caterer.student_limit)
     available_caterer.save(update_fields=["student_limit"])
     a = Allocation(
         email=student,
@@ -526,7 +528,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         ),
     )
     
-    actions = ["allocate",]
+    actions = ["allocate","check_student"]
 
     def set_period_action(semester_name, period_sno):
         @admin.action(description=f'Add Period as Semester: {semester_name} Period No.: {period_sno}')
@@ -545,7 +547,23 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         Allocate action available in the admin page
         """
         for obj in queryset:
+            print(obj.email)
+            student = Student.objects.filter(email__iexact=obj.email).last()
+            allocation =  Allocation.objects.filter(email=student, period = obj.period).exists()
+            if allocation:
+                print("deleted")
+                UnregisteredStudent.objects.filter(email=obj.email).delete()
+                continue
             unregister_student(obj)
+
+    @admin.action(description="Check the students")
+    def check_student(self,request,queryset):
+        for obj in queryset:
+            student= Student.objects.filter(email__iexact=obj.email).last()
+            if student is None:
+                print(obj.email)
+                continue
+
 
 @admin.register(TodayRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
@@ -850,6 +868,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(Allocation)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_per_page = 500
     resource_class = AllocationNewResource
     model = Allocation
     search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name", "high_tea",)
