@@ -1,11 +1,11 @@
 import pandas as pd
 
-excel_file = r"C:\Users\ishaa\Downloads\Master Sheet Autumn 2023-Hostel room allocation.xlsx"
-sheet_name = 'HJB'
+excel_file = r"C:\Users\ishaa\Downloads\apj-5.xlsx"
+# sheet_name = 'HJB'
 
-column_to_check = 'email'
+column_to_check = 'Email'
 
-df = pd.read_excel(excel_file, sheet_name=sheet_name)
+df = pd.read_excel(excel_file)
 
 df = df.dropna(subset=[column_to_check])
 

@@ -36,7 +36,7 @@ class StudentResource(resources.ModelResource):
 
     def skip_row(self, instance,original, row,import_validation_errors):
         # Skip the row if any of the required fields are null/empty
-        if not instance.email or not instance.name:
+        if not instance.email:
             return True  # Skip the row
         return super().skip_row(instance,original, row,import_validation_errors)
 
