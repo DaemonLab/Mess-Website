@@ -474,16 +474,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Rebate details to CSV"
 
-    # def save_model(self, request, obj, form, change):
-    #     super().save_model(request, obj, form, change)
-    #     update_bill(instance=obj, sender=obj.__class__, created=change)
 
-    # def save_related(self, request, form, formsets, change):
-    #     super().save_related(request, form, formsets, change)
-    #     print("save related")
-    #     update_bill(
-    #         sender=form.instance.__class__, instance=form.instance, created=change
-    #     )
 
 def unregister_student(obj):
     for caterer in Caterer.objects.all():

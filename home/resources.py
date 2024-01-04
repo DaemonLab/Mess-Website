@@ -129,31 +129,31 @@ class RebateResource(resources.ModelResource):
     )
     # def get_approved_value(self, obj):
     email = fields.Field(attribute="email", column_name="Email")
-    allocation_id__roll_no__name = fields.Field(
-        attribute="allocation_id__roll_no__name", column_name="Name"
+    name = fields.Field(
+        attribute="email__name", column_name="Name"
     )
-    allocation_id__roll_no__roll_no = fields.Field(
-        attribute="allocation_id__roll_no__roll_no", column_name="Roll No."
+    roll_no = fields.Field(
+        attribute="email__roll_no", column_name="Roll No."
     )
-    allocation_id__roll_no__department = fields.Field(
-        attribute="allocation_id__roll_no__department", column_name="Department"
+    department = fields.Field(
+        attribute="email__department", column_name="Department"
     )
-    allocation_id__roll_no__degree = fields.Field(
-        attribute="allocation_id__roll_no__degree", column_name="Degree"
+    degree = fields.Field(
+        attribute="email__degree", column_name="Degree"
     )
-    allocation_id__roll_no__hostel = fields.Field(
-        attribute="allocation_id__roll_no__hostel", column_name="Hostel"
+    hostel = fields.Field(
+        attribute="email__hostel", column_name="Hostel"
     )
-    allocation_id__roll_no__room_no = fields.Field(
-        attribute="allocation_id__roll_no__room_no", column_name="Room No."
+    room_no = fields.Field(
+        attribute="email__room_no", column_name="Room No."
     )
     allocation_id__caterer_name = fields.Field(
-        attribute="allocation_id__caterer_name", column_name="Caterer Alloted"
+        attribute="allocation_id__caterer__name", column_name="Caterer Alloted"
     )
     allocation_id__high_tea = fields.Field(
         attribute="allocation_id__high_tea", column_name="High Tea"
     )
-    date_applied = fields.Field(attribute="date_applied", column_name="date_applied")
+    date_applied = fields.Field(attribute="date_applied", column_name="Date Applied")
     start_date = fields.Field(attribute="start_date", column_name="Start Date")
     end_date = fields.Field(attribute="end_date", column_name="End Date")
     approved = fields.Field(attribute="approved", column_name="Approved")
@@ -162,12 +162,12 @@ class RebateResource(resources.ModelResource):
         model = Rebate
         fields = (
             "email",
-            "allocation_id__roll_no__name",
-            "allocation_id__roll_no__roll_no",
-            "allocation_id__roll_no__department",
-            "allocation_id__roll_no__degree",
-            "allocation_id__roll_no__hostel",
-            "allocation_id__roll_no__room_no",
+            "name",
+            "roll_no",
+            "department",
+            "degree",
+            "hostel",
+            "room_no",
             "allocation_id__high_tea",
             "allocation_id__caterer_name",
             "allocation_id__student_id",
@@ -178,12 +178,12 @@ class RebateResource(resources.ModelResource):
         )
         export_order = [
             "email",
-            "allocation_id__roll_no__name",
-            "allocation_id__roll_no__roll_no",
-            "allocation_id__roll_no__department",
-            "allocation_id__roll_no__degree",
-            "allocation_id__roll_no__hostel",
-            "allocation_id__roll_no__room_no",
+            "name",
+            "roll_no",
+            "department",
+            "degree",
+            "hostel",
+            "room_no",
             "allocation_id__high_tea",
             "allocation_id__student_id",
             "date_applied",
@@ -201,7 +201,7 @@ class LongRebateResource(resources.ModelResource):
     email__degree = fields.Field(attribute="email__degree", column_name="Degree")
     email__hostel = fields.Field(attribute="email__hostel", column_name="Hostel")
     email__room_no = fields.Field(attribute="email__room_no", column_name="Room No.")
-    date_applied = fields.Field(attribute="date_applied", column_name="date_applied")
+    date_applied = fields.Field(attribute="date_applied", column_name="Date Applied")
     days = fields.Field(attribute="days", column_name="days")
     start_date = fields.Field(attribute="start_date", column_name="Start Date")
     end_date = fields.Field(attribute="end_date", column_name="End Date")
