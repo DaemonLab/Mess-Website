@@ -131,8 +131,8 @@ class Rebate(models.Model):
         return str(self.allocation_id) + " " + str(self.date_applied)
 
     class Meta:
-        verbose_name = "Rebate Details"
-        verbose_name_plural = "Rebate Details"
+        verbose_name = "Short Rebate Details"
+        verbose_name_plural = "Short Rebate Details"
 
 
 class LongRebate(models.Model):
