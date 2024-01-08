@@ -411,6 +411,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "start_date",
         "end_date",
         "email__email",
+        "email__name"
     )
     list_filter = ("approved", "date_applied", "start_date", "end_date")
     list_display = (
