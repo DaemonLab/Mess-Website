@@ -211,7 +211,7 @@ def rebate(request):
                             allocation_id=allocation_id,
                             start_date=start_date,
                             end_date=end_date,
-                            approved=True,
+                            approved=False,
                         )
                         r.save()
                         text = "You have successfully submitted the rebate. Thank You! You shall recieve a confirmation mail, If not please contact the Dining Warden."

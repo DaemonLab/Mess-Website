@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-
 class About(models.Model):
     """
     Stores Single About on Home Page
