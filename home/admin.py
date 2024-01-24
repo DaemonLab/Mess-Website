@@ -340,6 +340,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "days",
                     "approved",
                     "file",
+                    "reason"
                 ),
                 "description": "%s" % REBATE_DESC_TEXT,
             },
@@ -411,6 +412,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "start_date",
         "end_date",
         "email__email",
+        "email__name"
     )
     list_filter = ("approved", "date_applied", "start_date", "end_date")
     list_display = (
@@ -437,10 +439,14 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
-    
+
     @admin.display(description="name")
     def name(self, obj):
         return obj.email.name
+    
+    @admin.display(description="email")
+    def name(self, obj):
+        return obj.email.email
     
     actions = ["export_as_csv", "disapprove", "approve"]
 
