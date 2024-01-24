@@ -418,7 +418,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
         "date_applied",
         "email",
-        #"name",
+        "name",
         "start_date",
         "end_date",
         "approved",
@@ -439,11 +439,11 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
-    """ 
+
     @admin.display(description="name")
     def name(self, obj):
         return obj.email.name
-    """
+    
     @admin.display(description="email")
     def name(self, obj):
         return obj.email.email
