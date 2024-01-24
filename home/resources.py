@@ -129,22 +129,22 @@ class RebateResource(resources.ModelResource):
     )
     # def get_approved_value(self, obj):
     email = fields.Field(attribute="email", column_name="Email")
-    name = fields.Field(
+    email__name = fields.Field(
         attribute="email__name", column_name="Name"
     )
-    roll_no = fields.Field(
+    email__roll_no = fields.Field(
         attribute="email__roll_no", column_name="Roll No."
     )
-    department = fields.Field(
+    email__department = fields.Field(
         attribute="email__department", column_name="Department"
     )
-    degree = fields.Field(
+    email__degree = fields.Field(
         attribute="email__degree", column_name="Degree"
     )
-    hostel = fields.Field(
+    email__hostel = fields.Field(
         attribute="email__hostel", column_name="Hostel"
     )
-    room_no = fields.Field(
+    email__room_no = fields.Field(
         attribute="email__room_no", column_name="Room No."
     )
     allocation_id__caterer_name = fields.Field(
@@ -160,14 +160,19 @@ class RebateResource(resources.ModelResource):
 
     class Meta:
         model = Rebate
+        exclude = "id"
+        import_id_fields = [
+            "email",
+        ]
         fields = (
             "email",
-            "name",
-            "roll_no",
-            "department",
-            "degree",
-            "hostel",
-            "room_no",
+            "email__name",
+            "email__roll_no",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
+            "allocation_id__caterer__name",
             "allocation_id__high_tea",
             "allocation_id__caterer_name",
             "allocation_id__student_id",
@@ -178,12 +183,13 @@ class RebateResource(resources.ModelResource):
         )
         export_order = [
             "email",
-            "name",
-            "roll_no",
-            "department",
-            "degree",
-            "hostel",
-            "room_no",
+            "email__name",
+            "email__roll_no",
+            "email__department",
+            "email__degree",
+            "email__hostel",
+            "email__room_no",
+            "allocation_id__caterer__name",
             "allocation_id__high_tea",
             "allocation_id__student_id",
             "date_applied",

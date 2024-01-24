@@ -131,8 +131,8 @@ class Rebate(models.Model):
         return str(self.allocation_id) + " " + str(self.date_applied)
 
     class Meta:
-        verbose_name = "Rebate Details"
-        verbose_name_plural = "Rebate Details"
+        verbose_name = "Short Rebate Details"
+        verbose_name_plural = "Short Rebate Details"
 
 
 class LongRebate(models.Model):
@@ -145,12 +145,20 @@ class LongRebate(models.Model):
     end_date = models.DateField(help_text="end date of the rebate",null=True, blank=True)   
     days = models.IntegerField(_("days"), default=0)
     approved = models.BooleanField(_("Approved"), default=False)
+    
+    REASON_TYPE_CHOICES = (
+        ('', 'Choose the reason'),
+        ('Incomplete form', 'Incomplete form'),
+        ('There is a date mismatch between the one written in the form and the one in the attached form', 'There is a date mismatch between the one written in the form and the one in the attached form'),
+
+    )
+    
+    reason = models.TextField(choices=REASON_TYPE_CHOICES, default="",blank=True)
     date_applied = models.DateField(
         default=now, help_text="Date on which the rebate was applied"
     )
-    file = models.FileField(
-        _("File"), upload_to="documents/", default=None, null=True, blank=True
-    )
+    file = models.FileField(_("File"), upload_to="documents/", default=None, null=True, blank=True)
+
 
     def __str__(self):
         return str(self.date_applied) +" "+ str(self.email)

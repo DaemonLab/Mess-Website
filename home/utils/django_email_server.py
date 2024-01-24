@@ -49,10 +49,9 @@ htmlBottom = """\
 message_long_rebate = """
 Dear Student,
 Your long term rebate application from {start_date} to {end_date} has been {approved}.
-Bills for them have been {added} your account.
+ {reason}
 """
-left_message = """Note: Bills for {left_start_date} to {left_end_date} will be removed as an when you are allocated a caterer during this period.
-"""
+
 
 message_long_rebate_query = """
 Dear Student,
@@ -72,14 +71,17 @@ def caterer_mail(message,name,recipient,date_applied):
     message = htmlUp.format(name=name,date=date_applied) +message + htmlBottom
     send_html(subject, message, recipient)
 
-def long_rebate_mail(start_date, end_date, approved, recipient, left_start_date, left_end_date):
+def long_rebate_mail(start_date, end_date, approved, recipient, left_start_date, left_end_date,reason):
     subject = "Long Term Rebate Application"
     if(approved): 
-        message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "approved",added="removed from")
+        message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "approved",added="removed from", reason="")
         if(left_start_date != None):
             message += left_message.format(left_start_date=left_start_date, left_end_date=left_end_date)
-    else: 
-        message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "rejected",added="added to")
+    #elif(1): 
+    #    message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "rejected",added="added to")
+    else:
+        rejected_message = "Your rebate is not approved for the following reason: "+ reason
+        message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "rejected",added="added to", reason=rejected_message)
     send(subject, message, recipient)
 
 def long_rebate_query_mail(start_date, end_date, recipient):
