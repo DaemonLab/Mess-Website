@@ -443,11 +443,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     @admin.display(description="name")
     def name(self, obj):
         return obj.email.name
-    
-    @admin.display(description="email")
-    def name(self, obj):
-        return obj.email.email
-    
+        
     actions = ["export_as_csv", "disapprove", "approve"]
 
     @admin.action(description="Disapprove the students")
