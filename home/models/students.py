@@ -121,7 +121,7 @@ class Rebate(models.Model):
     start_date = models.DateField(help_text="start date of the rebate")
     end_date = models.DateField(help_text="end date of the rebate")
     approved = models.BooleanField(
-        default=True, help_text="tells if the rebate is approved"
+        default=False, help_text="tells if the rebate is approved"
     )
     date_applied = models.DateField(
         default=now, help_text="Date on which the rebate was applied"
@@ -146,19 +146,18 @@ class LongRebate(models.Model):
     days = models.IntegerField(_("days"), default=0)
     approved = models.BooleanField(_("Approved"), default=False)
     
-    reason_type = (
-        ('Choose the reason', 'Choose the reason'),
+    REASON_TYPE_CHOICES = (
+        ('', 'Choose the reason'),
         ('Incomplete form', 'Incomplete form'),
         ('There is a date mismatch between the one written in the form and the one in the attached form', 'There is a date mismatch between the one written in the form and the one in the attached form'),
 
     )
     
-    reason = models.TextField(choices=reason_type)
+    reason = models.TextField(choices=REASON_TYPE_CHOICES, default="",blank=True)
     date_applied = models.DateField(
         default=now, help_text="Date on which the rebate was applied"
     )
     file = models.FileField(_("File"), upload_to="documents/", default=None, null=True, blank=True)
-    #email_reply = models.TextField(_)
 
 
     def __str__(self):
