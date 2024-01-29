@@ -864,9 +864,9 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     list_per_page = 500
     resource_class = AllocationNewResource
     model = Allocation
-    search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name", "high_tea",)
-    list_filter = ("period", "caterer", "high_tea","jain","email__hostel","email__degree","email__department",)
-    list_display = ("student_id","name","email","period", "caterer", "high_tea","jain")
+    search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name")
+    list_filter = ("period", "caterer", "jain","email__hostel","email__degree","email__department",)
+    list_display = ("student_id","name","email","period", "caterer", "jain")
     fieldsets = ((None,
                   {
                     "fields": (
@@ -883,6 +883,15 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "description": "%s" % ALLOCATION_DESC_TEXT,
                   }
                 ,),)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        semester = Semester.objects.get(name="Spring 2024")
+        print(request.user.email)
+        return qs.filter(period__semester=semester).filter(period__Sno=2).filter(caterer__name=request.user.username)
+
 
     @admin.display(description="email")
     def email(self, obj):
