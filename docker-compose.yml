@@ -17,5 +17,7 @@ services:
       - 443:443
     volumes:
       - ./db/db.sqlite3:/app/db.sqlite3
+      - /etc/letsencrypt/live/diningfee.iiti.ac.in/fullchain.pem:/app/etc/letsencrypt/live/diningfee.iiti.ac.in/fullchain.pem
+      - /etc/letsencrypt/live/diningfee.iiti.ac.in/privkey.pem:/app/etc/letsencrypt/live/diningfee.iiti.ac.in/privkey.pem
     depends_on:
       - web
