@@ -841,7 +841,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         for obj in queryset:
             days = obj.period6_short + obj.period6_long
-            if(obj.period4_high_tea):
+            if(obj.period6_high_tea):
                 continue
             if(obj.semester == Semester.objects.get(name ="Autumn 2023")):
                 days = 25 - days
