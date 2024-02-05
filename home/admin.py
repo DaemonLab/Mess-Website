@@ -840,12 +840,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         Update action available in the admin page
         """
         for obj in queryset:
-            days = obj.period4_short + obj.period4_long
+            days = obj.period6_short + obj.period6_long
             if(obj.period4_high_tea):
                 continue
-            days = 31 - days
-            obj.period4_bill = days * 115
-            obj.save()
+            if(obj.semester == Semester.objects.get(name ="Autumn 2023")):
+                days = 25 - days
+                obj.period6_bill = days * 115
+                obj.save()
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
