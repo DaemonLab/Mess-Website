@@ -841,11 +841,12 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         for obj in queryset:
             days = obj.period6_short + obj.period6_long
-            if(obj.period6_high_tea):
-                continue
             if(obj.semester == Semester.objects.get(name ="Autumn 2023")):
                 days = 25 - days
-                obj.period6_bill = days * 115
+                if(obj.period6_high_tea):
+                    obj.period6_bill = days * 130
+                else:    
+                    obj.period6_bill = days * 115
                 obj.save()
     def export_as_csv(self, request, queryset):
         """
