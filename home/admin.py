@@ -440,6 +440,15 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         ),
     )
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if(request.user.groups.filter(name="College Administration")):
+            return qs
+        return qs.filter(approved=True).filter(allocation_id__caterer__name=request.user.username)
+    
+
     @admin.display(description="name")
     def name(self, obj):
         return obj.email.name
@@ -891,8 +900,9 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         semester = Semester.objects.get(name="Spring 2024")
-        print(request.user.email)
-        return qs.filter(period__semester=semester).filter(period__Sno=2).filter(caterer__name=request.user.username)
+        if(request.user.groups.filter(name="College Administration")):
+            return qs
+        return qs.filter(period__semester=semester).filter(period__Sno__in=[2,3]).filter(caterer__name=request.user.username)
 
 
     @admin.display(description="email")
