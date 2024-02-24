@@ -914,7 +914,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         return obj.email.name
 
     
-    actions = ["export_as_csv","correct_bills", "correct_bills4"]
+    actions = ["export_as_csv","correct_bills", "fix_issue"]
 
     def export_as_csv(self, request, queryset):
         """
@@ -935,7 +935,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 if(obj.period==Period.objects.get(Sno=4, semester=Semester.objects.get(name="Autumn 2023"))):
                     update_bills(obj.email,obj)
                     obj.save()
-    
+
+    def fix_issue(self,request,queryset):
+        for obj in queryset:
+            caterer = Caterer.objects.get(name=obj.first_pref)
+            print(caterer)
+            obj.caterer = caterer
+            obj.save()    
 
     export_as_csv.short_description = "Export Allocation details to CSV"
 
