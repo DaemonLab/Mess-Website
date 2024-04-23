@@ -299,7 +299,7 @@ def addLongRebateBill(request):
                     long.save()
                     text = "Long Term rebate added Successfully"
                 except Exception as e:
-                    text = "Allocation ID for the entered email does not exist"
+                    text = "An error occurred while processing your form submission. If you're submitting an application, try compressing it before resubmitting. If the issue persists, please report it to the admin."
                     print(e)
         except:
             text = "Email ID does not exist in the database. Please login using the correct email ID"
