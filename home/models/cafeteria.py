@@ -19,5 +19,6 @@ class Cafeteria(models.Model):
         return self.name
 
     class Meta:
+        app_label = "home"
         verbose_name = "Additional Services"
         verbose_name_plural = "Additional Services"

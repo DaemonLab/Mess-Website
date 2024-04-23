@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'import_export',
+    'home.apps.HomeConfig',
     'django_admin_logs',
     "django.contrib.sites",
     "allauth",
