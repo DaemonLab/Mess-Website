@@ -23,6 +23,7 @@ CSRF_TRUSTED_ORIGINS = ['http://diningfee.iiti.ac.in', 'https://diningfee.iiti.a
 # Application definition
 
 INSTALLED_APPS = [
+    'home.apps.HomeConfig',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -31,7 +32,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'import_export',
     'django_admin_logs',
-    'home.apps.HomeConfig',
     "django.contrib.sites",
     "allauth",
     "allauth.account",
