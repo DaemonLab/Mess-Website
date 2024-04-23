@@ -12,6 +12,7 @@ class About(models.Model):
         return "About Us Content"
 
     class Meta:
+        app_label = "home"
         verbose_name = "About Us"
         verbose_name_plural = "About Us"
 
@@ -26,6 +27,7 @@ class Carousel(models.Model):
         return "Carousel Images"
 
     class Meta:
+        app_label = "home"
         verbose_name = "Carousel"
         verbose_name_plural = "Carousel"
 
@@ -43,6 +45,7 @@ class Update(models.Model):
         return "Posted on " + self.time_stamp.strftime("%m/%d/%Y, %H:%M:%S")
 
     class Meta:
+        app_label = "home"
         verbose_name = "Update"
         verbose_name_plural = "Updates"
 

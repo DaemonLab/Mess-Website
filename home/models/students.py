@@ -62,6 +62,7 @@ class Student(models.Model):
         return str(self.email)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Student Details"
         verbose_name_plural = "Student Details"
 
@@ -95,6 +96,7 @@ class Scan(models.Model):
         return "Scan Details of " + self.student_id.student_id
 
     class Meta:
+        app_label = "home"
         verbose_name = "Scan Details"
         verbose_name_plural = "Scan Details"
 
@@ -131,6 +133,7 @@ class Rebate(models.Model):
         return str(self.allocation_id) + " " + str(self.date_applied)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Short Rebate Details"
         verbose_name_plural = "Short Rebate Details"
 
@@ -164,6 +167,7 @@ class LongRebate(models.Model):
         return str(self.date_applied) +" "+ str(self.email)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Long Rebate Details"
         verbose_name_plural = "Long Rebate Details"
 
@@ -178,6 +182,7 @@ class UnregisteredStudent(models.Model):
         return str(self.email)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Unregistered Students"
         verbose_name_plural = "Unregistered Students"
 
@@ -192,6 +197,7 @@ class TodayRebate(models.Model):
         return str(self.date) +" "+ str(self.allocation_id)
     
     class Meta:
+        app_label = "home"
         verbose_name = "Today's Rebate"
         verbose_name_plural = "Today's Rebate"
 
@@ -204,6 +210,7 @@ class LeftLongRebate(models.Model):
         return str(self.email)
     
     class Meta:
+        app_label = "home"
         verbose_name = "Left Long Rebate"
         verbose_name_plural = "Left Long Rebate"
 
@@ -217,6 +224,7 @@ class LeftShortRebate(models.Model):
         return str(self.email)
     
     class Meta:
+        app_label = "home"
         verbose_name = "Left Short Rebate"
         verbose_name_plural = "Left Short Rebate"
 
@@ -232,5 +240,6 @@ class AllocationForm(models.Model):
         return str(self.heading)
     
     class Meta:
+        app_label = "home"
         verbose_name = "Allocation Form"
         verbose_name_plural = "Allocation Form"

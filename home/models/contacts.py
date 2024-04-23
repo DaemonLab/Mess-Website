@@ -20,5 +20,6 @@ class Contact(models.Model):
         return "Contact of " + self.occupation
 
     class Meta:
+        app_label = "home"
         verbose_name = "Contact"
         verbose_name_plural = "Contacts"

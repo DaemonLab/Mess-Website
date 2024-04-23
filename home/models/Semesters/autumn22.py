@@ -13,6 +13,7 @@ class PeriodAutumn22(models.Model):
         return str(self.Sno)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Period Details for Autumn 2022"
         verbose_name_plural = "Period Details for Autumn 2022"
 
@@ -72,6 +73,7 @@ class AllocationAutumn22(models.Model):
         return self.student_id
 
     class Meta:
+        app_label = "home"
         verbose_name = "Allocation Details for Autumn 2022"
         verbose_name_plural = "Allocation Details for Autumn 2022"
 
@@ -116,6 +118,7 @@ class RebateAutumn22(models.Model):
         return str(self.email.email)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Rebate Bill Autumn 2022"
         verbose_name_plural = "Rebate Bills Autumn 2022"
 
@@ -136,5 +139,6 @@ class CatererBillsAutumn22(models.Model):
         return str(self.caterer.pk)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Caterer Bill Autumn 2022"
         verbose_name_plural = "Caterer Bills Autumn 2022"

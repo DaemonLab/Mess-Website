@@ -23,6 +23,7 @@ class Caterer(models.Model):
         return "Caterer " + self.name
 
     class Meta:
+        app_label = "home"
         verbose_name = "Caterer"
         verbose_name_plural = "Caterers"
 

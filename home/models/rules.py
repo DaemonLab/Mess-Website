@@ -12,6 +12,7 @@ class Rule(models.Model):
     # desc = models.TextField(_("Description"),help_text="The text in the text field contains the description of the mentioned rules.")
 
     class Meta:
+        app_label = "home"
         verbose_name = "Rule"
         verbose_name_plural = "Rules"
 
@@ -28,6 +29,7 @@ class ShortRebate(models.Model):
         return "Short Rebate Content"
 
     class Meta:
+        app_label = "home"
         verbose_name = "Short Rebate"
         verbose_name_plural = "Short Rebate"
 

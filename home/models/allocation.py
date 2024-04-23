@@ -11,6 +11,7 @@ class Semester(models.Model):
         return self.name
     
     class meta:
+        app_label = "home"
         verbose_name = "Semester Details"
         verbose_name_plural="Semester Details"
 
@@ -24,6 +25,7 @@ class Period(models.Model):
         return str(self.Sno) + " " + str(self.semester.name)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Period Details"
         verbose_name_plural = "Period Details"
 
@@ -85,5 +87,6 @@ class Allocation(models.Model):
         return self.student_id
 
     class Meta:
+        app_label = "home"
         verbose_name = "Allocation Detail"
         verbose_name_plural = "Allocation Details"

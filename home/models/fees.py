@@ -10,5 +10,6 @@ class Fee(models.Model):
         return self.program
     
     class Meta:
+        app_label = "home"
         verbose_name = "Fee Details"
         verbose_name_plural = "Fee Details"

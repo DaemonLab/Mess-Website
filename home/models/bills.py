@@ -47,6 +47,7 @@ class StudentBills(models.Model):
         return str(self.email.email)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Rebate Bill"
         verbose_name_plural = "Rebate Bills"
 
@@ -68,5 +69,6 @@ class CatererBills(models.Model):
         return str(self.caterer.name)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Caterer Bill"
         verbose_name_plural = "Caterer Bills"

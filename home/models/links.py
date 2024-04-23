@@ -17,5 +17,6 @@ class Form(models.Model):
         return "Form " + self.heading
 
     class Meta:
+        app_label = "home"
         verbose_name = "Form"
         verbose_name_plural = "Forms"

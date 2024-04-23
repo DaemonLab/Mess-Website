@@ -13,6 +13,7 @@ class PeriodSpring23(models.Model):
         return str(self.Sno)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Period Details for Spring 2023"
         verbose_name_plural = "Period Details for Spring 2023"
 
@@ -72,6 +73,7 @@ class AllocationSpring23(models.Model):
         return self.student_id
 
     class Meta:
+        app_label = "home"
         verbose_name = "Allocation Details for Spring 2023"
         verbose_name_plural = "Allocation Details for Spring 2023"
 
@@ -116,6 +118,7 @@ class RebateSpring23(models.Model):
         return str(self.email.email)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Rebate Bill Spring 2023"
         verbose_name_plural = "Rebate Bills Spring 2023"
 
@@ -136,5 +139,6 @@ class CatererBillsSpring23(models.Model):
         return str(self.caterer.pk)
 
     class Meta:
+        app_label = "home"
         verbose_name = "Caterer Bill Spring 2023"
         verbose_name_plural = "Caterer Bills Spring 2023"
