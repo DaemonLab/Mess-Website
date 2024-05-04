@@ -282,7 +282,9 @@ def addLongRebateBill(request):
             if not is_not_duplicate(student, start_date, end_date):
                 text = "You have already applied for rebate for these dates"
             elif before_rebate_days < 2:
-                text = "Your start date has to be 2 days from todays date" 
+                text = "Your start date has to be 2 days from todays date"
+            elif days < 0:
+                text = "Your end date should be after your start date" 
             else:
                 # CHANGE THIS TO "FILE NOT UPLOADED".
                 try:
