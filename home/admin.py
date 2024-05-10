@@ -902,7 +902,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         semester = Semester.objects.get(name="Spring 2024")
         if(request.user.groups.filter(name="College Administration")):
             return qs
-        return qs.filter(period__semester=semester).filter(period__Sno__in=[2,3]).filter(caterer__name=request.user.username)
+        return qs.filter(period__semester=semester).filter(period__Sno__in=[2,3,4,5]).filter(caterer__name=request.user.username)
 
 
     @admin.display(description="email")
