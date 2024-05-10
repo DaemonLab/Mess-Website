@@ -148,8 +148,10 @@ class LongRebate(models.Model):
     
     REASON_TYPE_CHOICES = (
         ('', 'Choose the reason'),
-        ('Incomplete form', 'Incomplete form'),
-        ('There is a date mismatch between the one written in the form and the one in the attached form', 'There is a date mismatch between the one written in the form and the one in the attached form'),
+        ('Incomplete form. Please submit a new rebate application', 'Incomplete form'),
+        ('Signature of approving authority missing. Please submit a new rebate application', 'Signature missing'),
+        ('Attached file is not the rebate form. Please submit a new rebate application with correct attachment', 'Wrong attached document'),
+        ('There is a date mismatch between the one written in the form and the one in the attached form. Please submit a new rebate application', 'There is a date mismatch between the one written in the form and the one in the attached form'),
 
     )
     
