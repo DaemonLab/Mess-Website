@@ -334,7 +334,7 @@ def allocationForm(request):
             message = "Form is closed for now."
         elif Allocation.objects.filter(email=student,period=alloc_form.period).exists():
             allocation_id = Allocation.objects.filter(email=student,period=alloc_form.period).last()
-            message = "You have already filled the form for this period. with first preference:" + allocation_id.first_pref + " second preference:" + allocation_id.second_pref
+            message = "You have already filled the form for this period. with first preference:" + allocation_id.first_pref
         elif request.method == "POST" and request.user.is_authenticated :
             try:
                 period_obj = alloc_form.period
