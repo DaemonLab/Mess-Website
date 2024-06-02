@@ -2,7 +2,7 @@ Django==5.0.3
 django_allauth==0.54.0
 django_environ==0.10.0
 django_import_export==3.2.0
-gunicorn == 22.0.0
+gunicorn==22.0.0
 whitenoise==6.4.0
 django-cloudinary-storage==0.3.0
 django-admin-logs==1.0.2
