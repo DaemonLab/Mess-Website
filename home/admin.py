@@ -5,7 +5,6 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 """
 from django.contrib import admin
 from django.http import HttpResponse
-import datetime
 from django.utils.translation import gettext_lazy as _
 from .utils.django_email_server import rebate_mail,caterer_mail, long_rebate_query_mail
 from .utils.rebate_bills_saver import save_short_bill, save_long_bill, update_bills
@@ -15,7 +14,6 @@ from home.models import (
     Update,
     Rule,
     Carousel,
-    ShortRebate,
     Caterer,
     Form,
     Cafeteria,
@@ -26,14 +24,8 @@ from home.models import (
     LongRebate,
     UnregisteredStudent,
     TodayRebate,
-    AllocationAutumn22,
-    AllocationSpring23,
     RebateAutumn22,
     RebateSpring23,
-    CatererBillsAutumn22,
-    CatererBillsSpring23,
-    PeriodAutumn22,
-    PeriodSpring23,
     LeftLongRebate,
     LeftShortRebate,
     AllocationForm,
