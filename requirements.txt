@@ -1,4 +1,4 @@
-Django==5.0.7
+Django==5.0.8
 django_allauth==0.54.0
 django_environ==0.10.0
 django_import_export==3.2.0
