@@ -868,7 +868,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = AllocationNewResource
     model = Allocation
     search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name")
-    list_filter = ("period", "caterer", "jain","email__hostel","email__degree","email__department",)
+    list_filter = ("period","caterer", "jain","email__hostel","email__degree","email__department",)
     list_display = ("student_id","name","email","period", "caterer", "jain")
     fieldsets = ((None,
                   {
@@ -891,10 +891,10 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        semester = Semester.objects.get(name="Spring 2024")
+        semester = Semester.objects.first()
         if(request.user.groups.filter(name="College Administration")):
             return qs
-        return qs.filter(period__semester=semester).filter(period__Sno__in=[2,3,4,5]).filter(caterer__name=request.user.username)
+        return qs.filter(period__semester=semester).filter(period__Sno__in=[1,]).filter(caterer__name=request.user.username)
 
 
     @admin.display(description="email")

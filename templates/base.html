@@ -60,7 +60,7 @@
               Caterer's-Information
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% for caterer in all_caterer%}
+              {% for caterer in all_caterer%}
               <li><a class="dropdown-item" href="/caterer/{{ caterer.name }}" style="color:rgb(18, 37, 106) ; font-weight: bold; ">{{caterer.name}} Caterers</a></li>
             {% endfor %}
             </ul>
