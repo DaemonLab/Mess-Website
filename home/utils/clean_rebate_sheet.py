@@ -1,6 +1,6 @@
 import pandas as pd
 
-excel_file = r"C:\Users\ishaa\Downloads\apj-5.xlsx"
+excel_file = r"/home/trish/Desktop/Coding/Gymkhana-WebTeam/APJ.ods"
 # sheet_name = 'HJB'
 
 column_to_check = 'Email'
@@ -9,7 +9,7 @@ df = pd.read_excel(excel_file)
 
 df = df.dropna(subset=[column_to_check])
 
-output_file = r'C:\Users\ishaa\Downloads\hjb.xlsx'
+output_file = r"/home/trish/Desktop/Coding/Gymkhana-WebTeam/APJ_details.xlsx"
 
 df.to_excel(output_file, index=False)
 
