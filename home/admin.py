@@ -535,7 +535,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for period in Period.objects.all():
             actions.append(set_period_action(period.semester.name, period.Sno))
     except:
-        pass
+        print("Periods table not available")
 
 
     @admin.action(description="Allocate the unregistered students")
