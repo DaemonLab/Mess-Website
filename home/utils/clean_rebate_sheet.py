@@ -3,7 +3,7 @@ import pandas as pd
 excel_file = r"/home/trish/Desktop/Coding/Gymkhana-WebTeam/APJ.ods"
 # sheet_name = 'HJB'
 
-column_to_check = 'Email'
+column_to_check = "Email"
 
 df = pd.read_excel(excel_file)
 

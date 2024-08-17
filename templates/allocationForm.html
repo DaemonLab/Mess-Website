@@ -8,7 +8,7 @@
 <div class="px-3">
   <h4 class="px-5 mx-5">
     {{ allocation_form_details.heading }}
-  </h4> 
+  </h4>
     <p class="px-5 mx-5">
         {{ allocation_form_details.description }}
     </p>
@@ -58,11 +58,11 @@
           </label>
         </div>
         {%endfor%}
-      </div>  
+      </div>
     {%endif%}
     {%if caterer_list|length > 1%}
     <div class="form-group p-2">
-      <label for="preference2">Second Preference:</label> 
+      <label for="preference2">Second Preference:</label>
       {%for caterer in caterer_list%}
       <div class="form-check form-check-inline">
         <label class="form-check-label" for="{{caterer.name}}2">
@@ -71,11 +71,11 @@
         </label>
       </div>
       {%endfor%}
-    </div>    
+    </div>
     {%endif%}
     {%if caterer_list|length > 2%}
     <div class="form-group p-2">
-      <label for="preference3">Third Preference: 
+      <label for="preference3">Third Preference:
       {%for caterer in caterer_list%}
       <div class="form-check form-check-inline">
         <label class="form-check-label" for="{{caterer.name}}3">
@@ -84,7 +84,7 @@
         </label>
       </div>
       {%endfor%}
-    </div>   
+    </div>
     {%endif%}
     <p id="warning-response"></p>
     <button
@@ -164,7 +164,7 @@
   //           document.getElementById(cat+'1').disabled = true;
   //         }
   //       }
-  //     } 
+  //     }
   //     else{
   //       document.getElementById(caterer+'2').disabled = false;
   //       if (document.getElementById(caterer+'3')!=null) {document.getElementById(caterer+'3').disabled = false;}
@@ -185,7 +185,7 @@
   //           document.getElementById(cat+'2').disabled = true;
   //         }
   //       }
-  //     } 
+  //     }
   //     else{
   //       document.getElementById(caterer+'1').disabled = false;
   //       if (document.getElementById(caterer+'3')!=null) {document.getElementById(caterer+'3').disabled = false;}
@@ -228,4 +228,3 @@
 
 </script>
 {% endblock %}
-

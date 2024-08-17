@@ -84,7 +84,7 @@ Before you begin, ensure you have the following installed:
     ```
 5. Migrate the database
 
-    ```shell    
+    ```shell
     python manage.py migrate
     ```
 6. Copy the environment
@@ -94,9 +94,22 @@ Before you begin, ensure you have the following installed:
 7. Edit the environment variables in `.env` file
 8. Finally run
     ```shell
-    $ python manage.py runserver
+    python manage.py runserver
     ```
 _Note:_ SQLite is as the default database
+
+### Pre-Commit Hooks
+
+1. This project uses pre-commit hooks to ensure code quality. To install pre-commit hooks, run the following command:
+    ```shell
+    pip install pre-commit
+    pre-commit install
+    ```
+
+2. To run pre-commit hooks manually, run the following command:
+    ```shell
+    pre-commit run --all-files
+    ```
 
 ## Roadmap
 

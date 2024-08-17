@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from home.models import LongRebate, Rebate, StudentBills, LeftShortRebate
+from home.models import LeftShortRebate, LongRebate, Rebate, StudentBills
 
 
 def count(start, end):
@@ -8,17 +8,42 @@ def count(start, end):
     sum = ((end - start).days) + 1
     return sum
 
-def is_not_duplicate(student,new_rebate_start,new_rebate_end):
+
+def is_not_duplicate(student, new_rebate_start, new_rebate_end):
     """Checks if these dates are already applied for rebate"""
     try:
         for short_rebate in Rebate.objects.filter(email=student).all():
-            if (short_rebate.start_date-timedelta(days=2) < new_rebate_start<short_rebate.end_date+timedelta(days=1)) or (short_rebate.start_date-timedelta(days=2)<new_rebate_end<short_rebate.end_date+timedelta(days=1)):
+            if (
+                short_rebate.start_date - timedelta(days=2)
+                < new_rebate_start
+                < short_rebate.end_date + timedelta(days=1)
+            ) or (
+                short_rebate.start_date - timedelta(days=2)
+                < new_rebate_end
+                < short_rebate.end_date + timedelta(days=1)
+            ):
                 return False
         for short_rebate in LeftShortRebate.objects.filter(email=student).all():
-            if (short_rebate.start_date-timedelta(days=2) < new_rebate_start<short_rebate.end_date+timedelta(days=1)) or (short_rebate.start_date-timedelta(days=2)<new_rebate_end<short_rebate.end_date+timedelta(days=1)):
+            if (
+                short_rebate.start_date - timedelta(days=2)
+                < new_rebate_start
+                < short_rebate.end_date + timedelta(days=1)
+            ) or (
+                short_rebate.start_date - timedelta(days=2)
+                < new_rebate_end
+                < short_rebate.end_date + timedelta(days=1)
+            ):
                 return False
         for long_rebate in LongRebate.objects.filter(email=student).all():
-            if (long_rebate.end_date+timedelta(days=2)> new_rebate_start>long_rebate.start_date-timedelta(days=2)) or (long_rebate.start_date-timedelta(days=2)<new_rebate_end<long_rebate.end_date+timedelta(days=1)):
+            if (
+                long_rebate.end_date + timedelta(days=2)
+                > new_rebate_start
+                > long_rebate.start_date - timedelta(days=2)
+            ) or (
+                long_rebate.start_date - timedelta(days=2)
+                < new_rebate_end
+                < long_rebate.end_date + timedelta(days=1)
+            ):
                 return False
         return True
     except Exception as e:
@@ -39,13 +64,16 @@ def is_not_duplicate(student,new_rebate_start,new_rebate_end):
 #         student_bill.save()
 #     return student_bill
 
+
 def max_days_rebate(student, start, end, period):
     """
     Checks what period rebate is being applied,
     if the rebate does not exceeds 8 days for that period approves the rebate and
     adds the rebate to student bills(Commented out this feature for now, as administration wants to approve it from its side before adding to student bills)
     """
-    student_bill,_ = StudentBills.objects.get_or_create(email=student, semester=period.semester)
+    student_bill, _ = StudentBills.objects.get_or_create(
+        email=student, semester=period.semester
+    )
     sum = count(start, end)
     match period.Sno:
         case 1:
@@ -92,4 +120,3 @@ def max_days_rebate(student, start, end, period):
                 return 8 - student_bill.period6_short
         # case default:
         #     return -1
-        

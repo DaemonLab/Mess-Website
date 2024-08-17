@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
+
 import environ
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -12,13 +14,13 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["diningfee.iiti.ac.in","127.0.0.1"]
-CSRF_TRUSTED_ORIGINS = ['http://diningfee.iiti.ac.in', 'https://diningfee.iiti.ac.in']
+ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["http://diningfee.iiti.ac.in", "https://diningfee.iiti.ac.in"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -28,19 +30,19 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'import_export',
-    'django_admin_logs',
-    'home.apps.HomeConfig',
+    "import_export",
+    "django_admin_logs",
+    "home.apps.HomeConfig",
     "django.contrib.sites",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "django.contrib.admindocs",
-    'cloudinary_storage',
-    'cloudinary',
-    'apscheduler',
-    'django_apscheduler'
+    "cloudinary_storage",
+    "cloudinary",
+    "apscheduler",
+    "django_apscheduler",
 ]
 
 MIDDLEWARE = [
@@ -52,7 +54,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "messWebsite.middleware.LoginRequiredMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "messWebsite.urls"
@@ -60,7 +62,7 @@ ROOT_URLCONF = "messWebsite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR , 'templates').replace('\\','/')],
+        "DIRS": [os.path.join(BASE_DIR, "templates").replace("\\", "/")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,7 +71,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "home.context_processors.base",
-                "django.template.context_processors.media"
+                "django.template.context_processors.media",
             ],
         },
     },
@@ -87,7 +89,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-DATABASE_OPTIONS = {'timeout': 30}
+DATABASE_OPTIONS = {"timeout": 30}
 
 
 # DATABASES = {
@@ -126,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
@@ -143,11 +145,11 @@ SOCIALACCOUNT_PROVIDERS = {
             "access_type": "online",
             "prompt": "select_account",
         },
-        'APP': {
-            'client_id': env('GOOGLE_CLIENT_ID'),
-            'secret': env('GOOGLE_CLIENT_SECRET'),
-            'key': ''
-        }
+        "APP": {
+            "client_id": env("GOOGLE_CLIENT_ID"),
+            "secret": env("GOOGLE_CLIENT_SECRET"),
+            "key": "",
+        },
     }
 }
 
@@ -155,8 +157,8 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-ACCOUNT_ADAPTER = 'home.adapters.account_adapter.CustomAccountAdapter'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_ADAPTER = "home.adapters.account_adapter.CustomAccountAdapter"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -164,7 +166,7 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 8000
 SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_FORMS = {
-'signup': 'home.forms.CustomSignupForm',
+    "signup": "home.forms.CustomSignupForm",
 }
 # SOCIALACCOUNT_FORMS = {
 #     "signup": "home.forms.CustomSocialSignupForm",
@@ -180,19 +182,19 @@ LOGIN_EXEMPT_URLS = ["/admin/*"]
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # managing media
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUD_NAME'),
-    'API_KEY': env('API_KEY_CLOUD'),
-    'API_SECRET': env('API_SECRET_CLOUD')
+    "CLOUD_NAME": env("CLOUD_NAME"),
+    "API_KEY": env("API_KEY_CLOUD"),
+    "API_SECRET": env("API_SECRET_CLOUD"),
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL= '/media/'
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.RawMediaCloudinaryStorage"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+MEDIA_URL = "/media/"
 
 
 # Default primary key field type
@@ -200,10 +202,10 @@ MEDIA_URL= '/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_USE_SSL = False
-EMAIL_HOST_USER = env('EMAIL_HOST')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = env("EMAIL_HOST")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")

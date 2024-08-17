@@ -3,52 +3,52 @@ File-name: admin.py
 This file is registers the models on the adming page and customizes the admin page
 For more information please see: https://docs.djangoproject.com/en/4.1/ref/contrib/admin/
 """
+
 from django.contrib import admin
 from django.http import HttpResponse
-from django.utils.translation import gettext_lazy as _
-from .utils.django_email_server import rebate_mail,caterer_mail, long_rebate_query_mail
-from .utils.rebate_bills_saver import save_short_bill, save_long_bill, update_bills
-from .utils.month import fill_periods
+from import_export.admin import ImportExportMixin, ImportExportModelAdmin
+
 from home.models import (
     About,
-    Update,
-    Rule,
+    Allocation,
+    AllocationForm,
+    Cafeteria,
     Carousel,
     Caterer,
-    Form,
-    Cafeteria,
+    CatererBills,
     Contact,
-    Student,
-    Scan,
-    Rebate,
-    LongRebate,
-    UnregisteredStudent,
-    TodayRebate,
-    RebateAutumn22,
-    RebateSpring23,
+    Fee,
+    Form,
     LeftLongRebate,
     LeftShortRebate,
-    AllocationForm,
+    LongRebate,
     Period,
+    Rebate,
+    RebateAutumn22,
+    RebateSpring23,
+    Rule,
+    Scan,
     Semester,
+    Student,
     StudentBills,
-    CatererBills,
-    Allocation,
-    Fee,
+    TodayRebate,
+    UnregisteredStudent,
+    Update,
 )
-from import_export.admin import ImportExportModelAdmin, ImportExportMixin
-from .resources import (
-    StudentResource,
-    # AllocationResource,
-    RebateResource,
-    RebateBillsResource,
-    UnregisteredStudentResource,
-    LongRebateResource,
-    # CatererBillsResource,
-    StudentBillsResource,
-    CatererBillsNewResource,
+
+from .resources import (  # AllocationResource,; CatererBillsResource,
     AllocationNewResource,
+    CatererBillsNewResource,
+    LongRebateResource,
+    RebateBillsResource,
+    RebateResource,
+    StudentBillsResource,
+    StudentResource,
+    UnregisteredStudentResource,
 )
+from .utils.django_email_server import caterer_mail, long_rebate_query_mail
+from .utils.month import fill_periods
+from .utils.rebate_bills_saver import save_long_bill, save_short_bill, update_bills
 
 # Customising the heading and title of the admin page
 admin.site.site_header = "Dining Website Admin Page"
@@ -71,7 +71,9 @@ CAFETERIA_DESC_TEXT = "This contains the content that will show up in the Additi
 CONTACT_DESC_TEXT = "This contains the content that will show up in the contact page. Add new field for each new contact."
 ALLOCATION_DESC_TEXT = "This contains the Allocation details of the students. First import data through /allocation/ url then export"
 STUDENT_DESC_TEXT = "This contains the Basic details of each students."
-REBATE_DESC_TEXT = "This contains the rebate details of each rebate applied by the students."
+REBATE_DESC_TEXT = (
+    "This contains the rebate details of each rebate applied by the students."
+)
 REBATE_BILLS_DESC_TEXT = "This contains the rebate bills of each students."
 
 # Register your models here
@@ -141,10 +143,13 @@ class about_Admin(admin.ModelAdmin):
 
 
 @admin.register(Caterer)
-class about_Admin(admin.ModelAdmin):
+class CatererAdmin(admin.ModelAdmin):
     model = Caterer
     search_fields = ("name",)
-    list_filter = ("id","name",)
+    list_filter = (
+        "id",
+        "name",
+    )
     fieldsets = (
         (
             None,
@@ -166,12 +171,13 @@ class about_Admin(admin.ModelAdmin):
     actions = ["generate_table"]
 
     @admin.action(description="Generate the table for caterer Bills")
-    def generate_table(self,request,queryset):
+    def generate_table(self, request, queryset):
         semester = Semester.objects.filter().last()
         for caterer in queryset:
-            caterer_bill,_ = CatererBills.objects.get_or_create(caterer=caterer,semester=semester)
+            caterer_bill, _ = CatererBills.objects.get_or_create(
+                caterer=caterer, semester=semester
+            )
             caterer_bill.save()
-    
 
 
 @admin.register(Form)
@@ -270,8 +276,6 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
             Unregistered_instance = UnregisteredStudent(email=obj.email)
             Unregistered_instance.save()
 
-      
-
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
@@ -312,8 +316,12 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = LongRebateResource
     model = LongRebate
-    autocomplete_fields = ['email']
-    search_fields = ("email__email","approved", "date_applied", )
+    autocomplete_fields = ["email"]
+    search_fields = (
+        "email__email",
+        "approved",
+        "date_applied",
+    )
     list_filter = ("approved", "date_applied", "days")
     list_display = (
         "email",
@@ -332,13 +340,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "days",
                     "approved",
                     "file",
-                    "reason"
+                    "reason",
                 ),
                 "description": "%s" % REBATE_DESC_TEXT,
             },
         ),
     )
-    actions = ["export_as_csv", "disapprove", "approve","send_mail","clean"]
+    actions = ["export_as_csv", "disapprove", "approve", "send_mail", "clean"]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -393,6 +401,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     #                 obj.approved=True
     #                 obj.save()
 
+
 @admin.register(Rebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateResource
@@ -404,7 +413,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "start_date",
         "end_date",
         "email__email",
-        "email__name"
+        "email__name",
     )
     list_filter = ("approved", "date_applied", "start_date", "end_date")
     list_display = (
@@ -436,15 +445,16 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if(request.user.groups.filter(name="College Administration")):
+        if request.user.groups.filter(name="College Administration"):
             return qs
-        return qs.filter(approved=True).filter(allocation_id__caterer__name=request.user.username)
-    
+        return qs.filter(approved=True).filter(
+            allocation_id__caterer__name=request.user.username
+        )
 
     @admin.display(description="name")
     def name(self, obj):
         return obj.email.name
-        
+
     actions = ["export_as_csv", "disapprove", "approve"]
 
     @admin.action(description="Disapprove the students")
@@ -478,14 +488,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     export_as_csv.short_description = "Export Rebate details to CSV"
 
 
-
 def unregister_student(obj):
     for caterer in Caterer.objects.all():
         if caterer.student_limit > 0:
-            available_caterer=caterer
+            available_caterer = caterer
             break
-    student= Student.objects.filter(email__iexact=obj.email).last()
-    high_tea=False
+    student = Student.objects.filter(email__iexact=obj.email).last()
+    high_tea = False
     period = obj.period
     student_id = str(available_caterer.name[0])
     student_id += "NH"
@@ -506,37 +515,44 @@ def unregister_student(obj):
     a.save()
     UnregisteredStudent.objects.filter(email=student.email).delete()
 
+
 @admin.register(UnregisteredStudent)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = UnregisteredStudentResource
     model = UnregisteredStudent
     search_fields = ("email",)
     list_filter = ("email",)
-    list_display = ("email","period")
+    list_display = ("email", "period")
     fieldsets = (
         (
             None,
             {
-                "fields": ("email","period"),
+                "fields": ("email", "period"),
             },
         ),
     )
-    
-    actions = ["allocate","check_student"]
+
+    actions = ["allocate", "check_student"]
 
     def set_period_action(semester_name, period_sno):
-        @admin.action(description=f'Add Period as Semester: {semester_name} Period No.: {period_sno}')
+        @admin.action(
+            description=f"Add Period as Semester: {semester_name} Period No.: {period_sno}"
+        )
         def set_period(modeladmin, request, queryset):
-            queryset.update(period=Period.objects.get(semester=Semester.objects.get(name=semester_name), Sno=period_sno))
-        set_period.__name__ = f'set_period_{semester_name}_{period_sno}'
+            queryset.update(
+                period=Period.objects.get(
+                    semester=Semester.objects.get(name=semester_name), Sno=period_sno
+                )
+            )
+
+        set_period.__name__ = f"set_period_{semester_name}_{period_sno}"
         return set_period
-    
+
     try:
         for period in Period.objects.all():
             actions.append(set_period_action(period.semester.name, period.Sno))
-    except:
-        print("Periods table not available")
-
+    except Exception as e:
+        print("Periods table not available", e)
 
     @admin.action(description="Allocate the unregistered students")
     def allocate(self, request, queryset):
@@ -546,7 +562,9 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             print(obj.email)
             student = Student.objects.filter(email__iexact=obj.email).last()
-            allocation =  Allocation.objects.filter(email=student, period = obj.period).exists()
+            allocation = Allocation.objects.filter(
+                email=student, period=obj.period
+            ).exists()
             if allocation:
                 print("deleted")
                 UnregisteredStudent.objects.filter(email=obj.email).delete()
@@ -554,9 +572,9 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             unregister_student(obj)
 
     @admin.action(description="Check the students")
-    def check_student(self,request,queryset):
+    def check_student(self, request, queryset):
         for obj in queryset:
-            student= Student.objects.filter(email__iexact=obj.email).last()
+            student = Student.objects.filter(email__iexact=obj.email).last()
             if student is None:
                 print(obj.email)
                 continue
@@ -565,10 +583,10 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(TodayRebate)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     model = TodayRebate
-    search_fields = ("Caterer","allocation_id","date")
-    list_display =("allocation_id", "date","start_date","end_date")
+    search_fields = ("Caterer", "allocation_id", "date")
+    list_display = ("allocation_id", "date", "start_date", "end_date")
     # list_filter = ()
-    fieldsets = (  
+    fieldsets = (
         (
             None,
             {
@@ -593,16 +611,228 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             message_caterer = ""
             for obj in queryset:
                 print(obj.Caterer)
-                if(obj.Caterer != caterer.name): continue
-                allocation=obj.allocation_id
-                message_caterer +=(text.format(allocation_id=allocation.student_id,name=allocation.email.name, start_date=obj.start_date, end_date=obj.end_date))
+                if obj.Caterer != caterer.name:
+                    continue
+                allocation = obj.allocation_id
+                message_caterer += text.format(
+                    allocation_id=allocation.student_id,
+                    name=allocation.email.name,
+                    start_date=obj.start_date,
+                    end_date=obj.end_date,
+                )
                 obj.delete()
             print(message_caterer)
-            if(message_caterer): caterer_mail(message_caterer, caterer.name,caterer.email, obj.date)
-        
+            if message_caterer:
+                caterer_mail(message_caterer, caterer.name, caterer.email, obj.date)
 
-rebate_fields={"fields": (
+
+rebate_fields = {
+    "fields": (
+        "email",
+        (
+            "period1_short",
+            "period1_long",
+            "period1_high_tea",
+        ),
+        "period1_bill",
+        (
+            "period2_short",
+            "period2_long",
+            "period2_high_tea",
+        ),
+        "period2_bill",
+        (
+            "period3_short",
+            "period3_long",
+            "period3_high_tea",
+        ),
+        "period3_bill",
+        (
+            "period4_short",
+            "period4_long",
+            "period4_high_tea",
+        ),
+        "period4_bill",
+        (
+            "period5_short",
+            "period5_long",
+            "period5_high_tea",
+        ),
+        "period5_bill",
+        (
+            "period6_short",
+            "period6_long",
+            "period6_high_tea",
+        ),
+        "period6_bill",
+    ),
+    "description": "%s" % REBATE_BILLS_DESC_TEXT,
+}
+
+
+@admin.register(RebateAutumn22)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    model = RebateAutumn22
+    resource_class = RebateBillsResource
+    search_fields = (
+        "email__email",
+        "email__hostel",
+        "email__department",
+        "email__degree",
+        "email__roll_no",
+        "email__name",
+    )
+    list_filter = ("email__hostel", "email__department", "email__degree")
+    list_display = ("__str__", "roll_number", "name", "hostel")
+    fieldsets = (
+        (
+            None,
+            rebate_fields,
+        ),
+    )
+
+    @admin.display(description="roll number")
+    def roll_number(self, obj):
+        return obj.email.roll_no
+
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+
+    @admin.display(description="hostel")
+    def hostel(self, obj):
+        return obj.email.hostel
+
+    @admin.display(description="room number")
+    def room_number(self, obj):
+        return obj.email.room_no
+
+    actions = ["export_as_csv"]
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = RebateBillsResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
+
+
+@admin.register(RebateSpring23)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = RebateBillsResource
+    model = RebateSpring23
+    search_fields = (
+        "email__email",
+        "email__hostel",
+        "email__department",
+        "email__degree",
+        "email__roll_no",
+        "email__name",
+    )
+    list_filter = ("email__hostel", "email__degree", "email__department")
+    list_display = ("__str__", "roll_number", "name", "hostel")
+    fieldsets = (
+        (
+            None,
+            rebate_fields,
+        ),
+    )
+
+    @admin.display(description="roll number")
+    def roll_number(self, obj):
+        return obj.email.roll_no
+
+    @admin.display(description="name")
+    def name(self, obj):
+        return obj.email.name
+
+    @admin.display(description="hostel")
+    def hostel(self, obj):
+        return obj.email.hostel
+
+    @admin.display(description="room number")
+    def room_number(self, obj):
+        return obj.email.room_no
+
+    actions = ["export_as_csv", "clean"]
+
+    @admin.action(description="Clean Null period data")
+    def clean(self, request, queryset):
+        """
+        Clean testing period data
+        """
+        attributes_to_check = [
+            ("period1_short", 0),
+            ("period1_long", 0),
+            ("period2_short", 0),
+            ("period2_long", 0),
+            ("period3_short", 0),
+            ("period3_long", 0),
+            ("period4_short", 0),
+            ("period4_long", 0),
+            ("period5_short", 0),
+            ("period5_long", 0),
+            ("period6_short", 0),
+            ("period6_long", 0),
+            ("period1_high_tea", True),
+            ("period2_high_tea", True),
+            ("period3_high_tea", True),
+            ("period4_high_tea", True),
+            ("period5_high_tea", True),
+            ("period6_high_tea", True),
+            ("period1_bill", 0),
+            ("period2_bill", 0),
+            ("period3_bill", 0),
+            ("period4_bill", 0),
+            ("period5_bill", 0),
+            ("period6_bill", 0),
+        ]
+
+        for obj in queryset:
+            for attr, default_value in attributes_to_check:
+                if getattr(obj, attr) is None:
+                    setattr(obj, attr, default_value)
+            obj.save()
+
+    def export_as_csv(self, request, queryset):
+        """
+        Export action available in the admin page
+        """
+        resource = RebateBillsResource()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
+        return response
+
+    export_as_csv.short_description = "Export Rebate details to CSV"
+
+
+@admin.register(StudentBills)
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = StudentBillsResource
+    model = StudentBills
+    search_fields = (
+        "email__email",
+        "email__hostel",
+        "email__department",
+        "email__degree",
+        "email__roll_no",
+        "email__name",
+    )
+    list_filter = ("email__hostel", "email__department", "email__degree")
+    list_display = ("__str__", "roll_number", "name", "hostel")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
                     "email",
+                    "semester",
                     (
                         "period1_short",
                         "period1_long",
@@ -641,197 +871,22 @@ rebate_fields={"fields": (
                     "period6_bill",
                 ),
                 "description": "%s" % REBATE_BILLS_DESC_TEXT,
-            }
-
-@admin.register(RebateAutumn22)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    model=RebateAutumn22
-    resource_class = RebateBillsResource
-    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
-    list_filter = ("email__hostel","email__department","email__degree")
-    list_display = ("__str__","roll_number","name","hostel")
-    fieldsets = ((None,rebate_fields,),)
+            },
+        ),
+    )
 
     @admin.display(description="roll number")
     def roll_number(self, obj):
         return obj.email.roll_no
+
     @admin.display(description="name")
     def name(self, obj):
         return obj.email.name
+
     @admin.display(description="hostel")
     def hostel(self, obj):
         return obj.email.hostel
-    @admin.display(description="room number")
-    def room_number(self, obj):
-        return obj.email.room_no
 
-    actions = ["export_as_csv"]
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = RebateBillsResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Rebate details to CSV"
-
-@admin.register(RebateSpring23)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateBillsResource
-    model=RebateSpring23
-    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
-    list_filter = ("email__hostel","email__degree","email__department")
-    list_display = ("__str__","roll_number","name","hostel")
-    fieldsets = ((None,rebate_fields,),)
-
-    @admin.display(description="roll number")
-    def roll_number(self, obj):
-        return obj.email.roll_no
-    @admin.display(description="name")
-    def name(self, obj):
-        return obj.email.name
-    @admin.display(description="hostel")
-    def hostel(self, obj):
-        return obj.email.hostel
-    @admin.display(description="room number")
-    def room_number(self, obj):
-        return obj.email.room_no
-
-    actions = ["export_as_csv","clean"]
-
-    @admin.action(description="Clean Null period data")
-    def clean(self, request, queryset):
-        """
-        Clean testing period data
-        """
-        for obj in queryset:
-            if(obj.period1_short==None):
-                obj.period1_short = 0
-            if(obj.period1_long==None):
-                obj.period1_long = 0
-            if(obj.period2_short==None):
-                obj.period2_short = 0
-            if(obj.period2_long==None):
-                obj.period2_long = 0
-            if(obj.period3_short==None):
-                obj.period3_short = 0
-            if(obj.period3_long==None):
-                obj.period3_long = 0
-            if(obj.period4_short==None):
-                obj.period4_short = 0
-            if(obj.period4_long==None):
-                obj.period4_long = 0
-            if(obj.period5_short==None):
-                obj.period5_short = 0
-            if(obj.period5_long==None):
-                obj.period5_long = 0
-            if(obj.period6_short==None):
-                obj.period6_short = 0
-            if(obj.period6_long==None):
-                obj.period6_long = 0
-            if(obj.period1_high_tea==None):
-                obj.period1_high_tea = True
-            if(obj.period2_high_tea==None):
-                obj.period2_high_tea = True
-            if(obj.period3_high_tea==None):
-                obj.period3_high_tea = True
-            if(obj.period4_high_tea==None):
-                obj.period4_high_tea = True
-            if(obj.period5_high_tea==None):
-                obj.period5_high_tea = True
-            if(obj.period6_high_tea==None):
-                obj.period6_high_tea = True
-            if(obj.period1_bill==None):
-                obj.period1_bill = 0
-            if(obj.period2_bill==None):
-                obj.period2_bill = 0
-            if(obj.period3_bill==None):
-                obj.period3_bill = 0
-            if(obj.period4_bill==None):
-                obj.period4_bill = 0
-            if(obj.period5_bill==None):
-                obj.period5_bill = 0
-            if(obj.period6_bill==None):
-                obj.period6_bill = 0
-            obj.save()
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = RebateBillsResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Rebate details to CSV"
-
-@admin.register(StudentBills)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = StudentBillsResource
-    model=StudentBills
-    search_fields = ("email__email","email__hostel","email__department","email__degree","email__roll_no","email__name")
-    list_filter = ("email__hostel","email__department","email__degree")
-    list_display = ("__str__","roll_number","name","hostel")
-    fieldsets = ((None,
-                  {"fields": (
-                    "email",
-                    "semester",
-                    (
-                        "period1_short",
-                        "period1_long",
-                        "period1_high_tea",
-                    ),
-                    "period1_bill",
-                    (
-                        "period2_short",
-                        "period2_long",
-                        "period2_high_tea",
-                    ),
-                    "period2_bill",
-                    (
-                        "period3_short",
-                        "period3_long",
-                        "period3_high_tea",
-                    ),
-                    "period3_bill",
-                    (
-                        "period4_short",
-                        "period4_long",
-                        "period4_high_tea",
-                    ),
-                    "period4_bill",
-                    (
-                        "period5_short",
-                        "period5_long",
-                        "period5_high_tea",
-                    ),
-                    "period5_bill",
-                    (
-                        "period6_short",
-                        "period6_long",
-                        "period6_high_tea",
-                    ),
-                    "period6_bill",
-                    ),
-                    "description": "%s" % REBATE_BILLS_DESC_TEXT,
-                   }        
-                ,),)
-
-    @admin.display(description="roll number")
-    def roll_number(self, obj):
-        return obj.email.roll_no
-    @admin.display(description="name")
-    def name(self, obj):
-        return obj.email.name
-    @admin.display(description="hostel")
-    def hostel(self, obj):
-        return obj.email.hostel
     @admin.display(description="room number")
     def room_number(self, obj):
         return obj.email.room_no
@@ -845,13 +900,14 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         for obj in queryset:
             days = obj.period6_short + obj.period6_long
-            if(obj.semester == Semester.objects.get(name ="Autumn 2023")):
+            if obj.semester == Semester.objects.get(name="Autumn 2023"):
                 days = 25 - days
-                if(obj.period6_high_tea):
+                if obj.period6_high_tea:
                     obj.period6_bill = days * 130
-                else:    
+                else:
                     obj.period6_bill = days * 115
                 obj.save()
+
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
@@ -870,46 +926,69 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     list_per_page = 500
     resource_class = AllocationNewResource
     model = Allocation
-    search_fields = ("email__name","email__roll_no","email__hostel","email__email","student_id", "caterer__name")
-    list_filter = ("period","caterer", "jain","email__hostel","email__degree","email__department",)
-    list_display = ("student_id","name","email","period", "caterer", "jain")
-    fieldsets = ((None,
-                  {
-                    "fields": (
-                        "email",
-                        "period",
-                        "student_id",
-                        "caterer",
-                        # "high_tea",
-                        "jain",
-                        "first_pref",
-                        "second_pref",
-                        "third_pref",
-                    ),
-                    "description": "%s" % ALLOCATION_DESC_TEXT,
-                  }
-                ,),)
+    search_fields = (
+        "email__name",
+        "email__roll_no",
+        "email__hostel",
+        "email__email",
+        "student_id",
+        "caterer__name",
+    )
+    list_filter = (
+        "period",
+        "caterer",
+        "jain",
+        "email__hostel",
+        "email__degree",
+        "email__department",
+    )
+    list_display = ("student_id", "name", "email", "period", "caterer", "jain")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "period",
+                    "student_id",
+                    "caterer",
+                    # "high_tea",
+                    "jain",
+                    "first_pref",
+                    "second_pref",
+                    "third_pref",
+                ),
+                "description": "%s" % ALLOCATION_DESC_TEXT,
+            },
+        ),
+    )
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
         semester = Semester.objects.first()
-        if(request.user.groups.filter(name="College Administration")):
+        if request.user.groups.filter(name="College Administration"):
             return qs
-        return qs.filter(period__semester=semester).filter(period__Sno__in=[1,]).filter(caterer__name=request.user.username)
-
+        return (
+            qs.filter(period__semester=semester)
+            .filter(
+                period__Sno__in=[
+                    1,
+                ]
+            )
+            .filter(caterer__name=request.user.username)
+        )
 
     @admin.display(description="email")
     def email(self, obj):
         return obj.email.email
-    
+
     @admin.display(description="name")
     def name(self, obj):
         return obj.email.name
 
-    
-    actions = ["export_as_csv","correct_bills", "fix_issue"]
+    actions = ["export_as_csv", "correct_bills", "fix_issue"]
 
     def export_as_csv(self, request, queryset):
         """
@@ -920,47 +999,54 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
         return response
-    
 
-    def correct_bills(self,request,queryset):
+    def correct_bills(self, request, queryset):
         for obj in queryset:
-                if(obj.period==Period.objects.get(Sno=5, semester=Semester.objects.get(name="Autumn 2023"))):
-                    update_bills(obj.email,obj)
-                    obj.save()
-                if(obj.period==Period.objects.get(Sno=4, semester=Semester.objects.get(name="Autumn 2023"))):
-                    update_bills(obj.email,obj)
-                    obj.save()
+            if obj.period == Period.objects.get(
+                Sno=5, semester=Semester.objects.get(name="Autumn 2023")
+            ):
+                update_bills(obj.email, obj)
+                obj.save()
+            if obj.period == Period.objects.get(
+                Sno=4, semester=Semester.objects.get(name="Autumn 2023")
+            ):
+                update_bills(obj.email, obj)
+                obj.save()
 
-    def fix_issue(self,request,queryset):
+    def fix_issue(self, request, queryset):
         for obj in queryset:
             caterer = Caterer.objects.get(name=obj.first_pref)
             print(caterer)
             obj.caterer = caterer
-            obj.save()    
+            obj.save()
 
     export_as_csv.short_description = "Export Allocation details to CSV"
 
 
-   
 @admin.register(Period)
 class about_Admin(admin.ModelAdmin):
     list_display = ("Sno", "start_date", "end_date", "semester")
     model = Period
     fieldsets = (
-        (None,{"fields": ("Sno", "start_date", "end_date","semester")},),)
-    
-caterer_bill_fields = { 
-                "fields": (
-                    "caterer",
-                    "period1_bills",
-                    "period2_bills",
-                    "period3_bills",
-                    "period4_bills",
-                    "period5_bills",
-                    "period6_bills",
-                ),
-                # "description": "%s" % CATERER_BILL_DESC_TEXT,
-            }
+        (
+            None,
+            {"fields": ("Sno", "start_date", "end_date", "semester")},
+        ),
+    )
+
+
+caterer_bill_fields = {
+    "fields": (
+        "caterer",
+        "period1_bills",
+        "period2_bills",
+        "period3_bills",
+        "period4_bills",
+        "period5_bills",
+        "period6_bills",
+    ),
+    # "description": "%s" % CATERER_BILL_DESC_TEXT,
+}
 
 
 # @admin.register(CatererBillsSpring23)
@@ -971,7 +1057,7 @@ caterer_bill_fields = {
 #     list_display = ("__str__", "period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
 #     search_fields = ("caterer__name",)
 #     actions = ["export_as_csv"]
-    
+
 #     def export_as_csv(self, request, queryset):
 #         """
 #         Export action available in the admin page
@@ -981,15 +1067,18 @@ caterer_bill_fields = {
 #         response = HttpResponse(dataset.csv, content_type="text/csv")
 #         response["Content-Disposition"] = 'attachment; filename="caterer_bills.csv"'
 #         return response
-    
+
 #     export_as_csv.short_description = "Export Caterer Bills details to CSV"
+
 
 @admin.register(CatererBills)
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = CatererBillsNewResource
     model = CatererBills
-    fieldsets = ((None,
-                  { 
+    fieldsets = (
+        (
+            None,
+            {
                 "fields": (
                     "caterer",
                     "semester",
@@ -1001,12 +1090,22 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "period6_bills",
                 ),
                 # "description": "%s" % CATERER_BILL_DESC_TEXT,
-            }
-                  ,),)
-    list_display = ("__str__", "semester","period1_bills", "period2_bills", "period3_bills", "period4_bills", "period5_bills", "period6_bills",)
+            },
+        ),
+    )
+    list_display = (
+        "__str__",
+        "semester",
+        "period1_bills",
+        "period2_bills",
+        "period3_bills",
+        "period4_bills",
+        "period5_bills",
+        "period6_bills",
+    )
     search_fields = ("caterer__name",)
     actions = ["export_as_csv"]
-    
+
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
@@ -1019,14 +1118,19 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     export_as_csv.short_description = "Export Caterer Bills details to CSV"
 
+
 @admin.register(LeftLongRebate)
 class about_Admin(admin.ModelAdmin):
     model = LeftLongRebate
     search_fields = ("email",)
     list_display = ("email", "start_date", "end_date")
     fieldsets = (
-        (None,{"fields": ("email", "start_date", "end_date")},),)
-    
+        (
+            None,
+            {"fields": ("email", "start_date", "end_date")},
+        ),
+    )
+
     actions = ["Add"]
 
     @admin.action(description="Add left long rebate to Bills")
@@ -1037,8 +1141,9 @@ class about_Admin(admin.ModelAdmin):
         for obj in queryset:
             email = obj.email
             student = Student.objects.filter(email=email).last()
-            days_per_period = fill_periods(student,obj.start_date, obj.end_date)
-            save_long_bill(student, days_per_period,1)
+            days_per_period = fill_periods(student, obj.start_date, obj.end_date)
+            save_long_bill(student, days_per_period, 1)
+
 
 @admin.register(LeftShortRebate)
 class about_Admin(admin.ModelAdmin):
@@ -1046,8 +1151,12 @@ class about_Admin(admin.ModelAdmin):
     search_fields = ("email",)
     list_display = ("email", "start_date", "end_date")
     fieldsets = (
-        (None,{"fields": ("email", "start_date", "end_date","date_applied")},),)
-    
+        (
+            None,
+            {"fields": ("email", "start_date", "end_date", "date_applied")},
+        ),
+    )
+
     actions = ["Add"]
 
     @admin.action(description="Add left short rebate to Bills")
@@ -1059,12 +1168,29 @@ class about_Admin(admin.ModelAdmin):
             email = obj.email
             student_obj = Student.objects.filter(email=email).last()
             for period in Period.objects.all():
-                if(period.start_date <= obj.start_date and period.end_date >= obj.end_date):
+                if (
+                    period.start_date <= obj.start_date
+                    and period.end_date >= obj.end_date
+                ):
                     days = (obj.end_date - obj.start_date).days + 1
-                    allocation=Allocation.objects.filter(email=student_obj,period=period).last()
+                    allocation = Allocation.objects.filter(
+                        email=student_obj, period=period
+                    ).last()
                     if allocation:
-                        save_short_bill(student_obj,period,days,allocation.high_tea,allocation.caterer)
-                        new_rebate = TodayRebate(date=obj.date_applied,Caterer=allocation.caterer,allocation_id = allocation,start_date=obj.start_date,end_date=obj.end_date)
+                        save_short_bill(
+                            student_obj,
+                            period,
+                            days,
+                            allocation.high_tea,
+                            allocation.caterer,
+                        )
+                        new_rebate = TodayRebate(
+                            date=obj.date_applied,
+                            Caterer=allocation.caterer,
+                            allocation_id=allocation,
+                            start_date=obj.start_date,
+                            end_date=obj.end_date,
+                        )
                         new_rebate.save()
                         print("Saved")
                         short_rebate = Rebate(
@@ -1076,22 +1202,25 @@ class about_Admin(admin.ModelAdmin):
                             approved=True,
                         )
                         short_rebate.save()
-                        LeftShortRebate.objects.filter(email=email, date_applied = obj.date_applied).delete()
-                    
+                        LeftShortRebate.objects.filter(
+                            email=email, date_applied=obj.date_applied
+                        ).delete()
+
 
 @admin.register(AllocationForm)
-class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
+class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     # resource_class = AllocationFormResource
     model = AllocationForm
-    search_fields = ("start_time","end_time","heading","period__Sno")
-    list_filter = ("start_time","end_time","heading","period__Sno")
-    list_display = ("__str__", "start_time", "end_time","active")
+    search_fields = ("start_time", "end_time", "heading", "period__Sno")
+    list_filter = ("start_time", "end_time", "heading", "period__Sno")
+    list_display = ("__str__", "start_time", "end_time", "active")
     fieldsets = (
-        (None,
-            {"fields": 
-                (
-                    "heading", 
-                    "description", 
+        (
+            None,
+            {
+                "fields": (
+                    "heading",
+                    "description",
                     "period",
                     "start_time",
                     "end_time",
@@ -1101,14 +1230,19 @@ class about_Admin(ImportExportModelAdmin,admin.ModelAdmin):
         ),
     )
 
+
 @admin.register(Semester)
 class about_admin(admin.ModelAdmin):
     model = Semester
     search_fields = ("name",)
     list_display = ("name",)
     fieldsets = (
-        (None,{"fields": ("name",)},),)
-    
+        (
+            None,
+            {"fields": ("name",)},
+        ),
+    )
+
 
 @admin.register(Fee)
 class about_Admin(admin.ModelAdmin):
@@ -1116,14 +1250,14 @@ class about_Admin(admin.ModelAdmin):
     search_fields = ("program",)
     list_display = ("program", "prev_sem_fee", "upcoming_sem_fee")
     fieldsets = (
-        (None,
-         {"fields": 
-          (
-            "program", 
-            "prev_sem_fee",
-            "upcoming_sem_fee",
-           )
-         },
+        (
+            None,
+            {
+                "fields": (
+                    "program",
+                    "prev_sem_fee",
+                    "upcoming_sem_fee",
+                )
+            },
         ),
     )
-    
