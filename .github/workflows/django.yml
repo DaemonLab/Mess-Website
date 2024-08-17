@@ -13,16 +13,6 @@ jobs:
       matrix:
         python-version: [3.11]
     
-    env:
-      SECRET_KEY: 123456789
-      GOOGLE_CLIENT_ID: 123456789
-      GOOGLE_CLIENT_SECRET: 123456789
-      EMAIL_HOST: 123456789
-      EMAIL_HOST_PASSWORD: 123456789
-      CLOUD_NAME: 123456789
-      API_KEY_CLOUD: 123456789
-      API_SECRET_CLOUD: 123456789
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -33,7 +23,3 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        python manage.py collectstatic --noinput
-    - name: Run Server
-      run: |
-        python manage.py runserver
