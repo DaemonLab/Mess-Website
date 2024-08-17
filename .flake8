@@ -6,4 +6,4 @@ per-file-ignores =
     home/models/students.py: E402
     home/models/admin.py: F811
     home/models/__init__.py: F401
-    home/app.py: F401
+    home/apps.py: F401
