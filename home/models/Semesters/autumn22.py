@@ -4,29 +4,6 @@ from django.utils.translation import gettext as _
 from ..students import Student
 
 
-class PeriodAutumn22(models.Model):
-    Sno = models.IntegerField(
-        _("Sno"), default=0, help_text="This contains the serial number of the Period"
-    )
-    start_date = models.DateField(
-        help_text="This contains the start date of this Period for this semester",
-        null=True,
-        blank=True,
-    )
-    end_date = models.DateField(
-        help_text="This contains the end date of this Period of this semester",
-        null=True,
-        blank=True,
-    )
-
-    def __str__(self):
-        return str(self.Sno)
-
-    class Meta:
-        verbose_name = "Period Details for Autumn 2022"
-        verbose_name_plural = "Period Details for Autumn 2022"
-
-
 class RebateAutumn22(models.Model):
     """
     Storing the Rebate Bills of the Students for the Autumn Semester

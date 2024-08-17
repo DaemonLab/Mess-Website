@@ -19,7 +19,6 @@ from .models import (
 """
 File-name: resources.py
 Functions: StudentResource
-    AllocationResource
     RebateResource
     RebateSpringResource
     RebateAutumnResource
@@ -55,7 +54,7 @@ class StudentResource(resources.ModelResource):
         )
 
 
-class AllocationNewResource(resources.ModelResource):
+class AllocationResource(resources.ModelResource):
     email__roll_no = fields.Field(attribute="email__roll_no", column_name="Roll No.")
     email__email = fields.Field(attribute="email__email", column_name="Email")
     email__name = fields.Field(attribute="email__name", column_name="Name")
@@ -749,7 +748,7 @@ class UnregisteredStudentResource(resources.ModelResource):
         fields = ("email",)
 
 
-class CatererBillsNewResource(resources.ModelResource):
+class CatererBillsResource(resources.ModelResource):
     caterer__name = fields.Field(attribute="caterer__name", column_name="Caterer")
     semester__name = fields.Field(attribute="semester__name", column_name="Semester")
     period1_bills = fields.Field(

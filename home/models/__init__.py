@@ -10,15 +10,9 @@ from .home import About, Carousel, Update
 from .links import Form
 from .rules import Rule, ShortRebate
 from .Semesters.autumn22 import (
-    PeriodAutumn22,
     RebateAutumn22,
 )
-from .Semesters.autumn23 import (
-    PeriodAutumn23,
-    RebateAutumn23,
-)
 from .Semesters.spring23 import (
-    PeriodSpring23,
     RebateSpring23,
 )
 from .students import (
