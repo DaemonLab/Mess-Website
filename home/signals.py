@@ -1,3 +1,5 @@
+import logging
+
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
@@ -20,6 +22,8 @@ from .utils.rebate_bills_saver import save_long_bill, save_short_bill
 from .utils.rebate_checker import count
 
 __doc__ = "This file contains the signals for the home app"
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=Student)
@@ -55,14 +59,14 @@ def direct_update_bill(sender, instance, created, **kwargs):
             rebate_mail(
                 instance.start_date, instance.end_date, instance.approved, email.email
             )
-            print("Saved")
+            logger.info("Saved")
     except Exception as e:
-        print(e)
+        logger.error(e)
 
 
 @receiver(pre_save, sender=Rebate)
 def update_short_bill(sender, instance, **kwargs):
-    print("Signal called for Short Rebate")
+    logger.info("Signal called for Short Rebate")
     try:
         old_instance = Rebate.objects.get(pk=instance.pk)
         if old_instance.approved != instance.approved:
@@ -71,7 +75,7 @@ def update_short_bill(sender, instance, **kwargs):
             start_date = instance.start_date
             end_date = instance.end_date
             days = count(start_date, end_date)
-            print(old_instance.approved, instance.approved)
+            logger.info(old_instance.approved, instance.approved)
             if instance.approved is True and days > 0:
                 save_short_bill(
                     email,
@@ -88,7 +92,7 @@ def update_short_bill(sender, instance, **kwargs):
                     end_date=end_date,
                 )
                 new_rebate.save()
-                print("Saved")
+                logger.info("Saved")
             else:
                 save_short_bill(
                     email,
@@ -104,19 +108,19 @@ def update_short_bill(sender, instance, **kwargs):
                     .last()
                     .delete()
                 )
-                print("Deleted")
+                logger.info("Deleted")
             rebate_mail(
                 instance.start_date, instance.end_date, instance.approved, email.email
             )
     except Exception as e:
-        print(e)
+        logger.error(e)
 
 
 @receiver(pre_save, sender=LongRebate)
 def update_long_bill(sender, instance, **kwargs):
     try:
         old_instance = LongRebate.objects.get(pk=instance.pk)
-        print(old_instance.approved, instance.approved)
+        logger.info(old_instance.approved, instance.approved)
         if (
             old_instance.approved != instance.approved
             or old_instance.reason != instance.reason
@@ -159,7 +163,7 @@ def update_long_bill(sender, instance, **kwargs):
                     instance.reason,
                 )
     except Exception as e:
-        print(e)
+        logger.error(e)
 
 
 @receiver(post_save, sender=Allocation)
@@ -195,7 +199,7 @@ def update_rebate_bill(sender, instance, created, **kwargs):
                 rebate_bill.period6_bill = amount * days
             rebate_bill.save()
     except Exception as e:
-        print(e)
+        logger.error(e)
 
 
 @receiver(post_save, sender=Period)
