@@ -3,9 +3,6 @@ name: Push To Server
 on:
   release:
     types: [published]
-  push:
-    branches:
-      - github_workflow
 
 jobs:
   deploy:
