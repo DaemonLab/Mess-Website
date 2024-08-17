@@ -21,6 +21,6 @@ jobs:
             cd ~/Mess-Website
             git pull origin main
             docker compose down
-            docker mess-website-nginx || true
-            docker mess-website-web || true
+            docker rmi mess-website-nginx || true
+            docker rmi mess-website-web || true
             docker compose up -d
