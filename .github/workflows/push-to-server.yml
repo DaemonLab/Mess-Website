@@ -5,7 +5,7 @@ on:
     types: [published]
   push:
     branches:
-      - github-workflow
+      - github_workflow
 
 jobs:
   deploy:
