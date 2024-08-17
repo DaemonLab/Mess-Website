@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 import environ
-import cloudinary
 env = environ.Env()
 environ.Env.read_env()
 

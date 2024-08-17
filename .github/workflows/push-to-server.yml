@@ -1,0 +1,23 @@
+name: Push To Server
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: deploy on remote
+    steps:
+      - uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DC_HOST }}
+          username: ${{ secrets.DC_USER }}
+          password: ${{ secrets.DC_PASS }}
+          script: |
+            cd ~/Mess-Website
+            git pull origin main
+            docker compose down
+            docker rmi mess-website-nginx || true
+            docker rmi mess-website-web || true
+            docker compose up -d
