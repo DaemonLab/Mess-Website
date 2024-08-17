@@ -519,8 +519,6 @@ def period_data(request):
         "semester": name,
         "data": list(period.values("Sno", "start_date", "end_date")),
     }
-    # print(period_data['semester'])
-    # print(period_data['data'])
     return JsonResponse(period_data)
 
 

@@ -4,12 +4,10 @@ from import_export import fields, resources
 
 from .models import (
     Allocation,
-    AllocationSpring23,
     CatererBills,
     Fee,
     LongRebate,
     Period,
-    PeriodSpring23,
     Rebate,
     RebateAutumn22,
     RebateSpring23,
@@ -255,9 +253,6 @@ class RebateBillsResource(resources.ModelResource):
     )
     email__hostel = fields.Field(attribute="email__hostel", column_name="Hostel")
     email__room_no = fields.Field(attribute="email__room_no", column_name="Room No.")
-    allocation1 = fields.Field(
-        attribute="allocation1", column_name="Allocation for period 1"
-    )
     period1_short = fields.Field(
         attribute="period1_short", column_name="Short Rebate 1"
     )
@@ -266,9 +261,6 @@ class RebateBillsResource(resources.ModelResource):
         attribute="period1_high_tea", column_name="High Tea 1"
     )
     period1_bill = fields.Field(attribute="period1_bill", column_name="Bill 1")
-    allocation2 = fields.Field(
-        attribute="allocation2", column_name="Allocation for period 2"
-    )
     period2_short = fields.Field(
         attribute="period2_short", column_name="Short Rebate 2"
     )
@@ -277,9 +269,6 @@ class RebateBillsResource(resources.ModelResource):
         attribute="period2_high_tea", column_name="High Tea 2"
     )
     period2_bill = fields.Field(attribute="period2_bill", column_name="Bill 2")
-    allocation3 = fields.Field(
-        attribute="allocation3", column_name="Allocation for period 3"
-    )
     period3_short = fields.Field(
         attribute="period3_short", column_name="Short Rebate 3"
     )
@@ -288,9 +277,6 @@ class RebateBillsResource(resources.ModelResource):
         attribute="period3_high_tea", column_name="High Tea 3"
     )
     period3_bill = fields.Field(attribute="period3_bill", column_name="Bill 3")
-    allocation4 = fields.Field(
-        attribute="allocation4", column_name="Allocation for period 4"
-    )
     period4_short = fields.Field(
         attribute="period4_short", column_name="Short Rebate 4"
     )
@@ -310,9 +296,6 @@ class RebateBillsResource(resources.ModelResource):
         attribute="period5_high_tea", column_name="High Tea 5"
     )
     period5_bill = fields.Field(attribute="period5_bill", column_name="Bill 5")
-    allocation6 = fields.Field(
-        attribute="allocation6", column_name="Allocation for period 6"
-    )
     period6_short = fields.Field(
         attribute="period6_short", column_name="Short Rebate 6"
     )
@@ -387,12 +370,6 @@ class RebateBillsResource(resources.ModelResource):
             "period6_high_tea",
             "period6_bill",
             "empty",
-            "allocation1",
-            "allocation2",
-            "allocation3",
-            "allocation4",
-            "allocation5",
-            "allocation6",
             "last_sem_fee",
             "total",
             "upcoming_sem_fee",
@@ -407,37 +384,31 @@ class RebateBillsResource(resources.ModelResource):
             "email__hostel",
             "email__room_no",
             "empty",
-            "allocation1",
             "period1_short",
             "period1_long",
             "period1_high_tea",
             "period1_bill",
             "empty",
-            "allocation2",
             "period2_short",
             "period2_long",
             "period2_high_tea",
             "period2_bill",
             "empty",
-            "allocation3",
             "period3_short",
             "period3_long",
             "period3_high_tea",
             "period3_bill",
             "empty",
-            "allocation4",
             "period4_short",
             "period4_long",
             "period4_high_tea",
             "period4_bill",
             "empty",
-            "allocation5",
             "period5_short",
             "period5_long",
             "period5_high_tea",
             "period5_bill",
             "empty",
-            "allocation6",
             "period6_short",
             "period6_long",
             "period6_high_tea",
@@ -494,79 +465,6 @@ class RebateBillsResource(resources.ModelResource):
         except Exception as e:
             print(e)
             return 0
-
-    def dehydrate_allocation1(self, obj):
-        try:
-            period = PeriodSpring23.objects.get(Sno=1)
-            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
-            if allocation.high_tea:
-                high_tea = "High Tea"
-            else:
-                high_tea = "No High Tea"
-            return str(allocation.caterer_name) + " " + high_tea
-        except Exception as e:
-            logger.error(e)
-            return "Not yet allocated"
-
-    def dehydrate_allocation2(self, obj):
-        try:
-            period = PeriodSpring23.objects.get(Sno=2)
-            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
-            if allocation.high_tea:
-                high_tea = "High Tea"
-            else:
-                high_tea = "No High Tea"
-            return str(allocation.caterer_name) + " " + high_tea
-        except:
-            return "Not yet allocated"
-
-    def dehydrate_allocation3(self, obj):
-        try:
-            period = PeriodSpring23.objects.get(Sno=3)
-            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
-            if allocation.high_tea:
-                high_tea = "High Tea"
-            else:
-                high_tea = "No High Tea"
-            return str(allocation.caterer_name) + " " + high_tea
-        except:
-            return "Not yet allocated"
-
-    def dehydrate_allocation4(self, obj):
-        try:
-            period = PeriodSpring23.objects.get(Sno=4)
-            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
-            if allocation.high_tea:
-                high_tea = "High Tea"
-            else:
-                high_tea = "No High Tea"
-            return str(allocation.caterer_name) + " " + high_tea
-        except:
-            return "Not yet allocated"
-
-    def dehydrate_allocation5(self, obj):
-        try:
-            period = PeriodSpring23.objects.get(Sno=5)
-            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
-            if allocation.high_tea:
-                high_tea = "High Tea"
-            else:
-                high_tea = "No High Tea"
-            return str(allocation.caterer_name) + " " + high_tea
-        except:
-            return "Not yet allocated"
-
-    def dehydrate_allocation6(self, obj):
-        try:
-            period = PeriodSpring23.objects.get(Sno=6)
-            allocation = AllocationSpring23.objects.get(roll_no=obj.email, month=period)
-            if allocation.high_tea:
-                high_tea = "High Tea"
-            else:
-                high_tea = "No High Tea"
-            return str(allocation.caterer_name) + " " + high_tea
-        except:
-            return "Not yet allocated"
 
 
 class StudentBillsResource(resources.ModelResource):
