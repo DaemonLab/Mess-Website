@@ -824,8 +824,8 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "email__roll_no",
         "email__name",
     )
-    list_filter = ("email__hostel", "email__department", "email__degree")
-    list_display = ("__str__", "roll_number", "name", "hostel")
+    list_filter = ("semester", "email__hostel", "email__department", "email__degree")
+    list_display = ("__str__", "semester", "roll_number", "name", "hostel")
     fieldsets = (
         (
             None,
