@@ -1,4 +1,4 @@
-def get_rebate_bills(rebate, period: int):
+def get_rebate_bills(rebate, period):
     period = int(period)
     if period == 1:
         short = rebate.period1_short
