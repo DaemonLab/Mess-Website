@@ -491,11 +491,13 @@ def profile(request):
             picture = "not available"
     except (IndexError, KeyError):
         picture = "not available"
+    semesters = Semester.objects.all()
     context = {
         "text": text,
         "student": student,
         "picture": picture,
         "allocation_info": allocation_info,
+        "semesters": semesters,
     }
     return render(request, "profile.html", context)
 
