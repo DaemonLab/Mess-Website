@@ -12,9 +12,3 @@ class CustomSignupForm(SignupForm):
         user.last_name = self.cleaned_data["last_name"]
         user.save()
         return user
-
-
-# class CustomSocialSignupForm(SocialSignupForm):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.prevent_enumeration = False

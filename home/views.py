@@ -21,11 +21,7 @@ from home.models import (
     LeftShortRebate,
     LongRebate,
     Period,
-    PeriodAutumn22,
-    PeriodSpring23,
     Rebate,
-    RebateAutumn22,
-    RebateSpring23,
     Rule,
     Semester,
     ShortRebate,
@@ -508,19 +504,12 @@ def profile(request):
 def period_data(request):
     print("period_data")
     name = request.GET.get("semester")
-    if name == "autumn22":
-        period = PeriodAutumn22.objects.all()
-    elif name == "spring23":
-        period = PeriodSpring23.objects.all()
-    else:
-        semester = Semester.objects.get(name=name)
-        period = Period.objects.filter(semester=semester)
+    semester = Semester.objects.get(name=name)
+    period = Period.objects.filter(semester=semester)
     period_data = {
         "semester": name,
         "data": list(period.values("Sno", "start_date", "end_date")),
     }
-    # print(period_data['semester'])
-    # print(period_data['data'])
     return JsonResponse(period_data)
 
 
@@ -531,17 +520,8 @@ def rebate_data(request):
     student = Student.objects.get(email__iexact=user.email)
     sno = request.GET.get("period")
     semester = request.GET.get("semester")
-    if semester == "autumn22":
-        rebate = RebateAutumn22.objects.filter(email=student).last()
-        rebate_bills = get_rebate_bills(rebate, sno)
-    elif semester == "spring23":
-        rebate = RebateSpring23.objects.filter(email=student).last()
-        rebate_bills = get_rebate_bills(rebate, sno)
-    else:
-        semester_obj = Semester.objects.get(name=semester)
-        rebate = StudentBills.objects.filter(
-            email=student, semester=semester_obj
-        ).last()
-        rebate_bills = get_rebate_bills(rebate, sno)
+    semester_obj = Semester.objects.get(name=semester)
+    rebate = StudentBills.objects.filter(email=student, semester=semester_obj).last()
+    rebate_bills = get_rebate_bills(rebate, sno)
     rebate_data = {"semester": semester, "period": sno, "data": rebate_bills}
     return JsonResponse(rebate_data)

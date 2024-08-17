@@ -3,7 +3,6 @@
 db.sqlite3
 db1.sqlite3
 __pycache__
-migrations
 venv
 .venv
 media
