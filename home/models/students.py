@@ -72,10 +72,8 @@ class Scan(models.Model):
     Note: this is not implemented yet
     """
 
-    from .Semesters.spring23 import AllocationSpring23
-
     student_id = models.ForeignKey(
-        AllocationSpring23, default=0, on_delete=models.SET_NULL, null=True
+        Student, default=0, on_delete=models.SET_NULL, null=True
     )
     date = models.DateField(help_text="Date of the scan details")
     breakfast = models.BooleanField(
