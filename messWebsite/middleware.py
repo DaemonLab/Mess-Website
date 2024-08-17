@@ -1,8 +1,9 @@
 import re
+
 from django.conf import settings
-from django.urls import reverse
-from django.shortcuts import redirect
 from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.urls import reverse
 
 EXEMPT_URLS = [re.compile(settings.LOGIN_URL.lstrip("/"))]
 if hasattr(settings, "LOGIN_EXEMPT_URLS"):
@@ -25,20 +26,20 @@ class LoginRequiredMiddleware:
         if path == reverse("account_logout").lstrip("/"):
             logout(request)
             return
-        
+
         if (not request.user.is_authenticated) and (not url_is_exempt):
-            '''
+            """
             To check if the user is authenticated, If not redirect it to the google login page
-            '''
-            if (request.path =="/rebateForm/"):
+            """
+            if request.path == "/rebateForm/":
                 print(request.path)
-                return redirect(settings.LOGIN_URL+ "?next=" + request.path)
-            if (request.path =="/allocation/"):
+                return redirect(settings.LOGIN_URL + "?next=" + request.path)
+            if request.path == "/allocation/":
                 print(request.path)
-                return redirect(settings.LOGIN_URL+ "?next=" + request.path)
-            if (request.path =="/addAllocation/"):
+                return redirect(settings.LOGIN_URL + "?next=" + request.path)
+            if request.path == "/addAllocation/":
                 print(request.path)
-                return redirect(settings.LOGIN_URL+ "?next=" + request.path)
-            if (request.path =="/longRebate/"):
+                return redirect(settings.LOGIN_URL + "?next=" + request.path)
+            if request.path == "/longRebate/":
                 print(request.path)
-                return redirect(settings.LOGIN_URL+ "?next=" + request.path)
+                return redirect(settings.LOGIN_URL + "?next=" + request.path)
