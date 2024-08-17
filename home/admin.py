@@ -531,8 +531,11 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         set_period.__name__ = f'set_period_{semester_name}_{period_sno}'
         return set_period
     
-    for period in Period.objects.all():
-        actions.append(set_period_action(period.semester.name, period.Sno))
+    try:
+        for period in Period.objects.all():
+            actions.append(set_period_action(period.semester.name, period.Sno))
+    except:
+        print("Periods table not available")
 
 
     @admin.action(description="Allocate the unregistered students")
