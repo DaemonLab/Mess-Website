@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
@@ -74,7 +72,7 @@ def update_short_bill(sender, instance, **kwargs):
             end_date = instance.end_date
             days = count(start_date, end_date)
             print(old_instance.approved, instance.approved)
-            if instance.approved == True and days > 0:
+            if instance.approved is True and days > 0:
                 save_short_bill(
                     email,
                     allocation.period,
@@ -128,13 +126,17 @@ def update_long_bill(sender, instance, **kwargs):
                 email, instance.start_date, instance.end_date
             )
             left_start_date = [
-                period for period, days in days_per_period if type(period) == type(days)
+                period
+                for period, days in days_per_period
+                if isinstance(period, type(days))
             ]
             left_end_date = [
-                days for period, days in days_per_period if type(period) == type(days)
+                days
+                for period, days in days_per_period
+                if isinstance(period, type(days))
             ]
 
-            if instance.approved == True:
+            if instance.approved is True:
                 save_long_bill(email, days_per_period, 1)
                 long_rebate_mail(
                     instance.start_date,
@@ -145,7 +147,7 @@ def update_long_bill(sender, instance, **kwargs):
                     left_end_date,
                     instance.reason,
                 )
-            elif instance.approved == False:
+            elif instance.approved is False:
                 save_long_bill(email, days_per_period, -1)
                 long_rebate_mail(
                     instance.start_date,

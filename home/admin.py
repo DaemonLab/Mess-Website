@@ -766,55 +766,37 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Clean testing period data
         """
+        attributes_to_check = [
+            ("period1_short", 0),
+            ("period1_long", 0),
+            ("period2_short", 0),
+            ("period2_long", 0),
+            ("period3_short", 0),
+            ("period3_long", 0),
+            ("period4_short", 0),
+            ("period4_long", 0),
+            ("period5_short", 0),
+            ("period5_long", 0),
+            ("period6_short", 0),
+            ("period6_long", 0),
+            ("period1_high_tea", True),
+            ("period2_high_tea", True),
+            ("period3_high_tea", True),
+            ("period4_high_tea", True),
+            ("period5_high_tea", True),
+            ("period6_high_tea", True),
+            ("period1_bill", 0),
+            ("period2_bill", 0),
+            ("period3_bill", 0),
+            ("period4_bill", 0),
+            ("period5_bill", 0),
+            ("period6_bill", 0),
+        ]
+
         for obj in queryset:
-            if obj.period1_short == None:
-                obj.period1_short = 0
-            if obj.period1_long == None:
-                obj.period1_long = 0
-            if obj.period2_short == None:
-                obj.period2_short = 0
-            if obj.period2_long == None:
-                obj.period2_long = 0
-            if obj.period3_short == None:
-                obj.period3_short = 0
-            if obj.period3_long == None:
-                obj.period3_long = 0
-            if obj.period4_short == None:
-                obj.period4_short = 0
-            if obj.period4_long == None:
-                obj.period4_long = 0
-            if obj.period5_short == None:
-                obj.period5_short = 0
-            if obj.period5_long == None:
-                obj.period5_long = 0
-            if obj.period6_short == None:
-                obj.period6_short = 0
-            if obj.period6_long == None:
-                obj.period6_long = 0
-            if obj.period1_high_tea == None:
-                obj.period1_high_tea = True
-            if obj.period2_high_tea == None:
-                obj.period2_high_tea = True
-            if obj.period3_high_tea == None:
-                obj.period3_high_tea = True
-            if obj.period4_high_tea == None:
-                obj.period4_high_tea = True
-            if obj.period5_high_tea == None:
-                obj.period5_high_tea = True
-            if obj.period6_high_tea == None:
-                obj.period6_high_tea = True
-            if obj.period1_bill == None:
-                obj.period1_bill = 0
-            if obj.period2_bill == None:
-                obj.period2_bill = 0
-            if obj.period3_bill == None:
-                obj.period3_bill = 0
-            if obj.period4_bill == None:
-                obj.period4_bill = 0
-            if obj.period5_bill == None:
-                obj.period5_bill = 0
-            if obj.period6_bill == None:
-                obj.period6_bill = 0
+            for attr, default_value in attributes_to_check:
+                if getattr(obj, attr) is None:
+                    setattr(obj, attr, default_value)
             obj.save()
 
     def export_as_csv(self, request, queryset):

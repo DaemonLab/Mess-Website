@@ -1,13 +1,10 @@
-import io
+import logging
 from datetime import date, timedelta
 
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
-from django.core.files import File
-from django.core.files.storage import default_storage
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.dateparse import parse_date
 from django.utils.timezone import now
@@ -19,7 +16,6 @@ from home.models import (
     Cafeteria,
     Carousel,
     Caterer,
-    CatererBills,
     Contact,
     Form,
     LeftShortRebate,
@@ -42,9 +38,11 @@ from home.models import (
 from .utils.get_rebate_bills import get_rebate_bills
 from .utils.rebate_checker import is_not_duplicate, max_days_rebate
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 # Create your views here.
-
-
 def home(request):
     """
     Display the Home Page :model:`home.models.home`.
@@ -173,7 +171,7 @@ def rebate(request):
                         continue
             key = str(allocation_id.student_id)
         except Exception as e:
-            print(e)
+            logger.error(e)
             key = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
     except Student.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"
@@ -342,7 +340,8 @@ def addLongRebateBill(request):
                 except Exception as e:
                     text = "An error occurred while processing your form submission. If you're submitting an application, try compressing it before resubmitting. If the issue persists, please report it to the admin."
                     print(e)
-        except:
+        except Exception as e:
+            logger.error(e)
             text = "Email ID does not exist in the database. Please login using the correct email ID"
         request.session["text"] = text
         return redirect(request.path)
@@ -368,7 +367,6 @@ def allocationForm(request):
     alloc_form = AllocationForm.objects.filter(active=True).last()
     try:
         student = Student.objects.filter(email__iexact=str(request.user.email)).last()
-        key = student.email
         text = ""
         message = ""
         if (alloc_form.start_time and alloc_form.start_time > now()) or (
@@ -491,19 +489,12 @@ def profile(request):
     # else:
     # allocation_info = "Not allocated for this period"
     try:
-        if len(socialaccount_obj):
+        if socialaccount_obj:
             picture = socialaccount_obj[0].extra_data["picture"]
-    except:
+        else:
+            picture = "not available"
+    except (IndexError, KeyError):
         picture = "not available"
-    # if request.method == "POST" and request.user.is_authenticated:
-    #     try:
-    #         student = Student.objects.get(email=str(request.user.email))
-    #         student.name = request.POST["name"]
-    #         student.room_no = request.POST["room_no"]
-    #         student.save()
-    #         text = "Profile Updated Successfully"
-    #     except:
-    #         text = "Email ID does not exist in the database. Please eneter the correct email ID"
     context = {
         "text": text,
         "student": student,

@@ -95,7 +95,7 @@ def long_rebate_mail(
             added="removed from",
             reason="",
         )
-        if left_start_date != None:
+        if left_start_date is not None:
             message += left_message.format(
                 left_start_date=left_start_date, left_end_date=left_end_date
             )

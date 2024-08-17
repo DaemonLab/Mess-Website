@@ -2,8 +2,6 @@
 The `__init__.py` file is used to mark a directory as a Python package, making it possible to import modules and sub-packages from that directory
 """
 
-from .allocation import Allocation, Period, Semester
-from .bills import CatererBills, StudentBills
 from .cafeteria import Cafeteria
 from .caterer import Caterer
 from .contacts import Contact
@@ -40,3 +38,5 @@ from .students import (
     TodayRebate,
     UnregisteredStudent,
 )
+from .allocation import Allocation, Period, Semester
+from .bills import CatererBills, StudentBills

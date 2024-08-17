@@ -1,13 +1,8 @@
-from django.db.models.query import QuerySet
-
 from ..models import (
     Allocation,
-    Caterer,
     CatererBills,
     LeftLongRebate,
-    LongRebate,
     Period,
-    Semester,
     Student,
     StudentBills,
 )
@@ -138,11 +133,10 @@ def save_long_bill(email, days_per_period, j):
                 break
 
 
-def update_bills(student, allocation):
+def update_bills(email, allocation):
     try:
-        email = student.email
         period = allocation.period
-        rebate_bill = StudentBills.objects.get(email=student, semester=period.semester)
+        rebate_bill = StudentBills.objects.get(email, semester=period.semester)
         sno = period.Sno
         days = (period.end_date - period.start_date).days + 1
         high_tea = allocation.high_tea

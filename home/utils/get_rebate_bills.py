@@ -1,6 +1,3 @@
-from ..models import RebateSpring23
-
-
 def get_rebate_bills(rebate, period):
     period = int(period)
     if period == 1:

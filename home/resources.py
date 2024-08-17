@@ -1,13 +1,11 @@
+import logging
+
 from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget
 
 from .models import (
     Allocation,
-    AllocationAutumn22,
     AllocationSpring23,
     CatererBills,
-    CatererBillsAutumn22,
-    CatererBillsSpring23,
     Fee,
     LongRebate,
     Period,
@@ -19,7 +17,6 @@ from .models import (
     StudentBills,
     UnregisteredStudent,
 )
-from .utils.rebate_checker import count
 
 """
 File-name: resources.py
@@ -31,6 +28,9 @@ Functions: StudentResource
 Resource defines how objects are mapped to their import and export representations and
 handle importing and exporting data.
 """
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class StudentResource(resources.ModelResource):
@@ -505,6 +505,7 @@ class RebateBillsResource(resources.ModelResource):
                 high_tea = "No High Tea"
             return str(allocation.caterer_name) + " " + high_tea
         except Exception as e:
+            logger.error(e)
             return "Not yet allocated"
 
     def dehydrate_allocation2(self, obj):
@@ -772,6 +773,7 @@ class StudentBillsResource(resources.ModelResource):
                 high_tea = "No High Tea"
             return str(allocation.caterer_name) + " " + high_tea
         except Exception as e:
+            logger.error(e)
             return "Not yet allocated"
 
     def dehydrate_allocation2(self, obj):

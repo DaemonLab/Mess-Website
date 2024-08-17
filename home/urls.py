@@ -17,11 +17,9 @@ Examples:
         2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.contrib import admin
-from django.urls import include, path, re_path as url
+from django.urls import path
 
 from . import views
-from .views import *
 
 urlpatterns = [
     path("", views.home, name="home"),
