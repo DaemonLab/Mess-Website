@@ -250,7 +250,7 @@ def rebate(request):
             except Allocation.DoesNotExist:
                 text = "Email ID does not match with the allocation ID"
         except Exception as e:
-            print(e)
+            logger.error(e)
             text = (
                 "Ohh No! an unknown ERROR occured, Please inform about it immediatly to the Dining Wadern. Possible Error: "
                 + key
