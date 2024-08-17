@@ -84,7 +84,7 @@ Before you begin, ensure you have the following installed:
     ```
 5. Migrate the database
 
-    ```shell    
+    ```shell
     python manage.py migrate
     ```
 6. Copy the environment
