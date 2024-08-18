@@ -192,8 +192,7 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": env("API_SECRET_CLOUD"),
 }
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.RawMediaCloudinaryStorage"
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 MEDIA_URL = "/media/"
 
 

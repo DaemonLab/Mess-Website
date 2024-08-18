@@ -329,7 +329,7 @@ def addLongRebateBill(request):
                         end_date=end_date,
                         days=days,
                         approved=False,
-                        file=file,
+                        local_file=file,
                     )
                     long.save()
                     text = "Long Term rebate added Successfully"
