@@ -31,6 +31,4 @@ urlpatterns = [
     path("accounts/google/login/", oauth2_login, name="google_login"),
     path("accounts/google/login/callback/", oauth2_callback, name="google_callback"),
     path("", include("home.urls")),
-]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
