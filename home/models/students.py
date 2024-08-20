@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 
 class Student(models.Model):
@@ -176,7 +175,6 @@ class LongRebate(models.Model):
         default=now, help_text="Date on which the rebate was applied"
     )
 
-    ## To delete this field when we no longer need old rebate data
     file = models.FileField(
         _("File"), upload_to="documents/", default=None, null=True, blank=True
     )
