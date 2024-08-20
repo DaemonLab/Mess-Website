@@ -7,6 +7,7 @@ services:
       - 8000:8000
     volumes:
       - ./db/db.sqlite3:/app/db.sqlite3
+      - ./media:/app/media
       - /etc/letsencrypt/live/diningfee.iiti.ac.in/fullchain.pem:/etc/letsencrypt/live/diningfee.iiti.ac.in/fullchain.pem
       - /etc/letsencrypt/live/diningfee.iiti.ac.in/privkey.pem:/etc/letsencrypt/live/diningfee.iiti.ac.in/privkey.pem
     env_file:
