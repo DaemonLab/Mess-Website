@@ -178,10 +178,8 @@ class LongRebate(models.Model):
 
     ## To delete this field when we no longer need old rebate data
     file = models.FileField(
-        _("File"), upload_to="documents/", default=None, null=True, blank=True, storage=RawMediaCloudinaryStorage()
+        _("File"), upload_to="documents/", default=None, null=True, blank=True
     )
-
-    local_file = models.FileField(_("Local File"), upload_to="documents/", default=None, null=True, blank=True)
 
     def __str__(self):
         return str(self.date_applied) + " " + str(self.email)

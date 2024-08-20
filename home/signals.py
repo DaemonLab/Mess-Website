@@ -116,54 +116,54 @@ def update_short_bill(sender, instance, **kwargs):
         logger.error(e)
 
 
-@receiver(pre_save, sender=LongRebate)
-def update_long_bill(sender, instance, **kwargs):
-    try:
-        old_instance = LongRebate.objects.get(pk=instance.pk)
-        logger.info(old_instance.approved, instance.approved)
-        if (
-            old_instance.approved != instance.approved
-            or old_instance.reason != instance.reason
-        ):
-            email = instance.email
-            days_per_period = fill_periods(
-                email, instance.start_date, instance.end_date
-            )
-            left_start_date = [
-                period
-                for period, days in days_per_period
-                if isinstance(period, type(days))
-            ]
-            left_end_date = [
-                days
-                for period, days in days_per_period
-                if isinstance(period, type(days))
-            ]
+# @receiver(pre_save, sender=LongRebate)
+# def update_long_bill(sender, instance, **kwargs):
+#     try:
+#         old_instance = LongRebate.objects.get(pk=instance.pk)
+#         logger.info(old_instance.approved, instance.approved)
+#         if (
+#             old_instance.approved != instance.approved
+#             or old_instance.reason != instance.reason
+#         ):
+#             email = instance.email
+#             days_per_period = fill_periods(
+#                 email, instance.start_date, instance.end_date
+#             )
+#             left_start_date = [
+#                 period
+#                 for period, days in days_per_period
+#                 if isinstance(period, type(days))
+#             ]
+#             left_end_date = [
+#                 days
+#                 for period, days in days_per_period
+#                 if isinstance(period, type(days))
+#             ]
 
-            if instance.approved is True:
-                save_long_bill(email, days_per_period, 1)
-                long_rebate_mail(
-                    instance.start_date,
-                    instance.end_date,
-                    instance.approved,
-                    email.email,
-                    left_start_date,
-                    left_end_date,
-                    instance.reason,
-                )
-            elif instance.approved is False:
-                save_long_bill(email, days_per_period, -1)
-                long_rebate_mail(
-                    instance.start_date,
-                    instance.end_date,
-                    instance.approved,
-                    email.email,
-                    left_start_date,
-                    left_end_date,
-                    instance.reason,
-                )
-    except Exception as e:
-        logger.error(e)
+#             if instance.approved is True:
+#                 save_long_bill(email, days_per_period, 1)
+#                 long_rebate_mail(
+#                     instance.start_date,
+#                     instance.end_date,
+#                     instance.approved,
+#                     email.email,
+#                     left_start_date,
+#                     left_end_date,
+#                     instance.reason,
+#                 )
+#             elif instance.approved is False:
+#                 save_long_bill(email, days_per_period, -1)
+#                 long_rebate_mail(
+#                     instance.start_date,
+#                     instance.end_date,
+#                     instance.approved,
+#                     email.email,
+#                     left_start_date,
+#                     left_end_date,
+#                     instance.reason,
+#                 )
+#     except Exception as e:
+#         logger.error(e)
 
 
 @receiver(post_save, sender=Allocation)

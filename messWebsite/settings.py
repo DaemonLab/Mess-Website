@@ -3,11 +3,12 @@ from pathlib import Path
 
 import environ
 
-env = environ.Env()
-environ.Env.read_env(Path(__file__).resolve().parent.parent / '.env')
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / '.env')
+
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 # Quick-start development settings - unsuitable for production
@@ -192,9 +193,15 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": env("API_SECRET_CLOUD"),
 }
 
-DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+FILE_UPLOAD_HANDLERS = [
+          'django.core.files.uploadhandler.MemoryFileUploadHandler',
+          'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
