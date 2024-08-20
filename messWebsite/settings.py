@@ -183,6 +183,9 @@ LOGIN_EXEMPT_URLS = ["/admin/*"]
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 # managing media
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": env("CLOUD_NAME"),

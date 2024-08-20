@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from cloudinary_storage import Cl
 
 
 class About(models.Model):
@@ -25,7 +26,7 @@ class Carousel(models.Model):
     Stores All carousel images on Home page
     """
 
-    image = models.ImageField(_("Carousel Images"), upload_to="static/images")
+    image = models.ImageField(_("Carousel Images"), upload_to="static/images", storage=Cl)
 
     def __str__(self):
         return "Carousel Images"
