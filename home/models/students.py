@@ -174,6 +174,7 @@ class LongRebate(models.Model):
     date_applied = models.DateField(
         default=now, help_text="Date on which the rebate was applied"
     )
+
     file = models.FileField(
         _("File"), upload_to="documents/", default=None, null=True, blank=True
     )
