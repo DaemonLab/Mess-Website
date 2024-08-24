@@ -982,11 +982,11 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     @admin.display(description="email")
     def email(self, obj):
-        return obj.email.email
+        return obj.email.email if obj.email else ""
 
     @admin.display(description="name")
     def name(self, obj):
-        return obj.email.name
+        return obj.email.name if obj.email else ""
 
     actions = ["export_as_csv", "correct_bills", "fix_issue"]
 
