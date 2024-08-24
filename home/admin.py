@@ -1203,6 +1203,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "start_time",
                     "end_time",
                     "active",
+                    "show_allocated",
                 )
             },
         ),
