@@ -363,6 +363,8 @@ def allocationForm(request):
     alloc_form = AllocationForm.objects.filter(active=True).last()
     try:
         student = Student.objects.filter(email__iexact=str(request.user.email)).last()
+        if not student:
+            raise Exception("Student not found")
         text = ""
         message = ""
         if (alloc_form.start_time and alloc_form.start_time > now()) or (
@@ -372,13 +374,7 @@ def allocationForm(request):
         elif Allocation.objects.filter(
             email=student, period=alloc_form.period
         ).exists():
-            allocation_id = Allocation.objects.filter(
-                email=student, period=alloc_form.period
-            ).last()
-            message = (
-                "You have already filled the form for this period. with first preference:"
-                + allocation_id.first_pref
-            )
+            message = "You have filled the form for this period. Please visit the profile page after the allocation process is completed to check your allocated caterer"
         elif request.method == "POST" and request.user.is_authenticated:
             try:
                 period_obj = alloc_form.period
@@ -444,8 +440,8 @@ def allocationForm(request):
         if text != "":
             del request.session["text"]
     except Exception as e:
-        print(e)
-        message = "Signed in account can not fill the allocation form"
+        logger.error(e)
+        message = "Signed in account can not fill the allocation form. Please inform the dining Office to add your email ID to the database"
         text = ""
     context = {
         "text": text,
@@ -524,6 +520,8 @@ def rebate_data(request):
     semester = request.GET.get("semester")
     semester_obj = Semester.objects.get(name=semester)
     rebate = StudentBills.objects.filter(email=student, semester=semester_obj).last()
+    if not rebate:
+        return JsonResponse({"semester": semester, "period": sno, "data": []})
     rebate_bills = get_rebate_bills(rebate, sno)
     rebate_data = {"semester": semester, "period": sno, "data": rebate_bills}
     return JsonResponse(rebate_data)

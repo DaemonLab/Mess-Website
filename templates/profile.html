@@ -34,7 +34,7 @@
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <h6>You have not been allotted a caterer for this period yet.</h6>
+                            <h6>Your view your allocated caterer once the allocation for this period is completed. </h6>
                         {% endif %}
                         <hr>
                     </div>
@@ -123,7 +123,6 @@
                     return;
                 }
                 var semester = $('#semester-select').val();
-                console.log(period);
                 $.ajax({
                     url: "{% url 'rebate_data' %}",
                     type: "GET",
@@ -132,8 +131,14 @@
                         'period': period
                     },
                     success: function(response) {
-                        console.log(response);
                         var data = response.data;
+                        if(data.length == 0) {
+                            $('#short').html('');
+                            $('#long').html('');
+                            $('#high_tea').html('');
+                            $('#bills').html('');
+                            return;
+                        }
                         var short = document.getElementById('short');
                         var long = document.getElementById('long');
                         var high_tea = document.getElementById('high_tea');
