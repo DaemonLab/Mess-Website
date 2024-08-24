@@ -272,6 +272,7 @@ class AllocationForm(models.Model):
         _("Start Time"), default=now, null=True, blank=True
     )
     end_time = models.DateTimeField(_("End Time"), null=True, blank=True)
+    show_allocated = models.BooleanField(_("show_allocated"), default=False)
 
     def __str__(self):
         return str(self.heading)

@@ -467,19 +467,21 @@ def profile(request):
         provider="google", user_id=request.user.id
     )
     picture = "not available"
-    allocation = Allocation.objects.filter(email=student).last()
+    allocation: Allocation | None = Allocation.objects.filter(email=student).last()
+    show_allocated_enabled = AllocationForm.objects.filter(
+        show_allocated=True, period=allocation.period
+    ).exists()
     allocation_info = {}
     # improve this alignment of text to be shown on the profile section
-    if allocation:
+    if allocation and show_allocated_enabled:
         allocation_info = {
-            "Allocation ID": allocation.student_id,
+            "start date": allocation.period.start_date,
+            "end date": allocation.period.end_date,
+            # "Allocation ID": allocation.student_id,
             "Caterer": allocation.caterer.name,
-            "High Tea": "Yes" if allocation.high_tea else "No",
+            # "High Tea": "Yes" if allocation.high_tea else "No",
             "Jain": "Yes" if allocation.jain else "No",
         }
-        # allocation_info = "Allocation ID: " + allocation.student_id + " Caterer: " + allocation.caterer.name + " High Tea: " + str(allocation.high_tea) + " Jain: " + str(allocation.jain)
-    # else:
-    # allocation_info = "Not allocated for this period"
     try:
         if socialaccount_obj:
             picture = socialaccount_obj[0].extra_data["picture"]
