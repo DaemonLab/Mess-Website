@@ -362,78 +362,80 @@ def allocationForm(request):
     caterer_list = Caterer.objects.filter(visible=True).all()
     alloc_form = AllocationForm.objects.filter(active=True).last()
     try:
+        if not alloc_form:
+            raise Exception("Form is closed for now")
         student = Student.objects.filter(email__iexact=str(request.user.email)).last()
         if not student:
-            raise Exception("Student not found")
+            raise Exception(
+                "Signed in account can not fill the allocation form. Please inform the dining Office to add your email ID to the database"
+            )
         text = ""
         message = ""
         if (alloc_form.start_time and alloc_form.start_time > now()) or (
             alloc_form.end_time and alloc_form.end_time < now()
         ):
-            message = "Form is closed for now."
+            raise Exception("The Form is closed for now")
         elif Allocation.objects.filter(
             email=student, period=alloc_form.period
         ).exists():
-            message = "You have filled the form for this period. Please visit the profile page after the allocation process is completed to check your allocated caterer"
+            raise Exception(
+                "You have filled the form for this period. Please visit the profile page after the allocation process is completed to check your allocated caterer"
+            )
         elif request.method == "POST" and request.user.is_authenticated:
-            try:
-                period_obj = alloc_form.period
-                high_tea = False
-                jain = request.POST["jain"]
-                if jain == "True":
-                    high_tea = False
-                if caterer_list.count() < 1:
-                    first_pref = None
-                else:
-                    first_pref = request.POST["first_pref"]
-                    caterer1 = Caterer.objects.get(name=first_pref)
-                if caterer_list.count() < 2:
-                    second_pref = None
-                else:
-                    second_pref = request.POST["second_pref"]
-                    caterer2 = Caterer.objects.get(name=second_pref)
-                if caterer_list.count() < 3:
-                    third_pref = None
-                else:
-                    third_pref = request.POST["third_pref"]
-                    caterer3 = Caterer.objects.get(name=third_pref)
-                if caterer1.student_limit > 0:
-                    caterer1.student_limit -= 1
-                    caterer1.save(update_fields=["student_limit"])
-                    caterer = caterer1
-                elif caterer2 and caterer2.student_limit > 0:
-                    caterer2.student_limit -= 1
-                    caterer2.save(update_fields=["student_limit"])
-                    caterer = caterer2
-                elif caterer3 and caterer3.student_limit > 0:
-                    caterer3.student_limit -= 1
-                    caterer3.save(update_fields=["student_limit"])
-                    caterer = caterer3
-                student_id = str(caterer.name[0])
-                # if high_tea == "True":
-                #     student_id += "H"
-                # else:
-                #     student_id+="NH"
-                if jain == "True":
-                    student_id += "J"
-                student_id += str(caterer.student_limit)
-                allocation = Allocation(
-                    email=student,
-                    student_id=student_id,
-                    period=period_obj,
-                    caterer=caterer,
-                    high_tea=high_tea,
-                    jain=jain,
-                    first_pref=first_pref,
-                    second_pref=second_pref,
-                    third_pref=third_pref,
-                )
-                allocation.save()
-                UnregisteredStudent.objects.filter(email__iexact=student.email).delete()
-                text = "Allocation Form filled Successfully"
-            except Exception as e:
-                message = "The Form is closed for now"
-                print(e)
+            period_obj = alloc_form.period
+            high_tea = False
+            jain = request.POST["jain"]
+            # if jain == "True":
+            #     high_tea = False
+            if caterer_list.count() < 1:
+                first_pref = None
+            else:
+                first_pref = request.POST["first_pref"]
+                caterer1 = Caterer.objects.get(name=first_pref)
+            if caterer_list.count() < 2:
+                second_pref = None
+            else:
+                second_pref = request.POST["second_pref"]
+                caterer2 = Caterer.objects.get(name=second_pref)
+            if caterer_list.count() < 3:
+                third_pref = None
+            else:
+                third_pref = request.POST["third_pref"]
+                caterer3 = Caterer.objects.get(name=third_pref)
+            if caterer1.student_limit > 0:
+                caterer1.student_limit -= 1
+                caterer1.save(update_fields=["student_limit"])
+                caterer = caterer1
+            elif caterer2 and caterer2.student_limit > 0:
+                caterer2.student_limit -= 1
+                caterer2.save(update_fields=["student_limit"])
+                caterer = caterer2
+            elif caterer3 and caterer3.student_limit > 0:
+                caterer3.student_limit -= 1
+                caterer3.save(update_fields=["student_limit"])
+                caterer = caterer3
+            student_id = str(caterer.name[0])
+            # if high_tea == "True":
+            #     student_id += "H"
+            # else:
+            #     student_id+="NH"
+            if jain == "True":
+                student_id += "J"
+            student_id += str(caterer.student_limit)
+            allocation = Allocation(
+                email=student,
+                student_id=student_id,
+                period=period_obj,
+                caterer=caterer,
+                high_tea=high_tea,
+                jain=jain,
+                first_pref=first_pref,
+                second_pref=second_pref,
+                third_pref=third_pref,
+            )
+            allocation.save()
+            UnregisteredStudent.objects.filter(email__iexact=student.email).delete()
+            text = "Allocation Form filled Successfully"
             request.session["text"] = text
             return redirect(request.path)
         text = request.session.get("text", "")
@@ -441,7 +443,7 @@ def allocationForm(request):
             del request.session["text"]
     except Exception as e:
         logger.error(e)
-        message = "Signed in account can not fill the allocation form. Please inform the dining Office to add your email ID to the database"
+        message = e
         text = ""
     context = {
         "text": text,
