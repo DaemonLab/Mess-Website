@@ -7,7 +7,7 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
-environ.Env.read_env(BASE_DIR / '.env')
+environ.Env.read_env(BASE_DIR / ".env")
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
@@ -20,7 +20,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1"]
+ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1", "103.159.214.171"]
 CSRF_TRUSTED_ORIGINS = ["http://diningfee.iiti.ac.in", "https://diningfee.iiti.ac.in"]
 # Application definition
 
@@ -182,7 +182,7 @@ LOGIN_EXEMPT_URLS = ["/admin/*"]
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
@@ -196,11 +196,11 @@ CLOUDINARY_STORAGE = {
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 FILE_UPLOAD_HANDLERS = [
-          'django.core.files.uploadhandler.MemoryFileUploadHandler',
-          'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler",
 ]
 
 # Default primary key field type
