@@ -470,9 +470,11 @@ def profile(request):
     )
     picture = "not available"
     allocation: Allocation | None = Allocation.objects.filter(email=student).last()
-    show_allocated_enabled = AllocationForm.objects.filter(
-        show_allocated=True, period=allocation.period
-    ).exists()
+    show_allocated_enabled = False
+    if allocation and allocation.period:
+        show_allocated_enabled = AllocationForm.objects.filter(
+            show_allocated=True, period=allocation.period
+        ).exists()
     allocation_info = {}
     # improve this alignment of text to be shown on the profile section
     if allocation and show_allocated_enabled:
