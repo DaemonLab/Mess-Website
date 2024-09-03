@@ -120,6 +120,14 @@ class Allocation(models.Model):
         null=True,
         blank=True,
     )
+    registration_time = models.DateTimeField(
+        _("Registration time"),
+        auto_now_add=True, 
+        blank=True, 
+        null=True,
+        help_text="This contains the time of registration",
+        editable=True,
+    )
 
     def __str__(self):
         return self.student_id

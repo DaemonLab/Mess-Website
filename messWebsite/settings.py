@@ -18,32 +18,37 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = ["http://diningfee.iiti.ac.in", "https://diningfee.iiti.ac.in"]
 # Application definition
 
 INSTALLED_APPS = [
+    # Django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "django.contrib.admindocs",
+
+    # Third-party apps
     "import_export",
     "django_admin_logs",
-    "home.apps.HomeConfig",
-    "django.contrib.sites",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    "django.contrib.admindocs",
     "cloudinary_storage",
     "cloudinary",
     "apscheduler",
     "django_apscheduler",
+
+    # Local apps
+    "home.apps.HomeConfig",
 ]
 
 MIDDLEWARE = [
