@@ -964,8 +964,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         ),
     )
 
-    readonly_fields=("registration_time",)
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:

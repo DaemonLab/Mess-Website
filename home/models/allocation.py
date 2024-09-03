@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from django.utils.timezone import now
 
 from .caterer import Caterer
 
@@ -122,10 +123,10 @@ class Allocation(models.Model):
     )
     registration_time = models.DateTimeField(
         _("Registration time"),
-        auto_now_add=True, 
+        default=now,
         blank=True, 
         null=True,
-        help_text="This contains the time of registration",
+        help_text="This contains the date and time of registration",
         editable=True,
     )
 
