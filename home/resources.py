@@ -106,6 +106,7 @@ class AllocationResource(resources.ModelResource):
             "first_pref",
             "second_pref",
             "third_pref",
+            "registration_time",
         )
 
         export_order = [
@@ -123,6 +124,7 @@ class AllocationResource(resources.ModelResource):
             "first_pref",
             "second_pref",
             "third_pref",
+            "registration_time",
         ]
 
 
