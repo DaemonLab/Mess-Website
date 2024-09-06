@@ -942,7 +942,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "email__degree",
         "email__department",
     )
-    list_display = ("student_id", "name", "email", "period", "caterer", "jain")
+    list_display = ("student_id", "name", "email", "period", "caterer", "jain", "registration_time",)
     fieldsets = (
         (
             None,
@@ -957,6 +957,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "first_pref",
                     "second_pref",
                     "third_pref",
+                    "registration_time",
                 ),
                 "description": "%s" % ALLOCATION_DESC_TEXT,
             },
