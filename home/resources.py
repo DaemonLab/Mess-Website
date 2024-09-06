@@ -1,6 +1,7 @@
 import logging
 
 from import_export import fields, resources
+from django.utils import timezone
 
 from .models import (
     Allocation,
@@ -78,6 +79,12 @@ class AllocationResource(resources.ModelResource):
         attribute="second_pref", column_name="Second Preferences"
     )
     third_pref = fields.Field(attribute="third_pref", column_name="Third Preferences")
+    registration_time = fields.Field(attribute="registration_time", column_name="Registration Date Time")
+
+    def dehydrate_registration_time(self, allocation):
+        # Convert the registration_time to local time
+        local_time = timezone.localtime(allocation.registration_time)
+        return local_time.strftime('%Y-%m-%d %H:%M:%S')
 
     class Meta:
         model = Allocation
@@ -99,6 +106,7 @@ class AllocationResource(resources.ModelResource):
             "first_pref",
             "second_pref",
             "third_pref",
+            "registration_time",
         )
 
         export_order = [
@@ -116,6 +124,7 @@ class AllocationResource(resources.ModelResource):
             "first_pref",
             "second_pref",
             "third_pref",
+            "registration_time",
         ]
 
 

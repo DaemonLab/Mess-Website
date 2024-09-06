@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from django.utils.timezone import now
 
 from .caterer import Caterer
 
@@ -119,6 +120,14 @@ class Allocation(models.Model):
         help_text="This contians the first preference caterer of the student",
         null=True,
         blank=True,
+    )
+    registration_time = models.DateTimeField(
+        _("Registration time"),
+        default=now,
+        blank=True, 
+        null=True,
+        help_text="This contains the date and time of registration",
+        editable=True,
     )
 
     def __str__(self):
