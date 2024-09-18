@@ -468,7 +468,7 @@ def profile(request):
     socialaccount_obj = SocialAccount.objects.filter(
         provider="google", user_id=request.user.id
     )
-    picture = "not available"
+    picture = "Not Available"
     allocation: Allocation | None = Allocation.objects.filter(email=student).last()
     show_allocated_enabled = False
     if allocation and allocation.period:
