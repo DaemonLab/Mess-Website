@@ -1,38 +1,69 @@
 {% extends 'base.html' %} {% load static %} {%block externalCss%}
 
 <link rel="stylesheet" href="{% static 'css/mess-card.css' %}" />
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  rel="stylesheet"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  
 
 {% endblock %} {%block body%}
 <main>
-  <div class="id-card" id="id-card">
-    <div class="header"></div>
-    <div class="logo">
-      <img
-        alt="IITI Logo"
-        height="50"
-        src="{% static 'images/Indian_Institute_of_Technology,_Indore_Logo.png' %}"
-        width="50"
-      />
+  <div class="wrapper">
+    <div class="id-card" id="id-card">
+      <div class="header"></div>
+      <div class="logo">
+        <img
+          alt="IITI Logo"
+          height="50"
+          src="{% static 'images/Indian_Institute_of_Technology,_Indore_Logo.png' %}"
+          width="50"
+        />
+      </div>
+      <div class="photo">
+        <img
+          class="img-fluid rounded-4"
+          src="{{ picture }}"
+          alt="User Image"
+          alt="profile photo"
+        />
+      </div>
+      <h6 class="card-subtitle mt-2">{{ student.name }}</h6>
+      <div class="divider"></div>
+      <span class="card-text">Roll Number: {{ student.roll_no }}</span><br />
+      <span class="card-text">Email: {{ user.email }}</span><br />
+      <span class="card-text">Department: {{ student.department }}</span><br />
+      <div class="qr-code">
+        <img
+          alt="QR Code"
+          height="auro"
+          src="{{ mess_card.qr_code.url }}"
+          width="100%"
+        />
+      </div>
+      <div class="website">www.reallygreatsite.com</div>
+      <div class="footer"></div>
     </div>
-    <div class="photo">
-        <img class="img-fluid rounded-4" src="{{ picture }}" alt="User Image" alt="profile photo"/>
+    <div>
+      <button id="download-btn" class="btn btn-primary w-100 mt-4">Download</button>
     </div>
-    <h6 class="card-subtitle mt-2">{{ student.name }}</h6>
-    <div class="divider"></div>
-    <span class="card-text">Roll Number: {{ student.roll_no }}</span><br />
-    <span class="card-text">Email: {{ user.email }}</span><br />
-    <span class="card-text">Department: {{ student.department }}</span><br />
-    <div class="qr-code">
-      <img
-        alt="QR Code"
-        height="auro"
-        src="{{ mess_card.qr_code.url }}"
-        width="100%"
-      />
-    </div>
-    <div class="website">www.reallygreatsite.com</div>
-    <div class="footer"></div>
   </div>
+  <script>
+    document.getElementById("download-btn").addEventListener("click", function () {
+      var element = document.getElementById("id-card");
+
+      var opt = {
+        margin: 0,
+        filename: "mess-card.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "px", format: [element.clientHeight, element.clientWidth], orientation: "portrait" },
+      };
+
+      html2pdf().from(element).set(opt).save();
+    });
+  </script>
 </main>
 
 {% endblock %}
