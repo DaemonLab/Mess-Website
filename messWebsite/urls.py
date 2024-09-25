@@ -31,6 +31,7 @@ urlpatterns = [
     path("accounts/google/login/", oauth2_login, name="google_login"),
     path("accounts/google/login/callback/", oauth2_callback, name="google_callback"),
     path("", include("home.urls")),
+    path("qrscan/", include("qrscan.urls")),
     path('media/<path:path>/', serve, {'document_root': settings.MEDIA_ROOT}),
     path('static/<path:path>/', serve, {'document_root': settings.STATIC_ROOT}),
 ]

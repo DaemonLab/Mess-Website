@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% load static %} {%block externalCss%}
+
+<link rel="stylesheet" href="{% static 'css/mess-card.css' %}" />
+
+{% endblock %} {%block body%}
+<main>
+  <div class="id-card" id="id-card">
+    <div class="header"></div>
+    <div class="logo">
+      <img
+        alt="IITI Logo"
+        height="50"
+        src="{% static 'images/Indian_Institute_of_Technology,_Indore_Logo.png' %}"
+        width="50"
+      />
+    </div>
+    <div class="photo">
+        <img class="img-fluid rounded-4" src="{{ picture }}" alt="User Image" alt="profile photo"/>
+    </div>
+    <h6 class="card-subtitle mt-2">{{ student.name }}</h6>
+    <div class="divider"></div>
+    <span class="card-text">Roll Number: {{ student.roll_no }}</span><br />
+    <span class="card-text">Email: {{ user.email }}</span><br />
+    <span class="card-text">Department: {{ student.department }}</span><br />
+    <div class="qr-code">
+      <img
+        alt="QR Code"
+        height="auro"
+        src="{{ mess_card.qr_code.url }}"
+        width="100%"
+      />
+    </div>
+    <div class="website">www.reallygreatsite.com</div>
+    <div class="footer"></div>
+  </div>
+</main>
+
+{% endblock %}
