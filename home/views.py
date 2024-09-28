@@ -152,6 +152,8 @@ def rebate(request):
     """
     text = ""
     list = []
+    period_obj = None
+    allocation_id = None
     try:
         student = Student.objects.filter(email__iexact=str(request.user.email))
         try:
@@ -172,6 +174,10 @@ def rebate(request):
     except Student.DoesNotExist:
         key = "Signed in account does not does not have any allocation ID"
     if request.method == "POST" and request.user.is_authenticated:
+        if not period_obj or not allocation_id:
+            text = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
+            request.session["text"] = text
+            return redirect(request.path)
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])

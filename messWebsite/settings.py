@@ -18,7 +18,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1", "103.159.214.171"]
 CSRF_TRUSTED_ORIGINS = ["http://diningfee.iiti.ac.in", "https://diningfee.iiti.ac.in"]
@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.admindocs",
-
     # Third-party apps
     "import_export",
     "django_admin_logs",
@@ -46,7 +45,6 @@ INSTALLED_APPS = [
     "cloudinary",
     "apscheduler",
     "django_apscheduler",
-
     # Local apps
     "home.apps.HomeConfig",
 ]
