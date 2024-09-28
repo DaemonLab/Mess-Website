@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
@@ -219,5 +220,24 @@ def create_catererBills(sender, instance, created, **kwargs):
         for caterer in Caterer.objects.filter(visible=True).all():
             caterer_bill, _ = CatererBills.objects.get_or_create(
                 caterer=caterer, semester=instance
+            )
+            caterer_bill.save()
+
+
+@receiver(post_save, sender=Caterer)
+def create_catererBills(sender, instance, created, **kwargs):
+    logger.info("Caterer created:", instance.name)
+    if created:
+        for semester in Semester.objects.all():
+            end_date = (
+                Period.objects.filter(semester=semester)
+                .order_by("end_date")
+                .last()
+                .end_date
+            )
+            if end_date and end_date < datetime.now().date():
+                continue
+            caterer_bill, _ = CatererBills.objects.get_or_create(
+                caterer=instance, semester=semester
             )
             caterer_bill.save()
