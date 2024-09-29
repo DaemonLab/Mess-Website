@@ -13,14 +13,6 @@
   <div class="wrapper">
     <div class="id-card" id="id-card">
       <div class="header"></div>
-      <div class="logo">
-        <img
-          alt="IITI Logo"
-          height="50"
-          src="{% static 'images/Indian_Institute_of_Technology,_Indore_Logo.png' %}"
-          width="50"
-        />
-      </div>
       <div class="photo">
         <img
           class="img-fluid rounded-4"
@@ -34,6 +26,7 @@
       <span class="card-text">Roll Number: {{ student.roll_no }}</span><br />
       <span class="card-text">Email: {{ user.email }}</span><br />
       <span class="card-text">Department: {{ student.department }}</span><br />
+      <span class="card-text">Hostel and Room: {{ student.hostel }} {{ student.room_no }}</span><br />
       <div class="qr-code">
         <img
           alt="QR Code"

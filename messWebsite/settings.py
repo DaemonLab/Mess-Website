@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "cloudinary",
     "apscheduler",
     "django_apscheduler",
-    'wkhtmltopdf',
 
     # Local apps
     "home.apps.HomeConfig",
