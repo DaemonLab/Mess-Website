@@ -942,7 +942,15 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "email__degree",
         "email__department",
     )
-    list_display = ("student_id", "name", "email", "period", "caterer", "jain", "registration_time",)
+    list_display = (
+        "student_id",
+        "name",
+        "email",
+        "period",
+        "caterer",
+        "jain",
+        "registration_time",
+    )
     fieldsets = (
         (
             None,

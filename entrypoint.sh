@@ -8,4 +8,4 @@ python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
 # Start server
-gunicorn messWebsite.wsgi:application --bind 0.0.0.0:8000 --workers=16 --preload
+gunicorn messWebsite.wsgi:application --bind 0.0.0.0:8000 --workers=16 --preload --timeout 300
