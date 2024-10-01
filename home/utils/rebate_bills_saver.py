@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from home.models.students import LongRebate, Rebate
 
 from ..models import (
@@ -177,13 +178,18 @@ def fix_all_bills(
     period_1_days = (period_1.end_date - period_1.start_date).days + 1
     period_2_days = (period_2.end_date - period_2.start_date).days + 1
     period_3_days = (period_3.end_date - period_3.start_date).days + 1
-    rebates = Rebate.objects.filter(email=email, approved=True)
+    rebates = Rebate.objects.filter(email=email, approved=True).order_by("start_date")
     short_rebates_per_period = [0, 0, 0]
+    last_rebate = None
     for rebate in rebates:
         if rebate.end_date < period_1.start_date:
             continue
         if rebate.start_date > period_3.end_date:
             continue
+        if last_rebate is not None:
+            if last_rebate >= rebate.start_date:
+                continue
+        last_rebate = rebate.end_date
         if rebate.start_date <= period_1.start_date:
             rebate.start_date = period_1.start_date
         if rebate.end_date <= period_1.end_date:
@@ -191,13 +197,15 @@ def fix_all_bills(
                 rebate.end_date - rebate.start_date
             ).days + 1
             continue
-        rebate.start_date = period_1.end_date + timedelta(days=1)
+        elif rebate.start_date <= period_1.end_date:
+            rebate.start_date = period_1.end_date + timedelta(days=1)
         if rebate.end_date <= period_2.end_date:
             short_rebates_per_period[1] += (
                 rebate.end_date - rebate.start_date
             ).days + 1
             continue
-        rebate.start_date = period_2.end_date + timedelta(days=1)
+        elif rebate.start_date <= period_2.end_date:
+            rebate.start_date = period_2.end_date + timedelta(days=1)
         if rebate.end_date <= period_3.end_date:
             short_rebates_per_period[2] += (
                 rebate.end_date - rebate.start_date
@@ -206,21 +214,28 @@ def fix_all_bills(
         short_rebates_per_period[2] += (period_3.end_date - rebate.start_date).days + 1
     long_rebates = LongRebate.objects.filter(email=email, approved=True)
     long_rebates_per_period = [0, 0, 0]
+    last_rebate = None
     for rebate in long_rebates:
         if rebate.end_date < period_1.start_date:
             continue
         if rebate.start_date > period_3.end_date:
             continue
+        if last_rebate is not None:
+            if last_rebate >= rebate.start_date:
+                continue
+        last_rebate = rebate.end_date
         if rebate.start_date <= period_1.start_date:
             rebate.start_date = period_1.start_date
         if rebate.end_date <= period_1.end_date:
             long_rebates_per_period[0] += (rebate.end_date - rebate.start_date).days + 1
             continue
-        rebate.start_date = period_1.end_date + timedelta(days=1)
+        elif rebate.start_date <= period_1.end_date:
+            rebate.start_date = period_1.end_date + timedelta(days=1)
         if rebate.end_date <= period_2.end_date:
             long_rebates_per_period[1] += (rebate.end_date - rebate.start_date).days + 1
             continue
-        rebate.start_date = period_2.end_date + timedelta(days=1)
+        elif rebate.start_date <= period_2.end_date:
+            rebate.start_date = period_2.end_date + timedelta(days=1)
         if rebate.end_date <= period_3.end_date:
             long_rebates_per_period[2] += (rebate.end_date - rebate.start_date).days + 1
             continue
