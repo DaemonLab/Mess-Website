@@ -1,7 +1,7 @@
 [flake8]
 max-line-length = 88
 # Remove F811 from admin.py
-ignore = E501, E722, W503, F811
+ignore = E501, E722, W503, F811, E203
 per-file-ignores =
     home/models/students.py: E402
     home/models/admin.py: F811
