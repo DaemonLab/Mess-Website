@@ -48,7 +48,12 @@ from .resources import (
 )
 from .utils.django_email_server import caterer_mail, long_rebate_query_mail
 from .utils.month import fill_periods
-from .utils.rebate_bills_saver import save_long_bill, save_short_bill, update_bills
+from .utils.rebate_bills_saver import (
+    fix_all_bills,
+    save_long_bill,
+    save_short_bill,
+    update_bills,
+)
 
 # Customising the heading and title of the admin page
 admin.site.site_header = "Dining Website Admin Page"
@@ -891,7 +896,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     def room_number(self, obj):
         return obj.email.room_no
 
-    actions = ["export_as_csv", "update_bill"]
+    actions = ["export_as_csv", "update_bill", "fix_all_bills"]
 
     @admin.action(description="Update the bills")
     def update_bill(self, request, queryset):
@@ -907,6 +912,17 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 else:
                     obj.period6_bill = days * 115
                 obj.save()
+
+    @admin.action(description="Fix the bills")
+    def fix_all_bills(self, request, queryset):
+        for obj in queryset:
+            if obj.semester != Semester.objects.get(name="Autumn 2024"):
+                continue
+            semester = obj.semester
+            period_1 = Period.objects.get(semester=semester, Sno=1)
+            period_2 = Period.objects.get(semester=semester, Sno=2)
+            period_3 = Period.objects.get(semester=semester, Sno=3)
+            fix_all_bills(obj, period_1, period_2, period_3)
 
     def export_as_csv(self, request, queryset):
         """
