@@ -1,3 +1,4 @@
+from datetime import timedelta
 from home.models.students import LongRebate, Rebate
 
 from ..models import (
@@ -190,13 +191,13 @@ def fix_all_bills(
                 rebate.end_date - rebate.start_date
             ).days + 1
             continue
-        rebate.start_date = period_1.end_date + 1
+        rebate.start_date = period_1.end_date + timedelta(days=1)
         if rebate.end_date <= period_2.end_date:
             short_rebates_per_period[1] += (
                 rebate.end_date - rebate.start_date
             ).days + 1
             continue
-        rebate.start_date = period_2.end_date + 1
+        rebate.start_date = period_2.end_date + timedelta(days=1)
         if rebate.end_date <= period_3.end_date:
             short_rebates_per_period[2] += (
                 rebate.end_date - rebate.start_date
@@ -215,11 +216,11 @@ def fix_all_bills(
         if rebate.end_date <= period_1.end_date:
             long_rebates_per_period[0] += (rebate.end_date - rebate.start_date).days + 1
             continue
-        rebate.start_date = period_1.end_date + 1
+        rebate.start_date = period_1.end_date + timedelta(days=1)
         if rebate.end_date <= period_2.end_date:
             long_rebates_per_period[1] += (rebate.end_date - rebate.start_date).days + 1
             continue
-        rebate.start_date = period_2.end_date + 1
+        rebate.start_date = period_2.end_date + timedelta(days=1)
         if rebate.end_date <= period_3.end_date:
             long_rebates_per_period[2] += (rebate.end_date - rebate.start_date).days + 1
             continue
