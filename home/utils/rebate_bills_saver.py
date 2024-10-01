@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from home.models.students import LongRebate, Rebate
 
 from ..models import (
