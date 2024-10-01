@@ -240,6 +240,13 @@ def fix_all_bills(
             long_rebates_per_period[2] += (rebate.end_date - rebate.start_date).days + 1
             continue
         long_rebates_per_period[2] += (period_3.end_date - rebate.start_date).days + 1
+    for i in range(3):
+        if short_rebates_per_period[i] > 8:
+            short_rebates_per_period[i] = 8
+        if short_rebates_per_period[i] < 0:
+            short_rebates_per_period[i] = 0
+        if long_rebates_per_period[i] < 0:
+            long_rebates_per_period[i] = 0
     print(short_rebates_per_period, long_rebates_per_period)
     student_bill.period1_short = short_rebates_per_period[0]
     student_bill.period2_short = short_rebates_per_period[1]
