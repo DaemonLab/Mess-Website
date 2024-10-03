@@ -14,7 +14,7 @@ class MessCard(models.Model):
     allocation = models.ForeignKey(Allocation, on_delete=models.CASCADE, help_text="This contains the allocation details", null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, help_text="This contains the student details", null=True, blank=True)
     qr_code = models.ImageField(upload_to='qr_codes/', help_text="This contains the qr code image", blank=True, null=True)
-    secret_key = models.CharField(max_length=64, blank=True, null=True, default=generate_secret_key)
+    secret_key = models.CharField(max_length=64, help_text="This contains the secret key for each student",blank=True, null=True, default=generate_secret_key)
 
     def __str__(self):
         return f"{self.allocation.student_id} - {self.allocation.email.email}"
@@ -59,4 +59,20 @@ class MessCard(models.Model):
         if not self.qr_code:
             self.generate_qr_code()
 
+        super().save(*args, **kwargs)
+
+
+class Meal(models.Model):
+    mess_card = models.ForeignKey(MessCard, on_delete=models.CASCADE, help_text="This contains the mess card details", null=True, blank=True)
+    date = models.DateField(help_text="This contains the date of the meal", auto_now_add=True)
+    breakfast = models.BooleanField(help_text="This contains the breakfast status", default=False)
+    lunch = models.BooleanField(help_text="This contains the lunch status", default=False)
+    dinner = models.BooleanField(help_text="This contains the dinner status", default=False)
+
+    def __str__(self):
+        return f"{self.mess_card.allocation.student_id} - {self.date}"
+
+    def save(self, *args, **kwargs):
+        if not self.mess_card:
+            self.mess_card = MessCard.objects.get(allocation=self.mess_card.allocation)
         super().save(*args, **kwargs)
