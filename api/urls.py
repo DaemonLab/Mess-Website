@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import AllocationViewSet, PeriodViewSet, QRVerifyView, MealViewSet, LogoutView, IsAuthenticated
+from .views import AllocationViewSet, PeriodViewSet, QRVerifyView, MealViewSet, LogoutView, IsAuthenticated, UserDetail, QRVerifyUpdateView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -29,8 +29,10 @@ urlpatterns = [
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('', include(router.urls)),
+    path('auth/user/', UserDetail.as_view(), name='user_detail'),
     path('auth/login/', obtain_auth_token, name='api_token_auth'),
     path('auth/logout/', LogoutView.as_view(), name='api_token_logout'),
     path('auth/is_authenticated/', IsAuthenticated.as_view(), name='is_authenticated'),
     path('qrverify/<int:id>/', QRVerifyView.as_view(), name='qrverify'),
+    path('qrverify/scan/', QRVerifyUpdateView.as_view(), name='qrverify_update'),
 ]

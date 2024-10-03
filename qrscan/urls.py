@@ -23,5 +23,4 @@ from . import views
 
 urlpatterns = [
     path("", views.mess_card, name="mess_card"),
-    # path('pdf/', views.generate_pdf_view, name='pdf_view'),
 ]

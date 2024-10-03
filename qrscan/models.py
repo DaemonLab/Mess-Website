@@ -4,27 +4,23 @@ import qrcode
 from io import BytesIO
 from django.core.files import File
 import secrets
-import json
 from PIL import Image
+import uuid
 
 def generate_secret_key():
     return secrets.token_hex(32)
 
 class MessCard(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True, help_text="This contains the unique id of the mess card")
     allocation = models.ForeignKey(Allocation, on_delete=models.CASCADE, help_text="This contains the allocation details", null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, help_text="This contains the student details", null=True, blank=True)
     qr_code = models.ImageField(upload_to='qr_codes/', help_text="This contains the qr code image", blank=True, null=True)
-    secret_key = models.CharField(max_length=64, help_text="This contains the secret key for each student",blank=True, null=True, default=generate_secret_key)
 
     def __str__(self):
         return f"{self.allocation.student_id} - {self.allocation.email.email}"
 
     def generate_qr_code(self):
-        data = {
-            "email": self.allocation.email.email,
-            "secret_key": self.secret_key,
-            "caterer": self.allocation.caterer.name
-        }
+        data = str(self.id)
 
         qr = qrcode.QRCode(
             version=1,
@@ -32,7 +28,7 @@ class MessCard(models.Model):
             box_size=10,
             border=4,
         )
-        qr.add_data(json.dumps(data))
+        qr.add_data(data)
         qr.make(fit=True)
 
         img = qr.make_image(fill="black", back_color="white").convert('RGB')
@@ -52,10 +48,10 @@ class MessCard(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if not self.secret_key:
-            self.secret_key = generate_secret_key()
         if self.allocation and not self.student:
             self.student = self.allocation.email
+        if not self.pk:
+            super().save(*args, **kwargs)
         if not self.qr_code:
             self.generate_qr_code()
 
@@ -68,6 +64,8 @@ class Meal(models.Model):
     breakfast = models.BooleanField(help_text="This contains the breakfast status", default=False)
     lunch = models.BooleanField(help_text="This contains the lunch status", default=False)
     dinner = models.BooleanField(help_text="This contains the dinner status", default=False)
+
+    unique_together = ['mess_card', 'date']
 
     def __str__(self):
         return f"{self.mess_card.allocation.student_id} - {self.date}"
