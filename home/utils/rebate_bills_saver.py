@@ -1,3 +1,7 @@
+from datetime import timedelta
+
+from home.models.students import LongRebate, Rebate
+
 from ..models import (
     Allocation,
     CatererBills,
@@ -164,3 +168,102 @@ def update_bills(email, allocation):
         rebate_bill.save()
     except Exception as e:
         print(e)
+
+
+def fix_all_bills(
+    student_bill: StudentBills, period_1: Period, period_2: Period, period_3: Period
+):
+    email = student_bill.email
+    print(email)
+    period_1_days = (period_1.end_date - period_1.start_date).days + 1
+    period_2_days = (period_2.end_date - period_2.start_date).days + 1
+    period_3_days = (period_3.end_date - period_3.start_date).days + 1
+    rebates = Rebate.objects.filter(email=email, approved=True).order_by("start_date")
+    short_rebates_per_period = [0, 0, 0]
+    last_rebate = None
+    for rebate in rebates:
+        if rebate.end_date < period_1.start_date:
+            continue
+        if rebate.start_date > period_3.end_date:
+            continue
+        if last_rebate is not None:
+            if last_rebate >= rebate.start_date:
+                continue
+        last_rebate = rebate.end_date
+        if rebate.start_date <= period_1.start_date:
+            rebate.start_date = period_1.start_date
+        if rebate.end_date <= period_1.end_date:
+            short_rebates_per_period[0] += (
+                rebate.end_date - rebate.start_date
+            ).days + 1
+            continue
+        elif rebate.start_date <= period_1.end_date:
+            rebate.start_date = period_1.end_date + timedelta(days=1)
+        if rebate.end_date <= period_2.end_date:
+            short_rebates_per_period[1] += (
+                rebate.end_date - rebate.start_date
+            ).days + 1
+            continue
+        elif rebate.start_date <= period_2.end_date:
+            rebate.start_date = period_2.end_date + timedelta(days=1)
+        if rebate.end_date <= period_3.end_date:
+            short_rebates_per_period[2] += (
+                rebate.end_date - rebate.start_date
+            ).days + 1
+            continue
+        short_rebates_per_period[2] += (period_3.end_date - rebate.start_date).days + 1
+    long_rebates = LongRebate.objects.filter(email=email, approved=True)
+    long_rebates_per_period = [0, 0, 0]
+    last_rebate = None
+    for rebate in long_rebates:
+        if rebate.end_date < period_1.start_date:
+            continue
+        if rebate.start_date > period_3.end_date:
+            continue
+        if last_rebate is not None:
+            if last_rebate >= rebate.start_date:
+                continue
+        last_rebate = rebate.end_date
+        if rebate.start_date <= period_1.start_date:
+            rebate.start_date = period_1.start_date
+        if rebate.end_date <= period_1.end_date:
+            long_rebates_per_period[0] += (rebate.end_date - rebate.start_date).days + 1
+            continue
+        elif rebate.start_date <= period_1.end_date:
+            rebate.start_date = period_1.end_date + timedelta(days=1)
+        if rebate.end_date <= period_2.end_date:
+            long_rebates_per_period[1] += (rebate.end_date - rebate.start_date).days + 1
+            continue
+        elif rebate.start_date <= period_2.end_date:
+            rebate.start_date = period_2.end_date + timedelta(days=1)
+        if rebate.end_date <= period_3.end_date:
+            long_rebates_per_period[2] += (rebate.end_date - rebate.start_date).days + 1
+            continue
+        long_rebates_per_period[2] += (period_3.end_date - rebate.start_date).days + 1
+    for i in range(3):
+        if short_rebates_per_period[i] > 8:
+            short_rebates_per_period[i] = 8
+        if short_rebates_per_period[i] < 0:
+            short_rebates_per_period[i] = 0
+        if long_rebates_per_period[i] < 0:
+            long_rebates_per_period[i] = 0
+    print(short_rebates_per_period, long_rebates_per_period)
+    student_bill.period1_short = short_rebates_per_period[0]
+    student_bill.period2_short = short_rebates_per_period[1]
+    student_bill.period3_short = short_rebates_per_period[2]
+    student_bill.period1_long = long_rebates_per_period[0]
+    student_bill.period2_long = long_rebates_per_period[1]
+    student_bill.period3_long = long_rebates_per_period[2]
+    student_bill.period1_high_tea = False
+    student_bill.period2_high_tea = False
+    student_bill.period3_high_tea = False
+    student_bill.period1_bill = 115 * (
+        period_1_days - short_rebates_per_period[0] - long_rebates_per_period[0]
+    )
+    student_bill.period2_bill = 115 * (
+        period_2_days - short_rebates_per_period[1] - long_rebates_per_period[1]
+    )
+    student_bill.period3_bill = 115 * (
+        period_3_days - short_rebates_per_period[2] - long_rebates_per_period[2]
+    )
+    student_bill.save()

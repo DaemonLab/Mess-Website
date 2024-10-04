@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.admindocs",
-
     # Third-party apps
     "import_export",
     "django_admin_logs",
