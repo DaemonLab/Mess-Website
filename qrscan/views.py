@@ -18,8 +18,8 @@ def mess_card(request):
     socialaccount_obj = SocialAccount.objects.filter(
         provider="google", user_id=request.user.id
     )
-    mess_card = MessCard.objects.filter(student=student).last()
-    print(mess_card.qr_code.path)
+    allocation = student.allocation_set.filter(email=student).last()
+    mess_card, _ = MessCard.objects.get_or_create(student=student, allocation=allocation)
     picture = "not available"
 
     try:

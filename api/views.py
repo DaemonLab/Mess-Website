@@ -105,6 +105,49 @@ class QRVerifyUpdateView(APIView):
     """
     permission_classes = [IsStaff]
 
+    def _get_meal_type(self, time):
+        if time < BREAKFAST_END_TIME:
+            return 'breakfast'
+        elif time < LUNCH_END_TIME:
+            return 'lunch'
+        else:
+            return 'dinner'
+
+    def _filter_valid_cards(self, cards, meal_type):
+        valid_cards = []
+        for card in cards:
+            if is_student_on_rebate(card.student, card.allocation):
+                continue
+
+            if self._is_meal_recorded(card, meal_type):
+                continue
+
+            valid_cards.append(card)
+        return valid_cards
+
+    def _is_meal_recorded(self, card, meal_type):
+        today = timezone.localtime().date()
+        if meal_type == 'breakfast' and card.meal_set.filter(date=today, breakfast=True).exists():
+            return True
+        elif meal_type == 'lunch' and card.meal_set.filter(date=today, lunch=True).exists():
+            return True
+        elif meal_type == 'dinner' and card.meal_set.filter(date=today, dinner=True).exists():
+            return True
+        return False
+
+    def get(self, request):
+        cards = MessCard.objects.filter(allocation__caterer__name=request.user.username)
+        time = timezone.localtime().time()
+
+        if not cards.exists():
+            return Response({"detail": "No cards found."}, status=status.HTTP_404_NOT_FOUND)
+
+        meal_type = self._get_meal_type(time)
+        valid_cards = self._filter_valid_cards(cards, meal_type)
+
+        data = QRVerifySerializer(valid_cards, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
+
     @swagger_auto_schema(
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
@@ -133,18 +176,16 @@ class QRVerifyUpdateView(APIView):
                 meal, _ = Meal.objects.get_or_create(mess_card=card, date=date)
                 is_rebate = is_student_on_rebate(card.student, card.allocation)
 
+                if card.allocation.period.end_date <= date:
+                    return Response({"success": False, "detail": "Not registered for current Period.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
+
                 if card.allocation.caterer.name != request.user.username:
                     return Response({"success": False, "detail": "Wrong caterer.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
 
                 if is_rebate:
                     return Response({"success": False, "detail": "Student is on rebate.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
 
-                if time < BREAKFAST_END_TIME:
-                    meal_type = 'breakfast'
-                elif time < LUNCH_END_TIME:
-                    meal_type = 'lunch'
-                else:
-                    meal_type = 'dinner'
+                meal_type = self._get_meal_type(time)
 
                 if getattr(meal, meal_type):
                     return Response({"success": False, "detail": "Meal Already Recorded", "mess_card": card_return_data}, status=status.HTTP_409_CONFLICT)
