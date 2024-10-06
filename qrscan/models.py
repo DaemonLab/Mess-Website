@@ -2,16 +2,11 @@ import uuid
 from io import BytesIO
 from PIL import Image
 import qrcode
-import secrets
 
 from django.core.files import File
 from django.db import models
 
 from home.models import Allocation, Student
-
-
-def generate_secret_key():
-    return secrets.token_hex(32)
 
 
 class MessCard(models.Model):
@@ -106,6 +101,10 @@ class Meal(models.Model):
         help_text="This contains the lunch status",
         default=False
     )
+    high_tea = models.BooleanField(
+        help_text="This contains the high tea status",
+        default=False
+    )
     dinner = models.BooleanField(
         help_text="This contains the dinner status",
         default=False
@@ -117,7 +116,31 @@ class Meal(models.Model):
     def __str__(self):
         return f"{self.mess_card.allocation.student_id} - {self.date}"
 
-    def save(self, *args, **kwargs):
-        if not self.mess_card:
-            self.mess_card = MessCard.objects.get(allocation=self.mess_card.allocation)
-        super().save(*args, **kwargs)
+
+class MessTiming(models.Model):
+    MEAL_TYPES = [
+        ('breakfast', 'Breakfast'),
+        ('lunch', 'Lunch'),
+        ('high_tea', 'High Tea'),
+        ('dinner', 'Dinner')
+    ]
+
+    meal_type = models.CharField(
+        max_length=10,
+        choices=MEAL_TYPES,
+        help_text="This contains the meal type",
+        unique=True,
+    )
+    start_time = models.TimeField(
+        help_text="This contains the start time",
+        null=True,
+        blank=True
+    )
+    end_time = models.TimeField(
+        help_text="This contains the end time",
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return f"{self.meal_type} Timings"

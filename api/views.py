@@ -7,17 +7,13 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from home.models import Allocation, Period
-from qrscan.models import MessCard, Meal
+from qrscan.models import MessCard, Meal, MessTiming
 from .permissions import IsStaff
 from .serializers import (
     AllocationSerializer, PeriodSerializer, AllocationDetailSerializer, 
     QRVerifySerializer, MealSerializer, UserSerializer, QRVerifyPostSerializer
 )
 from .utils.rebate_checker import is_student_on_rebate
-
-# Constants
-BREAKFAST_END_TIME = timezone.datetime.strptime('11:00:00', '%H:%M:%S').time()
-LUNCH_END_TIME = timezone.datetime.strptime('15:00:00', '%H:%M:%S').time()
 
 class LogoutView(APIView):
     """
@@ -106,12 +102,15 @@ class QRVerifyUpdateView(APIView):
     permission_classes = [IsStaff]
 
     def _get_meal_type(self, time):
-        if time < BREAKFAST_END_TIME:
-            return 'breakfast'
-        elif time < LUNCH_END_TIME:
-            return 'lunch'
-        else:
-            return 'dinner'
+        meal_types = ['breakfast', 'lunch', 'high_tea', 'dinner']
+        for meal_type in meal_types:
+            try:
+                meal_timing = MessTiming.objects.get(meal_type=meal_type)
+                if meal_timing.start_time <= time <= meal_timing.end_time:
+                    return meal_type
+            except MessTiming.DoesNotExist:
+                raise ValueError(f"{meal_type.capitalize()} timings not found.")
+        return None
 
     def _filter_valid_cards(self, cards, meal_type):
         valid_cards = []
@@ -130,6 +129,8 @@ class QRVerifyUpdateView(APIView):
         if meal_type == 'breakfast' and card.meal_set.filter(date=today, breakfast=True).exists():
             return True
         elif meal_type == 'lunch' and card.meal_set.filter(date=today, lunch=True).exists():
+            return True
+        elif meal_type == 'high_tea' and card.meal_set.filter(date=today, high_tea=True).exists():
             return True
         elif meal_type == 'dinner' and card.meal_set.filter(date=today, dinner=True).exists():
             return True
@@ -174,7 +175,6 @@ class QRVerifyUpdateView(APIView):
                 date = timezone.localtime().date()
                 time = timezone.localtime().time()
                 meal, _ = Meal.objects.get_or_create(mess_card=card, date=date)
-                is_rebate = is_student_on_rebate(card.student, card.allocation)
 
                 if card.allocation.period.end_date <= date:
                     return Response({"success": False, "detail": "Not registered for current Period.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
@@ -182,7 +182,7 @@ class QRVerifyUpdateView(APIView):
                 if card.allocation.caterer.name != request.user.username:
                     return Response({"success": False, "detail": "Wrong caterer.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
 
-                if is_rebate:
+                if is_student_on_rebate(card.student, card.allocation):
                     return Response({"success": False, "detail": "Student is on rebate.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
 
                 meal_type = self._get_meal_type(time)

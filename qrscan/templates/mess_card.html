@@ -6,7 +6,6 @@
   rel="stylesheet"
 />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-  
 
 {% endblock %} {%block body%}
 <main>
@@ -26,7 +25,9 @@
       <span class="card-text">Roll Number: {{ student.roll_no }}</span><br />
       <span class="card-text">Email: {{ user.email }}</span><br />
       <span class="card-text">Department: {{ student.department }}</span><br />
-      <span class="card-text">Hostel and Room: {{ student.hostel }} {{ student.room_no }}</span><br />
+      <span class="card-text"
+        >Hostel and Room: {{ student.hostel }} {{ student.room_no }}</span
+      ><br />
       <div class="qr-code">
         <img
           alt="QR Code"
@@ -35,27 +36,34 @@
           width="100%"
         />
       </div>
-      <div class="website">www.reallygreatsite.com</div>
-      <div class="footer"></div>
+      <!-- <div class="footer"></div> -->
     </div>
     <div>
-      <button id="download-btn" class="btn btn-primary w-100 mt-4">Download</button>
+      <button id="download-btn" class="btn btn-primary w-100 mt-4">
+        Download
+      </button>
     </div>
   </div>
   <script>
-    document.getElementById("download-btn").addEventListener("click", function () {
-      var element = document.getElementById("id-card");
+    document
+      .getElementById("download-btn")
+      .addEventListener("click", function () {
+        var element = document.getElementById("id-card");
 
-      var opt = {
-        margin: 0,
-        filename: "mess-card.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "px", format: [element.clientHeight, element.clientWidth], orientation: "portrait" },
-      };
+        var opt = {
+          margin: 0,
+          filename: "mess-card.pdf",
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: {
+            unit: "px",
+            format: [element.clientHeight, element.clientWidth],
+            orientation: "portrait",
+          },
+        };
 
-      html2pdf().from(element).set(opt).save();
-    });
+        html2pdf().from(element).set(opt).save();
+      });
   </script>
 </main>
 
