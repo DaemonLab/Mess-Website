@@ -28,8 +28,6 @@ class MessCard(models.Model):
         Student,
         on_delete=models.CASCADE,
         help_text="This contains the student details",
-        null=True,
-        blank=True
     )
     qr_code = models.ImageField(
         upload_to='qr_codes/',
@@ -72,8 +70,8 @@ class MessCard(models.Model):
         buffer.close()
 
     def save(self, *args, **kwargs):
-        if self.allocation and not self.student:
-            self.student = self.allocation.email
+        if not self.allocation:
+            self.allocation = self.student.allocation_set.last()
         if not self.pk:
             super().save(*args, **kwargs)
         if not self.qr_code:

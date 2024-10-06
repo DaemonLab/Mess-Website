@@ -18,10 +18,18 @@ def mess_card(request):
     socialaccount_obj = SocialAccount.objects.filter(
         provider="google", user_id=request.user.id
     )
-    allocation = student.allocation_set.filter(email=student).last()
-    mess_card, _ = MessCard.objects.get_or_create(student=student, allocation=allocation)
-    picture = "not available"
+    allocation = student.allocation_set.last()
+    if(not allocation):
+        raise ValueError("Allocation not found!")
+    mess_card, _ = MessCard.objects.get_or_create(student=student)
+    if(not mess_card.allocation):
+        setattr(mess_card, allocation)
+        mess_card.save()
+    elif(mess_card.allocation != allocation):
+        setattr(mess_card, allocation)
+        mess_card.save()
 
+    picture = "not available"
     try:
         if socialaccount_obj:
             picture = socialaccount_obj[0].extra_data["picture"]
