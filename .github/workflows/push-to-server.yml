@@ -17,6 +17,7 @@ jobs:
           script: |
             cd ~/Mess-Website
             git pull origin main
+            pip3 install -r requirements.txt
             docker compose down
             docker rmi mess-website-nginx || true
             docker rmi mess-website-web || true
