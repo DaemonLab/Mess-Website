@@ -18,7 +18,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1", "103.159.214.171"]
 CSRF_TRUSTED_ORIGINS = ["http://diningfee.iiti.ac.in", "https://diningfee.iiti.ac.in"]
@@ -45,8 +45,14 @@ INSTALLED_APPS = [
     "cloudinary",
     "apscheduler",
     "django_apscheduler",
+    'rest_framework',
+    'rest_framework.authtoken',
+    'drf_yasg',
+
     # Local apps
     "home.apps.HomeConfig",
+    "qrscan.apps.QrscanConfig",
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -161,6 +167,29 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Basic': {
+            'type': 'basic'
+      },
+      'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
+}
+
 ACCOUNT_ADAPTER = "home.adapters.account_adapter.CustomAccountAdapter"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
