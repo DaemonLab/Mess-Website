@@ -14,3 +14,4 @@ Requests==2.32.3
 gunicorn==22.0.0
 whitenoise==6.4.0
 django-admin-logs==1.0.2
+django-cloudinary-storage==0.3.0
