@@ -11,3 +11,6 @@ pandas==2.2.3
 Pillow==10.4.0
 qrcode==8.0
 Requests==2.32.3
+gunicorn==22.0.0
+whitenoise==6.4.0
+django-admin-logs==1.0.2
