@@ -1,16 +1,19 @@
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: max-content;
   margin: 0;
   background-color: #f0f0f0;
   font-family: "Arial", sans-serif;
+  overflow-x: hidden;
 }
+
 .id-card {
-  width: 400px;
-  height: 500px;
-  min-height: max-content;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
   background-color: white;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -19,7 +22,8 @@ main {
   position: relative;
   overflow: hidden;
 }
-.id-card .header {
+
+.id-card .card-header {
   background-color: #2579a6;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -27,35 +31,33 @@ main {
   position: relative;
   clip-path: ellipse(70% 100% at 50% 0%);
 }
-.id-card {
-  margin-top: -50px;
-}
+
 .id-card .photo {
   margin-top: 10px;
 }
+
 .id-card .name {
   font-size: 22px;
   font-weight: bold;
   margin-top: 10px;
 }
+
 .id-card .divider {
   width: 50px;
   height: 3px;
   background-color: #2579a6;
   margin: 10px auto;
 }
+
 .id-card .id-number {
   font-size: 14px;
   margin-top: 10px;
 }
+
 .id-card .qr-code {
   margin-top: 20px;
 }
-.id-card .website {
-  font-size: 12px;
-  color: #2579a6;
-  margin-top: 10px;
-}
+
 .id-card .footer {
   background-color: #2579a6;
   border-bottom-left-radius: 15px;
@@ -70,11 +72,19 @@ main {
 
 .wrapper {
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .card-subtitle {
   font-size: 28px;
   margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .id-card {
+    width: 90%;
+  }
 }
