@@ -251,7 +251,7 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(ImportExportMixin, admin.ModelAdmin):
     resource_class = StudentResource
     model = Student
-    search_fields = ("name", "roll_no", "hostel", "degree", "department")
+    search_fields = ("name", "roll_no", "hostel", "degree", "department", "email")
     list_display = ("name", "roll_no", "hostel", "email")
     list_filter = ("hostel", "degree", "department")
     fieldsets = (
