@@ -4,6 +4,8 @@ This file is registers the models on the adming page and customizes the admin pa
 For more information please see: https://docs.djangoproject.com/en/4.1/ref/contrib/admin/
 """
 
+import csv
+
 from django.contrib import admin
 from django.http import HttpResponse
 from import_export.admin import ImportExportMixin, ImportExportModelAdmin
@@ -251,7 +253,7 @@ class about_Admin(admin.ModelAdmin):
 class about_Admin(ImportExportMixin, admin.ModelAdmin):
     resource_class = StudentResource
     model = Student
-    search_fields = ("name", "roll_no", "hostel", "degree", "department")
+    search_fields = ("name", "roll_no", "hostel", "degree", "department", "email")
     list_display = ("name", "roll_no", "hostel", "email")
     list_filter = ("hostel", "degree", "department")
     fieldsets = (
@@ -420,7 +422,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "email__email",
         "email__name",
     )
-    list_filter = ("approved", "date_applied", "start_date", "end_date")
+    list_filter = (
+        "approved",
+        "date_applied",
+        "start_date",
+        "end_date",
+        "allocation_id__period",
+    )
     list_display = (
         "date_applied",
         "email",
@@ -460,7 +468,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     def name(self, obj):
         return obj.email.name
 
-    actions = ["export_as_csv", "disapprove", "approve"]
+    actions = ["export_as_csv", "disapprove", "approve", "export_rebate_total"]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -488,6 +496,21 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="Rebate.csv"'
+        return response
+
+    def export_rebate_total(modeladmin, request, queryset):
+        total_days = 0
+        for obj in queryset:
+            total_days += (obj.end_date - obj.start_date).days + 1
+
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="Rebate.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(["Total Days"])
+        writer.writerow([total_days])
+
         return response
 
     export_as_csv.short_description = "Export Rebate details to CSV"
