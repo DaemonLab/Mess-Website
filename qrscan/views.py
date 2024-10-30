@@ -20,9 +20,11 @@ def mess_card(request):
         provider="google", user_id=request.user.id
     )
     allocation = student.allocation_set.last()
+
     if(not allocation):
         raise ValueError("Allocation not found!")
     mess_card, _ = MessCard.objects.get_or_create(student=student)
+
     if(not mess_card.allocation):
         setattr(mess_card, allocation)
         mess_card.save()
@@ -34,8 +36,6 @@ def mess_card(request):
     try:
         if socialaccount_obj:
             picture = socialaccount_obj[0].extra_data["picture"]
-        else:
-            picture = "not available"
     except (IndexError, KeyError):
         picture = "not available"
 
