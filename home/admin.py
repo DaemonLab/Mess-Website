@@ -7,7 +7,7 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 import csv
 
 from django.contrib import admin
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from import_export.admin import ImportExportMixin, ImportExportModelAdmin
 
 from home.models import (
@@ -49,7 +49,7 @@ from .resources import (
     UnregisteredStudentResource,
 )
 from .utils.django_email_server import caterer_mail, long_rebate_query_mail
-from .utils.month import fill_periods
+from .utils.month import fill_periods, map_periods_to_long_rebate
 from .utils.rebate_bills_saver import (
     fix_all_bills,
     save_long_bill,
@@ -353,7 +353,14 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ["export_as_csv", "disapprove", "approve", "send_mail", "clean"]
+    actions = [
+        "export_as_csv",
+        "disapprove",
+        "approve",
+        "send_mail",
+        "clean",
+        "get_rebate_days_per_caterer",
+    ]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -393,20 +400,13 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             long_rebate_query_mail(obj.start_date, obj.end_date, obj.email.email)
 
-    # @admin.action(description="Clean left long rebate data")
-    # def clean(self, request, queryset):
-    #     """
-    #     Clean left long rebate data
-    #     """
-    #     for obj in queryset:
-    #         if(obj.approved==True):
-    #             if(obj.end_date>datetime.date(2023,12,7)):
-    #                 print(obj.end_date)
-    #                 obj.approved=False
-    #                 obj.save()
-    #                 print(obj.approved)
-    #                 obj.approved=True
-    #                 obj.save()
+    @admin.action(description="Get total rebate days per caterer")
+    def get_rebate_days_per_caterer(self, request, queryset: list[LongRebate]):
+        longRebates = []
+        for obj in queryset:
+            if obj.approved:
+                longRebates.append(obj)
+        return map_periods_to_long_rebate(longRebates, request.user)
 
 
 @admin.register(Rebate)
@@ -454,7 +454,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         ),
     )
 
-    def get_queryset(self, request):
+    def get_queryset(self, request: HttpRequest):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
