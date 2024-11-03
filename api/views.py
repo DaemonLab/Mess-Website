@@ -109,7 +109,7 @@ class QRVerifyUpdateView(APIView):
                 if meal_timing.start_time <= time <= meal_timing.end_time:
                     return meal_type
             except MessTiming.DoesNotExist:
-                raise ValueError(f"{meal_type.capitalize()} timings not found.")
+                return None
         return None
 
     def _filter_valid_cards(self, cards, meal_type):
@@ -186,6 +186,9 @@ class QRVerifyUpdateView(APIView):
                     return Response({"success": False, "detail": "Student is on rebate.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
 
                 meal_type = self._get_meal_type(time)
+
+                if(meal_type == None):
+                    return Response({"success": False, "detail": "Meal time over.", "mess_card": card_return_data}, status=status.HTTP_403_FORBIDDEN)
 
                 if getattr(meal, meal_type):
                     return Response({"success": False, "detail": "Meal Already Recorded", "mess_card": card_return_data}, status=status.HTTP_409_CONFLICT)

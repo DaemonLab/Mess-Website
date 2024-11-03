@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from home.models import Student
@@ -19,22 +20,22 @@ def mess_card(request):
         provider="google", user_id=request.user.id
     )
     allocation = student.allocation_set.last()
+
     if(not allocation):
         raise ValueError("Allocation not found!")
     mess_card, _ = MessCard.objects.get_or_create(student=student)
+
     if(not mess_card.allocation):
         setattr(mess_card, allocation)
         mess_card.save()
-    elif(mess_card.allocation != allocation):
-        setattr(mess_card, allocation)
+    elif((mess_card.allocation != allocation) and allocation.period.end_date < timezone.localtime().date()):
+        setattr(mess_card, "allocation", allocation)
         mess_card.save()
 
     picture = "not available"
     try:
         if socialaccount_obj:
             picture = socialaccount_obj[0].extra_data["picture"]
-        else:
-            picture = "not available"
     except (IndexError, KeyError):
         picture = "not available"
 
