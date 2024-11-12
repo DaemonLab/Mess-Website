@@ -6,6 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.dateparse import parse_date
 from django.utils.timezone import now
 
@@ -408,7 +409,10 @@ def allocationForm(request):
                 UnregisteredStudent.objects.filter(email__iexact=student.email).delete()
                 text = "Allocation Form filled Successfully"
                 request.session["text"] = text
-                return redirect(request.path)
+                if url_has_allowed_host_and_scheme(request.path, allowed_hosts=None):
+                    return redirect(request.path)
+                else:
+                    return redirect('/')
             else:
                 message = "No caterer available with sufficient student limit"
 
