@@ -466,9 +466,15 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     @admin.display(description="name")
     def name(self, obj):
-        return obj.email.name
+        return getattr(obj.email, "name", None)
 
-    actions = ["export_as_csv", "disapprove", "approve", "export_rebate_total"]
+    actions = [
+        "export_as_csv",
+        "disapprove",
+        "approve",
+        "export_rebate_total",
+        "find_overlapping_records",
+    ]
 
     @admin.action(description="Disapprove the students")
     def disapprove(self, request, queryset):
@@ -501,6 +507,8 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     def export_rebate_total(modeladmin, request, queryset):
         total_days = 0
         for obj in queryset:
+            if obj.start_date > obj.end_date:
+                continue
             total_days += (obj.end_date - obj.start_date).days + 1
 
         # Create the HttpResponse object with the appropriate CSV header.
@@ -510,6 +518,32 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         writer = csv.writer(response)
         writer.writerow(["Total Days"])
         writer.writerow([total_days])
+
+        return response
+
+    def find_overlapping_records(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="Rebate.csv"'
+
+        writer = csv.writer(response)
+        for obj in queryset:
+            if obj.start_date > obj.end_date:
+                obj.delete()
+            rebates = (
+                Rebate.objects.filter(email=obj.email)
+                .filter(start_date__lte=obj.end_date)
+                .filter(end_date__gte=obj.start_date)
+                .exclude(pk=obj.pk)
+            )
+            for rebate in rebates:
+                writer.writerow(
+                    [
+                        rebate.email,
+                        rebate.start_date,
+                        rebate.end_date,
+                        getattr(rebate.email, "name", None),
+                    ]
+                )
 
         return response
 
