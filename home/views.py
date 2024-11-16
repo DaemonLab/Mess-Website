@@ -196,10 +196,14 @@ def rebate(request):
                     text = "Please fill the rebate of this period only"
                 elif not is_not_duplicate(student, start_date, end_date):
                     text = "You have already applied for rebate during this duration"
+                elif 0 < rebate_days < 2:
+                    text = "Min no of days for rebate is 2"
+                elif before_rebate_days < 2:
+                    text = "Form needs to be filled atleast 2 days prior the comencement of leave."
                 else:
                     if not period_start <= start_date <= period_end:
                         short_left_rebate = LeftShortRebate(
-                            email=str(request.user.email),
+                            email=student.email,
                             start_date=start_date,
                             end_date=end_date,
                             date_applied=date.today(),
@@ -209,7 +213,7 @@ def rebate(request):
                         upper_cap_check = -1
                     elif not period_start <= end_date <= period_end:
                         short_left_rebate = LeftShortRebate(
-                            email=str(request.user.email),
+                            email=student.email,
                             start_date=period_end + timedelta(days=1),
                             end_date=end_date,
                             date_applied=date.today(),
@@ -228,12 +232,7 @@ def rebate(request):
                             "You can only apply for max 8 days in a period. Days left for this period: "
                             + str(upper_cap_check)
                         )
-                    elif (
-                        text == ""
-                        and (rebate_days) <= 7
-                        and rebate_days >= 2
-                        and before_rebate_days >= 2
-                    ):
+                    elif text == "":
                         r = Rebate(
                             email=student,
                             allocation_id=allocation_id,
@@ -243,14 +242,6 @@ def rebate(request):
                         )
                         r.save()
                         text = "You have successfully submitted the rebate. Thank You! You shall recieve a confirmation mail, If not please contact the Dining Warden."
-                    elif 0 < rebate_days < 2:
-                        text = "Min no of days for rebate is 2"
-                    elif before_rebate_days < 2:
-                        text = "Form needs to be filled atleast 2 days prior the comencement of leave."
-                    elif rebate_days > 7:
-                        text = "Max no of days for rebate is 7"
-                    elif before_rebate_days < 0:
-                        text = "Please enter the correct dates"
                     elif not text:
                         text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
             except Allocation.DoesNotExist:
