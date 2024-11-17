@@ -218,11 +218,12 @@ def rebate(request):
                             end_date=end_date,
                             date_applied=date.today(),
                         )
-                        short_left_rebate.save()
                         end_date = period_end
                         upper_cap_check = max_days_rebate(
                             student, start_date, period_end, period_obj
                         )
+                        if upper_cap_check < 0:
+                            short_left_rebate.save()
                         additional_text = " Note: The days after the current period end date will be added to your bills in the next period."
                     else:
                         upper_cap_check = max_days_rebate(
