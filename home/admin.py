@@ -5,6 +5,7 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 """
 
 import csv
+from datetime import timedelta
 
 from django.contrib import admin
 from django.http import HttpRequest, HttpResponse
@@ -34,6 +35,7 @@ from home.models import (
     UnregisteredStudent,
     Update,
 )
+from home.utils.rebate_checker import max_days_rebate
 
 from .resources import (
     AllocationResource,
@@ -46,12 +48,7 @@ from .resources import (
 )
 from .utils.django_email_server import long_rebate_query_mail
 from .utils.month import fill_periods, map_periods_to_long_rebate
-from .utils.rebate_bills_saver import (
-    fix_all_bills,
-    save_long_bill,
-    save_short_bill,
-    update_bills,
-)
+from .utils.rebate_bills_saver import fix_all_bills, save_long_bill, update_bills
 
 # Customising the heading and title of the admin page
 admin.site.site_header = "Dining Website Admin Page"
@@ -1028,7 +1025,7 @@ class about_Admin(admin.ModelAdmin):
     actions = ["Add"]
 
     @admin.action(description="Add left short rebate to Bills")
-    def Add(self, request, queryset):
+    def Add(self, request, queryset: list[LeftShortRebate]):
         """
         Export action available in the admin page
         """
@@ -1036,35 +1033,35 @@ class about_Admin(admin.ModelAdmin):
             email = obj.email
             student_obj = Student.objects.filter(email=email).last()
             for period in Period.objects.all():
-                if (
-                    period.start_date <= obj.start_date
-                    and period.end_date >= obj.end_date
-                ):
-                    days = (obj.end_date - obj.start_date).days + 1
+                if period.start_date <= obj.start_date <= period.end_date:
+                    start_date = obj.start_date
+                    end_date = obj.end_date
+                    date_applied = obj.date_applied
+                    if period.end_date < obj.end_date:
+                        obj.start_date = period.end_date + timedelta(days=1)
+                        obj.save()
+                        end_date = period.end_date
+                    else:
+                        obj.delete()
                     allocation = Allocation.objects.filter(
                         email=student_obj, period=period
                     ).last()
                     if allocation:
-                        save_short_bill(
-                            student_obj,
-                            period,
-                            days,
-                            allocation.high_tea,
-                            allocation.caterer,
+                        upper_cap_check = max_days_rebate(
+                            student_obj, start_date, end_date, period
                         )
-                        print("Saved")
+                        if upper_cap_check == 0:
+                            continue
+                        end_date = start_date + timedelta(days=upper_cap_check - 1)
                         short_rebate = Rebate(
                             email=student_obj,
                             allocation_id=allocation,
-                            start_date=obj.start_date,
-                            end_date=obj.end_date,
-                            date_applied=obj.date_applied,
+                            start_date=start_date,
+                            end_date=end_date,
+                            date_applied=date_applied,
                             approved=True,
                         )
                         short_rebate.save()
-                        LeftShortRebate.objects.filter(
-                            email=email, date_applied=obj.date_applied
-                        ).delete()
 
 
 @admin.register(AllocationForm)
