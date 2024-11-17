@@ -9,12 +9,6 @@ from .fees import Fee
 from .home import About, Carousel, Update
 from .links import Form
 from .rules import Rule, ShortRebate
-from .Semesters.autumn22 import (
-    RebateAutumn22,
-)
-from .Semesters.spring23 import (
-    RebateSpring23,
-)
 from .students import (
     AllocationForm,
     LeftLongRebate,

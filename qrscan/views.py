@@ -26,9 +26,9 @@ def mess_card(request):
     mess_card, _ = MessCard.objects.get_or_create(student=student)
 
     if(not mess_card.allocation):
-        setattr(mess_card, allocation)
+        setattr(mess_card, "allocation", allocation)
         mess_card.save()
-    elif((mess_card.allocation != allocation) and allocation.period.end_date < timezone.localtime().date()):
+    elif((mess_card.allocation != allocation) and mess_card.allocation.period.end_date < timezone.localtime().date()):
         setattr(mess_card, "allocation", allocation)
         mess_card.save()
 
