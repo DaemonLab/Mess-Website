@@ -15,14 +15,3 @@ class HomeConfig(AppConfig):
         import socket
 
         import home.signals
-
-        # bind to port 47200, then check for it for every worker
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.bind(("127.0.0.1", 47200))
-        except socket.error:
-            print, "!!!scheduler already started, DO NOTHING"
-        else:
-            from .schedulers import start
-
-            start()

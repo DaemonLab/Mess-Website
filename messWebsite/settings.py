@@ -43,16 +43,13 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "cloudinary_storage",
     "cloudinary",
-    "apscheduler",
-    "django_apscheduler",
-    'rest_framework',
-    'rest_framework.authtoken',
-    'drf_yasg',
-
+    "rest_framework",
+    "rest_framework.authtoken",
+    "drf_yasg",
     # Local apps
     "home.apps.HomeConfig",
     "qrscan.apps.QrscanConfig",
-    'api',
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -169,25 +166,19 @@ AUTHENTICATION_BACKENDS = (
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 
 SWAGGER_SETTINGS = {
-   'SECURITY_DEFINITIONS': {
-      'Basic': {
-            'type': 'basic'
-      },
-      'Token': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
-      }
-   }
+    "SECURITY_DEFINITIONS": {
+        "Basic": {"type": "basic"},
+        "Token": {"type": "apiKey", "name": "Authorization", "in": "header"},
+    }
 }
 
 ACCOUNT_ADAPTER = "home.adapters.account_adapter.CustomAccountAdapter"
