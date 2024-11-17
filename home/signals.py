@@ -14,7 +14,6 @@ from .models import (
     Semester,
     Student,
     StudentBills,
-    TodayRebate,
     UnregisteredStudent,
 )
 from .utils.django_email_server import long_rebate_mail, rebate_mail
@@ -49,14 +48,6 @@ def direct_update_bill(sender, instance, created, **kwargs):
             save_short_bill(
                 email, allocation.period, days, allocation.high_tea, allocation.caterer
             )
-            new_rebate = TodayRebate(
-                date=instance.date_applied,
-                Caterer=allocation.caterer.name,
-                allocation_id=allocation,
-                start_date=start_date,
-                end_date=end_date,
-            )
-            new_rebate.save()
             rebate_mail(
                 instance.start_date, instance.end_date, instance.approved, email.email
             )
@@ -85,14 +76,6 @@ def update_short_bill(sender, instance, **kwargs):
                     allocation.high_tea,
                     allocation.caterer,
                 )
-                new_rebate = TodayRebate(
-                    date=instance.date_applied,
-                    Caterer=allocation.caterer.name,
-                    allocation_id=allocation,
-                    start_date=start_date,
-                    end_date=end_date,
-                )
-                new_rebate.save()
                 logger.info("Saved")
             else:
                 save_short_bill(
@@ -101,13 +84,6 @@ def update_short_bill(sender, instance, **kwargs):
                     -days,
                     allocation.high_tea,
                     allocation.caterer,
-                )
-                new_rebate = (
-                    TodayRebate.objects.filter(
-                        allocation_id=allocation, start_date=start_date
-                    )
-                    .last()
-                    .delete()
                 )
                 logger.info("Deleted")
             rebate_mail(

@@ -33,7 +33,6 @@ from home.models import (
     Semester,
     Student,
     StudentBills,
-    TodayRebate,
     UnregisteredStudent,
     Update,
 )
@@ -48,7 +47,7 @@ from .resources import (
     StudentResource,
     UnregisteredStudentResource,
 )
-from .utils.django_email_server import caterer_mail, long_rebate_query_mail
+from .utils.django_email_server import long_rebate_query_mail
 from .utils.month import fill_periods, map_periods_to_long_rebate
 from .utils.rebate_bills_saver import (
     fix_all_bills,
@@ -642,52 +641,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                 continue
 
 
-@admin.register(TodayRebate)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    model = TodayRebate
-    search_fields = ("Caterer", "allocation_id", "date")
-    list_display = ("allocation_id", "date", "start_date", "end_date")
-    # list_filter = ()
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "date",
-                    "Caterer",
-                    "allocation_id",
-                    "start_date",
-                    "end_date",
-                )
-            },
-        ),
-    )
-
-    actions = ["send_mail"]
-
-    @admin.action(description="Send mail to the caterer")
-    def send_mail(self, request, queryset):
-        text = "<li> {name} with {allocation_id} has applied from {start_date} to {end_date}</li>"
-        for caterer in Caterer.objects.all():
-            print(caterer.name)
-            message_caterer = ""
-            for obj in queryset:
-                print(obj.Caterer)
-                if obj.Caterer != caterer.name:
-                    continue
-                allocation = obj.allocation_id
-                message_caterer += text.format(
-                    allocation_id=allocation.student_id,
-                    name=allocation.email.name,
-                    start_date=obj.start_date,
-                    end_date=obj.end_date,
-                )
-                obj.delete()
-            print(message_caterer)
-            if message_caterer:
-                caterer_mail(message_caterer, caterer.name, caterer.email, obj.date)
-
-
 rebate_fields = {
     "fields": (
         "email",
@@ -1244,14 +1197,6 @@ class about_Admin(admin.ModelAdmin):
                             allocation.high_tea,
                             allocation.caterer,
                         )
-                        new_rebate = TodayRebate(
-                            date=obj.date_applied,
-                            Caterer=allocation.caterer,
-                            allocation_id=allocation,
-                            start_date=obj.start_date,
-                            end_date=obj.end_date,
-                        )
-                        new_rebate.save()
                         print("Saved")
                         short_rebate = Rebate(
                             email=student_obj,

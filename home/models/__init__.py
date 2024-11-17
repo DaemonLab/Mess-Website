@@ -23,7 +23,6 @@ from .students import (
     Rebate,
     Scan,
     Student,
-    TodayRebate,
     UnregisteredStudent,
 )
 from .allocation import Allocation, Period, Semester
