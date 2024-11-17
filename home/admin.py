@@ -27,8 +27,6 @@ from home.models import (
     LongRebate,
     Period,
     Rebate,
-    RebateAutumn22,
-    RebateSpring23,
     Rule,
     Scan,
     Semester,
@@ -43,7 +41,6 @@ from .resources import (
     AllocationResource,
     CatererBillsResource,
     LongRebateResource,
-    RebateBillsResource,
     RebateResource,
     StudentBillsResource,
     StudentResource,
@@ -680,148 +677,6 @@ rebate_fields = {
     ),
     "description": "%s" % REBATE_BILLS_DESC_TEXT,
 }
-
-
-@admin.register(RebateAutumn22)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    model = RebateAutumn22
-    resource_class = RebateBillsResource
-    search_fields = (
-        "email__email",
-        "email__hostel",
-        "email__department",
-        "email__degree",
-        "email__roll_no",
-        "email__name",
-    )
-    list_filter = ("email__hostel", "email__department", "email__degree")
-    list_display = ("__str__", "roll_number", "name", "hostel")
-    fieldsets = (
-        (
-            None,
-            rebate_fields,
-        ),
-    )
-
-    @admin.display(description="roll number")
-    def roll_number(self, obj):
-        return obj.email.roll_no
-
-    @admin.display(description="name")
-    def name(self, obj):
-        return obj.email.name
-
-    @admin.display(description="hostel")
-    def hostel(self, obj):
-        return obj.email.hostel
-
-    @admin.display(description="room number")
-    def room_number(self, obj):
-        return obj.email.room_no
-
-    actions = ["export_as_csv"]
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = RebateBillsResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Rebate details to CSV"
-
-
-@admin.register(RebateSpring23)
-class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = RebateBillsResource
-    model = RebateSpring23
-    search_fields = (
-        "email__email",
-        "email__hostel",
-        "email__department",
-        "email__degree",
-        "email__roll_no",
-        "email__name",
-    )
-    list_filter = ("email__hostel", "email__degree", "email__department")
-    list_display = ("__str__", "roll_number", "name", "hostel")
-    fieldsets = (
-        (
-            None,
-            rebate_fields,
-        ),
-    )
-
-    @admin.display(description="roll number")
-    def roll_number(self, obj):
-        return obj.email.roll_no
-
-    @admin.display(description="name")
-    def name(self, obj):
-        return obj.email.name
-
-    @admin.display(description="hostel")
-    def hostel(self, obj):
-        return obj.email.hostel
-
-    @admin.display(description="room number")
-    def room_number(self, obj):
-        return obj.email.room_no
-
-    actions = ["export_as_csv", "clean"]
-
-    @admin.action(description="Clean Null period data")
-    def clean(self, request, queryset):
-        """
-        Clean testing period data
-        """
-        attributes_to_check = [
-            ("period1_short", 0),
-            ("period1_long", 0),
-            ("period2_short", 0),
-            ("period2_long", 0),
-            ("period3_short", 0),
-            ("period3_long", 0),
-            ("period4_short", 0),
-            ("period4_long", 0),
-            ("period5_short", 0),
-            ("period5_long", 0),
-            ("period6_short", 0),
-            ("period6_long", 0),
-            ("period1_high_tea", True),
-            ("period2_high_tea", True),
-            ("period3_high_tea", True),
-            ("period4_high_tea", True),
-            ("period5_high_tea", True),
-            ("period6_high_tea", True),
-            ("period1_bill", 0),
-            ("period2_bill", 0),
-            ("period3_bill", 0),
-            ("period4_bill", 0),
-            ("period5_bill", 0),
-            ("period6_bill", 0),
-        ]
-
-        for obj in queryset:
-            for attr, default_value in attributes_to_check:
-                if getattr(obj, attr) is None:
-                    setattr(obj, attr, default_value)
-            obj.save()
-
-    def export_as_csv(self, request, queryset):
-        """
-        Export action available in the admin page
-        """
-        resource = RebateBillsResource()
-        dataset = resource.export(queryset)
-        response = HttpResponse(dataset.csv, content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
-        return response
-
-    export_as_csv.short_description = "Export Rebate details to CSV"
 
 
 @admin.register(StudentBills)
