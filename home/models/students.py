@@ -203,27 +203,6 @@ class UnregisteredStudent(models.Model):
         verbose_name_plural = "Unregistered Students"
 
 
-class TodayRebate(models.Model):
-    date = models.DateField(help_text="Date of the rebate", default=now)
-    Caterer = models.CharField(max_length=30, default="")
-    allocation_id = models.ForeignKey(
-        Allocation, on_delete=models.SET_NULL, null=True, blank=True
-    )
-    start_date = models.DateField(
-        help_text="start date of the rebate", null=True, blank=True
-    )
-    end_date = models.DateField(
-        help_text="end date of the rebate", null=True, blank=True
-    )
-
-    def __str__(self):
-        return str(self.date) + " " + str(self.allocation_id)
-
-    class Meta:
-        verbose_name = "Today's Rebate"
-        verbose_name_plural = "Today's Rebate"
-
-
 class LeftLongRebate(models.Model):
     email = models.CharField(_("email"), max_length=30, default="")
     start_date = models.DateField(
