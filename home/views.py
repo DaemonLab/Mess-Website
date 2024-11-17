@@ -6,8 +6,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.dateparse import parse_date
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.timezone import now
 
 from home.models import (
@@ -193,15 +193,14 @@ def rebate(request):
                 period_end = period_obj.end_date
                 if rebate_days > 7:
                     text = "Max no of days for rebate is 7"
-                elif not period_start <= start_date:
-                    text = "Please fill the rebate of this period only"
+                elif before_rebate_days < 2:
+                    text = "Form needs to be filled atleast 2 days prior the comencement of leave."
                 elif not is_not_duplicate(student, start_date, end_date):
                     text = "You have already applied for rebate during this duration"
                 elif 0 < rebate_days < 2:
                     text = "Min no of days for rebate is 2"
-                elif before_rebate_days < 2:
-                    text = "Form needs to be filled atleast 2 days prior the comencement of leave."
                 else:
+                    additional_text = ""
                     if not period_start <= start_date <= period_end:
                         short_left_rebate = LeftShortRebate(
                             email=student.email,
@@ -224,6 +223,7 @@ def rebate(request):
                         upper_cap_check = max_days_rebate(
                             student, start_date, period_end, period_obj
                         )
+                        additional_text = " Note: The days after the current period end date will be added to your bills in the next period."
                     else:
                         upper_cap_check = max_days_rebate(
                             student, start_date, end_date, period_obj
@@ -243,6 +243,8 @@ def rebate(request):
                         )
                         r.save()
                         text = "You have successfully submitted the rebate. Thank You! You shall recieve a confirmation mail, If not please contact the Dining Warden."
+                        if additional_text:
+                            text += additional_text
                     elif not text:
                         text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
             except Allocation.DoesNotExist:
@@ -372,19 +374,34 @@ def allocationForm(request):
             alloc_form.end_time and alloc_form.end_time < now()
         ):
             message = "The Form is closed for now"
-        elif Allocation.objects.filter(email=student, period=alloc_form.period).exists():
+        elif Allocation.objects.filter(
+            email=student, period=alloc_form.period
+        ).exists():
             message = "You have filled the form for this period. Please visit the profile page after the allocation process is completed to check your allocated caterer"
         elif request.method == "POST" and request.user.is_authenticated:
             period_obj = alloc_form.period
             jain = request.POST["jain"] == "True"
             caterer_prefs = [
-                request.POST.get(pref) for pref in ["first_pref", "second_pref", "third_pref"]
+                request.POST.get(pref)
+                for pref in ["first_pref", "second_pref", "third_pref"]
             ]
-            caterer_prefs = [Caterer.objects.get(name=pref) for pref in caterer_prefs if pref]
+            caterer_prefs = [
+                Caterer.objects.get(name=pref) for pref in caterer_prefs if pref
+            ]
 
-            caterer = next((c for c in caterer_prefs if c.student_limit > Allocation.objects.filter(caterer=c, period=period_obj).count()), None)
+            caterer = next(
+                (
+                    c
+                    for c in caterer_prefs
+                    if c.student_limit
+                    > Allocation.objects.filter(caterer=c, period=period_obj).count()
+                ),
+                None,
+            )
             if caterer:
-                student_id = f"{caterer.name[0]}{'J' if jain else ''}{caterer.student_limit}"
+                student_id = (
+                    f"{caterer.name[0]}{'J' if jain else ''}{caterer.student_limit}"
+                )
                 allocation = Allocation(
                     email=student,
                     student_id=student_id,
@@ -393,8 +410,12 @@ def allocationForm(request):
                     high_tea=False,
                     jain=jain,
                     first_pref=caterer_prefs[0].name if caterer_prefs else None,
-                    second_pref=caterer_prefs[1].name if len(caterer_prefs) > 1 else None,
-                    third_pref=caterer_prefs[2].name if len(caterer_prefs) > 2 else None,
+                    second_pref=(
+                        caterer_prefs[1].name if len(caterer_prefs) > 1 else None
+                    ),
+                    third_pref=(
+                        caterer_prefs[2].name if len(caterer_prefs) > 2 else None
+                    ),
                 )
                 allocation.save()
                 UnregisteredStudent.objects.filter(email__iexact=student.email).delete()
@@ -403,7 +424,7 @@ def allocationForm(request):
                 if url_has_allowed_host_and_scheme(request.path, allowed_hosts=None):
                     return redirect(request.path)
                 else:
-                    return redirect('/')
+                    return redirect("/")
             else:
                 message = "No caterer available with sufficient student limit"
 
