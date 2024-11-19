@@ -540,6 +540,24 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
         return response
 
+    def check_negative_days(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="Rebate.csv"'
+
+        writer = csv.writer(response)
+        for obj in queryset:
+            if (obj.end_date - obj.start_date).days < 0:
+                writer.writerow(
+                    [
+                        obj.email,
+                        obj.start_date,
+                        obj.end_date,
+                        getattr(obj.email, "name", None),
+                    ]
+                )
+
+        return response
+
     export_as_csv.short_description = "Export Rebate details to CSV"
 
 
