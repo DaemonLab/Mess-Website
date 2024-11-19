@@ -790,7 +790,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         """
         Export action available in the admin page
         """
-        resource = RebateBillsResource()
+        resource = StudentBillsResource()
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="RebateAutumn.csv"'
@@ -1050,9 +1050,10 @@ class about_Admin(admin.ModelAdmin):
                         upper_cap_check = max_days_rebate(
                             student_obj, start_date, end_date, period
                         )
-                        if upper_cap_check == 0:
-                            continue
-                        end_date = start_date + timedelta(days=upper_cap_check - 1)
+                        if upper_cap_check > 0:
+                            end_date = start_date + timedelta(
+                                days=(upper_cap_check - 1)
+                            )
                         short_rebate = Rebate(
                             email=student_obj,
                             allocation_id=allocation,
