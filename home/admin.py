@@ -467,6 +467,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "approve",
         "export_rebate_total",
         "find_overlapping_records",
+        "check_negative_days",
     ]
 
     @admin.action(description="Disapprove the students")
