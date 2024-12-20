@@ -28,7 +28,7 @@ def fill_periods(email, start_date, end_date):
             days_per_period.append((period, days_in_period))
             current_date = current_date + timedelta(days=days_in_period)
 
-    if current_date <= end_date and (end_date - current_date).days + 1 > 0:
+    if current_date <= end_date:
         days_per_period.append((current_date, end_date))
 
     for period_no, days in days_per_period:

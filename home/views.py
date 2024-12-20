@@ -151,117 +151,108 @@ def rebate(request):
 
     :template:`rebateForm.html`
     """
-    text = ""
-    list = []
+    message = ""
     period_obj = None
-    allocation_id = None
+    allocation = None
     try:
-        student = Student.objects.filter(email__iexact=str(request.user.email))
-        try:
-            for period in Period.objects.all():
-                if period.end_date > date.today() + timedelta(1):
-                    period_obj = period
-                    try:
-                        allocation_id = Allocation.objects.get(
-                            email__email__iexact=str(request.user.email), period=period
-                        )
-                        break
-                    except:
-                        continue
-            key = str(allocation_id.student_id)
-        except Exception as e:
-            logger.error(e)
-            key = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
+        student = Student.objects.get(email__iexact=request.user.email)
     except Student.DoesNotExist:
-        key = "Signed in account does not does not have any allocation ID"
+        message = "Signed in account does not have any allocation ID"
+        return render(request, "rebateForm.html", {"text": message})
+
+    try:
+        period_obj = next(
+            period
+            for period in Period.objects.all()
+            if period.end_date > date.today() + timedelta(1)
+        )
+        allocation = Allocation.objects.get(
+            email__iexact=request.user.email, period=period_obj
+        )
+    except Exception as e:
+        logger.error(e)
+        message = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
     if request.method == "POST" and request.user.is_authenticated:
-        if not period_obj or not allocation_id:
-            text = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
-            request.session["text"] = text
+        if not period_obj or not allocation:
+            message = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
+            request.session["text"] = message
             return redirect(request.path)
+
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
             rebate_days = ((end_date - start_date).days) + 1
             before_rebate_days = (start_date - date.today()).days
-            try:
-                student = Student.objects.filter(
-                    email__iexact=str(request.user.email)
-                ).first()
-                period = period_obj.Sno
-                period_start = period_obj.start_date
-                period_end = period_obj.end_date
-                if rebate_days > 7:
-                    text = "Max no of days for rebate is 7"
-                elif before_rebate_days < 2:
-                    text = "Form needs to be filled atleast 2 days prior the comencement of leave."
-                elif not is_not_duplicate(student, start_date, end_date):
-                    text = "You have already applied for rebate during this duration"
-                elif 0 < rebate_days < 2:
-                    text = "Min no of days for rebate is 2"
-                else:
-                    additional_text = ""
-                    if not period_start <= start_date <= period_end:
-                        short_left_rebate = LeftShortRebate(
-                            email=student.email,
-                            start_date=start_date,
-                            end_date=end_date,
-                            date_applied=date.today(),
-                        )
+
+            if rebate_days > 7:
+                message = "Max no of days for rebate is 7"
+            elif before_rebate_days < 2:
+                message = "Form needs to be filled atleast 2 days prior the comencement of leave."
+            elif not is_not_duplicate(student, start_date, end_date):
+                message = "You have already applied for rebate during this duration"
+            elif 0 < rebate_days < 2:
+                message = "Min no of days for rebate is 2"
+            else:
+                additional_message = ""
+                if not period_obj.start_date <= start_date <= period_obj.end_date:
+                    short_left_rebate = LeftShortRebate(
+                        email=student.email,
+                        start_date=start_date,
+                        end_date=end_date,
+                        date_applied=date.today(),
+                    )
+                    short_left_rebate.save()
+                    message = "You have successfully submitted the rebate, it will get added to your bills in the next period."
+                    upper_cap_check = -1
+                elif not period_obj.start_date <= end_date <= period_obj.end_date:
+                    short_left_rebate = LeftShortRebate(
+                        email=student.email,
+                        start_date=period_obj.end_date + timedelta(days=1),
+                        end_date=end_date,
+                        date_applied=date.today(),
+                    )
+                    end_date = period_obj.end_date
+                    upper_cap_check = max_days_rebate(
+                        student, start_date, period_obj.end_date, period_obj
+                    )
+                    if upper_cap_check < 0:
                         short_left_rebate.save()
-                        text = "You have successfully submitted the rebate, it will get added to your bills in the next period."
-                        upper_cap_check = -1
-                    elif not period_start <= end_date <= period_end:
-                        short_left_rebate = LeftShortRebate(
-                            email=student.email,
-                            start_date=period_end + timedelta(days=1),
-                            end_date=end_date,
-                            date_applied=date.today(),
-                        )
-                        end_date = period_end
-                        upper_cap_check = max_days_rebate(
-                            student, start_date, period_end, period_obj
-                        )
-                        if upper_cap_check < 0:
-                            short_left_rebate.save()
-                        additional_text = " Note: The days after the current period end date will be added to your bills in the next period."
-                    else:
-                        upper_cap_check = max_days_rebate(
-                            student, start_date, end_date, period_obj
-                        )
-                    if upper_cap_check >= 0:
-                        text = (
-                            "You can only apply for max 8 days in a period. Days left for this period: "
-                            + str(upper_cap_check)
-                        )
-                    elif text == "":
-                        r = Rebate(
-                            email=student,
-                            allocation_id=allocation_id,
-                            start_date=start_date,
-                            end_date=end_date,
-                            approved=True,
-                        )
-                        r.save()
-                        text = "You have successfully submitted the rebate. Thank You! You shall recieve a confirmation mail, If not please contact the Dining Warden."
-                        if additional_text:
-                            text += additional_text
-                    elif not text:
-                        text = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
-            except Allocation.DoesNotExist:
-                text = "Email ID does not match with the allocation ID"
+                        additional_message = " Note: The days after the current period end date will be added to your bills in the next period."
+                else:
+                    upper_cap_check = max_days_rebate(
+                        student, start_date, end_date, period_obj
+                    )
+                if upper_cap_check >= 0:
+                    message = (
+                        "You can only apply for max 8 days in a period. Days left for this period: "
+                        + str(upper_cap_check)
+                    )
+                elif not message:
+                    rebate = Rebate(
+                        email=student,
+                        allocation_id=allocation,
+                        start_date=start_date,
+                        end_date=end_date,
+                        approved=True,
+                    )
+                    rebate.save()
+                    message = "You have successfully submitted the rebate. Thank You! You shall recieve a confirmation mail, If not please contact the Dining Warden."
+                    if additional_message:
+                        message += additional_message
+                elif not message:
+                    message = "Your rebate application has been rejected due to non-compliance of the short term rebate rules"
         except Exception as e:
             logger.error(e)
-            text = (
+            message = (
                 "Ohh No! an unknown ERROR occured, Please inform about it immediatly to the Dining Wadern. Possible Error: "
-                + key
+                + str(e)
             )
-        request.session["text"] = text
+        request.session["text"] = message
         return redirect(request.path)
     text = request.session.get("text", "")
     if text != "":
         del request.session["text"]
-    context = {"text": text, "key": key, "list": list}
+    context = {"text": text, "key": allocation.student_id}
     return render(request, "rebateForm.html", context)
 
 
@@ -336,7 +327,7 @@ def addLongRebateBill(request):
                     text = "Long Term rebate added Successfully"
                 except Exception as e:
                     text = "An error occurred while processing your form submission. If you're submitting an application, try compressing it before resubmitting. If the issue persists, please report it to the admin."
-                    print(e)
+                    logger.error(e)
         except Exception as e:
             logger.error(e)
             text = "Email ID does not exist in the database. Please login using the correct email ID"
