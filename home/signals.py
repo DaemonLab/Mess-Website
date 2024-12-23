@@ -37,19 +37,24 @@ def create_bill(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Rebate)
-def direct_update_bill(sender, instance, created, **kwargs):
+def direct_update_bill(sender, instance: Rebate, created, **kwargs):
+    logger.info("Signal called for Creating Short Rebate")
     try:
         if created:
-            email = instance.email
+            student = instance.email
             allocation = instance.allocation_id
             start_date = instance.start_date
             end_date = instance.end_date
             days = count(start_date, end_date)
             save_short_bill(
-                email, allocation.period, days, allocation.high_tea, allocation.caterer
+                student,
+                allocation.period,
+                days,
+                allocation.high_tea,
+                allocation.caterer,
             )
             rebate_mail(
-                instance.start_date, instance.end_date, instance.approved, email.email
+                instance.start_date, instance.end_date, instance.approved, student.email
             )
             logger.info("Saved")
     except Exception as e:
@@ -57,8 +62,8 @@ def direct_update_bill(sender, instance, created, **kwargs):
 
 
 @receiver(pre_save, sender=Rebate)
-def update_short_bill(sender, instance, **kwargs):
-    logger.info("Signal called for Short Rebate")
+def update_short_bill(sender, instance: Rebate, **kwargs):
+    logger.info("Signal called for Updating Short Rebate")
     try:
         old_instance = Rebate.objects.get(pk=instance.pk)
         if old_instance.approved != instance.approved:
@@ -67,8 +72,10 @@ def update_short_bill(sender, instance, **kwargs):
             start_date = instance.start_date
             end_date = instance.end_date
             days = count(start_date, end_date)
+            if days < 0:
+                raise ValueError("Days are negative")
             logger.info(old_instance.approved, instance.approved)
-            if instance.approved is True and days > 0:
+            if instance.approved is True:
                 save_short_bill(
                     email,
                     allocation.period,
@@ -94,10 +101,11 @@ def update_short_bill(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=LongRebate)
-def update_long_bill(sender, instance, **kwargs):
+def update_long_bill(sender, instance: LongRebate, **kwargs):
+    logger.info("Signal called for Updating Long Rebate")
     try:
         old_instance = LongRebate.objects.get(pk=instance.pk)
-        logger.info(old_instance.approved, instance.approved)
+        logger.info(instance.approved, instance.reason)
         if (
             old_instance.approved != instance.approved
             or old_instance.reason != instance.reason
