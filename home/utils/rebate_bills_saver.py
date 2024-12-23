@@ -12,7 +12,7 @@ from ..models import (
 )
 
 
-def save_short_bill(student, period, days, high_tea, caterer):
+def save_short_bill(student: Student, period: Period, days, high_tea, caterer):
     rebate = StudentBills.objects.get(email=student, semester=period.semester)
     print(caterer, student)
     catererBill = CatererBills.objects.get(caterer=caterer, semester=period.semester)
