@@ -57,6 +57,10 @@ class Student(models.Model):
         default="",
         blank=True,
     )
+    allocation_enabled = models.BooleanField(
+        default=True,
+        help_text="Indicates if the student is allowed to participate in the allocation process"
+    )
 
     def __str__(self):
         return str(self.email)

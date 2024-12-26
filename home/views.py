@@ -156,6 +156,9 @@ def rebate(request):
     allocation = None
     try:
         student = Student.objects.get(email__iexact=request.user.email)
+        if not student.allocation_enabled:
+            message = "You are not eligible to apply for short rebate. For more details, please inquire at the Dining Office."
+            return render(request, "rebateForm.html", {"text": message})
     except Student.DoesNotExist:
         message = "Signed in account does not have any allocation ID"
         return render(request, "rebateForm.html", {"text": message})
@@ -252,7 +255,10 @@ def rebate(request):
     text = request.session.get("text", "")
     if text != "":
         del request.session["text"]
-    context = {"text": text, "key": allocation.student_id}
+    if not allocation:
+        context = {"text":text}
+    else:
+        context = {"text": text, "key": allocation.student_id}
     return render(request, "rebateForm.html", context)
 
 
@@ -293,28 +299,34 @@ def addLongRebateBill(request):
 
     :template:`home/longRebate.html`
 
-    Gets the data from the log term rebate form , and adds it to the coresponding rebate bill
-    This form can only be accessed by the Institute's admin
+    Gets the data from the long-term rebate form and adds it to the corresponding rebate bill.
+    This form can only be accessed by the Institute's admin.
     """
     text = ""
-    if request.method == "POST" and request.user.is_authenticated:
+    try:
+        student = Student.objects.get(email__iexact=request.user.email)
+        if not student.allocation_enabled:
+            text = "You are not eligible to apply for long rebate. For more details, please inquire at the Dining Office."
+    except Student.DoesNotExist:
+        text = "Email ID does not exist in the database. Please log in using the correct email ID."
+        return render(request, "longRebate.html", {"text": text})
+
+    if request.method == "POST":
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
             before_rebate_days = (start_date - date.today()).days
             days = (end_date - start_date).days + 1
-            student = Student.objects.get(email__iexact=request.user.email)
+
             if not is_not_duplicate(student, start_date, end_date):
                 text = "You have already applied for rebate for these dates"
             elif before_rebate_days < 2:
-                text = "Your start date has to be 2 days from todays date"
+                text = "Your start date has to be 2 days from today's date"
             elif days < 0:
                 text = "Your end date should be after your start date"
             else:
-                # CHANGE THIS TO "FILE NOT UPLOADED".
                 try:
                     file = request.FILES["img"]
-                    print(file)
                     long = LongRebate(
                         email=student,
                         start_date=start_date,
@@ -330,14 +342,18 @@ def addLongRebateBill(request):
                     logger.error(e)
         except Exception as e:
             logger.error(e)
-            text = "Email ID does not exist in the database. Please login using the correct email ID"
+            text = "An unexpected error occurred. Please try again later."
+
         request.session["text"] = text
         return redirect(request.path)
-    text = request.session.get("text", "")
-    if text != "":
+
+    text = request.session.get("text", text)
+    if "text" in request.session:
         del request.session["text"]
+
     context = {"text": text}
     return render(request, "longRebate.html", context)
+
 
 
 @login_required
@@ -362,6 +378,8 @@ def allocationForm(request):
         student = Student.objects.filter(email__iexact=str(request.user.email)).last()
         if not student:
             message = "Signed in account cannot fill the allocation form. Please inform the dining Office to add your email ID to the database"
+        elif not student.allocation_enabled: 
+            message = "You are not eligible to fill out this allocation form. For more details, please inquire at the Dining Office."
         elif (alloc_form.start_time and alloc_form.start_time > now()) or (
             alloc_form.end_time and alloc_form.end_time < now()
         ):
