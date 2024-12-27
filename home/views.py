@@ -311,7 +311,7 @@ def addLongRebateBill(request):
         text = "Email ID does not exist in the database. Please log in using the correct email ID."
         return render(request, "longRebate.html", {"text": text})
 
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
