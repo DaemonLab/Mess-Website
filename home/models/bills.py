@@ -11,7 +11,7 @@ class StudentBills(models.Model):
     Storing the Rebate Bills of the Students for the Semesters
     """
 
-    email = models.ForeignKey(Student, on_delete=models.SET_NULL, default="", null=True)
+    email = models.ForeignKey(Student, on_delete=models.CASCADE, default="", null=True)
     semester = models.ForeignKey(
         Semester,
         verbose_name=_("Semester"),
@@ -75,7 +75,7 @@ class StudentBills(models.Model):
     )
 
     def __str__(self):
-        return str(self.email.email)
+        return str(self.email.email if self.email else "")
 
     class Meta:
         verbose_name = "Rebate Bill"
