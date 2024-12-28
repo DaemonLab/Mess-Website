@@ -51,7 +51,7 @@ class Student(models.Model):
     )
     room_no = models.CharField(
         _("Room Number of Student"),
-        max_length=5,
+        max_length=10,
         help_text="This contains the room number of the Student",
         null=True,
         default="",
@@ -59,7 +59,7 @@ class Student(models.Model):
     )
     allocation_enabled = models.BooleanField(
         default=True,
-        help_text="Indicates if the student is allowed to participate in the allocation process"
+        help_text="Indicates if the student is allowed to participate in the allocation process",
     )
 
     def __str__(self):
