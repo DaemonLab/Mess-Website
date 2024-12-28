@@ -261,7 +261,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                     "room_no",
                     "degree",
                     "department",
-                    "allocation_enabled"
+                    "allocation_enabled",
                 ),
                 "description": "%s" % STUDENT_DESC_TEXT,
             },
@@ -407,6 +407,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = RebateResource
     model = Rebate
+    autocomplete_fields = ["email"]
     search_fields = (
         "allocation_id__student_id",
         "approved",
@@ -824,6 +825,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     list_per_page = 500
     resource_class = AllocationResource
     model = Allocation
+    autocomplete_fields = ["email"]
     search_fields = (
         "email__name",
         "email__roll_no",
