@@ -765,19 +765,19 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
     @admin.display(description="roll number")
     def roll_number(self, obj):
-        return obj.email.roll_no
+        return obj.email.roll_no if obj.email else ""
 
     @admin.display(description="name")
     def name(self, obj):
-        return obj.email.name
+        return obj.email.name if obj.email else ""
 
     @admin.display(description="hostel")
     def hostel(self, obj):
-        return obj.email.hostel
+        return obj.email.hostel if obj.email else ""
 
     @admin.display(description="room number")
     def room_number(self, obj):
-        return obj.email.room_no
+        return obj.email.room_no if obj.email else ""
 
     actions = ["export_as_csv", "update_bill", "fix_all_bills"]
 
