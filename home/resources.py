@@ -6,7 +6,6 @@ from import_export import fields, resources
 from .models import (
     Allocation,
     CatererBills,
-    Fee,
     LongRebate,
     Period,
     Rebate,
@@ -50,6 +49,7 @@ class StudentResource(resources.ModelResource):
             "room_no",
             "degree",
             "department",
+            "allocation_enabled",
         )
 
 
