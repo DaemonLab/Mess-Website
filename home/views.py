@@ -169,9 +169,7 @@ def rebate(request):
             for period in Period.objects.all()
             if period.end_date > date.today() + timedelta(1)
         )
-        allocation = Allocation.objects.get(
-            email__iexact=request.user.email, period=period_obj
-        )
+        allocation = Allocation.objects.get(email=student, period=period_obj)
     except Exception as e:
         logger.error(e)
         message = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
@@ -256,7 +254,7 @@ def rebate(request):
     if text != "":
         del request.session["text"]
     if not allocation:
-        context = {"text":text}
+        context = {"text": text}
     else:
         context = {"text": text, "key": allocation.student_id}
     return render(request, "rebateForm.html", context)
@@ -355,7 +353,6 @@ def addLongRebateBill(request):
     return render(request, "longRebate.html", context)
 
 
-
 @login_required
 def allocationForm(request):
     """
@@ -378,7 +375,7 @@ def allocationForm(request):
         student = Student.objects.filter(email__iexact=str(request.user.email)).last()
         if not student:
             message = "Signed in account cannot fill the allocation form. Please inform the dining Office to add your email ID to the database"
-        elif not student.allocation_enabled: 
+        elif not student.allocation_enabled:
             message = "You are not eligible to fill out this allocation form. For more details, please inquire at the Dining Office."
         elif (alloc_form.start_time and alloc_form.start_time > now()) or (
             alloc_form.end_time and alloc_form.end_time < now()
