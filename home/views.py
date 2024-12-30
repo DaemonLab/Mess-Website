@@ -395,20 +395,17 @@ def allocationForm(request):
             caterer_prefs = [
                 Caterer.objects.get(name=pref) for pref in caterer_prefs if pref
             ]
-
-            caterer = next(
-                (
-                    c
-                    for c in caterer_prefs
-                    if c.student_limit
-                    > Allocation.objects.filter(caterer=c, period=period_obj).count()
-                ),
-                None,
-            )
+            count_till_now = 0
+            caterer = None
+            for c in caterer_prefs:
+                count_till_now = Allocation.objects.filter(
+                    caterer=c, period=period_obj
+                ).count()
+                if c.student_limit > count_till_now:
+                    caterer = c
+                    break
             if caterer:
-                student_id = (
-                    f"{caterer.name[0]}{'J' if jain else ''}{caterer.student_limit}"
-                )
+                student_id = f"{caterer.name[0]}{'J' if jain else ''}{caterer.student_limit - count_till_now}"
                 allocation = Allocation(
                     email=student,
                     student_id=student_id,
