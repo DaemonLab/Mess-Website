@@ -99,9 +99,9 @@ def long_rebate_mail(
     # elif(1):
     #    message = message_long_rebate.format(start_date=start_date, end_date=end_date, approved = "rejected",added="added to")
     else:
-        rejected_message = (
-            "Your rebate is not approved for the following reason: " + reason
-        )
+        rejected_message = "Your rebate is not approved."
+        if reason:
+            rejected_message = "Reason: " + reason
         message = message_long_rebate.format(
             start_date=start_date,
             end_date=end_date,

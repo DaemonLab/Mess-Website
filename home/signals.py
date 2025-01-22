@@ -105,8 +105,8 @@ def update_long_bill(sender, instance: LongRebate, **kwargs):
     logger.info("Signal called for Updating Long Rebate")
     try:
         old_instance = LongRebate.objects.get(pk=instance.pk)
-        reason = instance.reason if instance.reason is not None else "No reason"
-        logger.info(instance.approved, reason)
+        reason = instance.reason if instance.reason else "No reason"
+        logger.info(f"Approved: {instance.approved}, Reason: {reason}")
         if (
             old_instance.approved != instance.approved
             or old_instance.reason != instance.reason
