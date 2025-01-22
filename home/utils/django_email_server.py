@@ -51,7 +51,7 @@ Dear Student,
 Your long term rebate application from {start_date} to {end_date} has been {approved}.
  {reason}
 """
-left_message = """Note: Bills for {left_start_date} to {left_end_date} will be removed as an when you are allocated a caterer during this period.
+left_message = """Note: Bills for {left_start_date} to {left_end_date} will be adjusted as an when you are allocated a caterer during this period.
 """
 
 message_long_rebate_query = """
@@ -92,7 +92,7 @@ def long_rebate_mail(
             added="removed from",
             reason="",
         )
-        if left_start_date is not None:
+        if len(left_start_date) > 0:
             message += left_message.format(
                 left_start_date=left_start_date, left_end_date=left_end_date
             )
