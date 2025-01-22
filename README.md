@@ -38,8 +38,6 @@ Ongoing development of additional features ...
 
 The Mess Website is a Django-based software project that automates and digitalises the complete dining system of IIT Indore. It is a web application that provides a platform for students to fill short and long rebates, caterer allocation forms, access their dining bills and other information. It also provides a platform for the institute's administrations to manage the dining system and the students of IIT Indore.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Built With
 
 * [![Django][Django]][Django-url]
@@ -121,13 +119,12 @@ _Note:_ SQLite is as the default database
 - [x] Email Notifications
 - [ ] Scan QR Code feature
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p
-
 ## Contact
 
-- [Ishaan Mittal](me210003039@iiti.ac.in)
+- [Ishaan Mittal](mailto:ishaanmittal123@gmail.com)
+- [Trishant Tullari](mailto:trishanttalluri@gmail.com)
 
-Project Link: [https://github.com/DaemonLab/Mess-Website](https://github.com/DaemonLab/Mess-Website)
+<p align="right">(<a href="#readme-top">back to top</a>)</p
 
 
 [Django]: https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white
