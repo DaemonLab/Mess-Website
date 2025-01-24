@@ -497,7 +497,6 @@ def profile(request):
 
 @login_required
 def period_data(request):
-    print("period_data")
     name = request.GET.get("semester")
     semester = Semester.objects.get(name=name)
     period = Period.objects.filter(semester=semester)
@@ -510,7 +509,6 @@ def period_data(request):
 
 @login_required
 def rebate_data(request):
-    print("rebate_data")
     user = request.user
     student = Student.objects.get(email__iexact=user.email)
     sno = request.GET.get("period")

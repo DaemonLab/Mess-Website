@@ -32,14 +32,10 @@ class LoginRequiredMiddleware:
             To check if the user is authenticated, If not redirect it to the google login page
             """
             if request.path == "/rebateForm/":
-                print(request.path)
                 return redirect(settings.LOGIN_URL + "?next=" + request.path)
             if request.path == "/allocation/":
-                print(request.path)
                 return redirect(settings.LOGIN_URL + "?next=" + request.path)
             if request.path == "/addAllocation/":
-                print(request.path)
                 return redirect(settings.LOGIN_URL + "?next=" + request.path)
             if request.path == "/longRebate/":
-                print(request.path)
                 return redirect(settings.LOGIN_URL + "?next=" + request.path)
