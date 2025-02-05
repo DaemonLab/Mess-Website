@@ -354,6 +354,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "send_mail",
         "clean",
         "get_rebate_days_per_caterer",
+        "get_spring_2025_days_per_caterer",
     ]
 
     @admin.action(description="Disapprove the students")
@@ -394,13 +395,21 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             long_rebate_query_mail(obj.start_date, obj.end_date, obj.email.email)
 
-    @admin.action(description="Get total rebate days per caterer")
+    @admin.action(description="Get total rebate days per caterer for Autumn 2024")
     def get_rebate_days_per_caterer(self, request, queryset: list[LongRebate]):
         longRebates = []
         for obj in queryset:
             if obj.approved:
                 longRebates.append(obj)
         return map_periods_to_long_rebate(longRebates, request.user)
+
+    @admin.action(description="Get total rebate days per caterer for Spring 2025")
+    def get_spring_2025_days_per_caterer(self, request, queryset: list[LongRebate]):
+        longRebates = []
+        for obj in queryset:
+            if obj.approved:
+                longRebates.append(obj)
+        return map_periods_to_long_rebate(longRebates, request.user, "Spring 2025")
 
 
 @admin.register(Rebate)
