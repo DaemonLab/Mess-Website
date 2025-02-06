@@ -10,3 +10,4 @@ Pillow==11.1.0
 qrcode==8.0
 Requests==2.32.3
 sentry_sdk==2.20.0
+django-admin-logs==1.0.2
