@@ -238,17 +238,3 @@ EMAIL_PORT = 587
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = env("EMAIL_HOST")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-
-if not DEBUG:
-    import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
-
-    sentry_sdk.init(
-        dsn=env("SENTRY_DSN"),
-        send_default_pii=True,
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
-        _experiments={
-            "continuous_profiling_auto_start": True,
-        },
-    )
