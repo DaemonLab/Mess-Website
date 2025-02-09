@@ -57,6 +57,8 @@ def direct_update_bill(sender, instance: Rebate, created, **kwargs):
                 instance.start_date, instance.end_date, instance.approved, student.email
             )
             logger.info("Saved")
+        else:
+            logger.info("Not Created")
     except Exception as e:
         logger.error(e)
 
@@ -65,7 +67,9 @@ def direct_update_bill(sender, instance: Rebate, created, **kwargs):
 def update_short_bill(sender, instance: Rebate, **kwargs):
     logger.info("Signal called for Updating Short Rebate")
     try:
-        old_instance = Rebate.objects.get(pk=instance.pk)
+        old_instance = Rebate.objects.filter(pk=instance.pk).first()
+        if old_instance is None:
+            return
         if old_instance.approved != instance.approved:
             email = instance.email
             allocation = instance.allocation_id
@@ -104,7 +108,9 @@ def update_short_bill(sender, instance: Rebate, **kwargs):
 def update_long_bill(sender, instance: LongRebate, **kwargs):
     logger.info("Signal called for Updating Long Rebate")
     try:
-        old_instance = LongRebate.objects.get(pk=instance.pk)
+        old_instance = LongRebate.objects.filter(pk=instance.pk).first()
+        if old_instance is None:
+            return
         logger.info(f"Approved: {instance.approved}, Reason: {instance.reason}")
         if (
             old_instance.approved != instance.approved

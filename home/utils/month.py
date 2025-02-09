@@ -38,9 +38,11 @@ def fill_periods(email, start_date, end_date):
 
 
 def map_periods_to_long_rebate(
-    longRebate: list[LongRebate], user: AbstractBaseUser | AnonymousUser
+    longRebate: list[LongRebate],
+    user: AbstractBaseUser | AnonymousUser,
+    semesterName: str = "Autumn 2024",
 ):
-    periods = Period.objects.filter(semester__name="Autumn 2024")
+    periods = Period.objects.filter(semester__name=semesterName)
     period_to_long_rebate_map = {period.Sno: {} for period in periods}
     periods_to_email = {period.Sno: [] for period in periods}
     for rebate in longRebate:
