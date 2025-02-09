@@ -19,7 +19,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         # except Exception as e:
         #     ValidationError('You are not a registered student. Please contact admin.')
         if email.endswith("iiti.ac.in"):
-            print(11)
             raise ValidationError(
                 "Please login with your IITI email ID through google login only."
             )

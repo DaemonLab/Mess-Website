@@ -78,7 +78,7 @@ def update_short_bill(sender, instance: Rebate, **kwargs):
             days = count(start_date, end_date)
             if days < 0:
                 raise ValueError("Days are negative")
-            logger.info(old_instance.approved, instance.approved)
+            print(old_instance.approved, instance.approved)
             if instance.approved is True:
                 save_short_bill(
                     email,
@@ -111,8 +111,7 @@ def update_long_bill(sender, instance: LongRebate, **kwargs):
         old_instance = LongRebate.objects.filter(pk=instance.pk).first()
         if old_instance is None:
             return
-        reason = instance.reason if instance.reason else "No reason"
-        logger.info(f"Approved: {instance.approved}, Reason: {reason}")
+        logger.info(f"Approved: {instance.approved}, Reason: {instance.reason}")
         if (
             old_instance.approved != instance.approved
             or old_instance.reason != instance.reason
@@ -217,7 +216,7 @@ def create_catererBills(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Caterer)
 def create_catererBills(sender, instance, created, **kwargs):
-    logger.info("Caterer created:", instance.name)
+    logger.info("Caterer created: %s", instance.name)
     if created:
         for semester in Semester.objects.all():
             end_date = (

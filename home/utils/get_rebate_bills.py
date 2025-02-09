@@ -5,7 +5,6 @@ def get_rebate_bills(rebate, period):
         long = rebate.period1_long
         high_tea = rebate.period1_high_tea
         bills = rebate.period1_bill
-        print(short, long, high_tea, bills)
     elif period == 2:
         short = rebate.period2_short
         long = rebate.period2_long
