@@ -155,7 +155,10 @@ def rebate(request):
     period_obj = None
     allocation = None
     try:
-        student = Student.objects.get(email__iexact=request.user.email)
+        student = Student.objects.filter(email__iexact=request.user.email).first()
+        if student is None:
+            message = "Signed in account does not have any allocation ID"
+            return render(request, "rebateForm.html", {"text": message})
         if not student.allocation_enabled:
             message = "You are not eligible to apply for short rebate. For more details, please inquire at the Dining Office."
             return render(request, "rebateForm.html", {"text": message})
@@ -169,13 +172,15 @@ def rebate(request):
             for period in Period.objects.all()
             if period.end_date > date.today() + timedelta(1)
         )
-        allocation = Allocation.objects.get(email=student, period=period_obj)
+        allocation = Allocation.objects.filter(email=student, period=period_obj).first()
+        if allocation is None:
+            message = "You did not fill the allocation form for this period, please contact the dining office."
     except Exception as e:
         logger.error(e)
-        message = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
+        message = "You are not allocated for current period, please contact the dining office to allocate you to a caterer"
     if request.method == "POST" and request.user.is_authenticated:
         if not period_obj or not allocation:
-            message = "You are not allocated for current period, please contact the dining warden to allocate you to a caterer"
+            message = "You are not allocated for current period, please contact the dining office to allocate you to a caterer"
             request.session["text"] = message
             return redirect(request.path)
 
