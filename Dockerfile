@@ -1,18 +1,30 @@
-FROM python:3.11
+# Stage 1: Builder (Installs dependencies)
+FROM python:3.11-alpine AS builder
 
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-COPY ./requirements.txt /app/requirements.txt
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev
 
-RUN pip install -r requirements.txt
+COPY ./requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 COPY . /app
 
-COPY ./entrypoint.sh /app/entrypoint.sh
-
 RUN chmod +x /app/entrypoint.sh
 
-# Set the entrypoint to the entrypoint.sh script
+
+FROM python:3.11-alpine
+
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+RUN apk add --no-cache libffi
+
+COPY --from=builder /install /usr/local
+COPY --from=builder /app /app
+
+# Set the entrypoint script
 ENTRYPOINT ["/app/entrypoint.sh"]
