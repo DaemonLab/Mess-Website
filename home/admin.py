@@ -906,7 +906,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     def name(self, obj):
         return obj.email.name if obj.email else ""
 
-    actions = ["export_as_csv", "correct_bills", "fix_issue"]
+    actions = ["export_as_csv", "correct_bills", "fix_issue", "fix_period"]
 
     def export_as_csv(self, request, queryset):
         """
@@ -937,6 +937,14 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
             print(caterer)
             obj.caterer = caterer
             obj.save()
+
+    def fix_period(self, request, queryset):
+        for obj in queryset:
+            if obj.period is None:
+                obj.period = Period.objects.get(
+                    Sno=3, semester=Semester.objects.get(name="Spring 2025")
+                )
+                obj.save()
 
     export_as_csv.short_description = "Export Allocation details to CSV"
 
@@ -1102,7 +1110,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     model = AllocationForm
     search_fields = ("start_time", "end_time", "heading", "period__Sno")
     list_filter = ("start_time", "end_time", "heading", "period__Sno")
-    list_display = ("__str__", "start_time", "end_time", "active")
+    list_display = ("__str__", "start_time", "end_time", "active", "period")
     fieldsets = (
         (
             None,

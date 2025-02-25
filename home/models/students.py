@@ -249,7 +249,7 @@ class AllocationForm(models.Model):
         _("heading"), max_length=100, default="", null=True, blank=True
     )
     description = models.TextField(_("description"), default="", null=True, blank=True)
-    period = models.ForeignKey(Period, on_delete=models.SET_NULL, null=True, blank=True)
+    period = models.ForeignKey(Period, on_delete=models.CASCADE, null=False, blank=True)
     active = models.BooleanField(_("active"), default=False, null=True, blank=True)
     start_time = models.DateTimeField(
         _("Start Time"), default=now, null=True, blank=True
