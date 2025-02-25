@@ -907,7 +907,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         return obj.email.name if obj.email else ""
 
     actions = ["export_as_csv", "fix_duplicates", "shift_caterer"]
-
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
