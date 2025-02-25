@@ -48,7 +48,7 @@ from .resources import (
 )
 from .utils.django_email_server import long_rebate_query_mail
 from .utils.month import fill_periods, map_periods_to_long_rebate
-from .utils.rebate_bills_saver import fix_all_bills, save_long_bill, update_bills
+from .utils.rebate_bills_saver import fix_all_bills, save_long_bill
 
 # Customising the heading and title of the admin page
 admin.site.site_header = "Dining Website Admin Page"
@@ -906,8 +906,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
     def name(self, obj):
         return obj.email.name if obj.email else ""
 
-    actions = ["export_as_csv", "correct_bills", "fix_issue", "fix_period"]
-
+    actions = ["export_as_csv", "fix_duplicates", "shift_caterer"]
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
@@ -918,33 +917,54 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         response["Content-Disposition"] = 'attachment; filename="allocation.csv"'
         return response
 
-    def correct_bills(self, request, queryset):
+    def fix_duplicates(self, request, queryset):
+        emails = []
         for obj in queryset:
-            if obj.period == Period.objects.get(
-                Sno=5, semester=Semester.objects.get(name="Autumn 2023")
-            ):
-                update_bills(obj.email, obj)
-                obj.save()
-            if obj.period == Period.objects.get(
-                Sno=4, semester=Semester.objects.get(name="Autumn 2023")
-            ):
-                update_bills(obj.email, obj)
-                obj.save()
+            emails.append(obj.email.email)
+        for obj in queryset:
+            period = Period.objects.get(
+                Sno=3, semester=Semester.objects.get(name="Spring 2025")
+            )
+            allocations = Allocation.objects.filter(
+                email__email=obj.email.email, period=period
+            )
+            if len(allocations) > 1:
+                for allocation in allocations[1:]:
+                    allocation.delete()
 
-    def fix_issue(self, request, queryset):
-        for obj in queryset:
-            caterer = Caterer.objects.get(name=obj.first_pref)
-            print(caterer)
-            obj.caterer = caterer
-            obj.save()
+    def shift_caterer(self, request, queryset):
+        caterers = Caterer.objects.all()
+        student_limit = {}
 
-    def fix_period(self, request, queryset):
-        for obj in queryset:
-            if obj.period is None:
-                obj.period = Period.objects.get(
-                    Sno=3, semester=Semester.objects.get(name="Spring 2025")
-                )
-                obj.save()
+        for caterer in caterers:
+            period = Period.objects.get(
+                Sno=3, semester=Semester.objects.get(name="Spring 2025")
+            )
+            allocations = Allocation.objects.filter(
+                caterer=caterer, period=period
+            ).order_by("registration_time")
+            student_limit[caterer.name] = [
+                caterer.student_limit - len(allocations),
+                allocations,
+            ]
+
+        for caterer in caterers:
+            limit = caterer.student_limit
+            count = student_limit[caterer.name][0]
+            allocations = student_limit[caterer.name][1]
+            if count < 0:
+                for allocation in allocations[limit:]:
+                    second_pref = allocation.second_pref
+                    if student_limit[second_pref][0] > 0:
+                        allocation.caterer = Caterer.objects.get(name=second_pref)
+                        allocation.save()
+                        student_limit[second_pref][0] -= 1
+                    else:
+                        third_pref = allocation.third_pref
+                        if student_limit[third_pref][0] > 0:
+                            allocation.caterer = Caterer.objects.get(name=third_pref)
+                            allocation.save()
+                            student_limit[third_pref][0] -= 1
 
     export_as_csv.short_description = "Export Allocation details to CSV"
 
