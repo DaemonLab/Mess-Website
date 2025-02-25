@@ -158,7 +158,7 @@ def update_long_bill(sender, instance: LongRebate, **kwargs):
 
 
 @receiver(post_save, sender=Allocation)
-def update_rebate_bill(sender, instance, created, **kwargs):
+def update_rebate_bill(sender, instance: Allocation, created, **kwargs):
     try:
         if created:
             sno = instance.period.Sno
