@@ -242,6 +242,9 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 if not DEBUG:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.logging import ignore_logger
+
+    ignore_logger("django.security.DisallowedHost")
 
     sentry_sdk.init(
         dsn=env("SENTRY_DSN"),
