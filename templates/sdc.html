@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block externalCss %}
+<style>
+    .buttons-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    .filter-btn {
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+    }
+    .active {
+        background-color: rgb(18, 37, 106);
+        color: white;
+    }
+    .inactive {
+        background-color: #e0e0e0;
+        color: black;
+    }
+    .team-card {
+        border: 1px solid black;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        width: 300px;
+        text-align: center;
+    }
+    .team-card:hover {
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    .team-card img {
+        width: 100%;
+        height: auto;
+        max-width: 250px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    .grid-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Center align the cards */
+        gap: 40px;
+        padding-bottom: 50px; /* Added padding between cards and footer */
+    }
+    h1 {
+        text-align: center; /* Center-align headings */
+        margin-bottom: 20px; /* Space between heading and cards */
+        color: rgb(18, 37, 106);
+    }
+    .year-section {
+        padding-bottom: 50px; /* Additional space below sections */
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<main>
+    <br>
+    <h1 class="text-center text-4xl font-semibold m-10">Student Dining Committee</h1>
+
+    <!-- Filter Buttons -->
+    <div class="buttons-container">
+        <button class="filter-btn active" onclick="filterByYear(2024)" id="btn-2024">2024</button>
+        <button class="filter-btn inactive" onclick="filterByYear(2025)" id="btn-2025">2025</button>
+    </div>
+
+    {% for year in years %}
+    <div id="year-{{ year }}" class="year-section" {% if year != 2024 %}style="display: none;"{% endif %}>
+        {% for position in positions %}
+        <div class="flex flex-col justify-center items-center p-10">
+            <h1 class="section-title text-3xl font-semibold">{{ position }}</h1>
+            <div class="grid-container">
+                {% for member in sdc_members %}
+                {% if member.position == position and member.year == year %}
+                <div class="team-card">
+                    {% if member.image %}
+                        <img src="{{ member.image.url }}" alt="{{ member.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" alt="Default Profile">
+                    {% endif %}
+                    <h1 class="text-xl font-bold">{{ member.name }}</h1>
+                    <p><strong>Position:</strong> {{ member.position }}</p>
+                    <p><strong>Email:</strong> {{ member.student.email }}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</main>
+
+<!-- JavaScript for Filtering -->
+<script>
+    function filterByYear(year) {
+        document.querySelectorAll('.year-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById('year-' + year).style.display = 'block';
+
+        // Toggle Button Styles
+        document.getElementById('btn-2024').classList.toggle('active', year === 2024);
+        document.getElementById('btn-2024').classList.toggle('inactive', year !== 2024);
+        document.getElementById('btn-2025').classList.toggle('active', year === 2025);
+        document.getElementById('btn-2025').classList.toggle('inactive', year !== 2025);
+    }
+</script>
+{% endblock %}

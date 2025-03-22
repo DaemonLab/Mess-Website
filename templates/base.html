@@ -25,10 +25,12 @@
 <body>
 {% url 'home' as home_url %}
 {% url 'rules' as rules_url %}
-{% url 'caterer' as caterer_url %}
+<!-- {% url 'caterer' as caterer_url %} -->
+{% url 'menu' as menu_url %}
 {% url 'links' as links_url %}
 {% url 'cafeteria' as cafe_url %}
 {% url 'contact' as contact_url %}
+{% url 'SDC' as SDC_url %}
 <div class="logo bg-white py-2 px-0 mx-md-3 mx-0 container-md">
   <a href="https://www.iiti.ac.in/" target="_blank" class="row text-decoration-none header mx-0 flex justify-content-center">
     <img src="{% static '../static/images/Indian_Institute_of_Technology,_Indore_Logo.png' %}" alt="" height="80px" width="100px" class="col-lg-1 col-2">
@@ -54,16 +56,8 @@
           <li class="nav-item">
             <a class="nav-link {% if request.path == rules_url %} active {%endif%}" href="/rules">Rules</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link {% if request.path == caterer_url %} active {%endif%} dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Caterer's-Information
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              {% for caterer in all_caterer%}
-              <li><a class="dropdown-item" href="/caterer/{{ caterer.name }}" style="color:rgb(18, 37, 106) ; font-weight: bold; ">{{caterer.name}} Caterers</a></li>
-            {% endfor %}
-            </ul>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == menu_url %} active {%endif%}" href="/menu">Menu & Caterers</a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if request.path == links_url %} active {%endif%}" href="/links">Forms</a>
@@ -73,6 +67,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link {% if request.path == contact_url %} active {%endif%}" href="/contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == SDC_url %} active {%endif%}" href="/sdc">SDC</a>
           </li>
           {% if user.is_authenticated %}
             {% if user.is_staff%}

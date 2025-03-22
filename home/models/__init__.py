@@ -21,3 +21,5 @@ from .students import (
 )
 from .allocation import Allocation, Period, Semester
 from .bills import CatererBills, StudentBills
+from .menu import Menu
+from .SDC import SDC
