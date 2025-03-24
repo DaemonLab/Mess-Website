@@ -30,6 +30,8 @@ from home.models import (
     StudentBills,
     UnregisteredStudent,
     Update,
+    Menu,
+    SDC,
 )
 
 from .utils.get_rebate_bills import get_rebate_bills
@@ -82,18 +84,34 @@ def rules(request):
     return render(request, "rules.html", params)
 
 
-def caterer(request, name):
+# def caterer(request, name):
+#     """
+#     Display the Caterer Page :model:`home.models.caterer`.
+
+#     *Template:*
+
+#     :template:`home/caterer.html`
+
+#     """
+#     caterer = Caterer.objects.get(name=name, visible=True)
+#     context = {"caterer": caterer}
+#     return render(request, "caterer.html", context)
+
+def menu(request):
     """
-    Display the Caterer Page :model:`home.models.caterer`.
-
-    *Template:*
-
-    :template:`home/caterer.html`
-
+    Display the menu along with caterer information on a single page.
     """
-    caterer = Caterer.objects.get(name=name, visible=True)
-    context = {"caterer": caterer}
-    return render(request, "caterer.html", context)
+    menus = Menu.objects.all().values("menu_type", "sheet_url")
+    caterers = Caterer.objects.filter(visible=True)
+
+    context = {
+        "menus": list(menus), 
+        "caterers": caterers,
+    }
+
+    return render(request, "menu.html", context)
+
+
 
 
 def links(request):
@@ -525,3 +543,21 @@ def rebate_data(request):
     rebate_bills = get_rebate_bills(rebate, sno)
     rebate_data = {"semester": semester, "period": sno, "data": rebate_bills}
     return JsonResponse(rebate_data)
+
+
+
+def sdc_list(request):
+    """
+    View to display the list of SDC members categorized by year and position.
+    """
+    positions = ["Head", "Advisory", "Member"] 
+    years = [2024, 2025] 
+    sdc_members = SDC.objects.all()
+
+    context = {
+        "positions": positions,
+        "years": years,
+        "sdc_members": sdc_members,
+    }
+    return render(request, "sdc.html", context)
+
