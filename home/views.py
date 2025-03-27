@@ -480,13 +480,16 @@ def profile(request):
     if request.method == "POST" and request.user.is_authenticated:
         if student:
             try:
-                print(request.FILES)
+                logger.debug(request.FILES)
                 file = request.FILES["profile-picture"]
                 student.photo = file
                 student.save()
             except Exception as e:
                 logger.error(e)
-        return redirect(request.path)
+        if url_has_allowed_host_and_scheme(request.path, allowed_hosts=None):
+            return redirect(request.path)
+        else:
+            return redirect("/")
     text = ""
     socialaccount_obj = SocialAccount.objects.filter(
         provider="google", user_id=request.user.id
