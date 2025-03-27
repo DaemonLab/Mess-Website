@@ -12,6 +12,7 @@ from django.http import HttpRequest, HttpResponse
 from import_export.admin import ImportExportMixin, ImportExportModelAdmin
 
 from home.models import (
+    SDC,
     About,
     Allocation,
     AllocationForm,
@@ -25,6 +26,7 @@ from home.models import (
     LeftLongRebate,
     LeftShortRebate,
     LongRebate,
+    Menu,
     Period,
     Rebate,
     Rule,
@@ -34,8 +36,6 @@ from home.models import (
     StudentBills,
     UnregisteredStudent,
     Update,
-    Menu,
-    SDC,
 )
 from home.utils.rebate_checker import max_days_rebate
 
@@ -181,6 +181,7 @@ class CatererAdmin(admin.ModelAdmin):
             )
             caterer_bill.save()
 
+
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     model = Menu
@@ -202,6 +203,7 @@ class MenuAdmin(admin.ModelAdmin):
         for menu in queryset:
             menu.sheet_url = ""
             menu.save()
+
 
 @admin.register(Form)
 class about_Admin(admin.ModelAdmin):
@@ -277,6 +279,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
             None,
             {
                 "fields": (
+                    "photo",
                     "name",
                     "email",
                     "roll_no",
@@ -930,6 +933,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         return obj.email.name if obj.email else ""
 
     actions = ["export_as_csv", "fix_duplicates", "shift_caterer"]
+
     def export_as_csv(self, request, queryset):
         """
         Export action available in the admin page
@@ -1207,10 +1211,16 @@ class about_Admin(admin.ModelAdmin):
 @admin.register(SDC)
 class SDCAdmin(admin.ModelAdmin):
     model = SDC
-    search_fields = ("student__name", "student__roll_no", "student__email", "position", "year")
+    search_fields = (
+        "student__name",
+        "student__roll_no",
+        "student__email",
+        "position",
+        "year",
+    )
     list_display = ("student", "name", "position", "year")
     list_filter = ("position", "year")
-    autocomplete_fields = ["student"]  
+    autocomplete_fields = ["student"]
 
     fieldsets = (
         (
@@ -1234,13 +1244,14 @@ class SDCAdmin(admin.ModelAdmin):
         Export action available in the admin page
         """
         import csv
+
         from django.http import HttpResponse
 
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="SDC.csv"'
         writer = csv.writer(response)
         writer.writerow(["Student", "Name", "Position", "Year"])
-        
+
         for obj in queryset:
             writer.writerow([obj.student, obj.name, obj.position, obj.year])
 
