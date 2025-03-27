@@ -20,8 +20,9 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1"]
+ALLOWED_HOSTS = ["diningfee.iiti.ac.in", "127.0.0.1", "localhost"]
 CSRF_TRUSTED_ORIGINS = ["http://diningfee.iiti.ac.in", "https://diningfee.iiti.ac.in"]
+CORS_ORIGIN_ALLOW_ALL = True # Will change this to false after some time
 # Application definition
 
 INSTALLED_APPS = [
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.admindocs",
     # Third-party apps
+    "corsheaders",
     "import_export",
     "django_admin_logs",
     "allauth",
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
