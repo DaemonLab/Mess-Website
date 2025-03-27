@@ -11,6 +11,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.timezone import now
 
 from home.models import (
+    SDC,
     About,
     Allocation,
     AllocationForm,
@@ -21,6 +22,7 @@ from home.models import (
     Form,
     LeftShortRebate,
     LongRebate,
+    Menu,
     Period,
     Rebate,
     Rule,
@@ -30,8 +32,6 @@ from home.models import (
     StudentBills,
     UnregisteredStudent,
     Update,
-    Menu,
-    SDC,
 )
 
 from .utils.get_rebate_bills import get_rebate_bills
@@ -97,6 +97,7 @@ def rules(request):
 #     context = {"caterer": caterer}
 #     return render(request, "caterer.html", context)
 
+
 def menu(request):
     """
     Display the menu along with caterer information on a single page.
@@ -105,13 +106,11 @@ def menu(request):
     caterers = Caterer.objects.filter(visible=True)
 
     context = {
-        "menus": list(menus), 
+        "menus": list(menus),
         "caterers": caterers,
     }
 
     return render(request, "menu.html", context)
-
-
 
 
 def links(request):
@@ -477,12 +476,22 @@ def profile(request):
 
     :template:`home/profile.html`
     """
-    text = ""
     student = Student.objects.filter(email__iexact=str(request.user.email)).last()
+    if request.method == "POST" and request.user.is_authenticated:
+        if student:
+            try:
+                print(request.FILES)
+                file = request.FILES["profile-picture"]
+                student.photo = file
+                student.save()
+            except Exception as e:
+                logger.error(e)
+        return redirect(request.path)
+    text = ""
     socialaccount_obj = SocialAccount.objects.filter(
         provider="google", user_id=request.user.id
     )
-    picture = "not available"
+    picture = student.photo.url if student.photo else None
     allocation: Allocation | None = Allocation.objects.filter(email=student).last()
     show_allocated_enabled = False
     if allocation and allocation.period:
@@ -501,12 +510,10 @@ def profile(request):
             "Jain": "Yes" if allocation.jain else "No",
         }
     try:
-        if socialaccount_obj:
+        if not picture and socialaccount_obj:
             picture = socialaccount_obj[0].extra_data["picture"]
-        else:
-            picture = "not available"
     except (IndexError, KeyError):
-        picture = "not available"
+        logger.error("No picture found")
     semesters = Semester.objects.all()
     context = {
         "text": text,
@@ -545,13 +552,12 @@ def rebate_data(request):
     return JsonResponse(rebate_data)
 
 
-
 def sdc_list(request):
     """
     View to display the list of SDC members categorized by year and position.
     """
-    positions = ["Head", "Advisory", "Member"] 
-    years = [2024, 2025] 
+    positions = ["Head", "Advisory", "Member"]
+    years = [2024, 2025]
     sdc_members = SDC.objects.all()
 
     context = {
@@ -560,4 +566,3 @@ def sdc_list(request):
         "sdc_members": sdc_members,
     }
     return render(request, "sdc.html", context)
-

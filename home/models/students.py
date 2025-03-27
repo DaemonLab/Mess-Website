@@ -8,6 +8,14 @@ class Student(models.Model):
     Stores Student Details
     """
 
+    photo = models.ImageField(
+        _("Photo"),
+        upload_to="photos/",
+        null=True,
+        blank=True,
+        default=None,
+        help_text="This contains the photo of the Student",
+    )
     name = models.CharField(
         _("Name of Student"),
         max_length=50,

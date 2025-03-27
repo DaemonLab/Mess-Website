@@ -13,7 +13,14 @@
                 <div class="card mt-4">
                     <div class="card-body" style="padding-left: 5%;">
                         <h5 class="card-title">Your Profile</h5>
-                        <img class="img-fluid rounded-4" src="{{ picture }}" alt="User Image">
+                        <img class="img-fluid rounded-4" src="{{ picture }}" alt="User Image" style="width: 90px; height: 90px; object-fit: cover;">
+                        <form action="" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
+                            {% csrf_token %}
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="file" name="profile-picture" id="profile-picture" class="form-control" accept="image/*" required>
+                                <button type="submit" class="btn btn-primary" style="background-color: rgb(30, 55, 146)">Upload</button>
+                            </div>
+                        </form>
                         <h6 class="card-subtitle mt-2">{{ student.name }}</h6>
                         <span class="card-text">Roll Number: {{ student.roll_no }}</span><br>
                         <span class="card-text">Email: {{ user.email }}</span><br>
