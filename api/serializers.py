@@ -14,7 +14,7 @@ class StudentSerializer(serializers.ModelSerializer):
     """Serializer for Student model."""
     class Meta:
         model = Student
-        fields = ['id', 'email', 'name', 'student_id', 'photo']
+        fields = ['id', 'email', 'name', 'photo']
 
 
 class CatererSerializer(serializers.ModelSerializer):
