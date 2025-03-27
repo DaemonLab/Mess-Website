@@ -14,6 +14,7 @@ from .serializers import (
     QRVerifySerializer, MealSerializer, UserSerializer, QRVerifyPostSerializer
 )
 from .utils.rebate_checker import is_student_on_rebate
+from allauth.socialaccount.models import SocialAccount
 
 class LogoutView(APIView):
     """
@@ -172,6 +173,11 @@ class QRVerifyUpdateView(APIView):
             try:
                 card = MessCard.objects.get(id=card_id)
                 card_return_data = QRVerifySerializer(card).data
+                if not card_return_data.get('student').get('photo'):
+                    socialaccount_obj = SocialAccount.objects.filter(
+                        provider="google", user_id=card_return_data['student']['id']
+                    )
+                    card_return_data['student']['photo'] = socialaccount_obj[0].extra_data.get('picture')
                 date = timezone.localtime().date()
                 time = timezone.localtime().time()
                 meal, _ = Meal.objects.get_or_create(mess_card=card, date=date)
