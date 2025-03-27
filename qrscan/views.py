@@ -39,7 +39,7 @@ def mess_card(request):
 
     picture = student.photo.url if student.photo else None
     try:
-        if not picture and socialaccount_obj:
+        if not picture and socialaccount_obj.exists():
             picture = socialaccount_obj[0].extra_data["picture"]
     except (IndexError, KeyError):
         picture = "not available"
