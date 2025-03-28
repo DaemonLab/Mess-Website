@@ -174,15 +174,8 @@ class QRVerifyUpdateView(APIView):
             try:
                 card = MessCard.objects.get(id=card_id)
                 card_return_data = QRVerifySerializer(card).data
-                try:
-                    if not card_return_data.get('student').get('photo'):
-                        user = User.objects.get(email=card.student.email)
-                        socialaccount_obj = SocialAccount.objects.filter(
-                            provider="google", user_id=user.id
-                        )
-                        card_return_data['student']['photo'] = socialaccount_obj[0].extra_data.get('picture')
-                except:
-                    pass
+                if not card_return_data.get('student').get('photo'):
+                    return Response({"success": False, "detail": "Student photo not available.", "mess_card": card_return_data}, status=status.HTTP_400_BAD_REQUEST)
                 date = timezone.localtime().date()
                 time = timezone.localtime().time()
                 meal, _ = Meal.objects.get_or_create(mess_card=card, date=date)
