@@ -14,6 +14,8 @@ from .serializers import (
     QRVerifySerializer, MealSerializer, UserSerializer, QRVerifyPostSerializer
 )
 from .utils.rebate_checker import is_student_on_rebate
+from allauth.socialaccount.models import SocialAccount
+from django.contrib.auth.models import User
 
 class LogoutView(APIView):
     """
@@ -172,6 +174,8 @@ class QRVerifyUpdateView(APIView):
             try:
                 card = MessCard.objects.get(id=card_id)
                 card_return_data = QRVerifySerializer(card).data
+                if not card_return_data.get('student').get('photo'):
+                    return Response({"success": False, "detail": "Student photo not available.", "mess_card": card_return_data}, status=status.HTTP_400_BAD_REQUEST)
                 date = timezone.localtime().date()
                 time = timezone.localtime().time()
                 meal, _ = Meal.objects.get_or_create(mess_card=card, date=date)
