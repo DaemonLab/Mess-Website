@@ -34,7 +34,7 @@ def is_not_duplicate(student, new_rebate_start, new_rebate_end):
                 < short_rebate.end_date
             ):
                 return False
-        for long_rebate in LongRebate.objects.filteremail__iexact(email=student).all():
+        for long_rebate in LongRebate.objects.filter(email__iexact=student).all():
             if (
                 long_rebate.end_date
                 > new_rebate_start
