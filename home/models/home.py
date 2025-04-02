@@ -56,21 +56,3 @@ class Update(models.Model):
     class Meta:
         verbose_name = "Update"
         verbose_name_plural = "Updates"
-
-
-# class Photos(models.Model):
-#     """
-#     Stores All phtographs on the bottom of the Home page
-#     """
-#     image = models.ImageField(_("Photographs on Home page"), upload_to="static/images")
-#     poc = models.CharField(_("Point of Contact"), max_length=30, default='',
-#                            help_text="This contains the name of the person in the photograph")
-#     occupation = models.CharField(_("Occupation"), max_length=50, default='',
-#                                   help_text="This contains the occupation of the person in the photograph")
-
-#     def __str__(self):
-#         return "Home Page Photographs"
-
-#     class Meta:
-#         verbose_name = " General Photographs"
-#         verbose_name_plural = " General Photographs"

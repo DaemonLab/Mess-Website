@@ -1018,7 +1018,6 @@ caterer_bill_fields = {
         "period5_bills",
         "period6_bills",
     ),
-    # "description": "%s" % CATERER_BILL_DESC_TEXT,
 }
 
 
@@ -1040,7 +1039,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
                     "period5_bills",
                     "period6_bills",
                 ),
-                # "description": "%s" % CATERER_BILL_DESC_TEXT,
             },
         ),
     )

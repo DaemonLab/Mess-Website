@@ -84,20 +84,6 @@ def rules(request):
     return render(request, "rules.html", params)
 
 
-# def caterer(request, name):
-#     """
-#     Display the Caterer Page :model:`home.models.caterer`.
-
-#     *Template:*
-
-#     :template:`home/caterer.html`
-
-#     """
-#     caterer = Caterer.objects.get(name=name, visible=True)
-#     context = {"caterer": caterer}
-#     return render(request, "caterer.html", context)
-
-
 def menu(request):
     """
     Display the menu along with caterer information on a single page.
@@ -186,7 +172,7 @@ def rebate(request):
     try:
         period_obj = next(
             period
-            for period in Period.objects.all()
+            for period in Period.objects.all().order_by("start_date")
             if period.end_date > date.today() + timedelta(1)
         )
         allocation = Allocation.objects.filter(email=student, period=period_obj).first()
@@ -213,7 +199,7 @@ def rebate(request):
                 message = "Form needs to be filled atleast 2 days prior the comencement of leave."
             elif not is_not_duplicate(student, start_date, end_date):
                 message = "You have already applied for rebate during this duration"
-            elif 0 < rebate_days < 2:
+            elif rebate_days < 2:
                 message = "Min no of days for rebate is 2"
             else:
                 additional_message = ""
@@ -494,7 +480,8 @@ def profile(request):
     socialaccount_obj = SocialAccount.objects.filter(
         provider="google", user_id=request.user.id
     )
-    picture = student.photo.url if student.photo else None
+    if student:
+        picture = student.photo.url if student.photo else None
     allocation: Allocation | None = Allocation.objects.filter(email=student).last()
     show_allocated_enabled = False
     if allocation and allocation.period:
@@ -516,6 +503,8 @@ def profile(request):
         if not picture and socialaccount_obj:
             picture = socialaccount_obj[0].extra_data["picture"]
     except (IndexError, KeyError):
+        logger.warning(socialaccount_obj[0])
+        logger.warning(socialaccount_obj[0].extra_data)
         logger.error("No picture found")
     semesters = Semester.objects.all()
     context = {
