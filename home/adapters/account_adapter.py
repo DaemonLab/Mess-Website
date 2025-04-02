@@ -13,11 +13,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
     def clean_email(self, email):
         RestrictedList = Student.objects.all().values_list("email")
-        # try:
-        #     Student.objects.get(email=email)
-        #     return email
-        # except Exception as e:
-        #     ValidationError('You are not a registered student. Please contact admin.')
         if email.endswith("iiti.ac.in"):
             raise ValidationError(
                 "Please login with your IITI email ID through google login only."

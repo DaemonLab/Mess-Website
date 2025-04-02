@@ -12,7 +12,7 @@ def count(start, end):
 def is_not_duplicate(student, new_rebate_start, new_rebate_end):
     """Checks if these dates are already applied for rebate"""
     try:
-        for short_rebate in Rebate.objects.filter(email=student).all():
+        for short_rebate in Rebate.objects.filter(email__iexact=student).all():
             if (
                 short_rebate.start_date
                 < new_rebate_start
@@ -23,7 +23,7 @@ def is_not_duplicate(student, new_rebate_start, new_rebate_end):
                 < short_rebate.end_date
             ):
                 return False
-        for short_rebate in LeftShortRebate.objects.filter(email=student).all():
+        for short_rebate in LeftShortRebate.objects.filter(email__iexact=student).all():
             if (
                 short_rebate.start_date
                 < new_rebate_start
@@ -34,7 +34,7 @@ def is_not_duplicate(student, new_rebate_start, new_rebate_end):
                 < short_rebate.end_date
             ):
                 return False
-        for long_rebate in LongRebate.objects.filter(email=student).all():
+        for long_rebate in LongRebate.objects.filteremail__iexact(email=student).all():
             if (
                 long_rebate.end_date
                 > new_rebate_start
