@@ -31,6 +31,7 @@
 {% url 'cafeteria' as cafe_url %}
 {% url 'contact' as contact_url %}
 {% url 'SDC' as SDC_url %}
+{% url 'qrscan' as qrscan_url %}
 <div class="logo bg-white py-2 px-0 mx-md-3 mx-0 container-md">
   <a href="https://www.iiti.ac.in/" target="_blank" class="row text-decoration-none header mx-0 flex justify-content-center">
     <img src="{% static '../static/images/Indian_Institute_of_Technology,_Indore_Logo.png' %}" alt="" height="80px" width="100px" class="col-lg-1 col-2">
@@ -68,9 +69,9 @@
           <li class="nav-item">
             <a class="nav-link {% if request.path == contact_url %} active {%endif%}" href="/contact">Contact</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link {% if request.path == SDC_url %} active {%endif%}" href="/sdc">SDC</a>
-          </li>
+          </li> -->
           {% if user.is_authenticated %}
             {% if user.is_staff%}
             <li class="nav-item dropdown">
@@ -85,6 +86,9 @@
               </ul>
             </li>
             {% else %}
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == SDC_url %} active {%endif%}" href="/qrscan/">Mess Card</a>
+              </li>
               <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -92,7 +96,6 @@
               </a>
               <ul class="dropdown-menu me-5" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="/profile/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Profile</a></li>
-                <!-- <li><a class="dropdown-item" href="/qrscan/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Mess Card</a></li> -->
                 <li><a class="dropdown-item" href="/accounts/logout/" style="color:rgb(18, 37, 106) ; font-weight: bold; ">Logout</a></li>
               </ul>
             </li>
