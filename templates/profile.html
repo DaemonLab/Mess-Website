@@ -25,6 +25,7 @@
                         <span class="card-text">Roll Number: {{ student.roll_no }}</span><br>
                         <span class="card-text">Email: {{ user.email }}</span><br>
                         <span class="card-text">Department: {{ student.department }}</span><br>
+                        <a href="/qrscan/"><button class="btn btn-primary">View Mess Card</button></a>
                         <hr>
                         {% if allocation_info|length > 0 %}
                             <h5>Your Allocation Details:</h5>
@@ -40,7 +41,6 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            <!-- <a href="/qrscan/"><button class="btn btn-primary">View Mess Card</button></a> -->
                         {% else %}
                             <h6>You will be able to see your allocated caterer after the allocation process is completed </h6>
                         {% endif %}
