@@ -123,6 +123,7 @@ _Note:_ SQLite is as the default database
 
 - [Ishaan Mittal](mailto:ishaanmittal123@gmail.com)
 - [Trishant Tullari](mailto:trishanttalluri@gmail.com)
+- [Prince Kumar](mailto:k07prince@gmail.com)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p
 
