@@ -965,7 +965,7 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
 
         for caterer in caterers:
             period = Period.objects.get(
-                Sno=3, semester=Semester.objects.get(name="Spring 2025")
+                Sno=5, semester=Semester.objects.get(name="Spring 2025")
             )
             allocations = Allocation.objects.filter(
                 caterer=caterer, period=period
