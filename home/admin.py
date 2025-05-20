@@ -911,18 +911,9 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        semester = Semester.objects.first()
         if request.user.groups.filter(name="College Administration"):
             return qs
-        return (
-            qs.filter(period__semester=semester)
-            .filter(
-                period__Sno__in=[
-                    1,
-                ]
-            )
-            .filter(caterer__name=request.user.username)
-        )
+        return qs.filter(caterer__name=request.user.username)
 
     @admin.display(description="email")
     def email(self, obj):
