@@ -293,7 +293,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ["export_as_csv", "generate_table"]
+    actions = ["export_as_csv", "generate_table", "disable_allocation"]
 
     def generate_table(Student, request, queryset):
         """
@@ -314,6 +314,14 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
         return response
 
     export_as_csv.short_description = "Export Student details to CSV"
+
+    def disable_allocation(self, request, queryset: list[Student]):
+        """
+        Disable allocation action available in the admin page
+        """
+        for obj in queryset:
+            obj.allocation_enabled = False
+            obj.save()
 
 
 @admin.register(Scan)
