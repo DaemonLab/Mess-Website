@@ -8,7 +8,7 @@ drf_yasg==1.21.7
 pandas==2.2.3
 Pillow==11.1.0
 qrcode==8.0
-Requests==2.32.3
+Requests==2.32.4
 sentry_sdk==2.20.0
 django-admin-logs==1.0.2
 django-cloudinary-storage==0.3.0
