@@ -8,6 +8,7 @@ import csv
 from datetime import timedelta
 
 from django.contrib import admin
+from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
 from django.http import HttpRequest, HttpResponse
 from import_export.admin import ImportExportMixin, ImportExportModelAdmin
 
@@ -386,9 +387,6 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         "disapprove",
         "approve",
         "send_mail",
-        "clean",
-        "get_rebate_days_per_caterer",
-        "get_spring_2025_days_per_caterer",
     ]
 
     @admin.action(description="Disapprove the students")
@@ -429,21 +427,35 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         for obj in queryset:
             long_rebate_query_mail(obj.start_date, obj.end_date, obj.email.email)
 
-    @admin.action(description="Get total rebate days per caterer for Autumn 2024")
-    def get_rebate_days_per_caterer(self, request, queryset: list[LongRebate]):
-        longRebates = []
-        for obj in queryset:
-            if obj.approved:
-                longRebates.append(obj)
-        return map_periods_to_long_rebate(longRebates, request.user)
+    # Ref: https://stackoverflow.com/questions/4500924/django-admin-action-without-selecting-objects
+    def changelist_view(self, request, extra_context=None):
+        if "action" in request.POST and str.startswith(
+            request.POST["action"], "get_rebate_days_per_caterer_"
+        ):
+            if not request.POST.getlist(ACTION_CHECKBOX_NAME):
+                post = request.POST.copy()
+                for u in LongRebate.objects.all():
+                    post.update({ACTION_CHECKBOX_NAME: str(u.id)})
+                request._set_post(post)
+        return super().changelist_view(request, extra_context)
 
-    @admin.action(description="Get total rebate days per caterer for Spring 2025")
-    def get_spring_2025_days_per_caterer(self, request, queryset: list[LongRebate]):
-        longRebates = []
-        for obj in queryset:
-            if obj.approved:
-                longRebates.append(obj)
-        return map_periods_to_long_rebate(longRebates, request.user, "Spring 2025")
+    def set_semester_action(semester):
+        @admin.action(description=f"Get total rebate days per caterer for {semester}")
+        def set_semester(modeladmin, request, queryset: list[LongRebate]):
+            longRebates = []
+            for obj in queryset:
+                if obj.approved:
+                    longRebates.append(obj)
+            return map_periods_to_long_rebate(longRebates, request.user, semester)
+
+        set_semester.__name__ = f"get_rebate_days_per_caterer_{semester}"
+        return set_semester
+
+    try:
+        for semester in Semester.objects.all():
+            actions.append(set_semester_action(semester.name))
+    except Exception as e:
+        print("Semester table not available", e)
 
 
 @admin.register(Rebate)

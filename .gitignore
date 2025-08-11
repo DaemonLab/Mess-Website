@@ -8,3 +8,4 @@ venv
 media
 staticfiles
 ssl-certs
+.qodo
