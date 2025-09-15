@@ -111,7 +111,7 @@ class QRVerifyUpdateView(APIView):
                 if meal_timing.start_time <= time <= meal_timing.end_time:
                     return meal_type
             except MessTiming.DoesNotExist:
-                return None
+                continue
         return None
 
     def _filter_valid_cards(self, cards, meal_type):
