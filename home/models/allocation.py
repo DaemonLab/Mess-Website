@@ -100,7 +100,7 @@ class Allocation(models.Model):
     first_pref = models.CharField(
         _("First Preference"),
         default=None,
-        max_length=10,
+        max_length=12,
         help_text="This contians the first preference caterer of the student",
         null=True,
         blank=True,
@@ -108,7 +108,7 @@ class Allocation(models.Model):
     second_pref = models.CharField(
         _("Second Preference"),
         default=None,
-        max_length=10,
+        max_length=12,
         help_text="This contians the first preference caterer of the student",
         null=True,
         blank=True,
@@ -116,7 +116,7 @@ class Allocation(models.Model):
     third_pref = models.CharField(
         _("Third Preference"),
         default=None,
-        max_length=10,
+        max_length=12,
         help_text="This contians the first preference caterer of the student",
         null=True,
         blank=True,
