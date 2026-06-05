@@ -56,3 +56,37 @@ class Update(models.Model):
     class Meta:
         verbose_name = "Update"
         verbose_name_plural = "Updates"
+
+
+class GlobalConstants(models.Model):
+    """
+    Stores globally accessible constants for the website like rebate limits.
+    """
+
+    short_rebate_stretch_limit = models.IntegerField(
+        _("Short Rebate Stretch Limit"),
+        default=10,
+        help_text="Maximum number of days for a single short rebate application.",
+    )
+    short_rebate_period_limit = models.IntegerField(
+        _("Short Rebate Period Limit"),
+        default=10,
+        help_text="Maximum total days allowed for short rebates within a single period.",
+    )
+    min_rebate_days = models.IntegerField(
+        _("Minimum Rebate Days"),
+        default=2,
+        help_text="Minimum number of days required for a rebate application.",
+    )
+    days_prior_notice = models.IntegerField(
+        _("Days Prior Notice"),
+        default=2,
+        help_text="Minimum days before leave commencement the form must be filled.",
+    )
+
+    def __str__(self):
+        return "Global Constants"
+
+    class Meta:
+        verbose_name = "Global Constant"
+        verbose_name_plural = "Global Constants"
