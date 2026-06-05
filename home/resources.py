@@ -12,6 +12,8 @@ from .models import (
     Student,
     StudentBills,
     UnregisteredStudent,
+    SpecialEvent,
+    EventInvitation,
 )
 
 """
@@ -566,3 +568,33 @@ class CatererBillsResource(resources.ModelResource):
             "period5_bills",
             "period6_bills",
         )
+
+
+class EventInvitationResource(resources.ModelResource):
+    email = fields.Field(attribute="email", column_name="Email")
+    name = fields.Field(column_name="Name", attribute="student__name")
+
+    class Meta:
+        model = EventInvitation
+        exclude = ["id", "event", "status", "invited_at", "attended_at"]
+        import_id_fields = ["email"]
+        fields = ("email", "name")
+
+    def before_import_row(self, row, **kwargs):
+        """
+        Match email to student and set the student field
+        """
+        email = row.get('email', '').strip()
+        try:
+            student = Student.objects.get(email__iexact=email)
+            row['student'] = student
+        except Student.DoesNotExist:
+            logger.warning(f"Student with email {email} not found")
+            row['student'] = None
+        return row
+
+    def skip_row(self, instance, original, row, import_validation_errors):
+        # Skip if student not found
+        if not instance.student:
+            return True
+        return super().skip_row(instance, original, row, import_validation_errors)
