@@ -156,11 +156,6 @@ SOCIALACCOUNT_PROVIDERS = {
             "access_type": "online",
             "prompt": "select_account",
         },
-        "APP": {
-            "client_id": env("GOOGLE_CLIENT_ID"),
-            "secret": env("GOOGLE_CLIENT_SECRET"),
-            "key": "",
-        },
     }
 }
 
