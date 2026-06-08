@@ -20,6 +20,7 @@ from home.models import (
     Caterer,
     Contact,
     Form,
+    GlobalConstants,
     LeftShortRebate,
     LongRebate,
     Menu,
@@ -187,20 +188,24 @@ def rebate(request):
             request.session["text"] = message
             return redirect(request.path)
 
+        constants = GlobalConstants.objects.first()
+        if not constants:
+            constants = GlobalConstants.objects.create()
+
         try:
             start_date = parse_date(request.POST["start_date"])
             end_date = parse_date(request.POST["end_date"])
             rebate_days = ((end_date - start_date).days) + 1
             before_rebate_days = (start_date - date.today()).days
 
-            if rebate_days > 7:
-                message = "Max no of days for rebate is 7"
-            elif before_rebate_days < 2:
-                message = "Form needs to be filled atleast 2 days prior the comencement of leave."
+            if rebate_days > constants.short_rebate_stretch_limit:
+                message = f"Max no of days for rebate is {constants.short_rebate_stretch_limit}"
+            elif before_rebate_days < constants.days_prior_notice:
+                message = f"Form needs to be filled atleast {constants.days_prior_notice} days prior the comencement of leave."
             elif not is_not_duplicate(student, start_date, end_date):
                 message = "You have already applied for rebate during this duration"
-            elif rebate_days < 2:
-                message = "Min no of days for rebate is 2"
+            elif rebate_days < constants.min_rebate_days:
+                message = f"Min no of days for rebate is {constants.min_rebate_days}"
             else:
                 additional_message = ""
                 if not period_obj.start_date <= start_date <= period_obj.end_date:
@@ -233,7 +238,7 @@ def rebate(request):
                     )
                 if upper_cap_check >= 0:
                     message = (
-                        "You can only apply for max 8 days in a period. Days left for this period: "
+                        f"You can only apply for max {constants.short_rebate_period_limit} days in a period. Days left for this period: "
                         + str(upper_cap_check)
                     )
                 elif not message:

@@ -6,7 +6,7 @@ from .cafeteria import Cafeteria
 from .caterer import Caterer
 from .contacts import Contact
 from .fees import Fee
-from .home import About, Carousel, Update
+from .home import About, Carousel, GlobalConstants, Update
 from .links import Form
 from .rules import Rule, ShortRebate
 from .students import (

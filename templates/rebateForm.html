@@ -8,9 +8,9 @@
 <div class="px-3">
   <div class="px-5 mx-5">
     <ul>
-      <li>Rebate can be availed for a minimum of 2 days, upto 7 days at a stretch.</li>
-      <li>Maximum of 8 days rebate per month will be provided through the short term rebate forms. </li>
-      <li>Fill the form atleast 2 days prior the comencement of leave, else the application will not be accepted.</li>
+      <li>Rebate can be availed for a minimum of {{ constants.min_rebate_days }} days, upto {{ constants.short_rebate_stretch_limit }} days at a stretch.</li>
+      <li>Maximum of {{ constants.short_rebate_period_limit }} days rebate per period will be provided through the short term rebate forms. </li>
+      <li>Fill the form atleast {{ constants.days_prior_notice }} days prior the comencement of leave, else the application will not be accepted.</li>
     <ul>
     </div>
   </div>

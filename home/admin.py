@@ -37,6 +37,7 @@ from home.models import (
     StudentBills,
     UnregisteredStudent,
     Update,
+    GlobalConstants,
 )
 from home.utils.rebate_checker import max_days_rebate
 
@@ -79,7 +80,18 @@ REBATE_DESC_TEXT = (
 )
 REBATE_BILLS_DESC_TEXT = "This contains the rebate bills of each students."
 
-# Register your models here
+@admin.register(GlobalConstants)
+class GlobalConstantsAdmin(admin.ModelAdmin):
+    model = GlobalConstants
+
+    def has_add_permission(self, request):
+        # Only allow one instance of GlobalConstants
+        if self.model.objects.count() > 0:
+            return False
+        return super().has_add_permission(request)
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(About)
@@ -451,11 +463,19 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         set_semester.__name__ = f"get_rebate_days_per_caterer_{semester}"
         return set_semester
 
-    try:
-        for semester in Semester.objects.all():
-            actions.append(set_semester_action(semester.name))
-    except Exception as e:
-        print("Semester table not available", e)
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        try:
+            for semester in Semester.objects.all():
+                action = self.set_semester_action(semester.name)
+                actions[action.__name__] = (
+                    action,
+                    action.__name__,
+                    action.short_description,
+                )
+        except Exception as e:
+            print("Semester table not available", e)
+        return actions
 
 
 @admin.register(Rebate)
@@ -679,11 +699,19 @@ class about_Admin(ImportExportModelAdmin, admin.ModelAdmin):
         set_period.__name__ = f"set_period_{semester_name}_{period_sno}"
         return set_period
 
-    try:
-        for period in Period.objects.all():
-            actions.append(set_period_action(period.semester.name, period.Sno))
-    except Exception as e:
-        print("Periods table not available", e)
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        try:
+            for period in Period.objects.all():
+                action = self.set_period_action(period.semester.name, period.Sno)
+                actions[action.__name__] = (
+                    action,
+                    action.__name__,
+                    action.short_description,
+                )
+        except Exception as e:
+            print("Periods table not available", e)
+        return actions
 
     @admin.action(description="Allocate the unregistered students")
     def allocate(self, request, queryset):
