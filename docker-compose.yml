@@ -12,6 +12,10 @@ services:
       - /etc/letsencrypt/live/diningfee.iiti.ac.in/privkey.pem:/etc/letsencrypt/live/diningfee.iiti.ac.in/privkey.pem
     env_file:
       - ./.env
+    environment:
+      - GUNICORN_WORKERS=9
+      - GUNICORN_THREADS=4
+      - GUNICORN_TIMEOUT=300
 
   nginx:
     build: ./nginx

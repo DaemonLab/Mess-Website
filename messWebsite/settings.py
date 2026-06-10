@@ -98,9 +98,14 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        "OPTIONS": {
+            # Wait up to 30s for the write lock instead of failing fast with
+            # "database is locked" under concurrent writes.
+            "timeout": 30,
+            "transaction_mode": "IMMEDIATE",
+        },
     }
 }
-DATABASE_OPTIONS = {"timeout": 30}
 
 
 # DATABASES = {
