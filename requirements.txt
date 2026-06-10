@@ -15,3 +15,4 @@ django-cloudinary-storage==0.3.0
 gunicorn==23.0.0
 whitenoise==6.4.0
 django-cors-headers==4.7.0
+PyJWT[crypto]==2.10.1
