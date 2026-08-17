@@ -1,13 +1,16 @@
 import logging
 from datetime import datetime
 
-from django.db.models.signals import post_save, pre_save
+from django.core.cache import cache
+from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 
+from .context_processors import FOOTER_CONTACT_CACHE_KEY
 from .models import (
     Allocation,
     Caterer,
     CatererBills,
+    Contact,
     LongRebate,
     Period,
     Rebate,
@@ -24,6 +27,11 @@ from .utils.rebate_checker import count
 __doc__ = "This file contains the signals for the home app"
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+@receiver([post_save, post_delete], sender=Contact)
+def invalidate_footer_contact_cache(sender, **kwargs):
+    cache.delete(FOOTER_CONTACT_CACHE_KEY)
 
 
 @receiver(post_save, sender=Student)

@@ -91,6 +91,13 @@ TEMPLATES = [
 WSGI_APPLICATION = "messWebsite.wsgi.application"
 DJANGO_ADMIN_LOGS_DELETABLE = True
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "mess-website",
+    }
+}
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
