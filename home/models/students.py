@@ -51,7 +51,7 @@ class Student(models.Model):
     )
     hostel = models.CharField(
         _("Hostel of Student"),
-        max_length=3,
+        max_length=5,
         help_text="This contains the hostel of the Student",
         null=True,
         default="",
