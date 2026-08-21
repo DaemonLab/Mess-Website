@@ -5,6 +5,7 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 """
 
 import csv
+import io
 from datetime import timedelta
 
 from django.contrib import admin
@@ -14,6 +15,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import path
+from django.db.models.functions import Lower
 from import_export.admin import ImportExportMixin, ImportExportModelAdmin
 
 from home.models import (
@@ -342,15 +344,19 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
 
             if not failures:
                 try:
-                    decoded_file = uploaded_file.read().decode("utf-8-sig")
-                    sample = decoded_file[:4096]
+                    text_stream = io.TextIOWrapper(
+                        uploaded_file.file, encoding="utf-8-sig", newline=""
+                    )
+                    sample = text_stream.read(4096)
+                    text_stream.seek(0)
                     try:
                         dialect = csv.Sniffer().sniff(sample, delimiters=",;\t")
                     except csv.Error:
                         dialect = csv.excel
 
-                    rows = list(csv.reader(decoded_file.splitlines(), dialect))
-                    if not rows:
+                    csv_reader = csv.reader(text_stream, dialect)
+                    header = next(csv_reader, None)
+                    if not header:
                         raise ValueError("The uploaded file is empty.")
 
                     def normalize(value):
@@ -371,7 +377,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                             "email",
                         },
                     }
-                    normalized_header = [normalize(value) for value in rows[0]]
+                    normalized_header = [normalize(value) for value in header]
                     column_indexes = {}
                     for field, aliases in header_aliases.items():
                         matching_indexes = [
@@ -385,13 +391,40 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                             )
                         column_indexes[field] = matching_indexes[0]
 
-                    imported_emails = set()
-                    imported_roll_numbers = set()
-                    for row_number, row in enumerate(rows[1:], start=2):
+                    max_column_index = max(column_indexes.values())
+                    pending_rows = []
+                    uploaded_emails = set()
+                    uploaded_roll_numbers = set()
+
+                    for row_number, row in enumerate(csv_reader, start=2):
                         if not any(value.strip() for value in row):
                             continue
+                        pending_rows.append((row_number, row))
+                        if len(row) > column_indexes["email"]:
+                            email_value = row[column_indexes["email"]].strip().lower()
+                            if email_value:
+                                uploaded_emails.add(email_value)
+                        if len(row) > column_indexes["roll_no"]:
+                            roll_value = row[column_indexes["roll_no"]].strip()
+                            if roll_value:
+                                uploaded_roll_numbers.add(roll_value)
+
+                    existing_emails = set(
+                        Student.objects.annotate(email_lower=Lower("email"))
+                        .filter(email_lower__in=list(uploaded_emails))
+                        .values_list("email_lower", flat=True)
+                    )
+                    existing_roll_numbers = set(
+                        Student.objects.filter(roll_no__in=list(uploaded_roll_numbers))
+                        .values_list("roll_no", flat=True)
+                    )
+
+                    imported_emails = set()
+                    imported_roll_numbers = set()
+                    students_to_create = []
+                    for row_number, row in pending_rows:
                         try:
-                            if len(row) <= max(column_indexes.values()):
+                            if len(row) <= max_column_index:
                                 raise ValueError(
                                     "The row does not contain all required columns."
                                 )
@@ -413,9 +446,9 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                                 raise ValueError("Duplicate email in the uploaded file.")
                             if values["roll_no"] in imported_roll_numbers:
                                 raise ValueError("Duplicate roll number in the uploaded file.")
-                            if Student.objects.filter(email__iexact=values["email"]).exists():
+                            if values["email"].lower() in existing_emails:
                                 raise ValueError("A student with this email already exists.")
-                            if Student.objects.filter(roll_no=values["roll_no"]).exists():
+                            if values["roll_no"] in existing_roll_numbers:
                                 raise ValueError("A student with this roll number already exists.")
 
                             student = Student(
@@ -428,8 +461,7 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                                 email=values["email"],
                             )
                             student.full_clean()
-                            student.save()
-                            imported_count += 1
+                            students_to_create.append(student)
                             imported_emails.add(values["email"].lower())
                             imported_roll_numbers.add(values["roll_no"])
                         except (ValidationError, ValueError, IndexError) as error:
@@ -438,6 +470,10 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                             else:
                                 error_message = str(error)
                             failures.append({"row": row_number, "error": error_message})
+
+                    if students_to_create:
+                        Student.objects.bulk_create(students_to_create, batch_size=500)
+                        imported_count = len(students_to_create)
                 except (UnicodeDecodeError, ValueError, csv.Error) as error:
                     failures.append({"row": "-", "error": str(error)})
 
