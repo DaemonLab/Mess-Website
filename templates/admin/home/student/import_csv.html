@@ -1,0 +1,41 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Import students from CSV</h1>
+  <p>Enter the hostel that applies to every row, then upload a CSV or tab-separated file.</p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="module aligned">
+      <div class="form-row">
+        <div>
+          <label for="id_hostel">Hostel name:</label>
+          <input type="text" name="hostel" id="id_hostel" maxlength="5" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="id_csv_file">CSV file:</label>
+          <input type="file" name="csv_file" id="id_csv_file" accept=".csv,text/csv" required>
+        </div>
+      </div>
+    </fieldset>
+    <div class="submit-row">
+      <input type="submit" value="Import students" class="default">
+      <a href="../" class="button cancel-link">Cancel</a>
+    </div>
+  </form>
+
+  {% if failures %}
+    <h2>Rows that could not be imported</h2>
+    <table>
+      <thead>
+        <tr><th>Row</th><th>Reason</th></tr>
+      </thead>
+      <tbody>
+        {% for failure in failures %}
+          <tr><td>{{ failure.row }}</td><td>{{ failure.error }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}
