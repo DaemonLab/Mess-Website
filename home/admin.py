@@ -8,8 +8,12 @@ import csv
 from datetime import timedelta
 
 from django.contrib import admin
+from django.contrib import messages
 from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
+from django.core.exceptions import ValidationError
 from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
+from django.urls import path
 from import_export.admin import ImportExportMixin, ImportExportModelAdmin
 
 from home.models import (
@@ -282,6 +286,7 @@ class about_Admin(admin.ModelAdmin):
 
 @admin.register(Student)
 class about_Admin(ImportExportMixin, admin.ModelAdmin):
+    change_list_template = "admin/home/student/change_list.html"
     resource_class = StudentResource
     model = Student
     search_fields = ("name", "roll_no", "hostel", "degree", "department", "email")
@@ -307,6 +312,156 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
         ),
     )
     actions = ["export_as_csv", "generate_table", "disable_allocation"]
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "import-csv/",
+                self.admin_site.admin_view(self.import_csv),
+                name="home_student_import_csv",
+            ),
+        ]
+        return custom_urls + urls
+
+    def import_csv(self, request):
+        failures = []
+        imported_count = 0
+
+        if request.method == "POST":
+            hostel = request.POST.get("hostel", "").strip()
+            uploaded_file = request.FILES.get("csv_file")
+
+            if not hostel:
+                failures.append({"row": "-", "error": "Hostel name is required."})
+            elif len(hostel) > Student._meta.get_field("hostel").max_length:
+                failures.append({"row": "-", "error": "Hostel name is too long."})
+
+            if uploaded_file is None:
+                failures.append({"row": "-", "error": "Please select a CSV file."})
+
+            if not failures:
+                try:
+                    decoded_file = uploaded_file.read().decode("utf-8-sig")
+                    sample = decoded_file[:4096]
+                    try:
+                        dialect = csv.Sniffer().sniff(sample, delimiters=",;\t")
+                    except csv.Error:
+                        dialect = csv.excel
+
+                    rows = list(csv.reader(decoded_file.splitlines(), dialect))
+                    if not rows:
+                        raise ValueError("The uploaded file is empty.")
+
+                    def normalize(value):
+                        return "".join(
+                            character.lower() for character in value if character.isalnum()
+                        )
+
+                    header_aliases = {
+                        "room_no": {"roomno", "roomnumber"},
+                        "roll_no": {"rollno", "rollnumber"},
+                        "name": {"name"},
+                        "degree": {"course", "degree"},
+                        "department": {"department", "dept"},
+                        "email": {
+                            "instituteemailid",
+                            "instituteemail",
+                            "emailid",
+                            "email",
+                        },
+                    }
+                    normalized_header = [normalize(value) for value in rows[0]]
+                    column_indexes = {}
+                    for field, aliases in header_aliases.items():
+                        matching_indexes = [
+                            index
+                            for index, value in enumerate(normalized_header)
+                            if value in aliases
+                        ]
+                        if not matching_indexes:
+                            raise ValueError(
+                                f"Missing required column: {field.replace('_', ' ')}."
+                            )
+                        column_indexes[field] = matching_indexes[0]
+
+                    imported_emails = set()
+                    imported_roll_numbers = set()
+                    for row_number, row in enumerate(rows[1:], start=2):
+                        if not any(value.strip() for value in row):
+                            continue
+                        try:
+                            if len(row) <= max(column_indexes.values()):
+                                raise ValueError(
+                                    "The row does not contain all required columns."
+                                )
+
+                            values = {
+                                field: row[index].strip()
+                                for field, index in column_indexes.items()
+                            }
+                            missing_fields = [
+                                field.replace("_", " ")
+                                for field, value in values.items()
+                                if not value
+                            ]
+                            if missing_fields:
+                                raise ValueError(
+                                    "Missing value for: " + ", ".join(missing_fields) + "."
+                                )
+                            if values["email"].lower() in imported_emails:
+                                raise ValueError("Duplicate email in the uploaded file.")
+                            if values["roll_no"] in imported_roll_numbers:
+                                raise ValueError("Duplicate roll number in the uploaded file.")
+                            if Student.objects.filter(email__iexact=values["email"]).exists():
+                                raise ValueError("A student with this email already exists.")
+                            if Student.objects.filter(roll_no=values["roll_no"]).exists():
+                                raise ValueError("A student with this roll number already exists.")
+
+                            student = Student(
+                                hostel=hostel,
+                                room_no=values["room_no"],
+                                roll_no=values["roll_no"],
+                                name=values["name"],
+                                degree=values["degree"],
+                                department=values["department"],
+                                email=values["email"],
+                            )
+                            student.full_clean()
+                            student.save()
+                            imported_count += 1
+                            imported_emails.add(values["email"].lower())
+                            imported_roll_numbers.add(values["roll_no"])
+                        except (ValidationError, ValueError, IndexError) as error:
+                            if isinstance(error, ValidationError):
+                                error_message = "; ".join(error.messages)
+                            else:
+                                error_message = str(error)
+                            failures.append({"row": row_number, "error": error_message})
+                except (UnicodeDecodeError, ValueError, csv.Error) as error:
+                    failures.append({"row": "-", "error": str(error)})
+
+            if imported_count:
+                self.message_user(
+                    request,
+                    f"Successfully imported {imported_count} student(s).",
+                    messages.SUCCESS,
+                )
+            if failures:
+                self.message_user(
+                    request,
+                    f"{len(failures)} row(s) could not be imported.",
+                    messages.WARNING,
+                )
+
+        context = {
+            **self.admin_site.each_context(request),
+            "opts": self.model._meta,
+            "title": "Import students from CSV",
+            "failures": failures,
+            "imported_count": imported_count,
+        }
+        return render(request, "admin/home/student/import_csv.html", context)
 
     def generate_table(Student, request, queryset):
         """
