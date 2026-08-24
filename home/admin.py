@@ -5,15 +5,21 @@ For more information please see: https://docs.djangoproject.com/en/4.1/ref/contr
 """
 
 import csv
+import io
 from datetime import timedelta
 
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError, transaction
+from django.db.models import Q
+from django.db.models.functions import Lower
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import path
+from django.db.models.functions import Lower
 from import_export.admin import ImportExportMixin, ImportExportModelAdmin
 
 from home.models import (
@@ -57,6 +63,8 @@ from .resources import (
 from .utils.django_email_server import long_rebate_query_mail
 from .utils.month import fill_periods, map_periods_to_long_rebate
 from .utils.rebate_bills_saver import fix_all_bills, save_long_bill
+
+User = get_user_model()
 
 # Customising the heading and title of the admin page
 admin.site.site_header = "Dining Website Admin Page"
@@ -311,7 +319,276 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ["export_as_csv", "generate_table", "disable_allocation"]
+    actions = [
+        "export_as_csv",
+        "generate_table",
+        "disable_allocation",
+        "create_user_accounts",
+    ]
+
+    @admin.action(description="Create missing user accounts")
+    def create_user_accounts(self, request, queryset):
+        created_count = 0
+        existing_count = 0
+        failures = []
+
+        for student in queryset:
+            email = student.email.strip()
+            if not email:
+                failures.append(f"Student #{student.pk} has no email address.")
+                continue
+
+            if User.objects.filter(
+                Q(email__iexact=email) | Q(username__iexact=email)
+            ).exists():
+                existing_count += 1
+                continue
+
+            try:
+                user = User(username=email, email=email)
+                user.set_unusable_password()
+                user.save()
+                created_count += 1
+            except IntegrityError:
+                failures.append(
+                    f"Could not create an account for {email}; the username may already exist."
+                )
+
+        if created_count:
+            self.message_user(
+                request,
+                f"Created {created_count} user account(s).",
+                messages.SUCCESS,
+            )
+        if existing_count:
+            self.message_user(
+                request,
+                f"Skipped {existing_count} student(s) with existing accounts.",
+                messages.INFO,
+            )
+        if failures:
+            self.message_user(
+                request,
+                "Could not create accounts: " + " ".join(failures),
+                messages.ERROR,
+            )
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "import-csv/",
+                self.admin_site.admin_view(self.import_csv),
+                name="home_student_import_csv",
+            ),
+        ]
+        return custom_urls + urls
+
+    def import_csv(self, request):
+        failures = []
+        imported_count = 0
+
+        if request.method == "POST":
+            hostel = request.POST.get("hostel", "").strip()
+            uploaded_file = request.FILES.get("csv_file")
+
+            if not hostel:
+                failures.append({"row": "-", "error": "Hostel name is required."})
+            elif len(hostel) > Student._meta.get_field("hostel").max_length:
+                failures.append({"row": "-", "error": "Hostel name is too long."})
+
+            if uploaded_file is None:
+                failures.append({"row": "-", "error": "Please select a CSV file."})
+
+            if not failures:
+                try:
+                    text_stream = io.TextIOWrapper(
+                        uploaded_file.file, encoding="utf-8-sig", newline=""
+                    )
+                    sample = text_stream.read(4096)
+                    text_stream.seek(0)
+                    try:
+                        dialect = csv.Sniffer().sniff(sample, delimiters=",;\t")
+                    except csv.Error:
+                        dialect = csv.excel
+
+                    csv_reader = csv.reader(text_stream, dialect)
+                    header = next(csv_reader, None)
+                    if not header:
+                        raise ValueError("The uploaded file is empty.")
+
+                    def normalize(value):
+                        return "".join(
+                            character.lower() for character in value if character.isalnum()
+                        )
+
+                    header_aliases = {
+                        "room_no": {"roomno", "roomnumber"},
+                        "roll_no": {"rollno", "rollnumber"},
+                        "name": {"name"},
+                        "degree": {"course", "degree"},
+                        "department": {"department", "dept"},
+                        "email": {
+                            "instituteemailid",
+                            "instituteemail",
+                            "emailid",
+                            "email",
+                        },
+                    }
+                    normalized_header = [normalize(value) for value in header]
+                    column_indexes = {}
+                    for field, aliases in header_aliases.items():
+                        matching_indexes = [
+                            index
+                            for index, value in enumerate(normalized_header)
+                            if value in aliases
+                        ]
+                        if not matching_indexes:
+                            raise ValueError(
+                                f"Missing required column: {field.replace('_', ' ')}."
+                            )
+                        column_indexes[field] = matching_indexes[0]
+
+                    max_column_index = max(column_indexes.values())
+                    pending_rows = []
+                    uploaded_emails = set()
+                    uploaded_roll_numbers = set()
+
+                    for row_number, row in enumerate(csv_reader, start=2):
+                        if not any(value.strip() for value in row):
+                            continue
+                        pending_rows.append((row_number, row))
+                        if len(row) > column_indexes["email"]:
+                            email_value = row[column_indexes["email"]].strip().lower()
+                            if email_value:
+                                uploaded_emails.add(email_value)
+                        if len(row) > column_indexes["roll_no"]:
+                            roll_value = row[column_indexes["roll_no"]].strip()
+                            if roll_value:
+                                uploaded_roll_numbers.add(roll_value)
+
+                    existing_emails = set(
+                        Student.objects.annotate(email_lower=Lower("email"))
+                        .filter(email_lower__in=list(uploaded_emails))
+                        .values_list("email_lower", flat=True)
+                    )
+                    existing_roll_numbers = set(
+                        Student.objects.filter(roll_no__in=list(uploaded_roll_numbers))
+                        .values_list("roll_no", flat=True)
+                    )
+                    existing_user_emails = set(
+                        User.objects.annotate(email_lower=Lower("email"))
+                        .filter(email_lower__in=list(uploaded_emails))
+                        .values_list("email_lower", flat=True)
+                    )
+                    existing_usernames = set(
+                        User.objects.annotate(username_lower=Lower("username"))
+                        .filter(username_lower__in=list(uploaded_emails))
+                        .values_list("username_lower", flat=True)
+                    )
+
+                    imported_emails = set()
+                    imported_roll_numbers = set()
+                    students_to_create = []
+                    for row_number, row in pending_rows:
+                        try:
+                            if len(row) <= max_column_index:
+                                raise ValueError(
+                                    "The row does not contain all required columns."
+                                )
+
+                            values = {
+                                field: row[index].strip()
+                                for field, index in column_indexes.items()
+                            }
+                            missing_fields = [
+                                field.replace("_", " ")
+                                for field, value in values.items()
+                                if not value
+                            ]
+                            if missing_fields:
+                                raise ValueError(
+                                    "Missing value for: " + ", ".join(missing_fields) + "."
+                                )
+                            if values["email"].lower() in imported_emails:
+                                raise ValueError("Duplicate email in the uploaded file.")
+                            if values["roll_no"] in imported_roll_numbers:
+                                raise ValueError("Duplicate roll number in the uploaded file.")
+                            if values["email"].lower() in existing_emails:
+                                raise ValueError("A student with this email already exists.")
+                            if values["roll_no"] in existing_roll_numbers:
+                                raise ValueError("A student with this roll number already exists.")
+                            if (
+                                values["email"].lower() in existing_usernames
+                                and values["email"].lower() not in existing_user_emails
+                            ):
+                                raise ValueError("A user with this username already exists.")
+
+                            student = Student(
+                                hostel=hostel,
+                                room_no=values["room_no"],
+                                roll_no=values["roll_no"],
+                                name=values["name"],
+                                degree=values["degree"],
+                                department=values["department"],
+                                email=values["email"],
+                            )
+                            student.full_clean()
+                            students_to_create.append(student)
+                            imported_emails.add(values["email"].lower())
+                            imported_roll_numbers.add(values["roll_no"])
+                        except (ValidationError, ValueError, IndexError) as error:
+                            if isinstance(error, ValidationError):
+                                error_message = "; ".join(error.messages)
+                            else:
+                                error_message = str(error)
+                            failures.append({"row": row_number, "error": error_message})
+
+                    if students_to_create:
+                        with transaction.atomic():
+                            Student.objects.bulk_create(students_to_create, batch_size=500)
+                            users_to_create = []
+                            for student in students_to_create:
+                                if student.email.lower() not in existing_user_emails:
+                                    user = User(
+                                        username=student.email,
+                                        email=student.email,
+                                    )
+                                    user.set_unusable_password()
+                                    users_to_create.append(user)
+                            if users_to_create:
+                                User.objects.bulk_create(users_to_create, batch_size=500)
+
+                            semester = Semester.objects.filter().last()
+                            StudentBills.objects.bulk_create(
+                                [StudentBills(email=student, semester=semester) for student in students_to_create],
+                                batch_size=500,
+                            )
+                        imported_count = len(students_to_create)
+                except (UnicodeDecodeError, ValueError, csv.Error) as error:
+                    failures.append({"row": "-", "error": str(error)})
+
+            if imported_count:
+                self.message_user(
+                    request,
+                    f"Successfully imported {imported_count} student(s).",
+                    messages.SUCCESS,
+                )
+            if failures:
+                self.message_user(
+                    request,
+                    f"{len(failures)} row(s) could not be imported.",
+                    messages.WARNING,
+                )
+
+        context = {
+            **self.admin_site.each_context(request),
+            "opts": self.model._meta,
+            "title": "Import students from CSV",
+            "failures": failures,
+            "imported_count": imported_count,
+        }
+        return render(request, "admin/home/student/import_csv.html", context)
 
     def get_urls(self):
         urls = super().get_urls()
