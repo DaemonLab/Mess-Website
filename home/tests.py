@@ -35,6 +35,9 @@ class StudentCsvImportTests(TestCase):
 		student = Student.objects.get()
 		self.assertEqual(student.hostel, "AG")
 		self.assertEqual(student.roll_no, "260003011")
+		imported_user = get_user_model().objects.get(email=student.email)
+		self.assertEqual(imported_user.username, student.email)
+		self.assertTrue(imported_user.has_usable_password() is False)
 		self.assertContains(response, "Row")
 		self.assertContains(response, "Missing value for: roll no.")
 
@@ -140,3 +143,27 @@ class StudentCsvImportTests(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(Student.objects.count(), 1)
 		self.assertContains(response, "A student with this email already exists.")
+
+	def test_admin_action_creates_missing_user_account(self):
+		student = Student.objects.create(
+			hostel="AG",
+			room_no="204",
+			roll_no="260003017",
+			name="Missing Account",
+			degree="B.Tech",
+			department="ME",
+			email="missing.account@iiti.ac.in",
+		)
+
+		response = self.client.post(
+			reverse("admin:home_student_changelist"),
+			{
+				"action": "create_user_accounts",
+				"_selected_action": [student.pk],
+			},
+		)
+
+		self.assertEqual(response.status_code, 302)
+		user = get_user_model().objects.get(email=student.email)
+		self.assertEqual(user.username, student.email)
+		self.assertFalse(user.has_usable_password())

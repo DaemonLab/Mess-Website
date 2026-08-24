@@ -9,9 +9,13 @@ import io
 from datetime import timedelta
 
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError, transaction
+from django.db.models import Q
+from django.db.models.functions import Lower
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import path
@@ -59,6 +63,8 @@ from .resources import (
 from .utils.django_email_server import long_rebate_query_mail
 from .utils.month import fill_periods, map_periods_to_long_rebate
 from .utils.rebate_bills_saver import fix_all_bills, save_long_bill
+
+User = get_user_model()
 
 # Customising the heading and title of the admin page
 admin.site.site_header = "Dining Website Admin Page"
@@ -313,7 +319,59 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
             },
         ),
     )
-    actions = ["export_as_csv", "generate_table", "disable_allocation"]
+    actions = [
+        "export_as_csv",
+        "generate_table",
+        "disable_allocation",
+        "create_user_accounts",
+    ]
+
+    @admin.action(description="Create missing user accounts")
+    def create_user_accounts(self, request, queryset):
+        created_count = 0
+        existing_count = 0
+        failures = []
+
+        for student in queryset:
+            email = student.email.strip()
+            if not email:
+                failures.append(f"Student #{student.pk} has no email address.")
+                continue
+
+            if User.objects.filter(
+                Q(email__iexact=email) | Q(username__iexact=email)
+            ).exists():
+                existing_count += 1
+                continue
+
+            try:
+                user = User(username=email, email=email)
+                user.set_unusable_password()
+                user.save()
+                created_count += 1
+            except IntegrityError:
+                failures.append(
+                    f"Could not create an account for {email}; the username may already exist."
+                )
+
+        if created_count:
+            self.message_user(
+                request,
+                f"Created {created_count} user account(s).",
+                messages.SUCCESS,
+            )
+        if existing_count:
+            self.message_user(
+                request,
+                f"Skipped {existing_count} student(s) with existing accounts.",
+                messages.INFO,
+            )
+        if failures:
+            self.message_user(
+                request,
+                "Could not create accounts: " + " ".join(failures),
+                messages.ERROR,
+            )
 
     def get_urls(self):
         urls = super().get_urls()
@@ -418,6 +476,16 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                         Student.objects.filter(roll_no__in=list(uploaded_roll_numbers))
                         .values_list("roll_no", flat=True)
                     )
+                    existing_user_emails = set(
+                        User.objects.annotate(email_lower=Lower("email"))
+                        .filter(email_lower__in=list(uploaded_emails))
+                        .values_list("email_lower", flat=True)
+                    )
+                    existing_usernames = set(
+                        User.objects.annotate(username_lower=Lower("username"))
+                        .filter(username_lower__in=list(uploaded_emails))
+                        .values_list("username_lower", flat=True)
+                    )
 
                     imported_emails = set()
                     imported_roll_numbers = set()
@@ -450,6 +518,11 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                                 raise ValueError("A student with this email already exists.")
                             if values["roll_no"] in existing_roll_numbers:
                                 raise ValueError("A student with this roll number already exists.")
+                            if (
+                                values["email"].lower() in existing_usernames
+                                and values["email"].lower() not in existing_user_emails
+                            ):
+                                raise ValueError("A user with this username already exists.")
 
                             student = Student(
                                 hostel=hostel,
@@ -472,7 +545,25 @@ class about_Admin(ImportExportMixin, admin.ModelAdmin):
                             failures.append({"row": row_number, "error": error_message})
 
                     if students_to_create:
-                        Student.objects.bulk_create(students_to_create, batch_size=500)
+                        with transaction.atomic():
+                            Student.objects.bulk_create(students_to_create, batch_size=500)
+                            users_to_create = []
+                            for student in students_to_create:
+                                if student.email.lower() not in existing_user_emails:
+                                    user = User(
+                                        username=student.email,
+                                        email=student.email,
+                                    )
+                                    user.set_unusable_password()
+                                    users_to_create.append(user)
+                            if users_to_create:
+                                User.objects.bulk_create(users_to_create, batch_size=500)
+
+                            semester = Semester.objects.filter().last()
+                            StudentBills.objects.bulk_create(
+                                [StudentBills(email=student, semester=semester) for student in students_to_create],
+                                batch_size=500,
+                            )
                         imported_count = len(students_to_create)
                 except (UnicodeDecodeError, ValueError, csv.Error) as error:
                     failures.append({"row": "-", "error": str(error)})
